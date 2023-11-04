@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Design", "Design\Design.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiringManager", "HiringManager\HiringManager.csproj", "{92B42D9E-6A6F-4690-880D-6E1C9C32495E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{70B1AC4C-0756-4561-9BA8-E3B8061D0EC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{92B42D9E-6A6F-4690-880D-6E1C9C32495E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92B42D9E-6A6F-4690-880D-6E1C9C32495E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92B42D9E-6A6F-4690-880D-6E1C9C32495E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70B1AC4C-0756-4561-9BA8-E3B8061D0EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70B1AC4C-0756-4561-9BA8-E3B8061D0EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70B1AC4C-0756-4561-9BA8-E3B8061D0EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70B1AC4C-0756-4561-9BA8-E3B8061D0EC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

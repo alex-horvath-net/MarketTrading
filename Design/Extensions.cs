@@ -7,4 +7,10 @@ public static class Extensions
         Assert.NotNull(actual);
         return actual;
     }
+
+    public static IEnumerable<T> ShouldBe_NotEmpty<T>(this IEnumerable<T> actual)
+    {
+        Assert.NotEmpty(actual);
+        return actual;
+    }
 }

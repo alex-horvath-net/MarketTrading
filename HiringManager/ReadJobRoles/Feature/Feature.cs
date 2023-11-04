@@ -1,10 +1,12 @@
 ﻿
 namespace HiringManager.ReadJobRoles.Feature;
 
-public class Feature
+public partial class Feature
 {
     public Task<Response> Run(Request request, CancellationToken token)
     {
-        return Task.FromResult(new Response());
+        var response = new Response();
+        response.JobRoles.Add(new());
+        return Task.FromResult(response);
     }
 }
