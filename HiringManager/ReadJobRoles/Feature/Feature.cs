@@ -1,4 +1,6 @@
 ﻿
+using Common;
+
 namespace HiringManager.ReadJobRoles.Feature;
 
 public partial class Feature
@@ -7,6 +9,6 @@ public partial class Feature
     {
         var response = new Response();
         response.JobRoles.Add(new());
-        return Task.FromResult(response);
+        return response.ToTask();
     }
 }

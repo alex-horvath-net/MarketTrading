@@ -22,5 +22,6 @@ public class Feature_Design
         var feature = new Feature();
         var response = await feature.Run(request, token);
         response.JobRoles.ShouldBe_NotEmpty();
+        response.JobRoles[0].Name.ShouldBe_NotNull();
     }
 }
