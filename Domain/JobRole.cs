@@ -1,6 +1,5 @@
 ﻿namespace Domain;
 
-public class JobRole
+public record JobRole(string Name)
 {
-    public object Name { get; set; }
 }

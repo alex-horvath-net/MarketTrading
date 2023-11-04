@@ -8,7 +8,7 @@ public partial class Feature
     public Task<Response> Run(Request request, CancellationToken token)
     {
         var response = new Response();
-        response.JobRoles.Add(new());
+        response.JobRoles.Add(new("Aladar"));
         return response.ToTask();
     }
 }

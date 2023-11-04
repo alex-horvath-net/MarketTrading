@@ -1,6 +1,6 @@
 ﻿
 namespace HiringManager.ReadJobRoles.Feature;
 
-public class Request
+public record Request(string Name)
 {
 }
