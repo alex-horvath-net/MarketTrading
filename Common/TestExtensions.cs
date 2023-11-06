@@ -1,8 +1,10 @@
-﻿namespace Design;
+﻿using Xunit;
 
-public static class Extensions
+namespace Shared;
+
+public static class TestExtensions
 {
-    public static T Inc<T>(this T actual,  int counter)
+    public static T Inc<T>(this T actual, int counter)
     {
         return actual;
     }
