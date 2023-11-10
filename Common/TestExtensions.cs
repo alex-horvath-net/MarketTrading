@@ -21,7 +21,7 @@ public static class TestExtensions
         return actual;
     }
 
-    public static T? ShouldBe<T>(this T? actual, T expected)
+    public static T? ShouldBe<T>(this T? actual, T? expected)
     {
         Assert.Equal(expected, actual);
         return actual;

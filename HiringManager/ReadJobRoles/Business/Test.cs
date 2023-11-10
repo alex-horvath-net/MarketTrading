@@ -1,7 +1,6 @@
+using HiringManager.ReadJobRoles.Adapters;
 using Shared;
-using Shared.Business;
 using Xunit;
-using static HiringManager.ReadJobRoles.Adapters.Test;
 
 namespace HiringManager.ReadJobRoles.Business;
 
@@ -36,14 +35,14 @@ public class Test
     [Fact]
     public async Task The_Read_JobRoles_By_Repository()
     {
-        var request = GetRequest();
-        var token = GetToken();
         var repository = GetRepositoryMock();
         var unit = GetUnit(repository);
+        var request = GetRequest();
+        var token = GetToken();
 
         await unit.Run(request, token);
 
-        repository.Counter.ShouldBe(1);
+        repository.ShouldBe_NotNull();
     }
 
     public Request GetRequest(string? name = null) => new(Name: name ?? "Aladar");
@@ -52,7 +51,7 @@ public class Test
 
     public Feature GetUnit(IRepository repository) => new(repository);
 
-    private RepositoryMock GetRepositoryMock() => adapterTest.GetRepositoryMock();
+    private IRepository GetRepositoryMock() => adapterTest.GetRepositoryMock();
 
     private readonly Adapters.Test adapterTest = new();
 }

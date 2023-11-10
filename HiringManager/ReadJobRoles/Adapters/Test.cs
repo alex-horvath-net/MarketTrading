@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using HiringManager.ReadJobRoles.Business;
 using Shared;
 using Shared.Business;
@@ -11,20 +7,73 @@ namespace HiringManager.ReadJobRoles.Adapters
 {
     public class Test
     {
-
-        public RepositoryMock GetRepositoryMock()
+        public IRepository GetRepositoryMock()
         {
-            var repository = new RepositoryMock();
+            var repository = new Builder<IRepository>().With(x => x.Read(default, default), new List<JobRole>()).Build();
             return repository;
         }
-        public class RepositoryMock : IRepository
+
+    }
+
+    public class Builder<T> where T : class
+    {
+        public Builder<T> With<R>(Expression<Func<T, R>> expression, R returnValue)
         {
-            public int Counter { get; private set; }
-            public Task<List<JobRole>> Add(Request request)
+            var key = expression.ToString();
+            if (!map.ContainsKey(key))
+                map.Add(key, returnValue);
+
+            return this;
+        }
+
+        public T Build()
+        {
+            return default;
+        }
+
+        Dictionary<string, object> map = new();
+    }
+
+    public class Mock
+    {
+        public static HalfProxy Me<T>()
+        {
+            return new HalfProxy();
+        }
+
+    }
+
+    public class HalfProxy
+    {
+        public HalfProxy SomeProperty
+        {
+            get
             {
-                Counter++;
-                return new List<JobRole>() { new("Aladar") }.ToTask();
+                return this;
             }
         }
+        public HalfProxy Read(Request request, CancellationToken token)
+        {
+
+            return this;
+        }
+
+
+        public HalfProxy Returns<T>(T value)
+        {
+            return this;
+        }
+
+        public HalfProxy Throws<T>(Exception exception) where T : Exception
+        {
+            throw exception;
+        }
+
+    }
+
+    public class Sample<T> where T : class
+    {
+        public static implicit operator T(Sample<T> mock) => default(T);
+        public static implicit operator Sample<T>(T value) => new Sample<T>();
     }
 }

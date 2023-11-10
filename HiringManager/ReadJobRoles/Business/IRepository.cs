@@ -4,6 +4,7 @@ namespace HiringManager.ReadJobRoles.Business
 {
     public interface IRepository
     {
-        Task<List<JobRole>> Add(Request request);
+        Task<List<JobRole>> Read(Request request, CancellationToken token);
+        int SomeProperty { get; set; }
     }
 }

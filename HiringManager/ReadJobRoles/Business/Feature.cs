@@ -2,20 +2,25 @@
 
 namespace HiringManager.ReadJobRoles.Business;
 
-public partial class Feature
+public class Feature
 {
-    public async Task<Response> Run(Request request, CancellationToken token) => new Response()
+    public async Task<Response> Run(Request request, CancellationToken token)
     {
-        JobRoles = await ReadFromDataStoreWorkStep(request)
-    };
-
-    public Feature(IRepository repository)
-    {
-        this.repository = repository;
+        response = new Response();
+        await WorkSteps(request, token);
+        return response;
     }
 
-    private Task<List<JobRole>> ReadFromDataStoreWorkStep(Request request) =>
-        repository.Add(request);
+    private async Task WorkSteps(Request request, CancellationToken token)
+    {
+        response.JobRoles = await FindJobRoles(request, token);
+    }
+
+    public Feature(IRepository repository) => this.repository = repository;
+
+    private Task<List<JobRole>> FindJobRoles(Request request, CancellationToken token) => repository.Read(request, token);
 
     private readonly IRepository repository;
+    private Response response;
 }
+
