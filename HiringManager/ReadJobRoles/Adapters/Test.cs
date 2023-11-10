@@ -9,7 +9,9 @@ namespace HiringManager.ReadJobRoles.Adapters
     {
         public IRepository GetRepositoryMock()
         {
-            var repository = new Builder<IRepository>().With(x => x.Read(default, default), new List<JobRole>()).Build();
+            var repository = new Builder<IRepository>()
+                .With(x => x.Read(default, default), new List<JobRole>())
+                .Build();
             return repository;
         }
 
@@ -17,7 +19,7 @@ namespace HiringManager.ReadJobRoles.Adapters
 
     public class Builder<T> where T : class
     {
-        public Builder<T> With<R>(Expression<Func<T, R>> expression, R returnValue)
+        public Builder<T> With<R>(Expression<Func<T, Task<R>>> expression, R returnValue)
         {
             var key = expression.ToString();
             if (!map.ContainsKey(key))
