@@ -4,5 +4,5 @@ namespace HiringManager.ReadJobRoles.Business;
 
 public class Response
 {
-    public List<JobRole> JobRoles { get; set; } = new();
+    public List<JobRole> JobRoles { get; set; }
 }

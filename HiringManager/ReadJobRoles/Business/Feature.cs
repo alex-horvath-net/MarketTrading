@@ -1,26 +1,75 @@
-﻿using Shared.Business;
+﻿using FluentAssertions;
+using NSubstitute;
+using Xunit;
 
 namespace HiringManager.ReadJobRoles.Business;
 
 public class Feature
 {
+    public class Specify
+    {
+        [Fact]
+        public void How_to_create_it()
+        {
+            var validator = IValidator.Mock.Simple();
+            var repository = IRepository.Mock.Simple();
+            var unit = new Feature(validator, repository);
+            unit.Should().NotBeNull();
+        }
+
+
+        [Fact]
+        public async void Which_unit_should_validate_the_request()
+        {
+            var validator = IValidator.Mock.Simple();
+            var repository = IRepository.Mock.Simple();
+            var unit = new Feature(validator, repository);
+            var request = new Request("Specify");
+            var token = CancellationToken.None;
+            await unit.Run(request, token);
+            await validator.Received(1).Validate(request, token);
+        }
+
+        [Fact]
+        public async void Which_unit_should_find_the_jbob_roles()
+        {
+            var validator = IValidator.Mock.Simple();
+            var repository = IRepository.Mock.Simple();
+            var unit = new Feature(validator, repository);
+            var request = new Request("Specify");
+            var token = CancellationToken.None;
+            await unit.Run(request, token);
+            await repository.Received(1).Read(request, token);
+        }
+
+        [Fact]
+        public async void What_should_be_the_Response()
+        {
+            var validator = IValidator.Mock.Simple();
+            var repository = IRepository.Mock.Simple();
+            var unit = new Feature(validator, repository);
+            var request = new Request("Specify");
+            var token = CancellationToken.None;
+            var response = await unit.Run(request, token);
+            response.Should().NotBeNull(null);
+            response.JobRoles.Should().NotBeNullOrEmpty();
+        }
+    }
+
     public async Task<Response> Run(Request request, CancellationToken token)
     {
-        response = new Response();
-        await WorkSteps(request, token);
+        var response = new Response();
+        await validator.Validate(request, token);
+        response.JobRoles = await repository.Read(request, token);
         return response;
     }
 
-    private async Task WorkSteps(Request request, CancellationToken token)
+    public Feature(IValidator validator, IRepository repository)
     {
-        response.JobRoles = await FindJobRoles(request, token);
+        this.validator = validator;
+        this.repository = repository;
     }
 
-    public Feature(IRepository repository) => this.repository = repository;
-
-    private Task<List<JobRole>> FindJobRoles(Request request, CancellationToken token) => repository.Read(request, token);
-
+    private readonly IValidator validator;
     private readonly IRepository repository;
-    private Response response;
 }
-
