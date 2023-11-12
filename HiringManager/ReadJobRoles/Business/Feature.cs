@@ -59,8 +59,11 @@ public class Feature
     public async Task<Response> Run(Request request, CancellationToken token)
     {
         var response = new Response();
-        await validator.Validate(request, token);
-        response.JobRoles = await repository.Read(request, token);
+        var result = await validator.Validate(request, token);
+        if (result.IsSuccess)
+        {
+            response.JobRoles = await repository.Read(request, token);
+        }
         return response;
     }
 
