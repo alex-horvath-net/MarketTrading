@@ -1,31 +1,31 @@
 ﻿using NSubstitute;
 using Shared.Business;
 
-namespace Blogger.ReadPosts.Business
+namespace Blogger.ReadPosts.Business;
+
+public interface IValidator
 {
-    public interface IValidator
+    Task<ValidationResult> Validate(Request request, CancellationToken token);
+
+    public class MockBuilder
     {
-        Task<ValidationResult> Validate(Request request, CancellationToken token);
+        public readonly IValidator Mock = Substitute.For<IValidator>();
 
-        public class MockBuilder 
+        public MockBuilder Success()
         {
-            public readonly IValidator Mock = Substitute.For<IValidator>();
+            var request = default(Request);
+            var token = CancellationToken.None;
+            Mock.Validate(request, token).ReturnsForAnyArgs(ValidationResult.Success());
+            return this;
+        }
 
-            public MockBuilder Success()
-            {
-                var request = default(Request);
-                var token = CancellationToken.None;
-                Mock.Validate(request, token).ReturnsForAnyArgs(ValidationResult.Success());
-                return this;
-            }
-
-            public MockBuilder Failed()
-            {
-                var request = default(Request);
-                var token = CancellationToken.None;
-                Mock.Validate(request, token).ReturnsForAnyArgs(ValidationResult.Failed("ErrorCode", "ErrorMessage"));
-                return this;
-            }
-        }       
+        public MockBuilder Failed() => Failed("ErrorCode", "ErrorMessage");
+        public MockBuilder Failed(string errorCode, string errorMessage)
+        {
+            var request = default(Request);
+            var token = CancellationToken.None;
+            Mock.Validate(request, token).ReturnsForAnyArgs(ValidationResult.Failed(errorCode, errorMessage));
+            return this;
+        }
     }
 }

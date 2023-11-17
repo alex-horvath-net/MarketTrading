@@ -42,7 +42,24 @@ public class Feature
         }
 
         [Fact]
-        public async void Response_Should_Not_Contain_Posts_If_The_Request_InValid()
+        public async void Response_Should_Contain_ValidationResult()
+
+        {
+            var unit = new Feature(validator.Mock, repository.Mock);
+            var response = await unit.Run(inputs.Request, inputs.Token);
+            response.ValidationResult.Should().BeNull();
+        }
+
+        [Fact]
+        public async void Validator_Adapter_Should_Do_the_Validataion()
+        {
+            var unit = new Feature(validator.Mock, repository.Mock);
+            var response = await unit.Run(inputs.Request, inputs.Token);
+            await validator.Mock.Received(1).Validate(inputs.Request, inputs.Token);
+        }
+
+        [Fact]
+        public async void Response_Posts_Should_Be_Null_If_Validation_Failed()
         {
             var unit = new Feature(validator.Failed().Mock, repository.Mock);
             var response = await unit.Run(inputs.Request, inputs.Token);
@@ -50,7 +67,7 @@ public class Feature
         }
 
         [Fact]
-        public async void Response_Should_Contain_Posts_If_The_Request_Valid()
+        public async void Response_Posts_Should_Be_Not_Null_If_Validation_Success()
         {
             var unit = new Feature(validator.Mock, repository.Mock);
             var response = await unit.Run(inputs.Request, inputs.Token);
