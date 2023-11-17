@@ -8,41 +8,41 @@
 //    {
 //        public static IRepository CreateRepositoryDeafaultMock()
 //        {
-//            var mock = new Mock<IRepository, List<Post>>();
+//            var Mock = new MockBuilder<IRepository, List<Post>>();
 
 //            var featureRequest = new Request("TestName");
 //            var token = CancellationToken.None;
 //            var jobRoles = new List<Post> { new Post("TestName1"), new Post("TestName2") };
-//            mock.Call(x => x.Read(featureRequest, token), jobRoles);
+//            Mock.Call(x => x.Read(featureRequest, token), jobRoles);
 
-//            return mock.Build();
+//            return Mock.Build();
 //        }
 //    }
 
-//    public class Mock<T, R>
+//    public class MockBuilder<T, R>
 //    {
-//        public Mock<T, R> Call(Expression<Func<T, R>> key, R value)
+//        public MockBuilder<T, R> Call(Expression<Func<T, R>> key, R value)
 //        {
 //            if (!map.ContainsKey(key)) map.Add(key, default);
 //            map[key] = () => value;
 //            return this;
 //        }
 
-//        public Mock<T, R> Call<E>(Expression<Func<T, R>> key, E exception = null) where E : Exception
+//        public MockBuilder<T, R> Call<E>(Expression<Func<T, R>> key, E exception = null) where E : Exception
 //        {
 //            if (!map.ContainsKey(key)) map.Add(key, default);
 //            map[key] = () => throw exception;
 //            return this;
 //        }
 
-//        public Mock<T, R> Call(Expression<Func<T, Task<R>>> key, R value)
+//        public MockBuilder<T, R> Call(Expression<Func<T, Task<R>>> key, R value)
 //        {
 //            if (!mapAsync.ContainsKey(key)) mapAsync.Add(key, default);
 //            mapAsync[key] = () => value;
 //            return this;
 //        }
 
-//        public Mock<T, R> Call<E>(Expression<Func<T, Task<R>>> key, E exception = null) where E : Exception
+//        public MockBuilder<T, R> Call<E>(Expression<Func<T, Task<R>>> key, E exception = null) where E : Exception
 //        {
 //            if (!mapAsync.ContainsKey(key)) mapAsync.Add(key, default);
 //            mapAsync[key] = () => throw exception;
@@ -105,7 +105,7 @@
 
 //    public class Sample<T> where T : class
 //    {
-//        public static implicit operator T(Sample<T> mock) => default(T);
+//        public static implicit operator T(Sample<T> Mock) => default(T);
 //        public static implicit operator Sample<T>(T value) => new Sample<T>();
 //    }
 //}

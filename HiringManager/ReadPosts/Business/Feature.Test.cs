@@ -51,11 +51,11 @@
 //    [Fact]
 //    public async Task The_Read_JobRoles_By_Repository()
 //    {
-//        var feature = UseMocks().CreateUnit();
+//        var inputs = UseMocks().CreateUnit();
 //        var request = GetRequest();
 //        var token = GetToken();
 
-//        await feature.Run(request, token);
+//        await inputs.Run(request, token);
 
 //        repository.ShouldBe_NotNull();
 //    }

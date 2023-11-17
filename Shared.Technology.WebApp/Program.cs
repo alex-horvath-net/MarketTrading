@@ -1,6 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
-using Shared.Technology.Data;
+using Shared.Technology.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +29,9 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var db = services.GetRequiredService<BloggingContext>();
+    db.Database.EnsureDeleted();
     db.Database.EnsureCreated();
-    DbInitializer.Initialize(db);
+    db.EnsureInitialized();
 }
 
 app.UseHttpsRedirection();
