@@ -1,4 +1,4 @@
-﻿namespace Shared.Business;
+﻿namespace Core.Business.ValidationModel;
 
 public sealed class ValidationResult
 {
@@ -6,8 +6,8 @@ public sealed class ValidationResult
 
     public static ValidationResult Failed(string errorCode, string errorMessage)
     {
-        ArgumentNullException.ThrowIfNullOrWhiteSpace(errorCode);
-        ArgumentNullException.ThrowIfNullOrWhiteSpace(errorMessage);
+        ArgumentException.ThrowIfNullOrWhiteSpace(errorCode);
+        ArgumentException.ThrowIfNullOrWhiteSpace(errorMessage);
         return new(errorCode, errorMessage);
     }
 

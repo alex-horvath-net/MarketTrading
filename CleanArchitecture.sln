@@ -5,9 +5,9 @@ VisualStudioVersion = 17.8.34227.203
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blogger", "HiringManager\Blogger.csproj", "{92B42D9E-6A6F-4690-880D-6E1C9C32495E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Common\Shared.csproj", "{7619DF9A-1468-4FED-82D3-4822C3EBFFFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Common\Core.csproj", "{7619DF9A-1468-4FED-82D3-4822C3EBFFFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "Shared.Technology.WebApp\WebApp.csproj", "{F18F1049-89AF-4D85-89CD-E7FA85E1E9FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "Shared.Technology.WebApp\WebApp.csproj", "{F18F1049-89AF-4D85-89CD-E7FA85E1E9FF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7619DF9A-1468-4FED-82D3-4822C3EBFFFB} = {7619DF9A-1468-4FED-82D3-4822C3EBFFFB}
 	EndProjectSection

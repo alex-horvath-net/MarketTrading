@@ -1,4 +1,4 @@
-﻿namespace Shared.Adapter.ViewModel;
+﻿namespace Core.PluginAdapters.ViewModel;
 
 public record Post
 {

@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shared.Adapter.DataModel;
+﻿using Core.PluginAdapters.DataModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Technology.DataAccess;
 

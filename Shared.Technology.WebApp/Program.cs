@@ -1,17 +1,12 @@
-
-using Microsoft.EntityFrameworkCore;
-using Shared.Technology.DataAccess;
+using Blogger;
+using Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
-var databaseName = "Blogging";
-var connectionString = builder.Configuration.GetConnectionString(databaseName);
-builder.Services.AddDbContext<BloggingContext>(options => options.UseInMemoryDatabase(databaseName));
-//builder.Services.AddDbContext<BloggingContext>(options => options.UseSqlite(connectionString));
-//builder.Services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connectionString));
-
+builder.Services.AddBlogger();
+builder.Services.AddShared(builder.Configuration);
 
 var app = builder.Build();
 
@@ -20,18 +15,10 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+else
 {
+    app.UseDataBase();
     app.UseDeveloperExceptionPage();
-    app.UseMigrationsEndPoint();
-}
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var db = services.GetRequiredService<BloggingContext>();
-    db.Database.EnsureDeleted();
-    db.Database.EnsureCreated();
-    db.EnsureInitialized();
 }
 
 app.UseHttpsRedirection();

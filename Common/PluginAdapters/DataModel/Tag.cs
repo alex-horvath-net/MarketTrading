@@ -1,4 +1,4 @@
-﻿namespace Shared.Adapter.DataModel
+﻿namespace Core.PluginAdapters.DataModel
 {
     public class Tag
     {

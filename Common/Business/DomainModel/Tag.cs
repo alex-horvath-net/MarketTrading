@@ -1,4 +1,4 @@
-﻿namespace Shared.Business.DomainModel
+﻿namespace Core.Business.DomainModel
 {
     public class Tag
     {
