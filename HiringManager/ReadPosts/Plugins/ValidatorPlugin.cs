@@ -1,10 +1,11 @@
-﻿using Blogger.ReadPosts.PluginAdapters;
+﻿using Blogger.ReadPosts.Business;
+using Blogger.ReadPosts.PluginAdapters;
 using Core.Plugins.Validation;
 using FluentValidation;
 
 namespace Blogger.ReadPosts.Plugins;
 
-public class ValidatorPlugin : FluentValidator<Business.IFeature.Request>, IValidatorPlugin
+public class ValidatorPlugin : FluentValidator<Request>, IValidatorPlugin
 {
     public ValidatorPlugin()
     {
