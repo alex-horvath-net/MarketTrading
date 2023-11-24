@@ -17,11 +17,3 @@ public class RepositoryPlugin(
     }
 }
 
-public class ResilientRepository(IRepositoryPlugin repository) : IRepositoryPlugin
-{
-    public async Task<List<Post>> Read(string title, string content, CancellationToken cancelation)
-    {
-        var adapter = await repository.Read(title, content, cancelation);
-        return adapter;
-    }
-}

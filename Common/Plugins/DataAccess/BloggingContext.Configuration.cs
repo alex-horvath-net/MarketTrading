@@ -13,8 +13,10 @@ public partial class BloggingContext
     {
         var folder = Environment.SpecialFolder.LocalApplicationData;
         var path = Environment.GetFolderPath(folder);
-        var dbPath = Path.Join(path, "Blogging.db");
-        options.UseSqlite($"Data Source={dbPath}");
+        var databaseName = "Blogging";
+        var dbPath = Path.Join(path, $"{databaseName}.db");
+        options.UseInMemoryDatabase(databaseName, x => x.EnableNullChecks(true) ); 
+        //options.UseSqlite($"Data Source={dbPath}");
 
         //options.UseSqlServer($"Server=(localdb)\\mssqllocaldb;Database={"Blogging"};Trusted_Connection=True");
     }

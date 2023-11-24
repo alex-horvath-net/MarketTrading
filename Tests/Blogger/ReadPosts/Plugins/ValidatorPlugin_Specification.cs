@@ -13,6 +13,7 @@ public class ValidatorPlugin_Specification
         var response = await unit.Validate(feature.Request, feature.Token);
 
         response.Should().NotBeNull();
+        
     }
 
     private readonly WorkFlow_MockBuilder feature = new();
