@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Blogger.ReadPosts.Business;
-using Blogger.ReadPosts.PluginAdapters;
+﻿using Blogger.ReadPosts.PluginAdapters;
 using FluentAssertions;
 using NSubstitute;
 using Tests.Blogger.ReadPosts.Business;
 
 namespace Tests.Blogger.ReadPosts.PluginAdapters;
 
-public class Validate_Specification
+public class ValidatorPluginAdapter_Specification
 {
     [Fact]
     public async void Path_Without_Diversion()

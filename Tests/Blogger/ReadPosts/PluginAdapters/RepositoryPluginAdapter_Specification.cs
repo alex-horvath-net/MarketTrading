@@ -5,7 +5,7 @@ using Tests.Blogger.ReadPosts.Business;
 
 namespace Tests.Blogger.ReadPosts.PluginAdapters;
 
-public class Read_Specification
+public class RepositoryPluginAdapter_Specification
 {
     [Fact]
     public async void Path_Without_Diversion()
