@@ -34,8 +34,4 @@
 		<ProjectReference Include="..\Shared.Technology.WebApp\Hosts.WebApp.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Blogger\ReadPosts\Plugins\" />
-	</ItemGroup>
-
 </Project>
