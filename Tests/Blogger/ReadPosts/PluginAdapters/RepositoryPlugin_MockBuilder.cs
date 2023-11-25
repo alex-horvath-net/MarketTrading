@@ -1,6 +1,5 @@
 ﻿using Blogger.ReadPosts.PluginAdapters;
 using Core.PluginAdapters.DataModel;
-using NSubstitute;
 
 namespace Tests.Blogger.ReadPosts.PluginAdapters;
 

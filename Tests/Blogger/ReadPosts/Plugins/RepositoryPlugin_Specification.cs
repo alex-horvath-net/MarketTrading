@@ -1,7 +1,6 @@
 ﻿using Blogger.ReadPosts.Plugins;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Shared.Technology.DataAccess;
+using Core.Technology.DataAccess;
 using Tests.Blogger.ReadPosts.Business;
 
 namespace Tests.Blogger.ReadPosts.Plugins;

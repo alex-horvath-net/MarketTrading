@@ -1,6 +1,4 @@
 ﻿using Blogger.ReadPosts.PluginAdapters;
-using FluentAssertions;
-using NSubstitute;
 using Tests.Blogger.ReadPosts.Business;
 
 namespace Tests.Blogger.ReadPosts.PluginAdapters;

@@ -1,6 +1,5 @@
 ﻿using Blogger.ReadPosts.Business;
 using Core.Business.ValidationModel;
-using NSubstitute;
 
 namespace Tests.Blogger.ReadPosts.Business
 {

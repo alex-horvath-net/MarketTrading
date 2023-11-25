@@ -1,5 +1,4 @@
 ﻿using Blogger.ReadPosts.Business;
-using NSubstitute;
 
 namespace Tests.Blogger.ReadPosts.Business;
 

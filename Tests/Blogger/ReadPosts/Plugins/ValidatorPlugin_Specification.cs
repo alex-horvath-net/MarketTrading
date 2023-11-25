@@ -1,5 +1,4 @@
 ﻿using Blogger.ReadPosts.Plugins;
-using FluentAssertions;
 using Tests.Blogger.ReadPosts.Business;
 
 namespace Tests.Blogger.ReadPosts.Plugins;

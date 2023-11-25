@@ -5,8 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddCore(builder.Configuration);
 builder.Services.AddBlogger();
-builder.Services.AddShared(builder.Configuration);
 
 var app = builder.Build();
 

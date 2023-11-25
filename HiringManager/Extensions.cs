@@ -1,4 +1,4 @@
-﻿using Blogger.ReadPosts;
+﻿using Blogger.ReadPosts.Plugins;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Blogger;

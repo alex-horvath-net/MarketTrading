@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Blogger.ReadPosts.Plugins;
 
 public class RepositoryPlugin(
-    Shared.Technology.DataAccess.BloggingContext db) : IRepositoryPlugin
+    Core.Technology.DataAccess.BloggingContext db) : IRepositoryPlugin
 {
     public async Task<List<Post>> Read(string title, string content, CancellationToken cancelation)
     {

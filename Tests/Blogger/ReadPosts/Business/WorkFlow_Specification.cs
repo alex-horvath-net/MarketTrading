@@ -1,6 +1,4 @@
 ﻿using Blogger.ReadPosts.Business;
-using FluentAssertions;
-using NSubstitute;
 
 namespace Tests.Blogger.ReadPosts.Business;
 

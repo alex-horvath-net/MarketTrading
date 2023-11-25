@@ -1,7 +1,7 @@
 ﻿using Core.PluginAdapters.DataModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace Shared.Technology.DataAccess;
+namespace Core.Technology.DataAccess;
 
 public partial class BloggingContext : DbContext
 {

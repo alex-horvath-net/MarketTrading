@@ -2,39 +2,38 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Technology.DataAccess;
+using Core.Technology.DataAccess;
 
-namespace Core
+namespace Core;
+
+public static class Extensions
 {
-    public static class Extensions
+    public static Task<T> ToTask<T>(this T value) => Task.FromResult(value);
+
+    public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration configuration)
     {
-        public static Task<T> ToTask<T>(this T value) => Task.FromResult(value);
+        var databaseName = "Blogging";
+        var connectionString = configuration.GetConnectionString(databaseName);
+        services.AddDbContext<BloggingContext>(options => options.UseInMemoryDatabase(databaseName));
+        //builder.Services.AddDbContext<BloggingContext>(options => options.UseSqlite(connectionString));
+        //builder.Services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connectionString));
 
-        public static IServiceCollection AddShared(this IServiceCollection services, IConfiguration configuration)
+        return services;
+    }
+
+    public static WebApplication UseDataBase(this WebApplication app)
+    {
+        app.UseMigrationsEndPoint();
+
+        using (var scope = app.Services.CreateScope())
         {
-            var databaseName = "Blogging";
-            var connectionString = configuration.GetConnectionString(databaseName);
-            services.AddDbContext<BloggingContext>(options => options.UseInMemoryDatabase(databaseName));
-            //builder.Services.AddDbContext<BloggingContext>(options => options.UseSqlite(connectionString));
-            //builder.Services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connectionString));
-
-            return services;
+            var services = scope.ServiceProvider;
+            var db = services.GetRequiredService<BloggingContext>();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+            db.EnsureInitialized();
         }
 
-        public static WebApplication UseDataBase(this WebApplication app)
-        {
-            app.UseMigrationsEndPoint();
-
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var db = services.GetRequiredService<BloggingContext>();
-                db.Database.EnsureDeleted();
-                db.Database.EnsureCreated();
-                db.EnsureInitialized();
-            }
-
-            return app;
-        }
+        return app;
     }
 }
