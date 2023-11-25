@@ -7,14 +7,23 @@ namespace Tests.Blogger.ReadPosts.Plugins;
 public class ValidatorPlugin_Specification
 {
     [Fact]
-    public async void Path_Without_Diversion()
+    public async void Valid_Request()
     {
         var unit = new ValidatorPlugin();
-        var response = await unit.Validate(feature.Request, feature.Token);
+        var issues = await unit.Validate(feature.Request, feature.Token);
 
-        response.Should().NotBeNull();
-        
+        issues.Should().NotBeNull();
+        issues.Should().BeEmpty();
     }
 
+    [Fact]
+    public async void InValid_Request()
+    {
+        var unit = new ValidatorPlugin();
+        var issues = await unit.Validate(feature.UseInvalidRequest().Request, feature.Token);
+
+        issues.Should().NotBeNull();
+        issues.Should().NotBeEmpty();
+    }
     private readonly WorkFlow_MockBuilder feature = new();
 }

@@ -9,16 +9,23 @@ public class WorkFlow_MockBuilder
     public Request Request;
     public CancellationToken Token;
 
-    public WorkFlow_MockBuilder() => UseDefaultRequest().UseDefaultToken();
+    public WorkFlow_MockBuilder() => UseValidRequest().UseNoneCanceledToken();
 
-    public WorkFlow_MockBuilder UseDefaultRequest()
+    public WorkFlow_MockBuilder UseValidRequest()
     {
         Request = new Request("Title", "Content");
         Request = Request with { Title = Request.Title, Content = Request.Content };
         return this;
     }
 
-    public WorkFlow_MockBuilder UseDefaultToken()
+    public WorkFlow_MockBuilder UseInvalidRequest()
+    {
+        Request = new Request(null, null);
+        Request = Request with { Title = Request.Title, Content = Request.Content };
+        return this;
+    }
+
+    public WorkFlow_MockBuilder UseNoneCanceledToken()
     {
         Token = CancellationToken.None;
         return this;
