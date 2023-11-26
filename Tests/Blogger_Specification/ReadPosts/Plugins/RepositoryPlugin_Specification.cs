@@ -1,9 +1,9 @@
 ﻿using Blogger.ReadPosts.Plugins;
 using Microsoft.EntityFrameworkCore;
 using Core.Technology.DataAccess;
-using Specifications.Blogger.ReadPosts.Business;
+using Specifications.Blogger_Specification.ReadPosts.Business;
 
-namespace Specifications.Blogger.ReadPosts.Plugins;
+namespace Specifications.Blogger_Specification.ReadPosts.Plugins;
 
 public class RepositoryPlugin_Specification
 {
@@ -14,7 +14,7 @@ public class RepositoryPlugin_Specification
         var db = new BloggingContext(options);
         db.EnsureInitialized();
 
-        var unit = new RepositoryPlugin(db);
+        var unit = new DataAccess(db);
         var title = "Title";
         var content = "Content";
         var response = await unit.Read(title, content, feature.Token);
@@ -22,5 +22,5 @@ public class RepositoryPlugin_Specification
         response.Should().OnlyContain(post => post.Title.Contains(title));
     }
 
-    private readonly WorkFlow_MockBuilder feature = new();
+    private readonly Featrue_MockBuilder feature = new();
 }

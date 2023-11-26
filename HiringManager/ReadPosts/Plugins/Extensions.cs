@@ -8,11 +8,11 @@ public static class Extensions
     {
         services.AddScoped<Business.IFeature, Business.Feature>();
 
-        services.AddScoped<Business.IValidatorPluginAdapter, PluginAdapters.ValidatorPluginAdapter>();
-        services.AddScoped<Business.IRepositoryPluginAdapter, PluginAdapters.RepositoryPluginAdapter>();
+        services.AddScoped<Business.IValidationAdapter, PluginAdapters.ValidationAdapter>();
+        services.AddScoped<Business.IDataAccessAdapter, PluginAdapters.DataAccessAdapter>();
 
-        services.AddScoped<PluginAdapters.IRepositoryPlugin, RepositoryPlugin>();
-        services.AddScoped<PluginAdapters.IValidatorPlugin, ValidatorPlugin>();
+        services.AddScoped<PluginAdapters.IDataAccess, Plugins.DataAccess>();
+        services.AddScoped<PluginAdapters.IValidation, Plugins.Validation>();
 
         return services;
     }

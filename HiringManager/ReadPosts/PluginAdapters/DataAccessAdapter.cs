@@ -1,11 +1,11 @@
 ﻿
 namespace Blogger.ReadPosts.PluginAdapters;
 
-public class RepositoryPluginAdapter(IRepositoryPlugin repositoryPlugin) : Business.IRepositoryPluginAdapter
+public class DataAccessAdapter(IDataAccess dataAccess) : Business.IDataAccessAdapter
 {
     public async Task<List<Core.Business.Post>> Read(Business.Request request, CancellationToken token)
     {
-        var adapter = await repositoryPlugin.Read(request.Title, request.Content, token);
+        var adapter = await dataAccess.Read(request.Title, request.Content, token);
         var business = adapter.Select(x => new Core.Business.Post()
         {
             Title = x.Title,
@@ -15,7 +15,7 @@ public class RepositoryPluginAdapter(IRepositoryPlugin repositoryPlugin) : Busin
     }
 }
 
-public interface IRepositoryPlugin
+public interface IDataAccess
 {
     Task<List<Core.PluginAdapters.Post>> Read(string title, string content, CancellationToken token);
 }

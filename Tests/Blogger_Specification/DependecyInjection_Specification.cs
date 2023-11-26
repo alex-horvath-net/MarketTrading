@@ -4,13 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Marker = Blogger.ReadPosts.Business.IFeature;
 
-namespace Specifications.Blogger;
+namespace Specifications.Blogger_Specification;
 
 public class DependecyInjection_Specification
 {
     [Fact]
     public async void Inject_AddBlogger_Dependecies()
-    {
+    {                                                                    
         var configurationBuilder = new ConfigurationBuilder();
         var configuration = configurationBuilder.Build();
 

@@ -1,8 +1,8 @@
 ﻿
 namespace Blogger.ReadPosts.PluginAdapters;
 
-public class ValidatorPluginAdapter(
-    PluginAdapters.IValidatorPlugin validatorPlugin) : Business.IValidatorPluginAdapter
+public class ValidationAdapter(
+    PluginAdapters.IValidation validatorPlugin) : Business.IValidationAdapter
 {
     public async Task<IEnumerable<Core.Business.ValidationResult>> Validate(Business. Request request, CancellationToken cancellation)
     {
@@ -12,7 +12,7 @@ public class ValidatorPluginAdapter(
     }
 }
 
-public interface IValidatorPlugin
+public interface IValidation
 {
     Task<IEnumerable<Core.PluginAdapters.ValidationResult>> Validate(Business.Request request, CancellationToken cancellation);
 }

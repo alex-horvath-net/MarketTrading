@@ -5,7 +5,7 @@ using Core.Plugins;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Specifications.Blogger.ReadPosts;
+namespace Specifications.Blogger_Specification.ReadPosts;
 
 public class DependecyInjection_Specification
 {
@@ -21,9 +21,9 @@ public class DependecyInjection_Specification
         using var serviceProvider = services.BuildServiceProvider();
 
         serviceProvider.GetRequiredService<IFeature>();
-        serviceProvider.GetRequiredService<IValidatorPluginAdapter>();
-        serviceProvider.GetRequiredService<IRepositoryPluginAdapter>();
-        serviceProvider.GetRequiredService<IValidatorPlugin>();
-        serviceProvider.GetRequiredService<IRepositoryPlugin>();
+        serviceProvider.GetRequiredService<IValidationAdapter>();
+        serviceProvider.GetRequiredService<IDataAccessAdapter>();
+        serviceProvider.GetRequiredService<IValidation>();
+        serviceProvider.GetRequiredService<IDataAccess>();
     }
 }

@@ -2,14 +2,14 @@
 namespace Blogger.ReadPosts.Business;
 
 public class Feature(
-    IValidatorPluginAdapter validator,
-    IRepositoryPluginAdapter repository) : IFeature
+    IValidationAdapter validation,
+    IDataAccessAdapter dataAccess) : IFeature
 {
     public async Task<Response> Run(Request request, CancellationToken cancellation)
     {
         var response = new Response() { Request = request };
-        response.ValidationResults = await validator.Validate(request, cancellation);
-        if (response.ValidationResults.All(x => x.IsSuccess)) response.Posts = await repository.Read(request, cancellation);
+        response.ValidationResults = await validation.Validate(request, cancellation);
+        if (response.ValidationResults.All(x => x.IsSuccess)) response.Posts = await dataAccess.Read(request, cancellation);
         return response;
     }
 }
@@ -31,12 +31,12 @@ public class Response
 }
 
 
-public interface IRepositoryPluginAdapter
+public interface IDataAccessAdapter
 {
     Task<List<Core.Business.Post>> Read(Request request, CancellationToken cancellation);
 }
 
-public interface IValidatorPluginAdapter
+public interface IValidationAdapter
 {
     Task<IEnumerable<Core.Business.ValidationResult>> Validate(Request request, CancellationToken cancellation);
 }
