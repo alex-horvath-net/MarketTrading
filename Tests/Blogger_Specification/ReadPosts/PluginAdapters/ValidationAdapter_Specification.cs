@@ -1,11 +1,10 @@
 ﻿using Blogger.ReadPosts.PluginAdapters;
 using Core.PluginAdapters;
-using NSubstitute;
 using Specifications.Blogger_Specification.ReadPosts.Business;
 
 namespace Specifications.Blogger_Specification.ReadPosts.PluginAdapters;
 
-public class ValidatorPluginAdapter_Specification
+public class ValidationAdapter_Specification
 {
     [Fact]
     public async void Path_Without_Diversion()

@@ -1,6 +1,6 @@
 ﻿using Core.Business;
 
-namespace Specifications.Core.Business;
+namespace Specifications.Core_Specification.Business;
 
 public class ValidationModel_Specification
 {

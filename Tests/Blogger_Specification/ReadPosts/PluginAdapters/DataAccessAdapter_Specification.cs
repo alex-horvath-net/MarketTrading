@@ -4,7 +4,7 @@ using Specifications.Blogger_Specification.ReadPosts.Business;
 
 namespace Specifications.Blogger_Specification.ReadPosts.PluginAdapters;
 
-public class RepositoryPluginAdapter_Specification
+public class DataAccessAdapter_Specification
 {
     [Fact]
     public async void Path_Without_Diversion()

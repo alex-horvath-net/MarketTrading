@@ -1,7 +1,7 @@
 ﻿using Core.PluginAdapters;
 using Microsoft.EntityFrameworkCore;
 
-namespace Core.Technology.DataAccess;
+namespace Core.Plugins;
 
 public partial class BloggingContext : DbContext
 {

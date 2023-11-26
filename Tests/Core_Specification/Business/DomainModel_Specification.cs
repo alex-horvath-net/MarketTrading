@@ -1,8 +1,8 @@
-﻿using Core.PluginAdapters;
+﻿using Core.Business;
 
-namespace Specifications.Core.PluginAdapters;
+namespace Specifications.Core_Specification.Business;
 
-public class DataModel_Specification
+public class DomainModel_Specification
 {
     [Fact]
     public void Tag()

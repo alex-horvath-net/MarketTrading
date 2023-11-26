@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Blogger.ReadPosts.Plugins;
 
 public class DataAccess(
-    Core.Technology.DataAccess.BloggingContext db) : IDataAccess
+    Core.Plugins.BloggingContext db) : IDataAccess
 {
     public async Task<List<Post>> Read(string title, string content, CancellationToken cancelation)
     {
