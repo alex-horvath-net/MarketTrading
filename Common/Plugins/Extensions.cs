@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Core.Technology.DataAccess;
 
-namespace Core;
+namespace Core.Plugins;
 
 public static class Extensions
 {
@@ -25,14 +25,11 @@ public static class Extensions
     {
         app.UseMigrationsEndPoint();
 
-        using (var scope = app.Services.CreateScope())
-        {
-            var services = scope.ServiceProvider;
-            var db = services.GetRequiredService<BloggingContext>();
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
-            db.EnsureInitialized();
-        }
+        using var scope = app.Services.CreateScope();
+        using var db = scope.ServiceProvider.GetRequiredService<BloggingContext>();
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+        db.EnsureInitialized();
 
         return app;
     }

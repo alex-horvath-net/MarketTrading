@@ -1,7 +1,7 @@
 ﻿using Blogger.ReadPosts.Business;
-using Core.Business.DomainModel;
+using Core.Business;
 
-namespace Tests.Blogger.ReadPosts.Business
+namespace Specifications.Blogger.ReadPosts.Business
 {
     internal class RepositoryPluginAdapter_MockBuilder
     {

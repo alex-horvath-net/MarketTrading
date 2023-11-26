@@ -1,15 +1,15 @@
 ﻿using Blogger;
-using Core;
+using Core.Plugins;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Marker = Blogger.ReadPosts.Business.IFeature;
 
-namespace Tests.Blogger;
+namespace Specifications.Blogger;
 
 public class DependecyInjection_Specification
 {
     [Fact]
-    public async void Inject_AddBlogger_Dependecies() 
+    public async void Inject_AddBlogger_Dependecies()
     {
         var configurationBuilder = new ConfigurationBuilder();
         var configuration = configurationBuilder.Build();
@@ -21,5 +21,5 @@ public class DependecyInjection_Specification
         var markerService = serviceProvider.GetRequiredService<Marker>();
 
         services.Should().NotBeNull();
-    }   
+    }
 }

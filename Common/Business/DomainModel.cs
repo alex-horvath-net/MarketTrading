@@ -1,4 +1,4 @@
-﻿namespace Core.PluginAdapters.ViewModel;
+﻿namespace Core.Business;
 
 public record Post
 {
@@ -7,5 +7,7 @@ public record Post
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
     public ICollection<Tag> Tags { get; set; }
-
 }
+
+public record Tag(int Id, string Name);
+

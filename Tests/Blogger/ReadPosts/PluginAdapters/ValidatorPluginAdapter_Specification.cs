@@ -1,7 +1,7 @@
 ﻿using Blogger.ReadPosts.PluginAdapters;
-using Tests.Blogger.ReadPosts.Business;
+using Specifications.Blogger.ReadPosts.Business;
 
-namespace Tests.Blogger.ReadPosts.PluginAdapters;
+namespace Specifications.Blogger.ReadPosts.PluginAdapters;
 
 public class ValidatorPluginAdapter_Specification
 {

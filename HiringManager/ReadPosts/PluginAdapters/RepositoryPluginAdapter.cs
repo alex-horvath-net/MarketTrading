@@ -1,19 +1,22 @@
-﻿using Blogger.ReadPosts.Business;
-using Core.Business.DomainModel;
-
+﻿
 namespace Blogger.ReadPosts.PluginAdapters;
 
-public class RepositoryPluginAdapter(PluginAdapters.IRepositoryPlugin repositoryPlugin) : IRepositoryPluginAdapter
+public class RepositoryPluginAdapter(IRepositoryPlugin repositoryPlugin) : Business.IRepositoryPluginAdapter
 {
-    public async Task<List<Post>> Read(Request request, CancellationToken token)
+    public async Task<List<Core.Business.Post>> Read(Business.Request request, CancellationToken token)
     {
         var adapter = await repositoryPlugin.Read(request.Title, request.Content, token);
-        var business = adapter.Select(x => new Core.Business.DomainModel.Post()
+        var business = adapter.Select(x => new Core.Business.Post()
         {
             Title = x.Title,
             Content = x.Content
         }).ToList();
         return business;
     }
+}
+
+public interface IRepositoryPlugin
+{
+    Task<List<Core.PluginAdapters.Post>> Read(string title, string content, CancellationToken token);
 }
 

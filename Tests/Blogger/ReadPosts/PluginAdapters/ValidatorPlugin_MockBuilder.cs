@@ -1,7 +1,7 @@
 ﻿using Blogger.ReadPosts.PluginAdapters;
-using Core.PluginAdapters.ValidationModel;
+using Core.PluginAdapters;
 
-namespace Tests.Blogger.ReadPosts.PluginAdapters
+namespace Specifications.Blogger.ReadPosts.PluginAdapters
 {
     public class ValidatorPlugin_MockBuilder
     {

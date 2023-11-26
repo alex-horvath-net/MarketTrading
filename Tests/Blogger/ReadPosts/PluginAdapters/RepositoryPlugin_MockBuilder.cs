@@ -1,7 +1,7 @@
 ﻿using Blogger.ReadPosts.PluginAdapters;
-using Core.PluginAdapters.DataModel;
+using Core.PluginAdapters;
 
-namespace Tests.Blogger.ReadPosts.PluginAdapters;
+namespace Specifications.Blogger.ReadPosts.PluginAdapters;
 
 public class RepositoryPlugin_MockBuilder
 {

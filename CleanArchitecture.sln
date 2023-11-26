@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hosts.WebApp", "Shared.Tech
 		{7619DF9A-1468-4FED-82D3-4822C3EBFFFB} = {7619DF9A-1468-4FED-82D3-4822C3EBFFFB}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{9316A652-F071-4FD0-B9DB-0829BF5A2524}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Specifications", "Tests\Specifications.csproj", "{9316A652-F071-4FD0-B9DB-0829BF5A2524}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

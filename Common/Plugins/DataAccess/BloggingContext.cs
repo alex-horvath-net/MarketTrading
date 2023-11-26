@@ -1,4 +1,4 @@
-﻿using Core.PluginAdapters.DataModel;
+﻿using Core.PluginAdapters;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Technology.DataAccess;

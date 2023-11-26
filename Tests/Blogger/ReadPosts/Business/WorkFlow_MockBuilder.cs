@@ -1,6 +1,6 @@
 ﻿using Blogger.ReadPosts.Business;
 
-namespace Tests.Blogger.ReadPosts.Business;
+namespace Specifications.Blogger.ReadPosts.Business;
 
 public class WorkFlow_MockBuilder
 {

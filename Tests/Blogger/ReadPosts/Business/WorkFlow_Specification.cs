@@ -1,6 +1,6 @@
 ﻿using Blogger.ReadPosts.Business;
 
-namespace Tests.Blogger.ReadPosts.Business;
+namespace Specifications.Blogger.ReadPosts.Business;
 
 public class WorkFlow_Specification
 {
@@ -9,7 +9,7 @@ public class WorkFlow_Specification
     {
         validatorAdapter.MockFailedValidation();
 
-        var unit = new WorkFlow(validatorAdapter.Mock, repositoryAdapter.Mock);
+        var unit = new Feature(validatorAdapter.Mock, repositoryAdapter.Mock);
         var response = await unit.Run(feature.Request, feature.Token);
 
         response.Should().NotBeNull();
@@ -23,7 +23,7 @@ public class WorkFlow_Specification
     [Fact]
     public async void Valid_Request()
     {
-        var unit = new WorkFlow(validatorAdapter.Mock, repositoryAdapter.Mock);
+        var unit = new Feature(validatorAdapter.Mock, repositoryAdapter.Mock);
         var response = await unit.Run(feature.Request, feature.Token);
 
         response.Should().NotBeNull();

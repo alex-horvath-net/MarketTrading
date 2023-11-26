@@ -1,16 +1,16 @@
 ﻿using Blogger.ReadPosts.Plugins;
 using Microsoft.EntityFrameworkCore;
 using Core.Technology.DataAccess;
-using Tests.Blogger.ReadPosts.Business;
+using Specifications.Blogger.ReadPosts.Business;
 
-namespace Tests.Blogger.ReadPosts.Plugins;
+namespace Specifications.Blogger.ReadPosts.Plugins;
 
 public class RepositoryPlugin_Specification
 {
     [Fact]
     public async void Path_Without_Diversion()
     {
-        var options = new DbContextOptions<BloggingContext>() ;
+        var options = new DbContextOptions<BloggingContext>();
         var db = new BloggingContext(options);
         db.EnsureInitialized();
 

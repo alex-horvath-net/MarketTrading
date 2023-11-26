@@ -1,4 +1,4 @@
-﻿namespace Core.Business.ValidationModel;
+﻿namespace Core.Business;
 
 public sealed class ValidationResult
 {
@@ -21,7 +21,6 @@ public sealed class ValidationResult
         ErrorMessage = errorMessage;
     }
 }
-
 
 
 //public class ValidationResult

@@ -1,7 +1,7 @@
 ﻿using Blogger.ReadPosts.Business;
-using Core.Business.ValidationModel;
+using Core.Business;
 
-namespace Tests.Blogger.ReadPosts.Business
+namespace Specifications.Blogger.ReadPosts.Business
 {
     public class ValidatorPluginAdapter_MockBuilder
     {

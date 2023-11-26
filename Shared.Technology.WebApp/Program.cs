@@ -1,5 +1,5 @@
 using Blogger;
-using Core;
+using Core.Plugins;
 
 var builder = WebApplication.CreateBuilder(args);
 

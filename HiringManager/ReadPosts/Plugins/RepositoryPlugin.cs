@@ -1,5 +1,5 @@
 ﻿using Blogger.ReadPosts.PluginAdapters;
-using Core.PluginAdapters.DataModel;
+using Core.PluginAdapters;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blogger.ReadPosts.Plugins;

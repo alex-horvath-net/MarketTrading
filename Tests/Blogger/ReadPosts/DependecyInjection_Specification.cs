@@ -1,11 +1,11 @@
 ﻿using Blogger.ReadPosts.Business;
 using Blogger.ReadPosts.PluginAdapters;
 using Blogger.ReadPosts.Plugins;
-using Core;
+using Core.Plugins;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests.Blogger.ReadPosts;
+namespace Specifications.Blogger.ReadPosts;
 
 public class DependecyInjection_Specification
 {
@@ -27,4 +27,3 @@ public class DependecyInjection_Specification
         serviceProvider.GetRequiredService<IRepositoryPlugin>();
     }
 }
-                                               
