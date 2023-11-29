@@ -7,8 +7,6 @@ namespace Core.Plugins;
 
 public static class Extensions
 {
-    public static Task<T> ToTask<T>(this T value) => Task.FromResult(value);
-
     public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration configuration)
     {
         var databaseName = "Blogging";

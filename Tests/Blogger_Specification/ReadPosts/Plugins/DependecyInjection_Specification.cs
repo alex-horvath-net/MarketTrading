@@ -5,7 +5,7 @@ using Core.Plugins;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Specifications.Blogger_Specification.ReadPosts;
+namespace Specifications.Blogger_Specification.ReadPosts.Plugins;
 
 public class DependecyInjection_Specification
 {

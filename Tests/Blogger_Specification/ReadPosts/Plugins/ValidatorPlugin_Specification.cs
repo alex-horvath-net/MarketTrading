@@ -23,6 +23,10 @@ public class ValidatorPlugin_Specification
 
         issues.Should().NotBeNull();
         issues.Should().NotBeEmpty();
+        issues.Should().OnlyContain(x => x.PropertyName == "");
+        issues.Should().OnlyContain(x => x.ErrorCode == "PredicateValidator");
+        issues.Should().OnlyContain(x => x.ErrorMessage == "Either Title or Content must be provided.");
+        issues.Should().OnlyContain(x => x.Severity == "Error");
     }
     private readonly Featrue_MockBuilder feature = new();
 }

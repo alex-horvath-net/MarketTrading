@@ -19,9 +19,7 @@ public interface IFeature
     Task<Response> Run(Request request, CancellationToken cancellation);
 }
 
-public record Request(string Title, string Content)
-{
-}
+public record Request(string Title, string Content);
 
 public class Response
 {
