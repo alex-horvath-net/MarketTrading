@@ -1,11 +1,10 @@
-﻿using Blogger.ReadPosts.PluginAdapters;
-using Core.PluginAdapters;
+﻿using Core.PluginAdapters;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blogger.ReadPosts.Plugins;
 
-public class DataAccess(
-    Core.Plugins.BloggingContext db) : IDataAccess
+public class DataAccessPlugin(
+    Core.Plugins.BloggingContext db) : PluginAdapters.IDataAccessPlugin
 {
     public async Task<List<Post>> Read(string title, string content, CancellationToken cancelation)
     {
@@ -13,7 +12,7 @@ public class DataAccess(
             .Where(post => post.Title.Contains(title) || post.Content.Contains(content))
             .ToListAsync(cancelation);
         var adapter = technology;
-        return adapter;
+        return adapter;         
     }
 }
 

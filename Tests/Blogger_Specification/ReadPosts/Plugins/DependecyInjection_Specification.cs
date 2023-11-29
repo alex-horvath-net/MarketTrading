@@ -23,7 +23,7 @@ public class DependecyInjection_Specification
         serviceProvider.GetRequiredService<IFeature>();
         serviceProvider.GetRequiredService<IValidationAdapter>();
         serviceProvider.GetRequiredService<IDataAccessAdapter>();
-        serviceProvider.GetRequiredService<IValidation>();
-        serviceProvider.GetRequiredService<IDataAccess>();
+        serviceProvider.GetRequiredService<IValidationPlugin>();
+        serviceProvider.GetRequiredService<IDataAccessPlugin>();
     }
 }

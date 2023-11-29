@@ -7,9 +7,9 @@ public class Feature(
 {
     public async Task<Response> Run(Request request, CancellationToken cancellation)
     {
-        var response = new Response() { Request = request };
-        response.ValidationResults = await validation.Validate(request, cancellation);
-        if (response.ValidationResults.All(x => x.IsSuccess)) response.Posts = await dataAccess.Read(request, cancellation);
+        var response = new Response(request);
+        response.RequestIssues = await validation.Validate(request, cancellation);
+        response.Posts = response.RequestIssues.Any(x => !x.IsSuccess) ? null : await dataAccess.Read(request, cancellation);
         return response;
     }
 }
@@ -21,13 +21,11 @@ public interface IFeature
 
 public record Request(string Title, string Content);
 
-public class Response
+public record Response(Request Request)
 {
-    public Request Request { get; set; }
-    public IEnumerable<Core.Business.ValidationResult> ValidationResults { get; set; }
-    public List<Core.Business.Post> Posts { get; set; }
+    public IEnumerable<Core.Business.ValidationResult> RequestIssues { get; set; }
+    public List<Core.Business.Post>? Posts { get; set; }
 }
-
 
 public interface IDataAccessAdapter
 {

@@ -15,7 +15,7 @@ public class Feature_Specification
 
         response.Should().NotBeNull();
         response.Request.Should().Be(feature.Request);
-        response.ValidationResults.Should().NotBeNull();
+        response.RequestIssues.Should().NotBeNull();
         await validatorAdapter.Mock.Received(1).Validate(feature.Request, feature.Token);
         response.Posts.Should().BeNull();
         await repositoryAdapter.Mock.Received(0).Read(feature.Request, feature.Token);
@@ -29,7 +29,7 @@ public class Feature_Specification
 
         response.Should().NotBeNull();
         response.Request.Should().Be(feature.Request);
-        response.ValidationResults.Should().NotBeNull();
+        response.RequestIssues.Should().NotBeNull();
         await validatorAdapter.Mock.Received(1).Validate(feature.Request, feature.Token);
         response.Posts.Should().NotBeNull();
         response.Posts.Should().OnlyContain(post => post.Title.Contains(feature.Request.Title) || post.Content.Contains(feature.Request.Content));

@@ -22,7 +22,7 @@ public class DataAccessAdapter_Specification
 
 public class RepositoryPlugin_MockBuilder
 {
-    public readonly IDataAccess Mock = Substitute.For<IDataAccess>();
+    public readonly IDataAccessPlugin Mock = Substitute.For<IDataAccessPlugin>();
     public List<Post> Results { get; internal set; }
 
     public RepositoryPlugin_MockBuilder() => MockRead();

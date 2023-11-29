@@ -11,8 +11,8 @@ public static class Extensions
         services.AddScoped<Business.IValidationAdapter, PluginAdapters.ValidationAdapter>();
         services.AddScoped<Business.IDataAccessAdapter, PluginAdapters.DataAccessAdapter>();
 
-        services.AddScoped<PluginAdapters.IDataAccess, Plugins.DataAccess>();
-        services.AddScoped<PluginAdapters.IValidation, Plugins.Validation>();
+        services.AddScoped<PluginAdapters.IDataAccessPlugin, Plugins.DataAccessPlugin>();
+        services.AddScoped<PluginAdapters.IValidationPlugin, Plugins.ValidationPlugin>();
 
         return services;
     }

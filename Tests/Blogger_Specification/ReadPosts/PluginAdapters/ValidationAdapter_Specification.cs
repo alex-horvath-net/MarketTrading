@@ -23,7 +23,7 @@ public class ValidationAdapter_Specification
 
 public class ValidatorPlugin_MockBuilder
 {
-    public readonly IValidation Mock = Substitute.For<IValidation>();
+    public readonly IValidationPlugin Mock = Substitute.For<IValidationPlugin>();
 
     public List<ValidationResult> Results { get; private set; }
 
