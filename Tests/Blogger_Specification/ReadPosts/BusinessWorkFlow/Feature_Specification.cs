@@ -39,22 +39,22 @@ public class Feature_Specification
 
 public class Featrue_MockBuilder
 {
-    public readonly IUserStory<Request, Response> Mock = Substitute.For<IUserStory<Request, Response>>();
-    public Request Request;
+    public readonly IUserStory<Blogger.ReadPosts.UserStory.Request, Response> Mock = Substitute.For<IUserStory<Blogger.ReadPosts.UserStory.Request, Response>>();
+    public Blogger.ReadPosts.UserStory.Request Request;
     public CancellationToken Token;
 
     public Featrue_MockBuilder() => UseValidRequest().UseNoneCanceledToken();
 
     public Featrue_MockBuilder UseValidRequest()
     {
-        Request = new Request("Title", "Content");
+        Request = new Blogger.ReadPosts.UserStory.Request("Title", "Content");
         Request = Request with { Title = Request.Title, Content = Request.Content };
         return this;
     }
 
     public Featrue_MockBuilder UseInvalidRequest()
     {
-        Request = new Request(null, null);
+        Request = new Blogger.ReadPosts.UserStory.Request(null, null);
         Request = Request with { Title = Request.Title, Content = Request.Content };
         return this;
     }

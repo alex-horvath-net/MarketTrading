@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Blogger.ReadPosts.UserStory;
 
-public class UserStory(IEnumerable<ITask> workSteps) : Sys.UserStory.UserStoryCore<Request, Response>(workSteps);
+public class UserStory(IEnumerable<ITask> workSteps) : Sys.UserStory.UserStory<Request, Response>(workSteps);
 
-public record Request(string Title, string Content) : Sys.UserStory.RequestCore();
+public record Request(string Title, string Content) : Sys.UserStory.Request();
 
-public record Response() : Sys.UserStory.ResponseCore<Request>()
+public record Response() : Sys.UserStory.Response<Request>()
 {
     public List<App.UserStory.Post>? Posts { get; set; }
 }

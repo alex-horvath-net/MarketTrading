@@ -1,10 +1,40 @@
-﻿namespace Sys.UserStory;
+﻿using FluentAssertions;
+using NSubstitute;
+using Xunit;
 
-public abstract class UserStoryCore<TRequest, TResponse>(IEnumerable<ITask<TResponse>> workSteps)
+namespace Sys.UserStory;
+
+public interface IUserStory<TRequest, TResponse>
+{
+    Task<TResponse> Run(TRequest request, CancellationToken cancellation);
+}
+
+public interface ITask<TResponse> where TResponse : Response<Request>
+{
+    Task Run(TResponse response, CancellationToken cancellation);
+
+    public class MockBuilder
+    {
+        public ITask<Response<Request>> Mock = Substitute.For<ITask<Response<Request>>>();
+
+        public MockBuilder Stopped()
+        {
+            Mock.WhenForAnyArgs(x => x.Run(default, default)).Do(x => { });
+            return this;
+        }
+
+        public MockBuilder NonStopped()
+        {
+            Mock.WhenForAnyArgs(x => x.Run(default, default)).Do(x => { });
+            return this;
+        }
+    }
+}
+
+public class UserStory<TRequest, TResponse>(IEnumerable<ITask<TResponse>> workSteps)
          : IUserStory<TRequest, TResponse>
-    where TRequest : RequestCore
-    where TResponse : ResponseCore<TRequest>, new()
-
+    where TRequest : Request
+    where TResponse : Response<TRequest>, new()
 {
     public async Task<TResponse> Run(TRequest request, CancellationToken cancellation)
     {
@@ -19,14 +49,54 @@ public abstract class UserStoryCore<TRequest, TResponse>(IEnumerable<ITask<TResp
     }
 }
 
-public record RequestCore();
+public record Request();
 
-public record ResponseCore<TRequest>() where TRequest : RequestCore
+public record Response<TRequest>() where TRequest : Request
 {
     public TRequest Request { get; set; }
     public IEnumerable<ValidationResult> Validations { get; set; }
     public bool Stopped { get; set; }
 }
+
+public sealed class ValidationResult
+{
+    public static ValidationResult Success() => new(errorCode: null, errorMessage: null);
+
+    public static ValidationResult Failed(string errorCode, string errorMessage)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(errorCode);
+        ArgumentException.ThrowIfNullOrWhiteSpace(errorMessage);
+        return new(errorCode, errorMessage);
+    }
+
+    public string? ErrorCode { get; }
+    public string? ErrorMessage { get; }
+    public bool IsSuccess => ErrorCode == null && ErrorMessage == null;
+
+    private ValidationResult(string? errorCode = null, string? errorMessage = null)
+    {
+        ErrorCode = errorCode;
+        ErrorMessage = errorMessage;
+    }
+}
+
+
+//public class ValidationResult
+//{
+//    public bool IsSuccess { get; }
+//    public bool IsFailure => !IsSuccess;
+//    public ValidationResult ValidationResult { get; }
+
+//    public static ValidationResult Success() => new ValidationResult(true, ValidationResult.None);
+//    public static ValidationResult Failure(ValidationResult error) => new ValidationResult(false, error);
+
+//    private ValidationResult(bool success, ValidationResult error)
+//    {
+//        if (success && error != ValidationResult.None || !success && error == ValidationResult.None) throw new ArgumentException("Invalied error", nameof(error));
+//        IsSuccess = success;
+//        ValidationResult = error;
+//    }
+//}
 
 //--Specification--------------------------------------------------
 
@@ -36,15 +106,18 @@ public class UserStory_Spec
     [Fact]
     public async void NonStoppedFeature()
     {
-        workSteps.UseNonStoppedWorkSteps();
+        var tasks = new List<ITask<Response<Request>>>()
+        {
+            task.Stopped().Mock,
+            task.NonStopped().Mock
+        };
 
-        var unit = new UserStory(workSteps.Mock);
+        var unit = new UserStory<Request, Response<Request>>(tasks);
         var response = await unit.Run(feature.Request, feature.Token);
 
         response.Should().NotBeNull();
         response.Request.Should().Be(feature.Request);
         response.Stopped.Should().BeFalse();
-        response.Posts.Should().BeNull();
         response.Validations.Should().BeNull();
     }
 
@@ -53,7 +126,7 @@ public class UserStory_Spec
     {
         workSteps.MockStoppedWorkSteps();
 
-        var unit = new UserStory(workSteps.Mock);
+        var unit = new UserStory<Request, Response<Request>>(workSteps.Mock);
         var response = await unit.Run(feature.Request, feature.Token);
 
         response.Should().NotBeNull();
@@ -61,11 +134,11 @@ public class UserStory_Spec
         response.Stopped.Should().BeTrue();
     }
 
-    private readonly ITask.MockBuilder workSteps = new();
+    private readonly ITask<Response<Request>>.MockBuilder task = new();
     private readonly Featrue_MockBuilder feature = new();
 }
 
-public class Featrue_MockBuilder
+public class Featrue_MockBuilde qaszr
 {
     public readonly IUserStory<Request, Response> Mock = Substitute.For<IUserStory<Request, Response>>();
     public Request Request;
