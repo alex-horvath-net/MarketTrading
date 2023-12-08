@@ -1,11 +1,10 @@
-﻿using Blogger.ReadPosts.Business;
-using Blogger.ReadPosts.PluginAdapters;
+﻿using App.Plugins;
 using Blogger.ReadPosts.Plugins;
-using Core.Plugins;
+using Blogger.ReadPosts.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Specifications.Blogger_Specification.ReadPosts.Plugins;
+namespace Spec.Blogger_Specification.ReadPosts.Plugins;
 
 public class DependecyInjection_Specification
 {
@@ -17,13 +16,19 @@ public class DependecyInjection_Specification
 
         var unit = new ServiceCollection();
 
-        var services = unit.AddCore(configuration).AddReadPosts();
+        var services = unit
+            .AddCore(configuration)
+            .AddReadPosts();
+
         using var serviceProvider = services.BuildServiceProvider();
 
-        serviceProvider.GetRequiredService<IFeature>();
-        serviceProvider.GetRequiredService<IValidationAdapter>();
-        serviceProvider.GetRequiredService<IDataAccessAdapter>();
-        serviceProvider.GetRequiredService<IValidationPlugin>();
-        serviceProvider.GetRequiredService<IDataAccessPlugin>();
+        serviceProvider.GetRequiredService<Blogger.ReadPosts.Adapters.IValidation>();
+        serviceProvider.GetRequiredService<Blogger.ReadPosts.Adapters.IDataAccess>();
+
+        serviceProvider.GetRequiredService<IValidation>();
+        serviceProvider.GetRequiredService<IDataAccess>();
+
+        //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IWorkStep<Response>>();
+        //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IFeature<Request, Response>>();
     }
 }

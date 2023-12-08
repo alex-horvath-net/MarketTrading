@@ -1,12 +1,12 @@
-using Blogger;
-using Core.Plugins;
+using App.Plugins;
+using Blogger.ReadPosts.Plugins;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
 builder.Services.AddCore(builder.Configuration);
-builder.Services.AddBlogger();
+builder.Services.AddReadPosts();
 
 var app = builder.Build();
 

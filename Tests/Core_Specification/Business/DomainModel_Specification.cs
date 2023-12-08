@@ -1,6 +1,6 @@
-﻿using Core.Business;
+﻿using App.UserStory;
 
-namespace Specifications.Core_Specification.Business;
+namespace Spec.Core_Specification.Business;
 
 public class DomainModel_Specification
 {

@@ -1,15 +1,15 @@
-﻿using Blogger.ReadPosts.PluginAdapters;
-using Core.PluginAdapters;
-using Specifications.Blogger_Specification.ReadPosts.Business;
+﻿using Blogger.ReadPosts.Adapters;
+using Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
+using Sys.Adapters;
 
-namespace Specifications.Blogger_Specification.ReadPosts.PluginAdapters;
+namespace Spec.Blogger_Specification.ReadPosts.PluginAdapters;
 
 public class ValidationAdapter_Specification
 {
     [Fact]
     public async void Path_Without_Diversion()
     {
-        var unit = new ValidationAdapter(validator.Mock);
+        var unit = new Validation(validator.Mock);
         var response = await unit.Validate(feature.Request, feature.Token);
 
         response.Should().NotBeNullOrEmpty();
@@ -23,7 +23,7 @@ public class ValidationAdapter_Specification
 
 public class ValidatorPlugin_MockBuilder
 {
-    public readonly IValidationPlugin Mock = Substitute.For<IValidationPlugin>();
+    public readonly IValidation Mock = Substitute.For<IValidation>();
 
     public List<ValidationResult> Results { get; private set; }
 

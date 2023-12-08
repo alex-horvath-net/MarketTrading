@@ -1,6 +1,6 @@
-﻿using Core.Business;
+﻿using Sys.UserStory;
 
-namespace Specifications.Core_Specification.Business;
+namespace Spec.Core_Specification.Business;
 
 public class ValidationModel_Specification
 {

@@ -1,6 +1,6 @@
-﻿using Core.PluginAdapters;
+﻿using App.Adapters;
 
-namespace Specifications.Core_Specification.PluginAdapters;
+namespace Spec.Core_Specification.PluginAdapters;
 
 public class ViewModel_Specification
 {

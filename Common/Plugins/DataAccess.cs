@@ -1,7 +1,7 @@
-﻿using Core.PluginAdapters;
+﻿using App.Adapters;
 using Microsoft.EntityFrameworkCore;
 
-namespace Core.Plugins;
+namespace Assistant.Plugins;
 
 public partial class BloggingContext : DbContext
 {
@@ -35,13 +35,13 @@ public partial class BloggingContext
 
     public void EnsureInitialized()
     {
-        var seeded = Posts.Any();
+        var seeded = Tags.Any() || Posts.Any();
         if (seeded) return;
 
-        InitTags();
-        InitPosts();
+        InitializeTags();
+        InitializePosts();
 
-        void InitTags()
+        void InitializeTags()
         {
             var tags = new Tag[]
             {
@@ -53,7 +53,7 @@ public partial class BloggingContext
             SaveChanges();
         }
 
-        void InitPosts()
+        void InitializePosts()
         {
             var posts = new Post[]
             {
