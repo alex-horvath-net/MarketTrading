@@ -14,3 +14,4 @@ public class DataAccess(Assistant.Plugins.BloggingContext db) : Adapters.IDataAc
     }
 }
 
+//--Test--------------------------------------------------

@@ -15,3 +15,5 @@ public interface IValidation
 {
     Task<IEnumerable<Sys.Adapters.ValidationResult>> Validate(UserStory.Request request, CancellationToken cancellation);
 }
+
+//--Test--------------------------------------------------

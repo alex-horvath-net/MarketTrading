@@ -4,7 +4,7 @@
 
 //namespace Specifications.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
-//public class Feature_Specification
+//public class UserStory_Spec
 //{
 //    //[Fact]
 //    public async void NonStoppedFeature()
@@ -39,7 +39,7 @@
 //        await repositoryAdapter.Mock.Received(1).Read(feature.Request, feature.Token);
 //    }
 
-//    private readonly WorkStep_MockBuilder workSteps = new();
+//    private readonly Tasks_MockBuilder workSteps = new();
 //    private readonly RepositoryPluginAdapter_MockBuilder repositoryAdapter = new();
 //    private readonly Featrue_MockBuilder feature = new();
 //}
@@ -93,20 +93,20 @@
 
 //}
 
-//public class WorkStep_MockBuilder
+//public class Tasks_MockBuilder
 //{
 //    public readonly IValidation Mock = Substitute.For<IValidation>();
 
-//    public WorkStep_MockBuilder() => MockNotStoppedWorkSteps();
+//    public Tasks_MockBuilder() => MockNotStoppedWorkSteps();
 
-//    public WorkStep_MockBuilder MockNotStoppedWorkSteps()
+//    public Tasks_MockBuilder MockNotStoppedWorkSteps()
 //    {
 //        var result = new List<ValidationResult> { ValidationResult.Success() };
 //        Mock.Validate(default, default).ReturnsForAnyArgs(result);
 //        return this;
 //    }
 
-//    public WorkStep_MockBuilder MockFailedValidation()
+//    public Tasks_MockBuilder MockFailedValidation()
 //    {
 //        var result = new List<ValidationResult> { ValidationResult.Failed("errorCode1", "errorMessage1") };
 //        Mock.Validate(default, default).ReturnsForAnyArgs(result);

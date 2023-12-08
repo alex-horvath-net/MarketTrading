@@ -19,3 +19,4 @@ public interface IDataAccess
     Task<List<App.Adapters.Post>> Read(string title, string content, CancellationToken token);
 }
 
+//--Test--------------------------------------------------
