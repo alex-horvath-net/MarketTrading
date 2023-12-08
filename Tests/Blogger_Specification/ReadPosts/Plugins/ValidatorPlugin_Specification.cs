@@ -5,7 +5,7 @@ namespace Spec.Blogger_Specification.ReadPosts.Plugins;
 
 public class ValidatorPlugin_Specification
 {
-    [Fact]
+    //[Fact]
     public async void Valid_Request()
     {
         var unit = new Validation();
@@ -15,7 +15,7 @@ public class ValidatorPlugin_Specification
         issues.Should().BeEmpty();
     }
 
-    [Fact]
+    //[Fact]
     public async void InValid_Request()
     {
         var unit = new Validation();

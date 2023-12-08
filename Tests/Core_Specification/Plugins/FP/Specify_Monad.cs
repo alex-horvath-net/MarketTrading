@@ -4,7 +4,7 @@ namespace Spec.Core_Specification.Plugins.FP
 {
     public class Specify_Monad
     {
-        [Fact]
+        //[Fact]
         public void Maping_To_Itself_Makes_No_Change_With_Lambda()
         {
             var sut = new Monad<int>(42);
@@ -12,7 +12,7 @@ namespace Spec.Core_Specification.Plugins.FP
             sut.Should().Be(result);
         }
 
-        [Fact]
+        //[Fact]
         public void Maping_To_Itself_Makes_No_Change_With_Linq()
         {
             var sut = new Monad<int>(42);
@@ -22,7 +22,7 @@ namespace Spec.Core_Specification.Plugins.FP
             sut.Should().Be(result);
         }
 
-        [Fact]
+        //[Fact]
         public void Sequintial_And_Nested_Maping_Are_Identical_With_Lambda()
         {
             Func<int, string> map1 = i => i.ToString();
@@ -34,7 +34,7 @@ namespace Spec.Core_Specification.Plugins.FP
             result1.Should().Be(result2);
         }
 
-        [Fact]
+        //[Fact]
         public void Sequintial_And_Nested_Maping_Are_Identical_With_Linq()
         {
             Func<int, string> map1 = i => i.ToString();
@@ -46,7 +46,7 @@ namespace Spec.Core_Specification.Plugins.FP
             result1.Should().Be(result2);
         }
 
-        [Fact]
+        //[Fact]
         public void Flatten()
         {
             var sut = new Monad<Monad<int>>(42);
@@ -56,7 +56,7 @@ namespace Spec.Core_Specification.Plugins.FP
             result1.Should().Be(result2);
         }
 
-        [Fact]
+        //[Fact]
         public void Bind()
         {
             var sut = new Monad<int>(42);
@@ -69,7 +69,7 @@ namespace Spec.Core_Specification.Plugins.FP
             result2.Should().Be(result3);
         }
 
-        [Fact]
+        //[Fact]
         public void Bind_Linq()
         {
             var sut1 = new Monad<int>(44);

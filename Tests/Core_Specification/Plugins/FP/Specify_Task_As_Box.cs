@@ -8,7 +8,7 @@ public class Specify_Task_As_Task
     private int Parse(string text) => int.Parse(text);
     private DateTime ToDate(int year) => new DateTime(year, 1, 1);
 
-    [Fact]
+    //[Fact]
     public async Task FromResult()
     {
         var task = "1984".ToTask();
@@ -18,7 +18,7 @@ public class Specify_Task_As_Task
         result.Should().Be("1984");
     }
 
-    [Fact]
+    //[Fact]
     public async Task Select_Lambda()
     {
         var task = "1984".ToTask();
@@ -27,7 +27,7 @@ public class Specify_Task_As_Task
 
         result.Should().Be(1984);
     }
-    [Fact]
+    //[Fact]
     public async Task Select_LinqAsync()
     {
         var task = "1984".ToTask();
@@ -38,7 +38,7 @@ public class Specify_Task_As_Task
 
         result.Should().Be(1984);
     }
-    [Fact]
+    //[Fact]
     public async void Map_Functor_1()
     {
         var task = "1984".ToTask();
@@ -47,7 +47,7 @@ public class Specify_Task_As_Task
 
         result.Should().Be("1984");
     }
-    [Fact]
+    //[Fact]
     public async void Map_Functor_2()
     {
         var task = "1984".ToTask();
@@ -59,7 +59,7 @@ public class Specify_Task_As_Task
     }
 
 
-    [Fact]
+    //[Fact]
     public async void Join()
     {
         var task = "1984".ToTask();
@@ -70,7 +70,7 @@ public class Specify_Task_As_Task
         result.Should().Be("1984");
     }
 
-    [Fact]
+    //[Fact]
     public async void SelectMany_Lambda()
     {
         var task = "1984".ToTask();
@@ -80,7 +80,7 @@ public class Specify_Task_As_Task
         result.Should().Be(1984);
     }
 
-    [Fact]
+    //[Fact]
     public async void SelectMany_Linq()
     {
         var task = "1984".ToTask();

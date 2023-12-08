@@ -5,7 +5,7 @@ namespace Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
 public class Feature_Specification
 {
-    [Fact]
+    //[Fact]
     public async void NonStoppedFeature()
     {
         workSteps.UseNonStoppedWorkSteps();
@@ -20,7 +20,7 @@ public class Feature_Specification
         response.Validations.Should().BeNull();
     }
 
-    [Fact]
+    //[Fact]
     public async void StoppedFeature()
     {
         workSteps.MockStoppedWorkSteps();

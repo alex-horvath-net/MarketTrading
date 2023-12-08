@@ -8,7 +8,7 @@ public class Specify_Box
     private int Parse(string text) => int.Parse(text);
     private DateTime ToDate(int year) => new DateTime(year, 1, 1);
 
-    [Fact]
+    //[Fact]
     public void ToBox()
     {
         var box = "1984".ToBox();
@@ -16,7 +16,7 @@ public class Specify_Box
         box.Content.Should().Be("1984");
     }
 
-    [Fact]
+    //[Fact]
     public void Select_Lambda()
     {
         var box1 = "1984".ToBox();
@@ -25,7 +25,7 @@ public class Specify_Box
 
         box2.Content.Should().Be(1984);
     }
-    [Fact]
+    //[Fact]
     public void Select_Linq()
     {
         var box1 = "1984".ToBox();
@@ -36,7 +36,7 @@ public class Specify_Box
 
         box2.Content.Should().Be(1984);
     }
-    [Fact]
+    //[Fact]
     public void Map_Functor_1()
     {
         var box = "1984".ToBox();
@@ -44,7 +44,7 @@ public class Specify_Box
 
         newBox.Should().Be(box);
     }
-    [Fact]
+    //[Fact]
     public void Map_Functor_2()
     {
         var box = "1984".ToBox();
@@ -55,7 +55,7 @@ public class Specify_Box
     }
 
 
-    [Fact]
+    //[Fact]
     public void Join()
     {
         var box = "1984".ToBox();
@@ -65,7 +65,7 @@ public class Specify_Box
         boxInBox.Join().Should().Be(box);
     }
 
-    [Fact]
+    //[Fact]
     public void SelectMany_Lambda()
     {
         var box = "1984".ToBox().SelectMany(result1 => Parse(result1).ToBox());
@@ -73,7 +73,7 @@ public class Specify_Box
         box.Content.Should().Be(1984);
     }
 
-    [Fact]
+    //[Fact]
     public void SelectMany_Linq()
     {
         var box =

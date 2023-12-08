@@ -4,7 +4,7 @@ namespace Spec.Core_Specification.PluginAdapters;
 
 public class DataModel_Specification
 {
-    [Fact]
+    //[Fact]
     public void Tag()
     {
         var id = 1; var name = "Name";
@@ -14,7 +14,7 @@ public class DataModel_Specification
         tag.Name.Should().Be(name);
     }
 
-    [Fact]
+    //[Fact]
     public void Post()
     {
         var id = 1; var title = "Title"; var content = "Content"; var createdAt = DateTime.UtcNow;

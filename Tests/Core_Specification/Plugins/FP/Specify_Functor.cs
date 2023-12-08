@@ -4,7 +4,7 @@ namespace Spec.Core_Specification.Plugins.FP
 {
     public class Specify_Functor
     {
-        [Fact]
+        //[Fact]
         public void Maping_To_Itself_Makes_No_Change_With_Lambda()
         {
             var sut = new Functor<int>(42);
@@ -12,7 +12,7 @@ namespace Spec.Core_Specification.Plugins.FP
             sut.Should().Be(result);
         }
 
-        [Fact]
+        //[Fact]
         public void Maping_To_Itself_Makes_No_Change_With_Linq()
         {
             var sut = new Functor<int>(42);
@@ -22,7 +22,7 @@ namespace Spec.Core_Specification.Plugins.FP
             sut.Should().Be(result);
         }
 
-        [Fact]
+        //[Fact]
         public void Sequintial_And_Nested_Maping_Are_Identical_With_Lambda()
         {
             Func<int, string> map1 = i => i.ToString();

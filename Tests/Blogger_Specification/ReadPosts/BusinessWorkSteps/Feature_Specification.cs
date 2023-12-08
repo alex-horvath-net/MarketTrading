@@ -6,7 +6,7 @@
 
 //public class Feature_Specification
 //{
-//    [Fact]
+//    //[Fact]
 //    public async void NonStoppedFeature()
 //    {
 //        workSteps.MockFailedValidation();
@@ -23,7 +23,7 @@
 //        await repositoryAdapter.Mock.Received(0).Read(feature.Request, feature.Token);
 //    }
 
-//    [Fact]
+//    //[Fact]
 //    public async void Valid_Request()
 //    {
 //        //var unit = new UserStory(workSteps.Mock, repositoryAdapter.Mock);

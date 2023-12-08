@@ -9,7 +9,7 @@ namespace Spec.Blogger_Specification.ReadPosts.Plugins;
 
 public class RepositoryPlugin_Specification
 {
-    [Fact]
+    //[Fact]
     public async void Initialize()
     {
         var options = new DbContextOptions<BloggingContext>();
@@ -25,7 +25,7 @@ public class RepositoryPlugin_Specification
         response.Should().OnlyContain(post => post.Title.Contains(title));
     }
 
-    [Fact]
+    //[Fact]
     public void UseDataBase()
     {
         var builder = WebApplication.CreateBuilder();

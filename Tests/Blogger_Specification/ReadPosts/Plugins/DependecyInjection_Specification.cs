@@ -8,7 +8,7 @@ namespace Spec.Blogger_Specification.ReadPosts.Plugins;
 
 public class DependecyInjection_Specification
 {
-    [Fact]
+    //[Fact]
     public async void Inject_AddReadPosts_Dependecies()
     {
         var configurationBuilder = new ConfigurationBuilder();

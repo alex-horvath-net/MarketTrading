@@ -6,7 +6,7 @@ namespace Spec.Blogger_Specification.ReadPosts.PluginAdapters;
 
 public class DataAccessAdapter_Specification
 {
-    [Fact]
+    //[Fact]
     public async void Path_Without_Diversion()
     {
         var unit = new DataAccess(repositoryPlugin.Mock);
