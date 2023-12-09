@@ -95,7 +95,7 @@
 
 //public class Tasks_MockBuilder
 //{
-//    public readonly IValidation Mock = Substitute.For<IValidation>();
+//    public readonly IValidationAdapter Mock = Substitute.For<IValidationAdapter>();
 
 //    public Tasks_MockBuilder() => MockNotStoppedWorkSteps();
 

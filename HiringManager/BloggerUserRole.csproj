@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
+		<LangVersion>preview</LangVersion>
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 
@@ -27,12 +28,10 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>
-
-
+	
 	<ItemGroup>
 		<ProjectReference Include="..\Common\Polices.csproj" />
-		<ProjectReference Include="..\HiringManager\BloggerUserRole.csproj" />
-		<ProjectReference Include="..\Shared.Technology.WebApp\WebApp.csproj" />
+		<ProjectReference Include="..\Core\Principals.csproj" />
 	</ItemGroup>
 
 </Project>

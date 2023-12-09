@@ -4,8 +4,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
+		<LangVersion>preview</LangVersion>
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 
@@ -30,9 +29,13 @@
 
 
 	<ItemGroup>
-		<ProjectReference Include="..\Common\Polices.csproj" />
-		<ProjectReference Include="..\HiringManager\BloggerUserRole.csproj" />
-		<ProjectReference Include="..\Shared.Technology.WebApp\WebApp.csproj" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="TasksLayer\" />
 	</ItemGroup>
 
 </Project>

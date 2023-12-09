@@ -1,4 +1,4 @@
-﻿using App.UserStory;
+﻿using Polices.UserStoryLayer;
 
 namespace Spec.Core_Specification.Business;
 

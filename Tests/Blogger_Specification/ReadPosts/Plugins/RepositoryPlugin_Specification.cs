@@ -1,8 +1,8 @@
-﻿using App.Plugins;
-using Assistant.Plugins;
+﻿using Assistant.Plugins;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Polices.PluginsLayer;
 using Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
 namespace Spec.Blogger_Specification.ReadPosts.Plugins;

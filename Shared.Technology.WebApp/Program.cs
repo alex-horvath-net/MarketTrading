@@ -1,5 +1,5 @@
-using App.Plugins;
-using Blogger.ReadPosts.Plugins;
+using BloggerUserRole.ReadPostsFaeture.PluginsLayer;
+using Polices.PluginsLayer;
 
 var builder = WebApplication.CreateBuilder(args);
 

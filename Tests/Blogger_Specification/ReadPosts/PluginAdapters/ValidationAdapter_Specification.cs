@@ -1,6 +1,6 @@
-﻿using Blogger.ReadPosts.Adapters;
+﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer;
+using Principals.AdaptersLayer;
 using Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
-using Sys.Adapters;
 
 namespace Spec.Blogger_Specification.ReadPosts.PluginAdapters;
 

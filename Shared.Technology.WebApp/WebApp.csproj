@@ -12,8 +12,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Common\App.csproj" />
-		<ProjectReference Include="..\HiringManager\Blogger.csproj" />
+		<ProjectReference Include="..\Common\Polices.csproj" />
+		<ProjectReference Include="..\HiringManager\BloggerUserRole.csproj" />
 	</ItemGroup>
 
 </Project>

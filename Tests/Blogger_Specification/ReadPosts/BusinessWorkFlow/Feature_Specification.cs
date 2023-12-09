@@ -1,5 +1,6 @@
-﻿using Blogger.ReadPosts.UserStory;
-using Sys.UserStory;
+﻿using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
+using Principals.UserStoryLayer.UserStoryUnit;
+using Sys.UserStory.UserStoryUnit;
 
 namespace Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
@@ -39,8 +40,8 @@ public class Feature_Specification
 
 public class Featrue_MockBuilder
 {
-    public readonly IUserStory<Blogger.ReadPosts.UserStory.Request, Response> Mock = Substitute.For<IUserStory<Blogger.ReadPosts.UserStory.Request, Response>>();
-    public Blogger.ReadPosts.UserStory.Request Request;
+    public readonly IUserStory<BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit.Request, Response> Mock = Substitute.For<IUserStory<BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit.Request, Response>>();
+    public BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit.Request Request;
     public CancellationToken Token;
 
     public Featrue_MockBuilder() => UseValidRequest().UseNoneCanceledToken();
