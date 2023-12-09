@@ -1,6 +1,6 @@
 ﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer;
+using Common.AdaptersLayer.DataAccessUnit;
 using Microsoft.EntityFrameworkCore;
-using Models.AdaptersLayer.DataAccessUnit;
 
 namespace BloggerUserRole.ReadPostsFaeture.PluginsLayer;
 

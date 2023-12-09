@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Models.PluginsLayer.DataAccessUnit;
+namespace Common.PluginsLayer.DataAccessUnit;
 
 public static class Extensions
 {

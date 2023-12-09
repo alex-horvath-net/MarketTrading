@@ -1,4 +1,4 @@
-﻿namespace Models.AdaptersLayer.PresentationUnit;
+﻿namespace Common.AdaptersLayer.PresentationUnit;
 
 public record TagVM
 {

@@ -1,4 +1,4 @@
-﻿namespace Models.UserStoryLayer.UserStoryUnit;
+﻿namespace Common.UserStoryLayer.UserStoryUnit;
 
 public record Post
 {

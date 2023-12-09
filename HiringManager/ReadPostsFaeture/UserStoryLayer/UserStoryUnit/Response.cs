@@ -1,5 +1,5 @@
-﻿using Core.UserStoryLayer.UserStoryUnit;
-using Models.UserStoryLayer.UserStoryUnit;
+﻿using Common.UserStoryLayer.UserStoryUnit;
+using Core.UserStoryLayer.UserStoryUnit;
 
 namespace BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
 

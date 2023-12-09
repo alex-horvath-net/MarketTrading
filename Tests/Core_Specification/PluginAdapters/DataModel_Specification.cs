@@ -1,4 +1,4 @@
-﻿using Models.AdaptersLayer.DataAccessUnit;
+﻿using Common.AdaptersLayer.DataAccessUnit;
 
 namespace Spec.Core_Specification.PluginAdapters;
 

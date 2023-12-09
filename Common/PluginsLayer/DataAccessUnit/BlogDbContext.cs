@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models.AdaptersLayer.DataAccessUnit;
+﻿using Common.AdaptersLayer.DataAccessUnit;
+using Microsoft.EntityFrameworkCore;
 
 namespace Assistant.Plugins;
 

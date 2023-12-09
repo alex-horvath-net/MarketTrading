@@ -2,9 +2,9 @@
 using BloggerUserRole.ReadPostsFaeture.PluginsLayer;
 using BloggerUserRole.ReadPostsFaeture.TasksLayer;
 using BloggerUserRole.ReadPostsFaeture.TasksLayer.ValidationUnit;
+using Common.PluginsLayer.DataAccessUnit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Models.PluginsLayer.DataAccessUnit;
 
 namespace Spec.Blogger_Specification.ReadPosts.Plugins;
 
