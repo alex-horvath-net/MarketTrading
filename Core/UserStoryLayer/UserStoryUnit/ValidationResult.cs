@@ -1,4 +1,4 @@
-﻿namespace Principals.UserStoryLayer.UserStoryUnit;
+﻿namespace Core.UserStoryLayer.UserStoryUnit;
 
 public sealed class ValidationResult
 {

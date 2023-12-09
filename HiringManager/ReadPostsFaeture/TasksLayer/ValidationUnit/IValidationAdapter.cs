@@ -1,5 +1,5 @@
 ﻿using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
-using Principals.UserStoryLayer.UserStoryUnit;
+using Core.UserStoryLayer.UserStoryUnit;
 
 namespace BloggerUserRole.ReadPostsFaeture.TasksLayer.ValidationUnit;
 

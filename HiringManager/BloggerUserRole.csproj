@@ -31,7 +31,7 @@
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Common\Models.csproj" />
-		<ProjectReference Include="..\Core\Principals.csproj" />
+		<ProjectReference Include="..\Core\Core.csproj" />
 	</ItemGroup>
 
 </Project>

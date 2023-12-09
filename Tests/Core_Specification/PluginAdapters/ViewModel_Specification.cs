@@ -1,4 +1,4 @@
-﻿using Polices.AdaptersLayer;
+﻿using Models.AdaptersLayer.PresentationUnit;
 
 namespace Spec.Core_Specification.PluginAdapters;
 

@@ -2,8 +2,8 @@
 using BloggerUserRole.ReadPostsFaeture.TasksLayer;
 using BloggerUserRole.ReadPostsFaeture.TasksLayer.ValidationUnit;
 using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
+using Core.UserStoryLayer.UserStoryUnit;
 using Microsoft.Extensions.DependencyInjection;
-using Principals.UserStoryLayer.UserStoryUnit;
 
 namespace BloggerUserRole.ReadPostsFaeture.PluginsLayer;
 

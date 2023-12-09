@@ -1,7 +1,7 @@
 ﻿using BloggerUserRole.ReadPostsFaeture.TasksLayer.ValidationUnit;
 using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
-using Principals.AdaptersLayer;
-using Principals.UserStoryLayer.UserStoryUnit;
+using Core.AdaptersLayer;
+using Core.UserStoryLayer.UserStoryUnit;
 
 namespace BloggerUserRole.ReadPostsFaeture.AdaptersLayer;
 
@@ -18,7 +18,7 @@ public class Validation(
 
 public interface IValidation
 {
-    Task<IEnumerable<Principals.AdaptersLayer.ValidationResult>> Validate(Request request, CancellationToken cancellation);
+    Task<IEnumerable<Core.AdaptersLayer.ValidationResult>> Validate(Request request, CancellationToken cancellation);
 }
 
 //--Test--------------------------------------------------

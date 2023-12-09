@@ -1,4 +1,4 @@
-﻿using Principals.UserStoryLayer.UserStoryUnit;
+﻿using Core.UserStoryLayer.UserStoryUnit;
 
 namespace Spec.Core_Specification.Business;
 

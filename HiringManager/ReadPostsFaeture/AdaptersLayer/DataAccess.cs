@@ -1,6 +1,6 @@
 ﻿using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
+using Models.AdaptersLayer.DataAccessUnit;
 using Models.UserStoryLayer.UserStoryUnit;
-using Polices.AdaptersLayer;
 
 namespace BloggerUserRole.ReadPostsFaeture.AdaptersLayer;
 
@@ -20,7 +20,7 @@ public class DataAccess(IDataAccess dataAccessPlugin) : TasksLayer.IDataAccess
 
 public interface IDataAccess
 {
-    Task<List<Polices.AdaptersLayer.Post>> Read(string title, string content, CancellationToken token);
+    Task<List<Models.AdaptersLayer.DataAccessUnit.Post>> Read(string title, string content, CancellationToken token);
 }
 
 //--Test--------------------------------------------------

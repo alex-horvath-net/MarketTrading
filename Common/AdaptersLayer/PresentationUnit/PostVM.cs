@@ -1,4 +1,4 @@
-﻿namespace Polices.AdaptersLayer;
+﻿namespace Models.AdaptersLayer.PresentationUnit;
 
 public record PostVM
 {
@@ -7,10 +7,4 @@ public record PostVM
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
     public ICollection<TagVM> Tags { get; set; }
-}
-
-public record TagVM
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
 }

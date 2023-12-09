@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
 
-namespace Principals.UserStoryLayer.UserStoryUnit;
+namespace Core.UserStoryLayer.UserStoryUnit;
 
 public interface ITask<TResponse> where TResponse : Response<Request>
 {

@@ -1,8 +1,9 @@
 ﻿using FluentAssertions;
+using Principals.UserStoryLayer.UserStoryUnit;
 using Sys.UserStory.UserStoryUnit;
 using Xunit;
 
-namespace Principals.UserStoryLayer.UserStoryUnit;
+namespace Core.UserStoryLayer.UserStoryUnit;
 
 //public class ValidationResult
 //{

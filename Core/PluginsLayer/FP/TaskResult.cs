@@ -1,4 +1,4 @@
-﻿namespace Principals.PluginsLayer.FP;
+﻿namespace Core.PluginsLayer.FP;
 
 public record TaskBox<T>(T Content)
 {

@@ -1,4 +1,4 @@
-﻿namespace Principals.UserStoryLayer.UserStoryUnit;
+﻿namespace Core.UserStoryLayer.UserStoryUnit;
 
 public class UserStory<TRequest, TResponse>(IEnumerable<ITask<TResponse>> workSteps)
          : IUserStory<TRequest, TResponse>

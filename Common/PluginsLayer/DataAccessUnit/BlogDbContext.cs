@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Polices.AdaptersLayer;
+using Models.AdaptersLayer.DataAccessUnit;
 
 namespace Assistant.Plugins;
 
