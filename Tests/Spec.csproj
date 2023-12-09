@@ -30,7 +30,7 @@
 
 
 	<ItemGroup>
-		<ProjectReference Include="..\Common\Polices.csproj" />
+		<ProjectReference Include="..\Common\Models.csproj" />
 		<ProjectReference Include="..\HiringManager\BloggerUserRole.csproj" />
 		<ProjectReference Include="..\Shared.Technology.WebApp\WebApp.csproj" />
 	</ItemGroup>

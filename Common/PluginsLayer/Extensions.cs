@@ -12,9 +12,9 @@ public static class Extensions
     {
         var databaseName = "Blogging";
         var connectionString = configuration.GetConnectionString(databaseName);
-        services.AddDbContext<BloggingContext>(options => options.UseInMemoryDatabase(databaseName));
-        //builder.Services.AddDbContext<BloggingContext>(options => options.UseSqlite(connectionString));
-        //builder.Services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connectionString));
+        services.AddDbContext<BlogDbContext>(options => options.UseInMemoryDatabase(databaseName));
+        //builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlite(connectionString));
+        //builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(connectionString));
 
         return services;
     }
@@ -24,7 +24,7 @@ public static class Extensions
         app.UseMigrationsEndPoint();
 
         using var scope = app.Services.CreateScope();
-        using var db = scope.ServiceProvider.GetRequiredService<BloggingContext>();
+        using var db = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
         db.EnsureInitialized();

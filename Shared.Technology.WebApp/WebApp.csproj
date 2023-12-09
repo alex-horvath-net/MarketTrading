@@ -12,7 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Common\Polices.csproj" />
+		<ProjectReference Include="..\Common\Models.csproj" />
 		<ProjectReference Include="..\HiringManager\BloggerUserRole.csproj" />
 	</ItemGroup>
 

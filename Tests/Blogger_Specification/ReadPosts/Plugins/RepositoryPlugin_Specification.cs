@@ -12,8 +12,8 @@ public class RepositoryPlugin_Specification
     //[Fact]
     public async void Initialize()
     {
-        var options = new DbContextOptions<BloggingContext>();
-        var db = new BloggingContext(options);
+        var options = new DbContextOptions<BlogDbContext>();
+        var db = new BlogDbContext(options);
         db.EnsureInitialized();
         db.EnsureInitialized();
 
@@ -34,7 +34,7 @@ public class RepositoryPlugin_Specification
 
         app.UseDataBase();
         using var scope = app.Services.CreateScope();
-        using var db = scope.ServiceProvider.GetRequiredService<BloggingContext>();
+        using var db = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
 
         db.Posts.Should().NotBeEmpty();
     }

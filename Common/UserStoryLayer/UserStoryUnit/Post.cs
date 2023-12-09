@@ -1,4 +1,4 @@
-﻿namespace Polices.UserStoryLayer;
+﻿namespace Models.UserStoryLayer.UserStoryUnit;
 
 public record Post
 {
@@ -8,6 +8,4 @@ public record Post
     public DateTime CreatedAt { get; set; }
     public ICollection<Tag> Tags { get; set; }
 }
-
-public record Tag(int Id, string Name);
 

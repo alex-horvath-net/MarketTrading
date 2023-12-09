@@ -4,7 +4,7 @@ using Polices.AdaptersLayer;
 
 namespace BloggerUserRole.ReadPostsFaeture.PluginsLayer;
 
-public class DataAccess(Assistant.Plugins.BloggingContext db) : IDataAccess
+public class DataAccess(Assistant.Plugins.BlogDbContext db) : IDataAccess
 {
     public async Task<List<Post>> Read(string title, string content, CancellationToken cancelation)
     {

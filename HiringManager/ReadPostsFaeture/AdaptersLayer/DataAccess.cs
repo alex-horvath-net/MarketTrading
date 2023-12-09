@@ -1,6 +1,6 @@
 ﻿using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
+using Models.UserStoryLayer.UserStoryUnit;
 using Polices.AdaptersLayer;
-using Polices.UserStoryLayer;
 
 namespace BloggerUserRole.ReadPostsFaeture.AdaptersLayer;
 

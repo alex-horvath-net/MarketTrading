@@ -3,15 +3,15 @@ using Polices.AdaptersLayer;
 
 namespace Assistant.Plugins;
 
-public partial class BloggingContext : DbContext
+public partial class BlogDbContext : DbContext
 {
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
 }
 
-public partial class BloggingContext
+public partial class BlogDbContext
 {
-    public BloggingContext(DbContextOptions<BloggingContext> options) : base(options)
+    public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
     {
     }
 
