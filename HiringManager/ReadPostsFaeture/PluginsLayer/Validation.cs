@@ -1,6 +1,6 @@
 ﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer;
 using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
-using Core.PluginsLayer;
+using Core.PluginsLayer.ValidationUnit;
 using FluentValidation;
 
 namespace BloggerUserRole.ReadPostsFaeture.PluginsLayer;

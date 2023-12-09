@@ -1,6 +1,6 @@
 ﻿using Core.AdaptersLayer;
 
-namespace Core.PluginsLayer;
+namespace Core.PluginsLayer.ValidationUnit;
 
 public abstract class FluentValidator<T> : FluentValidation.AbstractValidator<T>
 {
