@@ -1,5 +1,5 @@
-using BloggerUserRole.ReadPostsFaeture.PluginsLayer;
-using Common.PluginsLayer.DataAccessUnit;
+using BloggerUserRole.ReadPostsFaeture.PluginLayer;
+using Common.PluginLayer.DataAccessUnit;
 
 var builder = WebApplication.CreateBuilder(args);
 

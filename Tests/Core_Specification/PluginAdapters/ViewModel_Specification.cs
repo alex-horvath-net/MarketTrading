@@ -1,4 +1,4 @@
-﻿using Common.AdaptersLayer.PresentationUnit;
+﻿using Common.AdapterLayer.PresentationUnit;
 
 namespace Spec.Core_Specification.PluginAdapters;
 

@@ -1,9 +1,9 @@
-﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer.DataAccessUnit;
-using BloggerUserRole.ReadPostsFaeture.AdaptersLayer.ValidationUnit;
-using BloggerUserRole.ReadPostsFaeture.PluginsLayer;
-using BloggerUserRole.ReadPostsFaeture.TasksLayer.DataAccessUnit;
-using BloggerUserRole.ReadPostsFaeture.TasksLayer.ValidationUnit;
-using Common.PluginsLayer.DataAccessUnit;
+﻿using BloggerUserRole.ReadPostsFaeture.AdapterLayer.DataAccessUnit;
+using BloggerUserRole.ReadPostsFaeture.AdapterLayer.ValidationUnit;
+using BloggerUserRole.ReadPostsFaeture.PluginLayer;
+using BloggerUserRole.ReadPostsFaeture.TaskLayer.ValidationUnit;
+using BloggerUserRole.ReadPostsFaeture.TaskLayer.DataAccessUnit;
+using Common.PluginLayer.DataAccessUnit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,7 +26,7 @@ public class DependecyInjection_Specification
         using var serviceProvider = services.BuildServiceProvider();
 
         serviceProvider.GetRequiredService<IValidationPlugin>();
-        serviceProvider.GetRequiredService<BloggerUserRole.ReadPostsFaeture.AdaptersLayer.DataAccessUnit.IDataAccessPlugin>();
+        serviceProvider.GetRequiredService<IDataAccessPlugin>();
 
         serviceProvider.GetRequiredService<IValidationAdapter>();
         serviceProvider.GetRequiredService<IDataAccessPlugin>();

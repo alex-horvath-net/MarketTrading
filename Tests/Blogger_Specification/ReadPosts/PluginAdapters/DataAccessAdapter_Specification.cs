@@ -1,5 +1,6 @@
-﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer.DataAccessUnit;
-using Common.AdaptersLayer.DataAccessUnit;
+﻿using BloggerUserRole.ReadPostsFaeture.AdapterLayer.DataAccessUnit;
+using BloggerUserRole.ReadPostsFaeture.AdaptersLayer.DataAccessUnit;
+using Common.AdapterLayer.DataAccessUnit;
 using Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
 namespace Spec.Blogger_Specification.ReadPosts.PluginAdapters;
