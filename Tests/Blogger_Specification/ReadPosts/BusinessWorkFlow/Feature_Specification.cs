@@ -1,7 +1,5 @@
 ﻿using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
 using Core.UserStoryLayer.UserStoryUnit;
-using Principals.UserStoryLayer.UserStoryUnit;
-using Sys.UserStory.UserStoryUnit;
 
 namespace Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
@@ -41,22 +39,22 @@ public class Feature_Specification
 
 public class Featrue_MockBuilder
 {
-    public readonly IUserStory<BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit.Request, Response> Mock = Substitute.For<IUserStory<BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit.Request, Response>>();
-    public BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit.Request Request;
+    public readonly IUserStory<Request, Response> Mock = Substitute.For<IUserStory<Request, Response>>();
+    public Request Request;
     public CancellationToken Token;
 
     public Featrue_MockBuilder() => UseValidRequest().UseNoneCanceledToken();
 
     public Featrue_MockBuilder UseValidRequest()
     {
-        Request = new Blogger.ReadPosts.UserStory.Request("Title", "Content");
+        Request = new Request("Title", "Content");
         Request = Request with { Title = Request.Title, Content = Request.Content };
         return this;
     }
 
     public Featrue_MockBuilder UseInvalidRequest()
     {
-        Request = new Blogger.ReadPosts.UserStory.Request(null, null);
+        Request = new Request(null, null);
         Request = Request with { Title = Request.Title, Content = Request.Content };
         return this;
     }
@@ -70,7 +68,7 @@ public class Featrue_MockBuilder
 
 public class WorkStep_MockBuilder
 {
-    public readonly List<ITask<Response>> Mock = new List<ITask<Response>>();
+    public readonly List<ITask> Mock = new List<ITask>();
 
     public WorkStep_MockBuilder() => UseNonStoppedWorkSteps();
 
@@ -92,7 +90,7 @@ public class WorkStep_MockBuilder
         return this;
     }
 
-    public class StopWorkStep : ITask<Response>
+    public class StopWorkStep : ITask
     {
         public Task Run(Response response, CancellationToken cancellation)
         {
@@ -101,7 +99,7 @@ public class WorkStep_MockBuilder
         }
     }
 
-    public class ContinueWorkStep : ITask<Response>
+    public class ContinueWorkStep : ITask
     {
         public Task Run(Response response, CancellationToken cancellation)
         {

@@ -1,6 +1,8 @@
 ﻿namespace Core.UserStoryLayer.UserStoryUnit;
 
-public interface ITask<TResponse> where TResponse : Response<Request>
+public interface ITask<TRequest, TResponse>
+    where TRequest : RequestCore
+    where TResponse : ResponseCore<TRequest>, new()
 {
     Task Run(TResponse response, CancellationToken cancellation);
 }

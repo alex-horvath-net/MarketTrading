@@ -1,5 +1,5 @@
-﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer;
-using Core.AdaptersLayer;
+﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer.ValidationUnit;
+using Core.AdaptersLayer.ValidationUnit;
 using Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
 namespace Spec.Blogger_Specification.ReadPosts.PluginAdapters;
@@ -9,7 +9,7 @@ public class ValidationAdapter_Specification
     //[Fact]
     public async void Path_Without_Diversion()
     {
-        var unit = new Validation(validator.Mock);
+        var unit = new ValidationAdapter(validator.Mock);
         var response = await unit.Validate(feature.Request, feature.Token);
 
         response.Should().NotBeNullOrEmpty();
@@ -23,7 +23,7 @@ public class ValidationAdapter_Specification
 
 public class ValidatorPlugin_MockBuilder
 {
-    public readonly IValidation Mock = Substitute.For<IValidation>();
+    public readonly IValidationPlugin Mock = Substitute.For<IValidationPlugin>();
 
     public List<ValidationResult> Results { get; private set; }
 

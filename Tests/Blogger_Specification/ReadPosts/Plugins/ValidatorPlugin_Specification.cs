@@ -1,4 +1,4 @@
-﻿using Blogger.ReadPosts.Plugins;
+﻿using BloggerUserRole.ReadPostsFaeture.PluginsLayer.ValidationUnit;
 using Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
 namespace Spec.Blogger_Specification.ReadPosts.Plugins;
@@ -8,7 +8,7 @@ public class ValidatorPlugin_Specification
     //[Fact]
     public async void Valid_Request()
     {
-        var unit = new Validation();
+        var unit = new ValidationPlugin();
         var issues = await unit.Validate(feature.Request, feature.Token);
 
         issues.Should().NotBeNull();
@@ -18,7 +18,7 @@ public class ValidatorPlugin_Specification
     //[Fact]
     public async void InValid_Request()
     {
-        var unit = new Validation();
+        var unit = new ValidationPlugin();
         var issues = await unit.Validate(feature.UseInvalidRequest().Request, feature.Token);
 
         issues.Should().NotBeNull();

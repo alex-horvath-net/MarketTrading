@@ -1,8 +1,9 @@
-﻿using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
+﻿
+using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
 
 namespace BloggerUserRole.ReadPostsFaeture.TasksLayer.ValidationUnit;
 
-public class Validation(IValidationAdapter validation) : UserStory.ITask
+public class ValidationTask(IValidationAdapter validation) : ITask
 {
     public async Task Run(Response response, CancellationToken cancellation)
     {

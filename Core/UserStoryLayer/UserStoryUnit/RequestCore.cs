@@ -1,3 +1,6 @@
 ﻿namespace Core.UserStoryLayer.UserStoryUnit;
 
-public record Request();
+public record RequestCore
+{
+
+}

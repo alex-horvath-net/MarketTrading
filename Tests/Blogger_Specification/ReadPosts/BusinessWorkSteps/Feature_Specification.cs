@@ -75,7 +75,7 @@
 
 //public class RepositoryPluginAdapter_MockBuilder
 //{
-//    public readonly IDataAccess Mock = Substitute.For<IDataAccess>();
+//    public readonly IDataAccessPlugin Mock = Substitute.For<IDataAccessPlugin>();
 
 //    public RepositoryPluginAdapter_MockBuilder() => MockReadPosts();
 

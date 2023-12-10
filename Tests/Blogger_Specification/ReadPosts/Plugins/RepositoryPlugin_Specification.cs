@@ -1,4 +1,5 @@
 ﻿using Assistant.Plugins;
+using BloggerUserRole.ReadPostsFaeture.PluginsLayer.DataAccessUnit;
 using Common.PluginsLayer.DataAccessUnit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ public class RepositoryPlugin_Specification
         db.EnsureInitialized();
         db.EnsureInitialized();
 
-        var unit = new Blogger.ReadPosts.Plugins.DataAccess(db);
+        var unit = new DataAccessPlugin(db);
         var title = "Title";
         var content = "Content";
         var response = await unit.Read(title, content, feature.Token);

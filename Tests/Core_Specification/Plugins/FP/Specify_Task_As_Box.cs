@@ -1,6 +1,4 @@
 ﻿using Core.PluginsLayer.FP;
-using Principals.PluginsLayer.FP;
-using Sys.Plugins.FP;
 
 namespace Spec.Core_Specification.Plugins.FP;
 

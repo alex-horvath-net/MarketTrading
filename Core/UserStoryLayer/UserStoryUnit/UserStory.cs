@@ -1,8 +1,8 @@
 ﻿namespace Core.UserStoryLayer.UserStoryUnit;
 
-public class UserStory<TRequest, TResponse>(IEnumerable<ITask<TResponse>> workSteps)                  : IUserStory<TRequest, TResponse>
-    where TRequest : Request
-    where TResponse : Response<Request>, new()
+public abstract class UserStory<TRequest, TResponse>(IEnumerable<ITask<TRequest, TResponse>> workSteps) : IUserStory<TRequest, TResponse>
+    where TRequest : RequestCore
+    where TResponse : ResponseCore<TRequest>, new()
 {
     public async Task<TResponse> Run(TRequest request, CancellationToken cancellation)
     {

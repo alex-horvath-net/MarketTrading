@@ -1,5 +1,8 @@
-﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer;
-using BloggerUserRole.ReadPostsFaeture.TasksLayer;
+﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer.DataAccessUnit;
+using BloggerUserRole.ReadPostsFaeture.AdaptersLayer.ValidationUnit;
+using BloggerUserRole.ReadPostsFaeture.PluginsLayer.DataAccessUnit;
+using BloggerUserRole.ReadPostsFaeture.PluginsLayer.ValidationUnit;
+using BloggerUserRole.ReadPostsFaeture.TasksLayer.DataAccessUnit;
 using BloggerUserRole.ReadPostsFaeture.TasksLayer.ValidationUnit;
 using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
 using Core.UserStoryLayer.UserStoryUnit;
@@ -11,19 +14,17 @@ public static class Extensions
 {
     public static IServiceCollection AddReadPosts(this IServiceCollection services)
     {
-        services.AddScoped<IUserStory<Request, Response>, UserStory.UserStoryUnit.UserStory2>();
+        services.AddScoped<IUserStory<Request, Response>, UserStory>();
 
-        services.AddScoped<ITask<Response>, TasksLayer.ValidationUnit.Validation>();
-        services.AddScoped<ITask<Response>, AddPosts>();
+        services.AddScoped<ITask, ValidationTask>();
+        services.AddScoped<ITask, AddPostsTask>();
 
-        services.AddScoped<IValidationAdapter, AdaptersLayer.Validation>();
-        services.AddScoped<IDataAccess, AdaptersLayer.DataAccess>();
+        services.AddScoped<IValidationAdapter, ValidationAdapter>();
+        services.AddScoped<IDataAccessAdapter, DataAccessAdapter>();
 
-        services.AddScoped<AdaptersLayer.IDataAccess, DataAccess>();
-        services.AddScoped<IValidation, Validation>();
+        services.AddScoped<IDataAccessPlugin, DataAccessPlugin>();
+        services.AddScoped<IValidationPlugin, ValidationPlugin>();
 
         return services;
     }
 }
-
-//--Test--------------------------------------------------

@@ -1,6 +1,7 @@
-﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer;
+﻿using BloggerUserRole.ReadPostsFaeture.AdaptersLayer.DataAccessUnit;
+using BloggerUserRole.ReadPostsFaeture.AdaptersLayer.ValidationUnit;
 using BloggerUserRole.ReadPostsFaeture.PluginsLayer;
-using BloggerUserRole.ReadPostsFaeture.TasksLayer;
+using BloggerUserRole.ReadPostsFaeture.TasksLayer.DataAccessUnit;
 using BloggerUserRole.ReadPostsFaeture.TasksLayer.ValidationUnit;
 using Common.PluginsLayer.DataAccessUnit;
 using Microsoft.Extensions.Configuration;
@@ -24,11 +25,11 @@ public class DependecyInjection_Specification
 
         using var serviceProvider = services.BuildServiceProvider();
 
-        serviceProvider.GetRequiredService<IValidation>();
-        serviceProvider.GetRequiredService<BloggerUserRole.ReadPostsFaeture.AdaptersLayer.IDataAccess>();
+        serviceProvider.GetRequiredService<IValidationPlugin>();
+        serviceProvider.GetRequiredService<BloggerUserRole.ReadPostsFaeture.AdaptersLayer.DataAccessUnit.IDataAccessPlugin>();
 
         serviceProvider.GetRequiredService<IValidationAdapter>();
-        serviceProvider.GetRequiredService<IDataAccess>();
+        serviceProvider.GetRequiredService<IDataAccessPlugin>();
 
         //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IWorkStep<Response>>();
         //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IFeature<Request, Response>>();
