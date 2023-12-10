@@ -13,7 +13,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Common\Common.csproj" />
-		<ProjectReference Include="..\HiringManager\BloggerUserRole.csproj" />
+		<ProjectReference Include="..\HiringManager\Blogger.csproj" />
 	</ItemGroup>
 
 </Project>

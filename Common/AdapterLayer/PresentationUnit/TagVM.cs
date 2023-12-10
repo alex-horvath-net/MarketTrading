@@ -1,7 +1,0 @@
-﻿namespace Common.AdapterLayer.PresentationUnit;
-
-public record TagVM
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-}

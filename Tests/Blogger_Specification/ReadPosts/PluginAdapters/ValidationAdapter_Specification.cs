@@ -1,5 +1,5 @@
-﻿using BloggerUserRole.ReadPostsFaeture.AdapterLayer.ValidationUnit;
-using Core.AdapterLayer.ValidationUnit;
+﻿using Blogger.ReadPosts.Adapters.ValidationUnit;
+using Core.Adapters.ValidationUnit;
 using Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
 namespace Spec.Blogger_Specification.ReadPosts.PluginAdapters;

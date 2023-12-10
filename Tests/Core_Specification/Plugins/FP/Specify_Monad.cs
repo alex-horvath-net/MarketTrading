@@ -1,4 +1,4 @@
-﻿using Core.PluginLayer.FP;
+﻿using Core.Plugins.FP;
 
 namespace Spec.Core_Specification.Plugins.FP
 {

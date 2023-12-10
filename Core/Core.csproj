@@ -52,7 +52,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<Folder Include="TaskLayer\" />
+		<Folder Include="Tasks\" />
 	</ItemGroup>
 
 </Project>

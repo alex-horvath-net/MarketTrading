@@ -1,4 +1,4 @@
-﻿using Common.UserStoryLayer.UserStoryUnit;
+﻿using Common.UserStory.UserStoryUnit;
 
 namespace Spec.Core_Specification.Business;
 

@@ -1,9 +1,10 @@
-﻿using BloggerUserRole.ReadPostsFaeture.AdapterLayer.DataAccessUnit;
-using BloggerUserRole.ReadPostsFaeture.AdapterLayer.ValidationUnit;
-using BloggerUserRole.ReadPostsFaeture.PluginLayer;
-using BloggerUserRole.ReadPostsFaeture.TaskLayer.ValidationUnit;
-using BloggerUserRole.ReadPostsFaeture.TaskLayer.DataAccessUnit;
-using Common.PluginLayer.DataAccessUnit;
+﻿using Blogger.ReadPosts;
+using Blogger.ReadPosts.Adapters.DataAccessUnit;
+using Blogger.ReadPosts.Adapters.ValidationUnit;
+using Blogger.ReadPosts.Plugins.DataAccessUnit;
+using Blogger.ReadPosts.Tasks.ValidationUnit;
+using Blogger.ReadPosts.UserStory.UserStoryUnit;
+using Common.Plugins.DataAccessUnit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

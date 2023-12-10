@@ -1,4 +1,4 @@
-﻿using Core.AdapterLayer.ValidationUnit;
+﻿using Core.Adapters.ValidationUnit;
 
 namespace Spec.Core_Specification.PluginAdapters;
 

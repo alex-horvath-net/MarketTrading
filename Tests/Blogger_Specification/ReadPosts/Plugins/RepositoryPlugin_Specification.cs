@@ -1,6 +1,6 @@
 ﻿using Assistant.Plugins;
-using BloggerUserRole.ReadPostsFaeture.PluginLayer.DataAccessUnit;
-using Common.PluginLayer.DataAccessUnit;
+using Blogger.ReadPosts.Plugins.DataAccessUnit;
+using Common.Plugins.DataAccessUnit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

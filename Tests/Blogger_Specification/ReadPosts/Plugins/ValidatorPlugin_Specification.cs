@@ -1,4 +1,4 @@
-﻿using BloggerUserRole.ReadPostsFaeture.PluginLayer.ValidationUnit;
+﻿using Blogger.ReadPosts.Plugins.ValidationUnit;
 using Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
 namespace Spec.Blogger_Specification.ReadPosts.Plugins;

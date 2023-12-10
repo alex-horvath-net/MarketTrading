@@ -11,8 +11,8 @@
 //    {
 //        workSteps.MockFailedValidation();
 
-//        //var unit = new UserStory(workSteps.Mock, repositoryAdapter.Mock);
-//        var unit = new UserStory(default, default);
+//        //var unit = new UserStoryCore(workSteps.Mock, repositoryAdapter.Mock);
+//        var unit = new UserStoryCore(default, default);
 //        var response = await unit.Run(feature.Request, feature.Token);
 
 //        response.Should().NotBeNull();
@@ -26,8 +26,8 @@
 //    //[Fact]
 //    public async void Valid_Request()
 //    {
-//        //var unit = new UserStory(workSteps.Mock, repositoryAdapter.Mock);
-//        var unit = new UserStory(default, default);
+//        //var unit = new UserStoryCore(workSteps.Mock, repositoryAdapter.Mock);
+//        var unit = new UserStoryCore(default, default);
 //        var response = await unit.Run(feature.Request, feature.Token);
 
 //        response.Should().NotBeNull();

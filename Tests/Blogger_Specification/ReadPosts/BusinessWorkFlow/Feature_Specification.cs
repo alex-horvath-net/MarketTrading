@@ -1,5 +1,6 @@
-﻿using BloggerUserRole.ReadPostsFaeture.UserStoryLayer.UserStoryUnit;
-using Core.UserStoryLayer.UserStoryUnit;
+﻿using Blogger.ReadPosts.UserStory.UserStoryUnit;
+using Blogger.ReadPosts.UserStory.UserStoryUnit;
+using Core.UserStory.UserStoryUnit;
 
 namespace Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
