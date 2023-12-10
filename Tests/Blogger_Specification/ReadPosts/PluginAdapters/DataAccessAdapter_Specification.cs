@@ -1,5 +1,4 @@
 ﻿using BloggerUserRole.ReadPostsFaeture.AdapterLayer.DataAccessUnit;
-using BloggerUserRole.ReadPostsFaeture.AdaptersLayer.DataAccessUnit;
 using Common.AdapterLayer.DataAccessUnit;
 using Spec.Blogger_Specification.ReadPosts.BusinessWorkFlow;
 
