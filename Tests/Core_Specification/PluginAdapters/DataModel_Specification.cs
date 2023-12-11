@@ -1,4 +1,4 @@
-﻿using Common.Adapters.DataAccessUnit;
+﻿using Common.Sockets.DataAccess;
 
 namespace Spec.Core_Specification.PluginAdapters;
 

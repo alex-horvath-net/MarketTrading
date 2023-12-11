@@ -1,8 +1,4 @@
-using Blogger.ReadPosts;
-using Blogger.ReadPosts.Adapters.ValidationUnit;
-using Blogger.ReadPosts.Plugins.DataAccessUnit;
-using Blogger.ReadPosts.Tasks.ValidationUnit;
-using Blogger.ReadPosts.UserStory.UserStoryUnit;
+using BloggerUserRole.ReadPostsUserStory;
 using Common.Plugins.DataAccessUnit;
 
 var builder = WebApplication.CreateBuilder(args);

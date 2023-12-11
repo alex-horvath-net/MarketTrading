@@ -22,7 +22,7 @@
     }
 }(function ($) {
     var $jQval = $.validator,
-        adapters,
+        Sockets,
         data_validation = "unobtrusiveValidation";
 
     function setValidationValues(options, ruleName, value) {
@@ -172,7 +172,7 @@
     }
 
     $jQval.unobtrusive = {
-        adapters: [],
+        Sockets: [],
 
         parseElement: function (element, skipAttach) {
             /// <summary>
@@ -195,7 +195,7 @@
             valInfo.options.rules[element.name] = rules = {};
             valInfo.options.messages[element.name] = messages = {};
 
-            $.each(this.adapters, function () {
+            $.each(this.Sockets, function () {
                 var prefix = "data-val-" + this.name,
                     message = $element.attr(prefix),
                     paramValues = {};
@@ -255,9 +255,9 @@
         }
     };
 
-    adapters = $jQval.unobtrusive.adapters;
+    Sockets = $jQval.unobtrusive.Sockets;
 
-    adapters.add = function (adapterName, params, fn) {
+    Sockets.add = function (adapterName, params, fn) {
         /// <summary>Adds a new adapter to convert unobtrusive HTML into a jQuery Validate validation.</summary>
         /// <param name="adapterName" type="String">The name of the adapter to be added. This matches the name used
         /// in the data-val-nnnn HTML attribute (where nnnn is the adapter name).</param>
@@ -266,7 +266,7 @@
         /// mmmm is the parameter name).</param>
         /// <param name="fn" type="Function">The function to call, which adapts the values from the HTML
         /// attributes into jQuery Validate rules and/or messages.</param>
-        /// <returns type="jQuery.validator.unobtrusive.adapters" />
+        /// <returns type="jQuery.validator.unobtrusive.Sockets" />
         if (!fn) {  // Called with no params, just a function
             fn = params;
             params = [];
@@ -275,20 +275,20 @@
         return this;
     };
 
-    adapters.addBool = function (adapterName, ruleName) {
+    Sockets.addBool = function (adapterName, ruleName) {
         /// <summary>Adds a new adapter to convert unobtrusive HTML into a jQuery Validate validation, where
         /// the jQuery Validate validation rule has no parameter values.</summary>
         /// <param name="adapterName" type="String">The name of the adapter to be added. This matches the name used
         /// in the data-val-nnnn HTML attribute (where nnnn is the adapter name).</param>
         /// <param name="ruleName" type="String" optional="true">[Optional] The name of the jQuery Validate rule. If not provided, the value
         /// of adapterName will be used instead.</param>
-        /// <returns type="jQuery.validator.unobtrusive.adapters" />
+        /// <returns type="jQuery.validator.unobtrusive.Sockets" />
         return this.add(adapterName, function (options) {
             setValidationValues(options, ruleName || adapterName, true);
         });
     };
 
-    adapters.addMinMax = function (adapterName, minRuleName, maxRuleName, minMaxRuleName, minAttribute, maxAttribute) {
+    Sockets.addMinMax = function (adapterName, minRuleName, maxRuleName, minMaxRuleName, minAttribute, maxAttribute) {
         /// <summary>Adds a new adapter to convert unobtrusive HTML into a jQuery Validate validation, where
         /// the jQuery Validate validation has three potential rules (one for min-only, one for max-only, and
         /// one for min-and-max). The HTML parameters are expected to be named -min and -max.</summary>
@@ -304,7 +304,7 @@
         /// contains the minimum value. The default is "min".</param>
         /// <param name="maxAttribute" type="String" optional="true">[Optional] The name of the HTML attribute that
         /// contains the maximum value. The default is "max".</param>
-        /// <returns type="jQuery.validator.unobtrusive.adapters" />
+        /// <returns type="jQuery.validator.unobtrusive.Sockets" />
         return this.add(adapterName, [minAttribute || "min", maxAttribute || "max"], function (options) {
             var min = options.params.min,
                 max = options.params.max;
@@ -321,7 +321,7 @@
         });
     };
 
-    adapters.addSingleVal = function (adapterName, attribute, ruleName) {
+    Sockets.addSingleVal = function (adapterName, attribute, ruleName) {
         /// <summary>Adds a new adapter to convert unobtrusive HTML into a jQuery Validate validation, where
         /// the jQuery Validate validation rule has a single value.</summary>
         /// <param name="adapterName" type="String">The name of the adapter to be added. This matches the name used
@@ -330,7 +330,7 @@
         /// The default is "val".</param>
         /// <param name="ruleName" type="String" optional="true">[Optional] The name of the jQuery Validate rule. If not provided, the value
         /// of adapterName will be used instead.</param>
-        /// <returns type="jQuery.validator.unobtrusive.adapters" />
+        /// <returns type="jQuery.validator.unobtrusive.Sockets" />
         return this.add(adapterName, [attribute || "val"], function (options) {
             setValidationValues(options, ruleName || adapterName, options.params[attribute]);
         });
@@ -360,20 +360,20 @@
     });
 
     if ($jQval.methods.extension) {
-        adapters.addSingleVal("accept", "mimtype");
-        adapters.addSingleVal("extension", "extension");
+        Sockets.addSingleVal("accept", "mimtype");
+        Sockets.addSingleVal("extension", "extension");
     } else {
         // for backward compatibility, when the 'extension' validation method does not exist, such as with versions
         // of JQuery Validation plugin prior to 1.10, we should use the 'accept' method for
         // validating the extension, and ignore mime-type validations as they are not supported.
-        adapters.addSingleVal("extension", "extension", "accept");
+        Sockets.addSingleVal("extension", "extension", "accept");
     }
 
-    adapters.addSingleVal("regex", "pattern");
-    adapters.addBool("creditcard").addBool("date").addBool("digits").addBool("email").addBool("number").addBool("url");
-    adapters.addMinMax("length", "minlength", "maxlength", "rangelength").addMinMax("range", "min", "max", "range");
-    adapters.addMinMax("minlength", "minlength").addMinMax("maxlength", "minlength", "maxlength");
-    adapters.add("equalto", ["other"], function (options) {
+    Sockets.addSingleVal("regex", "pattern");
+    Sockets.addBool("creditcard").addBool("date").addBool("digits").addBool("email").addBool("number").addBool("url");
+    Sockets.addMinMax("length", "minlength", "maxlength", "rangelength").addMinMax("range", "min", "max", "range");
+    Sockets.addMinMax("minlength", "minlength").addMinMax("maxlength", "minlength", "maxlength");
+    Sockets.add("equalto", ["other"], function (options) {
         var prefix = getModelPrefix(options.element.name),
             other = options.params.other,
             fullOtherName = appendModelPrefix(other, prefix),
@@ -381,13 +381,13 @@
 
         setValidationValues(options, "equalTo", element);
     });
-    adapters.add("required", function (options) {
+    Sockets.add("required", function (options) {
         // jQuery Validate equates "required" with "mandatory" for checkbox elements
         if (options.element.tagName.toUpperCase() !== "INPUT" || options.element.type.toUpperCase() !== "CHECKBOX") {
             setValidationValues(options, "required", true);
         }
     });
-    adapters.add("remote", ["url", "type", "additionalfields"], function (options) {
+    Sockets.add("remote", ["url", "type", "additionalfields"], function (options) {
         var value = {
             url: options.params.url,
             type: options.params.type || "GET",
@@ -412,7 +412,7 @@
 
         setValidationValues(options, "remote", value);
     });
-    adapters.add("password", ["min", "nonalphamin", "regex"], function (options) {
+    Sockets.add("password", ["min", "nonalphamin", "regex"], function (options) {
         if (options.params.min) {
             setValidationValues(options, "minlength", options.params.min);
         }
@@ -423,7 +423,7 @@
             setValidationValues(options, "regex", options.params.regex);
         }
     });
-    adapters.add("fileextensions", ["extensions"], function (options) {
+    Sockets.add("fileextensions", ["extensions"], function (options) {
         setValidationValues(options, "extension", options.params.extensions);
     });
 

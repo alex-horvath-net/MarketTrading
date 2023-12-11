@@ -1,4 +1,4 @@
-﻿using Common.Adapters.PresentationUnit;
+﻿using Common.Sockets.View;
 
 namespace Spec.Core_Specification.PluginAdapters;
 
@@ -8,7 +8,7 @@ public class ViewModel_Specification
     public void Tag()
     {
         var id = 1; var name = "Name";
-        var tag = new TagVM();
+        var tag = new Tag();
         tag = tag with { Id = id, Name = name };
         tag.Id.Should().Be(id);
         tag.Name.Should().Be(name);
@@ -18,8 +18,8 @@ public class ViewModel_Specification
     public void Post()
     {
         var id = 1; var title = "Title"; var content = "Content"; var createdAt = DateTime.UtcNow;
-        var post = new PostVM();
-        post = post with { Id = id, Title = title, Content = content, CreatedAt = createdAt, Tags = new List<TagVM>() };
+        var post = new Post();
+        post = post with { Id = id, Title = title, Content = content, CreatedAt = createdAt, Tags = new List<Tag>() };
         post.Id.Should().Be(id);
         post.Title.Should().Be(title);
         post.Content.Should().Be(content);

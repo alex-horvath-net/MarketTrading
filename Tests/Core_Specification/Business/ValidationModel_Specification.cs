@@ -1,4 +1,4 @@
-﻿using Core.UserStory.UserStoryUnit;
+﻿using Core.UserStory;
 
 namespace Spec.Core_Specification.Business;
 

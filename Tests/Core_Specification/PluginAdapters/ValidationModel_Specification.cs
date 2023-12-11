@@ -1,4 +1,4 @@
-﻿using Core.Adapters.ValidationUnit;
+﻿using Core.Sockets.Validation;
 
 namespace Spec.Core_Specification.PluginAdapters;
 
