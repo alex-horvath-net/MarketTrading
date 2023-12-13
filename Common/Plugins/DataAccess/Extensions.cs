@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Common.Plugins.DataAccessUnit;
+namespace Common.Plugins.DataAccess;
 
 public static class Extensions
 {

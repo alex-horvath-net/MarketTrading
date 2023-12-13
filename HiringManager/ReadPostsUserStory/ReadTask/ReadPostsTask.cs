@@ -1,12 +1,9 @@
-﻿using Core.UserStory;
+﻿namespace BloggerUserRole.ReadPostsUserStory.ReadTask;
 
-namespace BloggerUserRole.ReadPostsUserStory.ReadTask;
-
-public class ReadPostsTask(
-    IDataAccessSocket socket) : ITask<Request, Response>
+public class ReadPostsTask(IDataAccessSocket socket) : Core.UserStory.ITask<Request, Response>
 {
     public async Task Run(
-        Response response, 
+        Response response,
         CancellationToken token)
     {
         response.Posts = await socket.Read(response.Request, token);

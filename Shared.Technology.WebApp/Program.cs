@@ -1,5 +1,5 @@
 using BloggerUserRole.ReadPostsUserStory;
-using Common.Plugins.DataAccessUnit;
+using Common.Plugins.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 

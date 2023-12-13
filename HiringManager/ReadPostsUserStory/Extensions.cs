@@ -14,7 +14,7 @@ public static class Extensions
     public static IServiceCollection AddReadPosts(this IServiceCollection services)
     {
         services.AddScoped(typeof(IUserStory<,>), typeof(UserStoryCore<,>));
-
+ 
         services.AddScoped<ITask<Request, Response>, ReadPostsTask>();
         services.AddScoped<IDataAccessSocket, DataAccessSocket>();
         services.AddScoped<IDataAccessPlugin, DataAccessPlugin>();

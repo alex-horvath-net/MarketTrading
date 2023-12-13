@@ -2,7 +2,7 @@
 using BloggerUserRole.ReadPostsUserStory.ReadTask.DataAccessSocket;
 using BloggerUserRole.ReadPostsUserStory.ValidationTask;
 using BloggerUserRole.ReadPostsUserStory.ValidationTask.ValidationSocket;
-using Common.Plugins.DataAccessUnit;
+using Common.Plugins.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
