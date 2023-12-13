@@ -14,7 +14,7 @@
 	  <Compile Remove="ReadPostsUserStory\UserStory\**" />
 	  <Compile Remove="ReadPostsUserStory\ValidationTask\Sockets\**" />
 	  <EmbeddedResource Remove="ReadPostsUserStory\UserStory\**" />
-	  <EmbeddedResource Remove="ReadPostsUserStory\ValidationTask\Sockets\**" />.,
+	  <EmbeddedResource Remove="ReadPostsUserStory\ValidationTask\Sockets\**" />
 	  <None Remove="ReadPostsUserStory\UserStory\**" />
 	  <None Remove="ReadPostsUserStory\ValidationTask\Sockets\**" />
 	</ItemGroup>
