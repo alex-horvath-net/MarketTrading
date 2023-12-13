@@ -4,15 +4,15 @@ namespace BloggerUserRole.ReadPostsUserStory.ValidationTask.ValidationSocket;
 
 public class ValidationSocket(IValidationPlugin plugin) : IValidationSocket
 {
-    public async Task<IEnumerable<ValidationResult>> Validate(Request request, CancellationToken cancellation)
+    public async Task<IEnumerable<ValidationResult>> Validate(Request request, CancellationToken token)
     {
-        var adapter = await plugin.Validate(request, cancellation);
-        var business = adapter.Select(result => ValidationResult.Failed(result.ErrorCode, result.ErrorMessage));
-        return business;
+        var socketModel = await plugin.Validate(request, token);
+        var userStoryModel = socketModel.Select(result => ValidationResult.Failed(result.ErrorCode, result.ErrorMessage));
+        return userStoryModel;
     }
 }
 
 public interface IValidationPlugin
 {
-    Task<IEnumerable<Core.Sockets.Validation.ValidationResult>> Validate(Request request, CancellationToken cancellation);
+    Task<IEnumerable<Core.Sockets.Validation.ValidationResult>> Validate(Request request, CancellationToken token);
 }

@@ -92,7 +92,7 @@ public class WorkStep_MockBuilder
 
     public class StopWorkStep : ITask<Request, Response>
     {
-        public Task Run(Response response, CancellationToken cancellation)
+        public Task Run(Response response, CancellationToken token)
         {
             response.Stopped = true;
             return Task.CompletedTask;
@@ -101,7 +101,7 @@ public class WorkStep_MockBuilder
 
     public class ContinueWorkStep : ITask<Request, Response>
     {
-        public Task Run(Response response, CancellationToken cancellation)
+        public Task Run(Response response, CancellationToken token)
         {
             response.Stopped = false;
             return Task.CompletedTask;

@@ -9651,7 +9651,7 @@ jQuery.extend( {
 			return jqXHR.abort();
 		}
 
-		// Aborting is no longer a cancellation
+		// Aborting is no longer a token
 		strAbort = "abort";
 
 		// Install callbacks on deferreds

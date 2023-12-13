@@ -4,14 +4,16 @@ namespace Core.Plugins.Validation;
 
 public abstract class FluentValidator<T> : FluentValidation.AbstractValidator<T>
 {
-    public async Task<IEnumerable<ValidationResult>> Validate(T request, CancellationToken cancellation)
+    public async Task<IEnumerable<ValidationResult>> Validate(T request, CancellationToken token)
     {
-        var technology = await ValidateAsync(request, cancellation);
-        var adapter = technology.Errors.Select(error => new ValidationResult(
+        var pluginModel = await ValidateAsync(request, token);
+
+        var socketModel = pluginModel.Errors.Select(error => new ValidationResult(
             error.PropertyName,
             error.ErrorCode,
             error.ErrorMessage,
             error.Severity.ToString()));
-        return adapter;
+
+        return socketModel;
     }
 }

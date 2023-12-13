@@ -1,8 +1,11 @@
 ﻿namespace BloggerUserRole.ReadPostsUserStory.ReadTask.DataAccessSocket;
 
-public class DataAccessSocket(IDataAccessPlugin plugin) : IDataAccessSocket
+public class DataAccessSocket(
+    IDataAccessPlugin plugin) : IDataAccessSocket
 {
-    public async Task<List<Common.UserStory.Post>> Read(Request request, CancellationToken token)
+    public async Task<List<Common.UserStory.Post>> Read(
+        Request request, 
+        CancellationToken token)
     {
         var socketModel = await plugin.Read(request.Title, request.Content, token);
         var userStoryModel = socketModel.Select(x => new Common.UserStory.Post()

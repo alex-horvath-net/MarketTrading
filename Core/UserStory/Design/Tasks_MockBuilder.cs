@@ -26,7 +26,7 @@
 
 //    public class StopWorkStep : ITask<Response>
 //    {
-//        public Task Run(Response response, CancellationToken cancellation)
+//        public Task Run(Response response, CancellationToken token)
 //        {
 //            response.Stopped = true;
 //            return Task.CompletedTask;
@@ -35,7 +35,7 @@
 
 //    public class ContinueWorkStep : ITask<Response>
 //    {
-//        public Task Run(Response response, CancellationToken cancellation)
+//        public Task Run(Response response, CancellationToken token)
 //        {
 //            response.Stopped = false;
 //            return Task.CompletedTask;
