@@ -7,7 +7,7 @@ using Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Spec.Blogger_Specification.ReadPostsUserStory.Plugins;
+namespace Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket.DataAccessPlugin.Design;
 
 public class DependecyInjection_Specification
 {

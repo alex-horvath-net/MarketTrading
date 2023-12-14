@@ -1,12 +1,12 @@
-﻿using Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket.DataAccessPlugin;
+﻿using Blogger.ReadPosts.Design;
+using Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket.DataAccessPlugin;
 using Common;
 using Common.Plugins;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Spec.Blogger_Specification.ReadPostsUserStory.BusinessWorkFlow;
 
-namespace Spec.Blogger_Specification.ReadPostsUserStory.Plugins;
+namespace Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket.DataAccessPlugin.Design;
 
 public class RepositoryPlugin_Specification
 {

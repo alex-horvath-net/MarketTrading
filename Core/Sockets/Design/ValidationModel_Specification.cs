@@ -1,6 +1,6 @@
 ﻿using Core.Sockets.Validation;
 
-namespace Spec.Core_Specification.PluginAdapters;
+namespace Core.Sockets.Design;
 
 public class ValidationModel_Specification
 {

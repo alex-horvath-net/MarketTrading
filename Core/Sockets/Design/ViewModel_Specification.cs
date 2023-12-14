@@ -1,14 +1,15 @@
-﻿using Common.Sockets.DataAccess;
+﻿using Common.Sockets.View;
 
-namespace Spec.Core_Specification.PluginAdapters;
+namespace Core.Sockets.Design;
 
-public class DataModel_Specification
+public class ViewModel_Specification
 {
     //[Fact]
     public void Tag()
     {
-        var id = 1; var name = "Name";
-        var tag = new Tag(id, name);
+        var id = 1;
+        var name = "Name";
+        var tag = new Tag();
         tag = tag with { Id = id, Name = name };
         tag.Id.Should().Be(id);
         tag.Name.Should().Be(name);
@@ -17,7 +18,10 @@ public class DataModel_Specification
     //[Fact]
     public void Post()
     {
-        var id = 1; var title = "Title"; var content = "Content"; var createdAt = DateTime.UtcNow;
+        var id = 1;
+        var title = "Title";
+        var content = "Content";
+        var createdAt = DateTime.UtcNow;
         var post = new Post();
         post = post with { Id = id, Title = title, Content = content, CreatedAt = createdAt, Tags = new List<Tag>() };
         post.Id.Should().Be(id);

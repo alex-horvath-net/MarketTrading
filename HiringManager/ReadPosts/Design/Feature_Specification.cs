@@ -1,7 +1,7 @@
 ﻿using Blogger.ReadPosts;
 using Core.UserStory;
 
-namespace Spec.Blogger_Specification.ReadPostsUserStory.BusinessWorkFlow;
+namespace Blogger.ReadPosts.Design;
 
 public class Feature_Specification
 {

@@ -1,6 +1,6 @@
 ﻿using Core.Plugins.FP;
 
-namespace Spec.Core_Specification.Plugins.FP;
+namespace Core.Plugins.Design.FP;
 
 public class Specify_Task_As_Task
 {

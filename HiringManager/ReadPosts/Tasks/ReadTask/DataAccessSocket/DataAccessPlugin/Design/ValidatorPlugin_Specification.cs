@@ -1,7 +1,7 @@
-﻿using Blogger.ReadPosts.Tasks.ValidationTask.ValidationSocket.ValidationPlugin;
-using Spec.Blogger_Specification.ReadPostsUserStory.BusinessWorkFlow;
+﻿using Blogger.ReadPosts.Design;
+using Blogger.ReadPosts.Tasks.ValidationTask.ValidationSocket.ValidationPlugin;
 
-namespace Spec.Blogger_Specification.ReadPostsUserStory.Plugins;
+namespace Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket.DataAccessPlugin.Design;
 
 public class ValidatorPlugin_Specification
 {

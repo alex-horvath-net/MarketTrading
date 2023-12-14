@@ -1,8 +1,8 @@
-﻿using Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket;
+﻿using Blogger.ReadPosts.Design;
+using Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket;
 using Common.Sockets.DataAccess;
-using Spec.Blogger_Specification.ReadPostsUserStory.BusinessWorkFlow;
 
-namespace Spec.Blogger_Specification.ReadPostsUserStory.PluginAdapters;
+namespace Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket.Design;
 
 public class DataAccessAdapter_Specification
 {

@@ -35,4 +35,9 @@
 		<ProjectReference Include="..\Shared.Technology.WebApp\WebApp.csproj" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <Folder Include="Blogger_Specification\ReadPostsUserStory\" />
+	</ItemGroup>
+
 </Project>
