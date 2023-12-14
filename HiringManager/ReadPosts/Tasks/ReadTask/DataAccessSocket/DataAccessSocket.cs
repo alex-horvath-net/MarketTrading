@@ -1,4 +1,6 @@
-﻿namespace BloggerUserRole.ReadPostsUserStory.ReadTask.DataAccessSocket;
+﻿using Blogger.ReadPosts.Tasks.ReadTask;
+
+namespace Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket;
 
 public class DataAccessSocket(IDataAccessPlugin plugin) : IDataAccessSocket
 {

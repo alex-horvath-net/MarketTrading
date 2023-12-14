@@ -1,11 +1,13 @@
-using BloggerUserRole.ReadPostsUserStory;
-using Common.Plugins.DataAccess;
+using Blogger.ReadPosts;
+using Common;
+using Core;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var config = builder.Configuration;
 builder.Services.AddRazorPages();
 
-builder.Services.AddCore(builder.Configuration);
+builder.Services.AddCore();
+builder.Services.AddCommon(config);
 builder.Services.AddReadPosts();
 
 var app = builder.Build();

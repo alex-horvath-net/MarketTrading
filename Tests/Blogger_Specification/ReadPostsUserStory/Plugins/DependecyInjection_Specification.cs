@@ -1,8 +1,9 @@
-﻿using BloggerUserRole.ReadPostsUserStory;
-using BloggerUserRole.ReadPostsUserStory.ReadTask.DataAccessSocket;
-using BloggerUserRole.ReadPostsUserStory.ValidationTask;
-using BloggerUserRole.ReadPostsUserStory.ValidationTask.ValidationSocket;
-using Common.Plugins.DataAccess;
+﻿using Blogger.ReadPosts;
+using Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket;
+using Blogger.ReadPosts.Tasks.ValidationTask;
+using Blogger.ReadPosts.Tasks.ValidationTask.ValidationSocket;
+using Common;
+using Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,7 +20,8 @@ public class DependecyInjection_Specification
         var unit = new ServiceCollection();
 
         var services = unit
-            .AddCore(configuration)
+            .AddCore()
+            .AddCommon(configuration)
             .AddReadPosts();
 
         using var serviceProvider = services.BuildServiceProvider();

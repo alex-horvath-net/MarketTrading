@@ -9,18 +9,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Tasks\**" />
-	  <EmbeddedResource Remove="Tasks\**" />
-	  <None Remove="Tasks\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="11.8.1" />
 		<PackageReference Include="FluentAssertions" Version="6.12.0" />
 		<PackageReference Include="FluentAssertions.Analyzers" Version="0.27.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
 		<PackageReference Include="NSubstitute" Version="5.1.0" />
 		<PackageReference Include="xunit" Version="2.6.3" />

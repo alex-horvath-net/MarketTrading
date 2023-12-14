@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket;
+using Microsoft.EntityFrameworkCore;
 
-namespace BloggerUserRole.ReadPostsUserStory.ReadTask.DataAccessSocket.DataAccessPlugin;
+namespace Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket.DataAccessPlugin;
 
 public class DataAccessPlugin(
     Common.Plugins.BlogDbContext db) : IDataAccessPlugin
@@ -17,5 +18,5 @@ public class DataAccessPlugin(
 
         var socketModel = pluginModel;
         return socketModel;
-    }    
+    }
 }

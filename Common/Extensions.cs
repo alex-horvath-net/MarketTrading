@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Common.Plugins;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Common.Plugins.DataAccess;
+namespace Common;
 
 public static class Extensions
 {
-    public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddCommon(this IServiceCollection services, IConfiguration configuration)
     {
         var databaseName = "Blogging";
         var connectionString = configuration.GetConnectionString(databaseName);

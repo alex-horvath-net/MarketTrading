@@ -1,6 +1,7 @@
-﻿using Core.UserStory;
+﻿using Blogger.ReadPosts.Tasks.ValidationTask;
+using Core.UserStory;
 
-namespace BloggerUserRole.ReadPostsUserStory.ValidationTask.ValidationSocket;
+namespace Blogger.ReadPosts.Tasks.ValidationTask.ValidationSocket;
 
 public class ValidationSocket(IValidationPlugin plugin) : IValidationSocket
 {

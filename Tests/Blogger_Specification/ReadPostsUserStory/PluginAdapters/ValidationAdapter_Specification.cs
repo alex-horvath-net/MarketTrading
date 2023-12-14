@@ -1,4 +1,4 @@
-﻿using BloggerUserRole.ReadPostsUserStory.ValidationTask.ValidationSocket;
+﻿using Blogger.ReadPosts.Tasks.ValidationTask.ValidationSocket;
 using Core.Sockets.Validation;
 using Spec.Blogger_Specification.ReadPostsUserStory.BusinessWorkFlow;
 

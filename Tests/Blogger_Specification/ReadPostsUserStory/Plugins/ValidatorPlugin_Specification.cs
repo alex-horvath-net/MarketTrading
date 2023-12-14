@@ -1,4 +1,4 @@
-﻿using BloggerUserRole.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationPlugin;
+﻿using Blogger.ReadPosts.Tasks.ValidationTask.ValidationSocket.ValidationPlugin;
 using Spec.Blogger_Specification.ReadPostsUserStory.BusinessWorkFlow;
 
 namespace Spec.Blogger_Specification.ReadPostsUserStory.Plugins;

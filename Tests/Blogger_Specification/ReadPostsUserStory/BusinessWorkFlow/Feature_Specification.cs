@@ -1,4 +1,4 @@
-﻿using BloggerUserRole.ReadPostsUserStory;
+﻿using Blogger.ReadPosts;
 using Core.UserStory;
 
 namespace Spec.Blogger_Specification.ReadPostsUserStory.BusinessWorkFlow;
@@ -10,12 +10,12 @@ public class Feature_Specification
     {
         workSteps.UseNonStoppedWorkSteps();
 
-        var unit = new UserStoryCore<Request,Response>(workSteps.Mock);
+        var unit = new UserStoryCore<Request, Response>(workSteps.Mock);
         var response = await unit.Run(feature.Request, feature.Token);
 
         response.Should().NotBeNull();
         response.Request.Should().Be(feature.Request);
-        response.Stopped.Should().BeFalse();
+        response.CanRun.Should().BeFalse();
         response.Posts.Should().BeNull();
         response.Validations.Should().BeNull();
     }
@@ -30,7 +30,7 @@ public class Feature_Specification
 
         response.Should().NotBeNull();
         response.Request.Should().Be(feature.Request);
-        response.Stopped.Should().BeTrue();
+        response.CanRun.Should().BeTrue();
     }
 
     private readonly WorkStep_MockBuilder workSteps = new();
@@ -94,7 +94,7 @@ public class WorkStep_MockBuilder
     {
         public Task Run(Response response, CancellationToken token)
         {
-            response.Stopped = true;
+            response.CanRun = true;
             return Task.CompletedTask;
         }
     }
@@ -103,7 +103,7 @@ public class WorkStep_MockBuilder
     {
         public Task Run(Response response, CancellationToken token)
         {
-            response.Stopped = false;
+            response.CanRun = false;
             return Task.CompletedTask;
         }
     }

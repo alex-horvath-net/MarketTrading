@@ -31,7 +31,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Common\Common.csproj" />
-		<ProjectReference Include="..\HiringManager\BloggerUserRole.csproj" />
+		<ProjectReference Include="..\HiringManager\Blogger.csproj" />
 		<ProjectReference Include="..\Shared.Technology.WebApp\WebApp.csproj" />
 	</ItemGroup>
 

@@ -1,10 +1,10 @@
-﻿using Common.Plugins;
-using BloggerUserRole.ReadPostsUserStory.ReadTask.DataAccessSocket.DataAccessPlugin;
+﻿using Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket.DataAccessPlugin;
+using Common;
+using Common.Plugins;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Spec.Blogger_Specification.ReadPostsUserStory.BusinessWorkFlow;
-using Common.Plugins.DataAccess;
 
 namespace Spec.Blogger_Specification.ReadPostsUserStory.Plugins;
 
@@ -30,7 +30,7 @@ public class RepositoryPlugin_Specification
     public void UseDataBase()
     {
         var builder = WebApplication.CreateBuilder();
-        builder.Services.AddCore(builder.Configuration);
+        builder.Services.AddCommon(builder.Configuration);
         var app = builder.Build();
 
         app.UseDataBase();

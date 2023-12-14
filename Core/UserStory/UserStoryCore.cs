@@ -9,8 +9,10 @@ public class UserStoryCore<TRequest, TResponse>(IEnumerable<ITask<TRequest, TRes
         var response = new TResponse() with { Request = request };
         foreach (var task in tasks)
         {
-            if (response.Stopped) return response;
-            await task.Run(response, token);
+            if (response.CanRun)
+                await task.Run(response, token);
+            else
+                break;
             token.ThrowIfCancellationRequested();
         }
         return response;

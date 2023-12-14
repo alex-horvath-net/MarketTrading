@@ -1,4 +1,4 @@
-﻿namespace BloggerUserRole.ReadPostsUserStory.ReadTask;
+﻿namespace Blogger.ReadPosts.Tasks.ReadTask;
 
 public class ReadPostsTask(IDataAccessSocket socket) : Core.UserStory.ITask<Request, Response>
 {

@@ -1,4 +1,4 @@
-﻿using BloggerUserRole.ReadPostsUserStory.ReadTask.DataAccessSocket;
+﻿using Blogger.ReadPosts.Tasks.ReadTask.DataAccessSocket;
 using Common.Sockets.DataAccess;
 using Spec.Blogger_Specification.ReadPostsUserStory.BusinessWorkFlow;
 
