@@ -11,12 +11,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="ReadPosts\UserStory\**" />
-	  <Compile Remove="ReadPosts\Tasks\ValidationTask\Sockets\**" />
-	  <EmbeddedResource Remove="ReadPosts\UserStory\**" />
-	  <EmbeddedResource Remove="ReadPosts\Tasks\ValidationTask\Sockets\**" />
-	  <None Remove="ReadPosts\UserStory\**" />
-	  <None Remove="ReadPosts\Tasks\ValidationTask\Sockets\**" />
+	  <Compile Remove="UserStories\ReadPosts\UserStory\**" />
+	  <EmbeddedResource Remove="UserStories\ReadPosts\UserStory\**" />
+	  <None Remove="UserStories\ReadPosts\UserStory\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -44,7 +41,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <Folder Include="WritePost\" />
+	  <Folder Include="UserStories\WritePost\" />
 	</ItemGroup>
 
 </Project>

@@ -1,11 +1,8 @@
-﻿using Core.Plugins.FP;
-using Core.UserStory;
+﻿namespace Core.Tasks;
 
-namespace Core.Tasks;
-
-public class FeatureTask<TRequest, TResponse> : ITask<TRequest, TResponse>
-    where TRequest : RequestCore
-    where TResponse : ResponseCore<TRequest>, new()
+public class FeatureTask<TRequest, TResponse> : Core.UserStory.ITask<TRequest, TResponse>
+    where TRequest : Core.UserStory.RequestCore
+    where TResponse : Core.UserStory.ResponseCore<TRequest>, new()
 {
     public async Task Run(TResponse response, CancellationToken token)
     {

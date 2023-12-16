@@ -1,4 +1,4 @@
-﻿using Common.Sockets.DataAccess;
+﻿using Common.Sockets.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Common.Plugins;

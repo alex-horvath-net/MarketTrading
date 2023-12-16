@@ -1,4 +1,4 @@
-using Blogger.ReadPosts;
+using Blogger.UserStories.ReadPosts;
 using Common;
 using Core;
 

@@ -2,7 +2,7 @@
 
 public static class TaskExtensions
 {
-    public static Task<T> ToTask<T>(this T value) => Task.FromResult(value);
+    
 
     public async static Task<R> Select<T, R>(this Task<T> taskT, Func<T, R> mapT2R)
     {

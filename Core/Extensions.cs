@@ -6,6 +6,8 @@ namespace Core;
 
 public static class Extensions
 {
+    public static Task<T> ToTask<T>(this T value) => Task.FromResult(value);
+
     public static IServiceCollection AddCore(this IServiceCollection services)
     {
         services.AddScoped(typeof(IUserStory<,>), typeof(UserStoryCore<,>));
