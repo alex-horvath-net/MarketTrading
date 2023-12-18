@@ -29,8 +29,8 @@ public class UserStoryCore_Design
     {
         var tasks = new List<ITask<RequestCore, ResponseCore<RequestCore>>>()
         {
-            canContinueTask,
-            canContinueTask
+            oneTask.DoNotTerminate().Mock,
+            otherTask.DoNotTerminate().Mock
         }.AsEnumerable();
         var request = new RequestCore();
         var token = CancellationToken.None;
@@ -49,8 +49,8 @@ public class UserStoryCore_Design
     {
         var tasks = new List<ITask<RequestCore, ResponseCore<RequestCore>>>()
         {
-            canContinueTask,
-            canNotContinueTask
+            oneTask.DoNotTerminate().Mock,
+            otherTask.Terminate().Mock
         }.AsEnumerable();
 
         var request = new RequestCore();
@@ -63,8 +63,8 @@ public class UserStoryCore_Design
         response.CanRun.Should().BeFalse();
     }
 
-    private readonly ITask<RequestCore,ResponseCore<RequestCore>>.CanContinueTask canContinueTask = new();
-    private readonly ITask<RequestCore, ResponseCore<RequestCore>>.CanNotContinueTask canNotContinueTask = new();
+    private readonly ITask<RequestCore,ResponseCore<RequestCore>>.MockBuilder otherTask = new();
+    private readonly ITask<RequestCore, ResponseCore<RequestCore>>.MockBuilder oneTask = new();
     //private readonly Featrue_MockBuilder feature = new();
 }
 
