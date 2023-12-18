@@ -1,5 +1,7 @@
 ﻿using Blogger.UserStories.ReadPosts;
 using Core.UserStory;
+using FluentAssertions;
+using NSubstitute;
 
 namespace Blogger.UserStories.ReadPosts.Design;
 

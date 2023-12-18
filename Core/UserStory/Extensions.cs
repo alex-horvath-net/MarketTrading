@@ -1,17 +1,15 @@
 ﻿using Core.Tasks;
-using Core.UserStory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core;
+namespace Core.UserStory;
 
 public static class Extensions
 {
     public static Task<T> ToTask<T>(this T value) => Task.FromResult(value);
 
-    public static IServiceCollection AddCore(this IServiceCollection services)
+    public static IServiceCollection AddUserStory(this IServiceCollection services)
     {
-        services.AddUserStory();
-        services.AddFeatureTask();
+        services.AddScoped(typeof(IUserStory<,>), typeof(UserStoryCore<,>));
 
         return services;
     }

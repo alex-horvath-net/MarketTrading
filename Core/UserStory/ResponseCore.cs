@@ -7,5 +7,5 @@ public record ResponseCore<TRequest>()
 
     public TRequest Request { get; set; }
     public IEnumerable<ValidationResult> Validations { get; set; }
-    public bool CanRun { get; set; }
+    public bool CanRun { get; set; } = true;
 }

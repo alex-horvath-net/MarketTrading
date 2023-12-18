@@ -1,12 +1,14 @@
 ﻿using Blogger.UserStories.ReadPosts.Design;
-using Blogger.UserStories.ReadPosts.Tasks.ReadTask.Sockets.DataAccessSocket;
 using Common.Sockets.DataModel;
+using FluentAssertions;
+using NSubstitute;
+using Xunit;
 
 namespace Blogger.UserStories.ReadPosts.Tasks.ReadTask.Sockets.DataAccessSocket.Design;
 
 public class DataAccessAdapter_Specification
 {
-    //[Fact]
+    [Fact]
     public async void Path_Without_Diversion()
     {
         var unit = new DataAccessSocket(repositoryPlugin.Mock);

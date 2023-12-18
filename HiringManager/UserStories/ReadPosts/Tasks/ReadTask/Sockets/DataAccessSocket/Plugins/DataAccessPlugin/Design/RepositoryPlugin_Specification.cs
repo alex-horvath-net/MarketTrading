@@ -1,6 +1,7 @@
 ﻿using Blogger.UserStories.ReadPosts.Design;
 using Common;
 using Common.Plugins;
+using FluentAssertions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

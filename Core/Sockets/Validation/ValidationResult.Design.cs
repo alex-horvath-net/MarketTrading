@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace Core.Sockets.Validation.Design;
+namespace Core.Sockets.Validation;
 
-public class ValidationModel_Specification
+public class ValidationModel_Design
 {
     [Fact]
     public void Ctor()

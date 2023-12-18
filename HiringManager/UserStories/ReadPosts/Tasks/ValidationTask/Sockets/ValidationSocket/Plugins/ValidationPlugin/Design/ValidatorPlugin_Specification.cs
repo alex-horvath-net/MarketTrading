@@ -1,7 +1,8 @@
-﻿using Blogger.ReadPosts.Tasks.ValidationTask.ValidationSocket.ValidationPlugin;
-using Blogger.UserStories.ReadPosts.Design;
+﻿using Blogger.UserStories.ReadPosts.Design;
+using Blogger.UserStories.ReadPosts.Tasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin;
+using FluentAssertions;
 
-namespace Blogger.UserStories.ReadPosts.Tasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin.Design;
+namespace Blogger.UserStories.ReadPosts.Tasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin.Design;
 
 public class ValidatorPlugin_Specification
 {
