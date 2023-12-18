@@ -1,7 +1,8 @@
-﻿using Common.Sockets.DataModel;
+﻿using Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket;
+using Common.Sockets.DataModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blogger.UserStories.ReadPosts.Tasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin;
+namespace Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin;
 
 public class DataAccessPlugin(
     Common.Plugins.BlogDbContext db) : IDataAccessPlugin
@@ -18,5 +19,10 @@ public class DataAccessPlugin(
 
         var socketModel = pluginModel;
         return socketModel;
+    }
+
+    internal Task Read(string title, string content, object token)
+    {
+        throw new NotImplementedException();
     }
 }

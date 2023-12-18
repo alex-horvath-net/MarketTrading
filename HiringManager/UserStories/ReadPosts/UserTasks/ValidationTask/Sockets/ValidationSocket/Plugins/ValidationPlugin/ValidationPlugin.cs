@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket;
+using FluentValidation;
 
-namespace Blogger.UserStories.ReadPosts.Tasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin;
+namespace Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin;
 
 public class ValidationPlugin : Core.Plugins.Validation.FluentValidator<Request>, IValidationPlugin
 {

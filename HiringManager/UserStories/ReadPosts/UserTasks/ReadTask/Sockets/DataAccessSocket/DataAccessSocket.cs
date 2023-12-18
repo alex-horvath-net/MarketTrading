@@ -1,7 +1,8 @@
 ﻿using Data = Common.Sockets.DataModel;
 using Common.UserStory.DomainModel;
+using Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
 
-namespace Blogger.UserStories.ReadPosts.Tasks.ReadTask.Sockets.DataAccessSocket;
+namespace Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket;
 
 public class DataAccessSocket(IDataAccessPlugin plugin) : IDataAccessSocket
 {

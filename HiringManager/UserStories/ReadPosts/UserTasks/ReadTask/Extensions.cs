@@ -1,15 +1,15 @@
-﻿using Blogger.UserStories.ReadPosts.Tasks.ReadTask.Sockets.DataAccessSocket;
-using Blogger.UserStories.ReadPosts.Tasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin;
+﻿using Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket;
+using Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin;
 using Core.UserStory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Blogger.UserStories.ReadPosts.Tasks.ReadTask;
+namespace Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
 
 public static class Extensions
 {
     public static IServiceCollection AddReadTask(this IServiceCollection services)
     {
-        services.AddScoped<ITask<Request, Response>, ReadPostsTask>();
+        services.AddScoped<IUserTask<Request, Response>, ReadPostsTask>();
         services.AddScoped<IDataAccessSocket, DataAccessSocket>();
         services.AddScoped<IDataAccessPlugin, DataAccessPlugin>();
 

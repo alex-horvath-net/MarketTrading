@@ -1,10 +1,10 @@
 ﻿using Blogger.UserStories.ReadPosts.Design;
-using Blogger.UserStories.ReadPosts.Tasks.ValidationTask.Sockets.ValidationSocket;
+using Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket;
 using Core.Sockets.Validation;
 using FluentAssertions;
 using NSubstitute;
 
-namespace Blogger.UserStories.ReadPosts.Tasks.ReadTask.Sockets.DataAccessSocket.Design;
+namespace Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket.Design;
 
 public class ValidationAdapter_Specification
 {
@@ -12,7 +12,7 @@ public class ValidationAdapter_Specification
     public async void Path_Without_Diversion()
     {
         var unit = new ValidationSocket(validator.Mock);
-        var response = await unit.Validate(feature.Request, feature.Token);
+        var response = await unit.Validate(request.Mock, CancellationToken.None);
 
         response.Should().NotBeNullOrEmpty();
         response.Should().OnlyContain(result => validator.Results.Any(x => x.ErrorCode == result.ErrorCode && x.ErrorMessage == result.ErrorMessage));
@@ -20,7 +20,8 @@ public class ValidationAdapter_Specification
     }
 
     private readonly ValidatorPlugin_MockBuilder validator = new();
-    private readonly Featrue_MockBuilder feature = new();
+    private readonly Request.MockBuilder request = new();
+
 }
 
 public class ValidatorPlugin_MockBuilder

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Blogger.UserStories.ReadPosts.Tasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin.Design;
+namespace Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin.Design;
 
 public class RepositoryPlugin_Specification
 {
@@ -21,7 +21,7 @@ public class RepositoryPlugin_Specification
         var unit = new DataAccessPlugin(db);
         var title = "Title";
         var content = "Content";
-        var response = await unit.Read(title, content, feature.Token);
+        var response = await unit.Read(title, content, CancellationToken.None);
 
         response.Should().OnlyContain(post => post.Title.Contains(title));
     }
@@ -39,6 +39,4 @@ public class RepositoryPlugin_Specification
 
         db.Posts.Should().NotBeEmpty();
     }
-
-    private readonly Featrue_MockBuilder feature = new();
 }

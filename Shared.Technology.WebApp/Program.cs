@@ -1,8 +1,6 @@
 using Blogger;
-using Blogger.UserStories.ReadPosts;
 using Common;
 using Core;
-using Core.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

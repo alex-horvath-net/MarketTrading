@@ -42,7 +42,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Plugins\DataAccess\Design\" />
-	  <Folder Include="Tasks\Design\" />
+	  <Folder Include="UserTasks\Design\" />
 	</ItemGroup>
 
 </Project>

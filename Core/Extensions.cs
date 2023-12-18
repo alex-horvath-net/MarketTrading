@@ -1,5 +1,5 @@
-﻿using Core.Tasks;
-using Core.UserStory;
+﻿using Core.UserStory;
+using Core.UserTasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core;

@@ -1,5 +1,5 @@
-﻿using Blogger.UserStories.ReadPosts.Tasks.ReadTask;
-using Blogger.UserStories.ReadPosts.Tasks.ValidationTask;
+﻿using Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
+using Blogger.UserStories.ReadPosts.UserTasks.ValidationTask;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Blogger.UserStories.ReadPosts;

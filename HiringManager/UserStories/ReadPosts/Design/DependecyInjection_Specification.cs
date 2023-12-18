@@ -1,9 +1,8 @@
-﻿using Blogger.UserStories.ReadPosts.Tasks.ReadTask.Sockets.DataAccessSocket;
-using Blogger.UserStories.ReadPosts.Tasks.ValidationTask;
-using Blogger.UserStories.ReadPosts.Tasks.ValidationTask.Sockets.ValidationSocket;
+﻿using Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket;
+using Blogger.UserStories.ReadPosts.UserTasks.ValidationTask;
+using Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket;
 using Common;
 using Core;
-using Core.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

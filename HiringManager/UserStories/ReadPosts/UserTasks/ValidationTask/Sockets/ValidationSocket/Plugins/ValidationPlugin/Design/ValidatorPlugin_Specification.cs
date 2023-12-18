@@ -1,8 +1,7 @@
 ﻿using Blogger.UserStories.ReadPosts.Design;
-using Blogger.UserStories.ReadPosts.Tasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin;
 using FluentAssertions;
 
-namespace Blogger.UserStories.ReadPosts.Tasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin.Design;
+namespace Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin.Design;
 
 public class ValidatorPlugin_Specification
 {
@@ -10,7 +9,7 @@ public class ValidatorPlugin_Specification
     public async void Valid_Request()
     {
         var unit = new ValidationPlugin();
-        var issues = await unit.Validate(feature.Request, feature.Token);
+        var issues = await unit.Validate(request.UseValidRequest().Mock, CancellationToken.None);
 
         issues.Should().NotBeNull();
         issues.Should().BeEmpty();
@@ -20,7 +19,7 @@ public class ValidatorPlugin_Specification
     public async void InValid_Request()
     {
         var unit = new ValidationPlugin();
-        var issues = await unit.Validate(feature.UseInvalidRequest().Request, feature.Token);
+        var issues = await unit.Validate(request.UseInvalidRequest().Mock, CancellationToken.None);
 
         issues.Should().NotBeNull();
         issues.Should().NotBeEmpty();
@@ -29,5 +28,5 @@ public class ValidatorPlugin_Specification
         issues.Should().OnlyContain(x => x.ErrorMessage == "Either Title or Content must be provided.");
         issues.Should().OnlyContain(x => x.Severity == "Error");
     }
-    private readonly Featrue_MockBuilder feature = new();
+    private readonly Request.MockBuilder request = new();
 }

@@ -1,13 +1,13 @@
 ﻿using Core.UserStory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.Tasks;
+namespace Core.UserTasks;
 
 public static class Extensions
 {
     public static IServiceCollection AddFeatureTask(this IServiceCollection services)
     {
-        services.AddScoped(typeof(ITask<,>), typeof(FeatureTask<,>));
+        services.AddScoped(typeof(IUserTask<,>), typeof(FeatureTask<,>));
 
         return services;
     }
