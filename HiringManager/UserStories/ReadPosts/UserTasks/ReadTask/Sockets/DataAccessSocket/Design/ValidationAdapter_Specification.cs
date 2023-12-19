@@ -28,14 +28,14 @@ public class ValidatorPlugin_MockBuilder
 {
     public readonly IValidationPlugin Mock = Substitute.For<IValidationPlugin>();
 
-    public List<ValidationResult> Results { get; private set; }
+    public List<ValidationFailure> Results { get; private set; }
 
     public ValidatorPlugin_MockBuilder() => MockFailedValidation();
     public ValidatorPlugin_MockBuilder MockFailedValidation()
     {
-        Results = new List<ValidationResult>
+        Results = new List<ValidationFailure>
             {
-                new ValidationResult("Property", "Code", "Message", "Error")
+                new ValidationFailure("Property", "Code", "Message", "Error")
             };
         Mock.Validate(default, default).ReturnsForAnyArgs(Results);
         return this;

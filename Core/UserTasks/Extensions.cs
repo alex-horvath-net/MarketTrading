@@ -1,5 +1,7 @@
 ﻿using Core.UserStory;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
 namespace Core.UserTasks;
 
@@ -12,3 +14,20 @@ public static class Extensions
         return services;
     }
 }
+
+
+public class Extensions_Design
+{
+    [Fact]
+    public void AddFeatureTask_Registers_All_UserTask()
+    {
+        var services = new ServiceCollection();
+
+        services.AddFeatureTask();
+
+        var sp = services.BuildServiceProvider();
+        var userStory = sp.GetRequiredService<IUserTask<RequestCore, ResponseCore<RequestCore>>>();
+        userStory.Should().NotBeNull();
+    }
+}
+

@@ -33,8 +33,4 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Plugins\Validation\Design\" />
-	</ItemGroup>
-
 </Project>

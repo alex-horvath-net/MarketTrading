@@ -3,6 +3,13 @@ using Xunit;
 
 namespace Core.Sockets.Validation;
 
+public sealed record ValidationFailure(
+    string PropertyName,
+    string ErrorCode,
+    string ErrorMessage,
+    string Severity);
+
+
 public class ValidationModel_Design
 {
     [Fact]
@@ -12,7 +19,7 @@ public class ValidationModel_Design
         var errorCode = "errorCode";
         var errorMessage = "errorMessage";
         var severity = "severity";
-        var result = new ValidationResult(propertyName, errorCode, errorMessage, severity);
+        var result = new ValidationFailure(propertyName, errorCode, errorMessage, severity);
         result = result with { PropertyName = propertyName, ErrorCode = errorCode, ErrorMessage = errorMessage, Severity = severity };
 
         result.Should().NotBeNull();

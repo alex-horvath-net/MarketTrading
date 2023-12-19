@@ -15,5 +15,5 @@ public class ValidationSocket(IValidationPlugin plugin) : IValidationSocket
 
 public interface IValidationPlugin
 {
-    Task<IEnumerable<Core.Sockets.Validation.ValidationResult>> Validate(Request request, CancellationToken token);
+    Task<IEnumerable<Core.Sockets.Validation.ValidationFailure>> Validate(Request request, CancellationToken token);
 }
