@@ -63,7 +63,7 @@ public class Box_Design
         var box =  Box<string>.Empty;
 
         box.IsEmpty.Should().BeTrue();  
-        box.Content.Should().BeNull();
+        box.Content.Should().Be(default);
     }
 
     [Fact]
@@ -87,8 +87,7 @@ public class Box_Design
     [Fact]
     public void GetImplicitContentOfEmptyBox()
     {
-        Box<string> box = "1984";
-        string content = box;
+        string content = "1984".ToBox();
 
         content.Should().Be("1984");
     }
