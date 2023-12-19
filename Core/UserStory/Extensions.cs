@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
 namespace Core.UserStory;
 
 public static class Extensions
 {
-    public static Task<T> ToTask<T>(this T value) => Task.FromResult(value);
-
     public static IServiceCollection AddUserStory(this IServiceCollection services)
     {
         services.AddScoped(typeof(IUserStory<,>), typeof(UserStoryCore<,>));
@@ -13,3 +13,19 @@ public static class Extensions
         return services;
     }
 }
+
+public class Extensions_Design
+{
+    [Fact]
+    public void AddUserStory_Registers_All_UserStory()
+    {
+        var services = new ServiceCollection();
+
+        services.AddUserStory(); 
+        
+        var sp = services.BuildServiceProvider();
+        var userStory = sp.GetRequiredService<IUserStory<RequestCore, ResponseCore<RequestCore>>>();
+        userStory.Should().NotBeNull();
+    }
+}
+
