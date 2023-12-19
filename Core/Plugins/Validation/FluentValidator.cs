@@ -38,6 +38,7 @@ public class FluentValidator_Design
             e.Severity == "Error");
     }
 
+    [Fact]
     public async void TestValidator_NoFailure()
     {
         var validatorPlugin = new TestValidator();
