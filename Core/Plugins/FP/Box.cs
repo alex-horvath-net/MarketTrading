@@ -3,17 +3,33 @@ using Xunit;
 
 namespace Core.Plugins.FP;
 
-public record Box<T>(T Content)
+public record Box<T>
 {
-    public bool IsEmpty { get; }
+    public T Content { get; private set; }
+    public bool HasContent { get; private set; }
 
-    public static readonly Box<T> Empty = new();
+    public static readonly Box<T> Empty= new();
+    public static Box<T> New(T content) => new() { Content = content, HasContent = true };
 
-    public Box<R> Join<R>() => !IsEmpty && Content is Box<R> boxR ? boxR : Box<R>.Empty;
+    private Box() { }
+
+    public static implicit operator Box<T>(T content) => New(content);
+    public static implicit operator T(Box<T> box) => box.Content;
+
+    public Box<R> Join<R>()
+    {
+        if (!HasContent)
+            return Box<R>.Empty;
+
+        if (Content is Box<R> boxR)
+            return boxR;
+
+        return new Box<R>();
+    }
 
     public Box<R> Select<R>(Func<T, R> mapT2R)
     {
-        if (IsEmpty)
+        if (!HasContent)
             return Box<R>.Empty;
 
         var t = Content;
@@ -23,7 +39,7 @@ public record Box<T>(T Content)
 
     public Box<R> SelectMany<R>(Func<T, Box<R>> mapT2BoxR)
     {
-        if (IsEmpty)
+        if (!HasContent)
             return Box<R>.Empty;
 
         var t = Content;
@@ -33,7 +49,7 @@ public record Box<T>(T Content)
 
     public Box<R> SelectMany<U, R>(Func<T, Box<U>> mapT2BoxU, Func<T, U, R> mapTU2R)
     {
-        if (IsEmpty)
+        if (!HasContent)
             return Box<R>.Empty;
 
         var t = Content;
@@ -43,15 +59,12 @@ public record Box<T>(T Content)
         return r;
     }
 
-    private Box() : this(default(T)) => IsEmpty = true;
 
-    public static implicit operator Box<T>(T content) => new(content);
-    public static implicit operator T(Box<T> box) => box.Content;
 }
 
 public static class BoxExtensions
 {
-    public static Box<T> ToBox<T>(this T content) => new(content);
+    public static Box<T> ToBox<T>(this T content) => Box<T>.New(content);
 
 }
 
@@ -61,44 +74,60 @@ public class Box_Design
     private DateTime Int2Date(int year) => new DateTime(year, 1, 1);
 
     [Fact]
-    public void CreateEmptyBox()
+    public void EmptyBox()
     {
-        var box = Box<string>.Empty;
-
-        box.IsEmpty.Should().BeTrue();
-        box.Content.Should().Be(default);
+        Box<string>.Empty.Should().Be(Box<string>.Empty);
     }
 
     [Fact]
-    public void CreateNonEmptyBox()
+    public void CreateExplicitEmptyBox()
     {
-        var box = new Box<string>("1984");
+        var defaultValue = default(string);
+        
+        var box = Box<string>.Empty;
 
-        box.IsEmpty.Should().BeFalse();
-        box.Content.Should().Be("1984");
+        box.HasContent.Should().BeFalse();
+        box.Content.Should().Be(defaultValue);
+    }
+
+    [Fact]
+    public void CreatExpliciteNonEmptyBox()
+    {
+        var year = "1984";  
+
+        var box = Box<string>.New(year);
+
+        box.HasContent.Should().BeTrue();
+        box.Content.Should().Be(year);
     }
 
     [Fact]
     public void CreateImplicitNonEmptyBox()
     {
-        Box<string> box = "1984";
+        var year = "1984";
 
-        box.IsEmpty.Should().BeFalse();
+        Box<string> box = year;
+
+        box.HasContent.Should().BeTrue();
         box.Content.Should().Be("1984");
     }
 
     [Fact]
     public void GetImplicitContentOfEmptyBox()
     {
-        string content = "1984".ToBox();
+        var year = "1984";
 
-        content.Should().Be("1984");
+        string content = year.ToBox();
+
+        content.Should().Be(year);
     }
 
     [Fact]
     public void ToBox()
     {
-        var box = "1984".ToBox();
+        var year = "1984";
+
+        var box = year.ToBox();
 
         box.Content.Should().Be("1984");
     }
@@ -106,30 +135,37 @@ public class Box_Design
     [Fact]
     public void Select_Lambda()
     {
-        var box = "1984".ToBox().Select(String2Int);
+        var box = "1984".ToBox();
+            
+        var reBox = box.Select(String2Int);
 
-        box.Content.Should().Be(1984);
+        box.Content.Should().Be("1984");
     }
     [Fact]
     public void Select_Empty_Lambda()
     {
-        var box = Box<string>.Empty.Select(String2Int);
+        var emptyBox = Box<string>.Empty;   
 
-        box.IsEmpty.Should().BeTrue();
+        var box = emptyBox.Select(String2Int);
+
+        box.HasContent.Should().BeFalse();
     }
     [Fact]
     public void Select_Linq()
     {
-        var box =
-            from result1 in "1984".ToBox()
-            select String2Int(result1);
+        var box = "1984".ToBox();
 
-        box.Content.Should().Be(1984);
+        var reBox =
+            from content in box
+            select String2Int(content);
+
+        reBox.Content.Should().Be(1984);
     }
     [Fact]
     public void Map_Functor_1()
     {
         var box = "1984".ToBox();
+        
         var reBox = box.Select(content => content);
 
         reBox.Should().Be(box);
@@ -138,6 +174,7 @@ public class Box_Design
     public void Map_Functor_2()
     {
         var box = "1984".ToBox();
+        
         var reBoxIn2Step = box.Select(String2Int).Select(Int2Date);
         var reBoxIn1Step = box.Select(content => Int2Date(String2Int(content)));
 
@@ -146,15 +183,26 @@ public class Box_Design
     }
 
 
-    
     [Fact]
-    public void Join_WorngBoxe()
+    public void Nested_Boxe()
+    {
+        var box = "1984".ToBox();
+        
+        var boxInBox = box.ToBox();
+
+        boxInBox.Content.Should().Be(box);
+    }
+
+
+    [Fact]
+    public void Join_WorngBox()
     {
         var box = "1984".ToBox();
         var boxInBox = box.ToBox();
 
-        boxInBox.Content.Should().Be(box);
-        boxInBox.Join<int>().Should().Be(Box<int>.Empty);
+        var flatBox = boxInBox.Join<int>();
+        
+        flatBox.HasContent.Should().BeFalse();
     }
 
     [Fact]
@@ -163,8 +211,9 @@ public class Box_Design
         var box = Box<string>.Empty;
         var boxInBox = box.ToBox();
 
-        boxInBox.Content.Should().Be(box);
-        boxInBox.Join<string>().Should().Be(Box<string>.Empty);
+        var flatBox = boxInBox.Join<string>();
+
+        flatBox.HasContent.Should().BeFalse();
     }
 
 
@@ -174,10 +223,11 @@ public class Box_Design
         var box = "1984".ToBox();
         var boxInBox = box.ToBox();
 
-        boxInBox.Content.Should().Be(box);
-        boxInBox.Join<string>().Should().Be(box);
+        var flatBox = boxInBox.Join<string>();
+        
+        flatBox.Should().Be(box);
     }
-    
+
 
     [Fact]
     public void SelectMany_Lambda()
@@ -192,7 +242,7 @@ public class Box_Design
     {
         var box = Box<string>.Empty.SelectMany(result1 => String2Int(result1).ToBox());
 
-        box.IsEmpty.Should().BeTrue();
+        box.HasContent.Should().BeFalse();
     }
 
     [Fact]
