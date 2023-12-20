@@ -9,60 +9,63 @@ public record Box<T>(T Content)
 
     public static readonly Box<T> Empty = new();
 
-    private Box() : this(default(T)) => IsEmpty = true;
+    public Box<R> Join<R>() => !IsEmpty && Content is Box<R> boxR ? boxR : Box<R>.Empty;
 
-    public static implicit operator Box<T>(T content) => content.ToBox();
-    public static implicit operator T(Box<T> box) => box.Content;
-}
-
-public static class BoxExtensions
-{
-    public static Box<T> ToBox<T>(this T content) => new Box<T>(content);
-
-    public static Box<T> Join<T>(this Box<Box<T>> newstedBoxT) => newstedBoxT.Content;
-
-    public static Box<R> Select<T, R>(this Box<T> boxT, Func<T, R> mapT2R)
+    public Box<R> Select<R>(Func<T, R> mapT2R)
     {
-        if (boxT.IsEmpty) return Box<R>.Empty;
+        if (IsEmpty)
+            return Box<R>.Empty;
 
-        var t = boxT.Content;
+        var t = Content;
         var r = mapT2R(t);
         return r;
     }
 
-    public static Box<R> SelectMany<T, R>(this Box<T> boxT, Func<T, Box<R>> mapT2BoxR)
+    public Box<R> SelectMany<R>(Func<T, Box<R>> mapT2BoxR)
     {
-        if (boxT.IsEmpty) return Box<R>.Empty;
+        if (IsEmpty)
+            return Box<R>.Empty;
 
-        var t = boxT.Content;
+        var t = Content;
         var boxR = mapT2BoxR(t);
         return boxR;
     }
 
-    public static Box<R> SelectMany<T, U, R>(this Box<T> boxT, Func<T, Box<U>> mapT2BoxU, Func<T, U, R> mapTU2R)
+    public Box<R> SelectMany<U, R>(Func<T, Box<U>> mapT2BoxU, Func<T, U, R> mapTU2R)
     {
-        if (boxT.IsEmpty) return Box<R>.Empty;
+        if (IsEmpty)
+            return Box<R>.Empty;
 
-        var t = boxT.Content;
+        var t = Content;
         var boxU = mapT2BoxU(t);
         var u = boxU.Content;
         var r = mapTU2R(t, u);
         return r;
     }
+
+    private Box() : this(default(T)) => IsEmpty = true;
+
+    public static implicit operator Box<T>(T content) => new(content);
+    public static implicit operator T(Box<T> box) => box.Content;
+}
+
+public static class BoxExtensions
+{
+    public static Box<T> ToBox<T>(this T content) => new(content);
+
 }
 
 public class Box_Design
 {
-    private string MapToItself(string itself) => itself;
-    private int Parse(string text) => int.Parse(text);
-    private DateTime ToDate(int year) => new DateTime(year, 1, 1);
+    private int String2Int(string text) => int.Parse(text);
+    private DateTime Int2Date(int year) => new DateTime(year, 1, 1);
 
     [Fact]
     public void CreateEmptyBox()
     {
-        var box =  Box<string>.Empty;
+        var box = Box<string>.Empty;
 
-        box.IsEmpty.Should().BeTrue();  
+        box.IsEmpty.Should().BeTrue();
         box.Content.Should().Be(default);
     }
 
@@ -103,65 +106,83 @@ public class Box_Design
     [Fact]
     public void Select_Lambda()
     {
-        var box1 = "1984".ToBox();
+        var box = "1984".ToBox().Select(String2Int);
 
-        var box2 = box1.Select(Parse);
-
-        box2.Content.Should().Be(1984);
+        box.Content.Should().Be(1984);
     }
     [Fact]
     public void Select_Empty_Lambda()
     {
-        var box1 = Box<string>.Empty;
+        var box = Box<string>.Empty.Select(String2Int);
 
-        var box2 = box1.Select(Parse);
-
-        box2.IsEmpty.Should().BeTrue();
+        box.IsEmpty.Should().BeTrue();
     }
     [Fact]
     public void Select_Linq()
     {
-        var box1 = "1984".ToBox();
+        var box =
+            from result1 in "1984".ToBox()
+            select String2Int(result1);
 
-        var box2 =
-            from result1 in box1
-            select Parse(result1);
-
-        box2.Content.Should().Be(1984);
+        box.Content.Should().Be(1984);
     }
     [Fact]
     public void Map_Functor_1()
     {
         var box = "1984".ToBox();
-        var newBox = box.Select(MapToItself);
+        var reBox = box.Select(content => content);
 
-        newBox.Should().Be(box);
+        reBox.Should().Be(box);
     }
     [Fact]
     public void Map_Functor_2()
     {
         var box = "1984".ToBox();
-        var sequentialBox = box.Select(Parse).Select(ToDate);
-        var nestedBox = box.Select(c => ToDate(Parse(c)));
+        var reBoxIn2Step = box.Select(String2Int).Select(Int2Date);
+        var reBoxIn1Step = box.Select(content => Int2Date(String2Int(content)));
 
-        sequentialBox.Should().Be(nestedBox);
+
+        reBoxIn2Step.Should().Be(reBoxIn1Step);
     }
 
 
+    
     [Fact]
-    public void Join()
+    public void Join_WorngBoxe()
     {
         var box = "1984".ToBox();
         var boxInBox = box.ToBox();
 
         boxInBox.Content.Should().Be(box);
-        boxInBox.Join().Should().Be(box);
+        boxInBox.Join<int>().Should().Be(Box<int>.Empty);
     }
+
+    [Fact]
+    public void Join_RightButEmptyBox()
+    {
+        var box = Box<string>.Empty;
+        var boxInBox = box.ToBox();
+
+        boxInBox.Content.Should().Be(box);
+        boxInBox.Join<string>().Should().Be(Box<string>.Empty);
+    }
+
+
+    [Fact]
+    public void Join_RightBox()
+    {
+        var box = "1984".ToBox();
+        var boxInBox = box.ToBox();
+
+        boxInBox.Content.Should().Be(box);
+        boxInBox.Join<string>().Should().Be(box);
+    }
+    
 
     [Fact]
     public void SelectMany_Lambda()
     {
-        var box = "1984".ToBox().SelectMany(result1 => Parse(result1).ToBox());
+        var box = "1984".ToBox().SelectMany(content => String2Int(content).ToBox());
 
         box.Content.Should().Be(1984);
     }
@@ -169,7 +190,7 @@ public class Box_Design
     [Fact]
     public void SelectMany_Empty_Lambda()
     {
-        var box = Box<string>.Empty.SelectMany(result1 => Parse(result1).ToBox());
+        var box = Box<string>.Empty.SelectMany(result1 => String2Int(result1).ToBox());
 
         box.IsEmpty.Should().BeTrue();
     }
@@ -179,7 +200,7 @@ public class Box_Design
     {
         var box =
             from result1 in "1984".ToBox()
-            from result2 in Parse(result1).ToBox()
+            from result2 in String2Int(result1).ToBox()
             select result2;
 
         box.Content.Should().Be(1984);
