@@ -1,4 +1,5 @@
-﻿using Core.UserStory;
+﻿using System.Runtime.CompilerServices;
+using Core.UserStory;
 using Core.UserTasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,19 @@ namespace Core;
 
 public static class Extensions
 {
+
+    public static async IAsyncEnumerable<T> Run<T, R>(this IEnumerable<R> list, Func<R, CancellationToken, Task<T>> factory, [EnumeratorCancellation] CancellationToken token)
+    {
+        var tasks = list.Select(item => factory(item, token)).ToList();
+        while (tasks.Any())
+        {
+            var completedTask = await Task.WhenAny(tasks).ConfigureAwait(false);
+            tasks.Remove(completedTask);
+            yield return await completedTask.ConfigureAwait(false);
+        }
+    }
+
+
     public static Task<T> ToTask<T>(this T value) => Task.FromResult(value);
 
     public static IServiceCollection AddCore(this IServiceCollection services)
