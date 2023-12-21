@@ -6,22 +6,6 @@ namespace Core.Plugins.FP;
 
 public static class TaskExtensions
 {
-    public async static void Continue(this Task task) => task.Continue<Exception>(false, ex => { }, true);
-    public async static void Continue(this Task task, Action<Exception> catchException) => task.Continue<Exception>(false, catchException, true);
-    private async static void Continue<TException>(this Task task,
-        bool preserveMainThread, Action<TException> catchException, bool preserveException) where TException : Exception
-    {
-        try
-        {
-            await task.ConfigureAwait(preserveMainThread);
-        } catch (TException ex)
-        {
-            catchException(ex);
-            if (preserveException)
-                throw;
-        }
-    }
-
 
     public async static Task<R> Select<T, R>(this Task<T> taskT, Func<T, R> mapT2R)
     {

@@ -9,11 +9,30 @@ namespace Core;
 
 public static class Extensions
 {
+    public async static void FireAndForget(this Task task) =>
+        task.FireAndForget<Exception>(returnToCallerTread: false, handleException: ex => { }, retrhrow: true);
 
-    public static async IAsyncEnumerable<T> Run<T, R>(this IEnumerable<R> list, Func<R, CancellationToken, Task<T>> factory, [EnumeratorCancellation] CancellationToken token)
+    public async static void FireAndForget<TException>(this Task task, bool returnToCallerTread, Action<TException> handleException, bool retrhrow) where TException : Exception
+    {
+        try
+        {
+            await task.ConfigureAwait(returnToCallerTread);
+        } catch (TException ex)
+        {
+            handleException(ex);
+
+            if (retrhrow)
+                throw;
+        }
+    }
+
+
+    public static async IAsyncEnumerable<TResult> Yield<TResult, TFrom>(this IEnumerable<TFrom> list,
+        Func<TFrom, CancellationToken, Task<TResult>> factory,
+        [EnumeratorCancellation] CancellationToken token)
     {
         var tasks = list.Select(item => factory(item, token)).ToList();
-        while (tasks.Any())
+        while (tasks.Count > 0)
         {
             var completedTask = await Task.WhenAny(tasks).ConfigureAwait(false);
             tasks.Remove(completedTask);

@@ -19,7 +19,7 @@ namespace WebApp.Pages
         public async Task OnGetAsync()
         {
             _logger.LogInformation($"{Thread.CurrentThread.ManagedThreadId} start OnGetAsync.");
-            await game.Play(CancellationToken.None).ConfigureAwait(false);
+            await game.Play(200, CancellationToken.None).ConfigureAwait(false);
             _logger.LogInformation($"{Thread.CurrentThread.ManagedThreadId} end OnGetAsync.");
         }
     }
