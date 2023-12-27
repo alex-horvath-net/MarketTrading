@@ -1,7 +1,7 @@
-﻿using Common.Sockets.DataModel;
+﻿using AppCore.Sockets.DataModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace Common.Plugins;
+namespace AppCore.Plugins;
 
 public partial class BlogDbContext : DbContext
 {

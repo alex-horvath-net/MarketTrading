@@ -1,4 +1,4 @@
-﻿namespace Common.Sockets.ViewModel;
+﻿namespace AppCore.Sockets.ViewModel;
 
 public record Post
 {

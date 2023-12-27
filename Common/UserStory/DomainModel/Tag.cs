@@ -1,4 +1,4 @@
-﻿namespace Common.UserStory.DomainModel;
+﻿namespace AppCore.UserStory.DomainModel;
 
 public record Tag(int Id, string Name);
 

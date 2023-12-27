@@ -1,7 +1,8 @@
-﻿using FluentAssertions;
+﻿using AppCore.UserStory.DomainModel;
+using FluentAssertions;
 using Xunit;
 
-namespace Common.UserStory.DomainModel.Design;
+namespace AppCore.UserStory.DomainModel.Design;
 
 public class DomainModel_Specification
 {

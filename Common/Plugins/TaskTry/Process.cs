@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Core;
+using Core.Enterprise;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
-namespace Common.Plugins.TaskTry;
+namespace AppCore.Plugins.TaskTry;
 
 public class Game
 {

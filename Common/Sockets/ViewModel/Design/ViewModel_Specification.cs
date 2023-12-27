@@ -1,8 +1,8 @@
-﻿using Common.Sockets.ViewModel;
+﻿using AppCore.Sockets.ViewModel;
 using FluentAssertions;
 using Xunit;
 
-namespace Common.Sockets.ViewModel.Design;
+namespace AppCore.Sockets.ViewModel.Design;
 
 public class ViewModel_Specification
 {

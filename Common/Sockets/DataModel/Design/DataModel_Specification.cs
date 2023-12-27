@@ -1,8 +1,8 @@
-﻿using Common.Sockets.DataModel;
+﻿using AppCore.Sockets.DataModel;
 using FluentAssertions;
 using Xunit;
 
-namespace Common.Sockets.DataModel.Design;
+namespace AppCore.Sockets.DataModel.Design;
 
 public class DataModel_Specification
 {

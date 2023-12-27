@@ -1,4 +1,4 @@
-﻿using Common.Plugins.TaskTry;
+﻿using Core.Application.Plugins.TaskTry;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

@@ -1,7 +1,7 @@
-using Blogger;
-using Common;
-using Common.Plugins.TaskTry;
-using Core;
+using Core.Application;
+using Core.Application.Plugins.TaskTry;
+using Core.Enterprise;
+using Users.Blogger;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

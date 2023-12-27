@@ -1,10 +1,10 @@
-﻿using Common.Plugins;
+﻿using AppCore.Plugins;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Common;
+namespace AppCore;
 
 public static class Extensions
 {

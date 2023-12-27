@@ -1,7 +1,7 @@
-﻿using Core.Sockets.Validation;
+﻿using Core.Enterprise.Sockets.Validation;
 using FluentAssertions;
 
-namespace Common.Sockets.DataModel.Design;
+namespace AppCore.Sockets.DataModel.Design;
 
 public class ValidationModel_Specification
 {
