@@ -1,6 +1,5 @@
 ﻿using Core.Application.UserStory.DomainModel;
 using Core.Enterprise.UserStory;
-using Users.Blogger.UserStories.ReadPosts;
 
 namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
 

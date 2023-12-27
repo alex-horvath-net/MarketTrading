@@ -2,7 +2,6 @@
 using Core.Enterprise;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger;
 using Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket;
 using Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask;
 using Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket;

@@ -1,7 +1,5 @@
 ﻿
 using Core.Application.UserStory.DomainModel;
-using Users.Blogger.UserStories.ReadPosts;
-using Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
 
 namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket;
 
