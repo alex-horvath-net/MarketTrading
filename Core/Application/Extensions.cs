@@ -16,8 +16,6 @@ public static class Extensions
         //builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlite(connectionString));
         //builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(connectionString));
 
-
-
         return services;
     }
 

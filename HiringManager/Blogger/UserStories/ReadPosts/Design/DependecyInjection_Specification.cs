@@ -5,12 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket;
 using Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask;
 using Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket;
+using Xunit;
 
 namespace Users.Blogger.UserStories.ReadPosts.Design;
 
 public class DependecyInjection_Specification
 {
-    //[Fact]
+    [Fact]
     public async void Inject_AddReadPosts_Dependecies()
     {
         var configurationBuilder = new ConfigurationBuilder();

@@ -1,11 +1,12 @@
 ﻿using Core.Enterprise.Sockets.Validation;
 using FluentAssertions;
+using Xunit;
 
 namespace Core.Application.Sockets.DataModel.Design;
 
 public class ValidationModel_Specification
 {
-    //[Fact]
+    [Fact]
     public void Ctor()
     {
         var propertyName = "propertyName";

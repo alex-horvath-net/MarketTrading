@@ -4,12 +4,13 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
 namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin.Design;
 
 public class RepositoryPlugin_Specification
 {
-    //[Fact]
+    [Fact]
     public async void Initialize()
     {
         var options = new DbContextOptions<BlogDbContext>();
@@ -25,7 +26,7 @@ public class RepositoryPlugin_Specification
         response.Should().OnlyContain(post => post.Title.Contains(title));
     }
 
-    //[Fact]
+    [Fact]
     public void UseDataBase()
     {
         var builder = WebApplication.CreateBuilder();

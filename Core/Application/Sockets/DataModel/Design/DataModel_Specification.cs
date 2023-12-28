@@ -1,5 +1,4 @@
-﻿using Core.Application.Sockets.DataModel;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
 namespace Core.Application.Sockets.DataModel.Design;

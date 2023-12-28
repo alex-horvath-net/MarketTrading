@@ -1,10 +1,11 @@
 ﻿using FluentAssertions;
+using Xunit;
 
 namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin.Design;
 
 public class ValidatorPlugin_Specification
 {
-    //[Fact]
+    [Fact]
     public async void Valid_Request()
     {
         var unit = new ValidationPlugin();
