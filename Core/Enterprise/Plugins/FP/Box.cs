@@ -76,6 +76,7 @@ public class Box_Design
         var box = Box<string>.Empty;
 
         box.IsEmpty.Should().BeTrue();
+        box.Should().BeOfType<Box<string>>();
     }
        
     [Fact]
