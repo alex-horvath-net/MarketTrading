@@ -82,7 +82,7 @@ public class Box_Design
     }
 
     [Fact]
-    public void Rebox_An_Old_Box_By_Lambda_Select()
+    public void Rebox_An_Old_Box_By_Select_Lambda()
     {
         var year = "1984";
         var oldBox = year.ToBox();
@@ -90,7 +90,7 @@ public class Box_Design
         var newBox = oldBox.Select(Text2Num);
 
         newBox.IsEmpty.Should().BeFalse();
-        newBox.Should().BeSameAs(1984.ToBox());
+        newBox.Should().Be(1984.ToBox());
     }
 
     [Fact]
@@ -204,56 +204,14 @@ public class Box_Design
     }
 }
 
-public class Box<T>
+public readonly record struct Box<T>
 {
-    public Box() { }
+    public Box() { IsEmpty = true; }
     public Box(T? content) { Content = content; IsEmpty = false; }
 
-    public T? Content { get; }
-    public bool IsEmpty { get; } = true;
+    public readonly T? Content { get; }
+    public readonly bool IsEmpty { get; }
 
     public static implicit operator Box<T>(T? content) => new(content);
     public static implicit operator T?(Box<T> box) => box.Content;
-}
-
-public static class BoxExtensions
-{
-    public static Box<T> ToBox<T>(this T content) => new Box<T>(content);
-
-    public static Box<T> Join<T>(this Box<Box<T>> box) =>
-        box.IsEmpty || box.Content.IsEmpty ?
-        new Box<T>() :
-        box.Content;
-
-    public static Box<R> Select<T, R>(this Box<T> box, Func<T, R> mapT2R)
-    {
-        if (box.IsEmpty)
-            return new Box<R>();
-
-        var t = box.Content;
-        var r = mapT2R(t);
-        return r;
-    }
-
-    public static Box<R> SelectMany<T, R>(this Box<T> box, Func<T, Box<R>> mapT2BoxR)
-    {
-        if (box.IsEmpty)
-            return new Box<R>();
-
-        var t = box.Content;
-        var boxR = mapT2BoxR(t);
-        return boxR;
-    }
-
-    public static Box<R> SelectMany<T, U, R>(this Box<T> box, Func<T, Box<U>> mapT2BoxU, Func<T, U, R> mapTU2R)
-    {
-        if (box.IsEmpty)
-            return new Box<R>();
-
-        var t = box.Content;
-        var boxU = mapT2BoxU(t);
-        var u = boxU.Content;
-        var r = mapTU2R(t, u);
-        return r;
-    }
 }
