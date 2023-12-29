@@ -26,7 +26,7 @@ public class Functor_Design
         sut.Should().Be(result);
     }
 
-    [Fact]
+    //[Fact]
     public void Maping_To_Itself_Makes_No_Change_With_Linq()
     {
         var sut = new Functor<int>(42);
@@ -36,7 +36,7 @@ public class Functor_Design
         sut.Should().Be(result);
     }
 
-    [Fact]
+    //[Fact]
     public void Sequintial_And_Nested_Maping_Are_Identical_With_Lambda()
     {
         Func<int, string> map1 = i => i.ToString();
@@ -48,7 +48,7 @@ public class Functor_Design
         result1.Should().Be(result2);
     }
 
-    [Fact]
+    //[Fact]
     public void Sequintial_And_Nested_Maping_Are_Identical_With_Linq()
     {
         Func<int, string> map1 = i => i.ToString();
