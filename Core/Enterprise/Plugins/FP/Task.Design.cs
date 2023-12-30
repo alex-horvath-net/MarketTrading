@@ -1,18 +1,23 @@
 ﻿using FluentAssertions;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Core.Enterprise.Plugins.FP;
 
 public class TaskDesign
 {
+    private readonly ITestOutputHelper output;
+
     private string MapToItself(string itself) => itself;
     private int Parse(string text) => int.Parse(text);
     private DateTime ToDate(int year) => new DateTime(year, 1, 1);
     private async Task<string> GetYear() { await Task.Delay(2000); return "1984"; }
+  
+    public TaskDesign(ITestOutputHelper output) => this.output = output;
 
     [Fact]
     public void Create_A_Task_From_A_Result()
-    { 
+    {
         var year = "1984";
 
         var task = year.ToTask();
@@ -26,11 +31,11 @@ public class TaskDesign
     [Fact]
     public void Create_A_Task_From_A_Method()
     {
-        var task = GetYear();
+        var task = GetYear().Dump(output);
 
-        
+
         task.Should().NotBeNull();
-        task.Result.Should().Be(default);
+        task.Result.Should().Be("1984");
 
     }
 
