@@ -39,9 +39,13 @@ public static class TaskExtensions
         return r;
     }
 
-    public async static void FireAndForget(this Task task) =>
-     task.FireAndForget<Exception>(returnToCallerTread: false, handleException: ex => { }, retrhrow: true);
-    public async static void FireAndForget<TException>(this Task task, bool returnToCallerTread, Action<TException> handleException, bool retrhrow) where TException : Exception
+    public async static void FireAndForget(this Task task) => task
+        .FireAndForget<Exception>(returnToCallerTread: false, handleException: ex => { }, retrhrowException: true);
+
+    public async static void FireAndForget<TException>(this Task task,
+        bool returnToCallerTread,
+        Action<TException> handleException,
+        bool retrhrowException) where TException : Exception
     {
         try
         {
@@ -50,7 +54,7 @@ public static class TaskExtensions
         {
             handleException(ex);
 
-            if (retrhrow)
+            if (retrhrowException)
                 throw;
         }
     }

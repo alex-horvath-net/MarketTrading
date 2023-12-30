@@ -8,35 +8,50 @@ public class TaskDesign
     private string MapToItself(string itself) => itself;
     private int Parse(string text) => int.Parse(text);
     private DateTime ToDate(int year) => new DateTime(year, 1, 1);
+    private async Task<string> GetYear() { await Task.Delay(2000); return "1984"; }
 
     [Fact]
-    public void ToTask_Conver_To_Task()
-    {
-        var year = 1984;
+    public void Create_A_Task_From_A_Result()
+    { 
+        var year = "1984";
 
-        var yearTask = year.ToTask();
+        var task = year.ToTask();
 
-        yearTask.Should().NotBeNull();
-        yearTask.Should().BeOfType<Task<int>>();
-        yearTask.Result.Should().Be(year);
+        task.Should().NotBeNull();
+        task.Should().BeOfType<Task<string>>();
+        task.Result.Should().Be(year);
 
     }
+
     [Fact]
-    public async Task FromResult()
+    public void Create_A_Task_From_A_Method()
     {
-        var task = "1984".ToTask();
+        var task = GetYear();
+
+        
+        task.Should().NotBeNull();
+        task.Result.Should().Be(default);
+
+    }
+
+    [Fact]
+    public async void Get_Result()
+    {
+        var task = GetYear();
 
         var result = await task;
 
+        task.Should().BeOfType<Task<string>>();
         result.Should().Be("1984");
     }
+
     [Fact]
     public async Task Select_Lambda()
     {
-        var task = "1984".ToTask();
+        var oldTask = GetYear();
 
-        var result = await task.Select(Parse);
-
+        var newTask = oldTask.Select(Parse);
+        var result = await newTask;
         result.Should().Be(1984);
     }
     [Fact]
