@@ -33,30 +33,31 @@ public class TaskDesign
     {
         var task = GetYear().Dump(output);
 
-
         task.Should().NotBeNull();
-        task.Result.Should().Be("1984");
+        task.IsCompleted.Should().BeFalse();
 
     }
 
     [Fact]
-    public async void Get_Result()
+    public async void Complte_The_Task()
     {
         var task = GetYear();
 
-        var result = await task;
+        var result = await task.Dump(output);
+        task.Dump(output);
 
         task.Should().BeOfType<Task<string>>();
         result.Should().Be("1984");
     }
 
     [Fact]
-    public async Task Select_Lambda()
+    public async Task Change_Task_By_Lambda()
     {
         var oldTask = GetYear();
 
         var newTask = oldTask.Select(Parse);
         var result = await newTask;
+
         result.Should().Be(1984);
     }
     [Fact]

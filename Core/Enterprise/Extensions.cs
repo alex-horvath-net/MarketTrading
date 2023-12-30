@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Core.Enterprise.UserStory;
+﻿using Core.Enterprise.UserStory;
 using Core.Enterprise.UserTasks;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
@@ -16,7 +15,7 @@ public static class Extensions
             $"ThreadId: {Environment.CurrentManagedThreadId:D3}; " +
             $"TaskId: {task.Id:D3}; " +
             $"TaskStatus: {task.Status}; " +
-            $"TaskResult: {task.Result}");
+            $"TaskResult: {task.Result} ({ typeof(T).Name})");
 
         return task;
     }
