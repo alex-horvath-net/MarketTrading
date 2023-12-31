@@ -11,17 +11,23 @@ public class TaskDesign
     private string MapToItself(string itself) => itself;
     private int Parse(string text) => int.Parse(text);
     private DateTime ToDate(int year) => new DateTime(year, 1, 1);
-    private async Task<string> GetYear() { await Task.Delay(2000); return "1984"; }
-  
+    private async Task<string> GetYear()
+    {
+        this.Dump(output, "GetYear before wait");
+        await Task.Delay(100).Dump(output, "GetYear during wait");
+        this.Dump(output, "GetYear after wait");
+        return "1984";
+    }
+
     public TaskDesign(ITestOutputHelper output) => this.output = output;
 
     [Fact]
     public void Create_A_Task_From_A_Result()
     {
         var year = "1984";
-
-        var task = year.ToTask();
-
+        this.Dump(output, "before task");
+        var task = year.ToTask().Dump(output, "during task");
+        this.Dump(output, "after task");
         task.Should().NotBeNull();
         task.Should().BeOfType<Task<string>>();
         task.Result.Should().Be(year);
@@ -39,7 +45,7 @@ public class TaskDesign
     }
 
     [Fact]
-    public async void Complte_The_Task()
+    public async void Get_Result_Of_The_Task()
     {
         var task = GetYear();
 
