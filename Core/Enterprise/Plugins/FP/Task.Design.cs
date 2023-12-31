@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -13,9 +14,9 @@ public class TaskDesign
     private DateTime ToDate(int year) => new DateTime(year, 1, 1);
     private async Task<string> GetYear()
     {
-        this.Dump(output, "GetYear before wait");
-        await Task.Delay(100).Dump(output, "GetYear during wait");
-        this.Dump(output, "GetYear after wait");
+        this.Dump(output, "before delay");
+        await Task.Delay(100).Dump(output, "during delay");
+        this.Dump(output, "after delay");
         return "1984";
     }
 
@@ -25,9 +26,11 @@ public class TaskDesign
     public void Create_A_Task_From_A_Result()
     {
         var year = "1984";
-        this.Dump(output, "before task");
-        var task = year.ToTask().Dump(output, "during task");
-        this.Dump(output, "after task");
+        this.Dump(output);
+
+        var task = year.ToTask().Dump(output);
+        this.Dump(output);
+
         task.Should().NotBeNull();
         task.Should().BeOfType<Task<string>>();
         task.Result.Should().Be(year);
@@ -37,7 +40,11 @@ public class TaskDesign
     [Fact]
     public void Create_A_Task_From_A_Method()
     {
+        this.Dump(output);
+
         var task = GetYear().Dump(output);
+
+        this.Dump(output);
 
         task.Should().NotBeNull();
         task.IsCompleted.Should().BeFalse();
@@ -45,14 +52,20 @@ public class TaskDesign
     }
 
     [Fact]
-    public async void Get_Result_Of_The_Task()
+    public async Task Get_Result_Of_The_Task()
     {
-        var task = GetYear();
+        this.Dump(output, "before creating task");
 
-        var result = await task.Dump(output);
-        task.Dump(output);
+        var task = GetYear().Dump(output, "creating task");
 
-        task.Should().BeOfType<Task<string>>();
+        this.Dump(output, "after creating task");
+
+        this.Dump(output, "before waiting for task");
+
+        var result = await task.ConfigureAwait(false).Dump(output, "during waiting for task");
+        task.Dump(output, "after waiting for task");
+
+        //task.Should().BeOfType<Task<string>>();
         result.Should().Be("1984");
     }
 
@@ -67,7 +80,7 @@ public class TaskDesign
         result.Should().Be(1984);
     }
     [Fact]
-    public async Task Select_LinqAsync()
+    public async Task Change_Task_By_Linq()
     {
         var task = "1984".ToTask();
 
@@ -126,5 +139,39 @@ public class TaskDesign
             select result2);
 
         result.Should().Be(1984);
+    }
+
+    [Fact]
+    public async void FireAndForget()
+    {
+        var random = new Random();
+        var token = CancellationToken.None;
+        this.Dump(output, "before");
+        var task = Task.Delay(5000, token).Dump(output, "during");
+
+        task.Start(onCompleted: () => this.Dump(output, "completed"));
+
+        this.Dump(output, "after");
+    }
+
+    [Fact]
+    public async void Yield()
+    {
+        var random = new Random();
+        var token = CancellationToken.None;
+        this.Dump(output, "before");
+
+        List<int> nums2 = new();
+
+        var nums = Enumerable.Range(0, 10).Select(_ => new Random().Next(200, 2000)).ToList();
+
+        await foreach (var item in nums.Yield(async (n, t) => { await Task.Delay(n, t); return $"{n:D3}"; }, token))
+        {
+            this.Dump(output, item);
+        }
+
+
+
+        this.Dump(output, "after");
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using Core.Enterprise.UserStory;
 using Core.Enterprise.UserTasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,10 +37,10 @@ public static class Extensions
         }
 
         output.WriteLine(sb.ToString());
+        Debug.WriteLine(sb.ToString());
 
         return instance;
     }
-
 
     public static IServiceCollection AddCore(this IServiceCollection services)
     {

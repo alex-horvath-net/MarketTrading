@@ -39,37 +39,42 @@ public static class TaskExtensions
         return r;
     }
 
-    public async static void FireAndForget(this Task task) => task
-        .FireAndForget<Exception>(returnToCallerTread: false, handleException: ex => { }, retrhrowException: true);
-
-    public async static void FireAndForget<TException>(this Task task,
-        bool returnToCallerTread,
-        Action<TException> handleException,
-        bool retrhrowException) where TException : Exception
+    public async static void Start(this Task task,
+        bool returnToCallerTread = false,
+        bool retrhrowException = true,
+        Action? onCompleted = null,
+        Action<Exception>? onException = null)
     {
         try
         {
             await task.ConfigureAwait(returnToCallerTread);
-        } catch (TException ex)
+            onCompleted?.Invoke();
+        } catch (Exception ex)
         {
-            handleException(ex);
+            onException?.Invoke(ex);
 
             if (retrhrowException)
                 throw;
         }
     }
 
-
-    public static async IAsyncEnumerable<TResult> Yield<TResult, TFrom>(this IEnumerable<TFrom> list,
-        Func<TFrom, CancellationToken, Task<TResult>> factory,
+    public static async IAsyncEnumerable<TResult> Yield<TFrom,TResult>(this IEnumerable<TFrom> fromList,
+        Func<TFrom, CancellationToken, Task<TResult>> taskFactory,
         [EnumeratorCancellation] CancellationToken token)
     {
-        var tasks = list.Select(item => factory(item, token)).ToList();
-        while (tasks.Count > 0)
+        var resultTasks = fromList
+            .Select(fromItem => taskFactory(fromItem, token))
+            .ToList();
+
+        while (resultTasks.Count > 0)
         {
-            var completedTask = await Task.WhenAny(tasks).ConfigureAwait(false);
-            tasks.Remove(completedTask);
-            yield return await completedTask.ConfigureAwait(false);
+            var completedResultTask = await Task
+                .WhenAny(resultTasks)
+                .ConfigureAwait(false);
+
+            resultTasks.Remove(completedResultTask);
+            var result = await completedResultTask.ConfigureAwait(false);
+            yield return result;
         }
     }
 }
