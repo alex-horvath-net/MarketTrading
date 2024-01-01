@@ -58,23 +58,17 @@ public static class TaskExtensions
         }
     }
 
-    public static async IAsyncEnumerable<TResult> Yield<TFrom,TResult>(this IEnumerable<TFrom> fromList,
-        Func<TFrom, CancellationToken, Task<TResult>> taskFactory,
+    public static async IAsyncEnumerable<R> Yield<T, R>(this IEnumerable<T> listT, 
+        Func<T, CancellationToken, Task<R>> t2TaskR, 
         [EnumeratorCancellation] CancellationToken token)
     {
-        var resultTasks = fromList
-            .Select(fromItem => taskFactory(fromItem, token))
-            .ToList();
-
-        while (resultTasks.Count > 0)
+        var listTaskR = listT.Select(t => t2TaskR(t, token)).ToList();
+        while (listTaskR.Count > 0)
         {
-            var completedResultTask = await Task
-                .WhenAny(resultTasks)
-                .ConfigureAwait(false);
-
-            resultTasks.Remove(completedResultTask);
-            var result = await completedResultTask.ConfigureAwait(false);
-            yield return result;
+            var taskR = await Task.WhenAny(listTaskR).ConfigureAwait(false);
+            listTaskR.Remove(taskR);
+            var r = await taskR.ConfigureAwait(false);
+            yield return r;
         }
     }
 }

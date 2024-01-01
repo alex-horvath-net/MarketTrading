@@ -1,5 +1,8 @@
-﻿using FluentAssertions;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
+using FluentAssertions.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -147,32 +150,42 @@ public class TaskDesign
         var random = new Random();
         var token = CancellationToken.None;
         this.Dump(output, "before");
-        var task = Task.Delay(5000, token).Dump(output, "during");
+        var task = Task.Delay(500, token).Dump(output, "during");
 
         task.Start(onCompleted: () => this.Dump(output, "completed"));
-
         this.Dump(output, "after");
+
+        task.IsCompleted.Should().BeFalse();
     }
 
 
     [Fact]
     public async void Yield()
     {
-        var random = new Random();
-        var token = CancellationToken.None;
         this.Dump(output, "before");
 
-        List<int> nums2 = new();
-
-        var nums = Enumerable.Range(0, 10).Select(_ => new Random().Next(200, 2000)).ToList();
-
-        await foreach (var item in nums.Yield(async (n, t) => { await Task.Delay(n, t); return $"{n:D3}"; }, token))
+        Func<Task> slowTaskExecutions = async () =>
         {
-            this.Dump(output, item);
-        }
+            var token = CancellationToken.None;
+            var nums = Enumerable.Range(0, 10).Select(_ => Random.Shared.Next(100, 500)).ToList();
 
+            await foreach (var text in nums.Yield(NumToStringTask, token))
+            {
+                this.Dump(output, text);
+            }
+        };
 
+        await slowTaskExecutions.Should().CompleteWithinAsync(2000.Milliseconds());
 
         this.Dump(output, "after");
     }
+
+    
+
+    private async Task<string> NumToStringTask(int num, CancellationToken token)
+    {
+        await Task.Delay(num, token);
+        return $"{num:D3}";
+    }
+
 }

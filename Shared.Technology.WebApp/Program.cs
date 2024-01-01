@@ -1,5 +1,4 @@
 using Core.Application;
-using Core.Application.Plugins.TaskTry;
 using Core.Enterprise;
 using Users.Blogger;
 
@@ -10,7 +9,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddCore();
 builder.Services.AddCommon(config);
 builder.Services.AddBlogger();
-builder.Services.AddSingleton<Game>();
 
 var app = builder.Build();
 
