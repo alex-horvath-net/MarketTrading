@@ -44,7 +44,7 @@ public class TaskDesign
     {
         this.Dump(output);
 
-        var task = GetYear().Dump(output);
+        var task = GetYear().Dump(output, "during task");
 
         this.Dump(output);
 
