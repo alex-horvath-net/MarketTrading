@@ -1,8 +1,5 @@
-﻿using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using FluentAssertions.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -11,6 +8,8 @@ namespace Core.Enterprise.Plugins.FP;
 public class TaskDesign
 {
     private readonly ITestOutputHelper output;
+    private readonly CancellationToken token = CancellationToken.None;
+
 
     private string MapToItself(string itself) => itself;
     private int Parse(string text) => int.Parse(text);
@@ -145,17 +144,33 @@ public class TaskDesign
     }
 
     [Fact]
-    public async void FireAndForget()
+    public async void FireAndForget_Ok()
     {
-        var random = new Random();
-        var token = CancellationToken.None;
         this.Dump(output, "before");
-        var task = Task.Delay(500, token).Dump(output, "during");
+        var task = Task.Delay(200, token).Dump(output, "during");
+        var isCompleted = false;
 
-        task.Start(onCompleted: () => this.Dump(output, "completed"));
+        task.FireAndForget(onCompleted: () => { this.Dump(output, "completed"); isCompleted = true; });
+
+        await Task.Delay(300, token);
         this.Dump(output, "after");
+        task.IsCompleted.Should().BeTrue();
+        isCompleted.Should().BeTrue();
+    }
 
-        task.IsCompleted.Should().BeFalse();
+    [Fact]
+    public async void FireAndForget_Fail()
+    {
+        this.Dump(output, "before");
+        var task = Task.FromException(new Exception("TestException"));  // Task.Delay(200, token).Dump(output, "during");
+        var isFailed = false;
+
+
+        task.FireAndForget(retrhrowException: false, onException: ex => { this.Dump(output, ex.Message); isFailed = true; });
+
+        this.Dump(output, "after");
+        task.IsCompleted.Should().BeTrue();
+        isFailed.Should().BeTrue();
     }
 
 
@@ -180,7 +195,7 @@ public class TaskDesign
         this.Dump(output, "after");
     }
 
-    
+
 
     private async Task<string> NumToStringTask(int num, CancellationToken token)
     {

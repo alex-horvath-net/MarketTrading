@@ -13,7 +13,7 @@ public static class Extensions
     {
         var sb = new StringBuilder();
 
-        sb.Append($"{DateTime.UtcNow:dd/MM/yyyy HH:mm:ss ffff} ");
+        sb.Append($"{DateTime.UtcNow:dd MMM HH:mm:ss ffff} ");
 
         if (instance is Task task)
         {
@@ -28,7 +28,7 @@ public static class Extensions
         }
         else
         {
-            sb.Append($"Id: {Environment.ProcessId:D5}-{Environment.CurrentManagedThreadId:D3} ");
+            sb.Append($"Id: {Environment.ProcessId:D5}-{Environment.CurrentManagedThreadId:D3}-000 ");
         }
 
         if (message != null)

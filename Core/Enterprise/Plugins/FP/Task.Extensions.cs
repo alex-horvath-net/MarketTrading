@@ -39,15 +39,15 @@ public static class TaskExtensions
         return r;
     }
 
-    public async static void Start(this Task task,
-        bool returnToCallerTread = false,
+    public async static void FireAndForget(this Task task,
+        bool keepTheCallerThread = false,
         bool retrhrowException = true,
         Action? onCompleted = null,
         Action<Exception>? onException = null)
     {
         try
         {
-            await task.ConfigureAwait(returnToCallerTread);
+            await task.ConfigureAwait(keepTheCallerThread);
             onCompleted?.Invoke();
         } catch (Exception ex)
         {
