@@ -1,9 +1,121 @@
-﻿using FluentAssertions;
+﻿using System.Runtime.CompilerServices;
+using Core.Enterprise;
+using FluentAssertions;
 using FluentAssertions.Extensions;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Core.Enterprise.Plugins.FP;
+namespace Core.Enterprise;
+
+public static class TaskExtensions
+{
+    public static Task<T> ToTask<T>(
+        this T t) => Task.FromResult(t);
+
+    public static CancellationToken NewToken(
+        this CancellationToken _)
+    {
+        using var soure = new CancellationTokenSource();
+        return soure.Token;
+    }
+
+    public static CancellationToken NewToken(
+        this CancellationToken _,
+        TimeSpan delay)
+    {
+        using var soure = new CancellationTokenSource(delay);
+        return soure.Token;
+
+    }
+
+    public static CancellationToken NewToken(
+        this CancellationToken _,
+        TimeSpan delay,
+        TimeProvider time)
+    {
+        using var soure = new CancellationTokenSource(delay, time);
+        return soure.Token;
+    }
+
+    public async static void FireAndForget(
+        this Task task,
+        bool keepTheCallerThread = false,
+        bool retrhrowException = true,
+        Action? onCompleted = null,
+        Action<Exception>? onException = null)
+    {
+        try
+        {
+            await task.ConfigureAwait(keepTheCallerThread);
+            onCompleted?.Invoke();
+        } catch (Exception ex)
+        {
+            onException?.Invoke(ex);
+
+            if (retrhrowException)
+                throw;
+        }
+    }
+
+    public static async IAsyncEnumerable<R> Yield<T, R>(
+        this IEnumerable<T> listT,
+        Func<T, CancellationToken, Task<R>> t2TaskR,
+        [EnumeratorCancellation] CancellationToken token)
+    {
+        var listTaskR = listT.Select(t => t2TaskR(t, token)).ToList();
+        while (listTaskR.Count > 0)
+        {
+            var taskR = await Task.WhenAny(listTaskR).ConfigureAwait(false);
+            listTaskR.Remove(taskR);
+            var r = await taskR.ConfigureAwait(false);
+            yield return r;
+        }
+    }
+
+
+    public static async Task<T> Join<T>(
+        this Task<Task<T>> nestedTaskT)
+    {
+        var taskT = await nestedTaskT;
+        var t = await taskT;
+        return t;
+    }
+
+
+    public async static Task<R> Select<T, R>(
+        this Task<T> taskT,
+        Func<T, R> mapT2R)
+    {
+        var t = await taskT;
+        var r = mapT2R(t);
+        return r;
+    }
+
+
+    public static async Task<R> SelectMany<T, R>(
+        this Task<T> taskT,
+        Func<T, Task<R>> mapT2TaskR)
+    {
+        var t = await taskT;
+        var taskR = mapT2TaskR(t);
+        var r = await taskR;
+        return r;
+        //taskT.Select(mapT2TaskR).Join<R>();
+    }
+
+    public async static Task<R> SelectMany<T, U, R>(
+        this Task<T> taskT,
+        Func<T, Task<U>> mapT2TaskU,
+        Func<T, U, R> mapTU2R)
+    {
+        //Map(mapT2BoxU).Flatten<U>().Map(u => mapTU2R(Content, u));  //Bind(t => mapT2BoxU(t).Map(u => mapTU2R(t, u)));
+
+        var t = await taskT;
+        var u = await mapT2TaskU(t);
+        var r = mapTU2R(t, u);
+        return r;
+    }
+}
 
 public class TaskDesign
 {
@@ -44,7 +156,8 @@ public class TaskDesign
     {
         this.Dump(output);
 
-        var task = GetYear().Dump(output, "during task");
+        var task = GetYear();
+        task.Dump(output, "during task");
 
         this.Dump(output);
 

@@ -12,7 +12,9 @@ public class ValidationAdapter_Specification
     public async void Path_Without_Diversion()
     {
         var unit = new ValidationSocket(validator.Mock);
-        var response = await unit.Validate(request.Mock, CancellationToken.None);
+        request.UseValidRequest();
+
+        var response = await unit.Validate(request.Mock, token);
 
         response.Should().NotBeNullOrEmpty();
         response.Should().OnlyContain(result => validator.Results.Any(x => x.ErrorCode == result.ErrorCode && x.ErrorMessage == result.ErrorMessage));
@@ -21,6 +23,7 @@ public class ValidationAdapter_Specification
 
     private readonly ValidatorPlugin_MockBuilder validator = new();
     private readonly Request.MockBuilder request = new();
+    CancellationToken token = CancellationToken.None;
 
 }
 

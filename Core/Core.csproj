@@ -44,7 +44,6 @@
 	<ItemGroup>
 	  <Folder Include="Application\Plugins\DataAccess\Design\" />
 	  <Folder Include="Application\UserTasks\Design\" />
-	  <Folder Include="Enterprise\Plugins\TaskPOC\" />
 	</ItemGroup>
 
 </Project>

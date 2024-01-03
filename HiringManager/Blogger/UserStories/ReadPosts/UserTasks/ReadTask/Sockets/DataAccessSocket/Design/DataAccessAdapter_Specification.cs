@@ -11,7 +11,10 @@ public class DataAccessAdapter_Specification
     public async void Path_Without_Diversion()
     {
         var unit = new DataAccessSocket(repositoryPlugin.Mock);
-        var response = await unit.Read(request.Mock, CancellationToken.None);
+        request.UseInvalidRequest();
+
+        var response = await unit.Read(request.Mock, token);
+      
         response.Should().NotBeNullOrEmpty();
         response.Should().OnlyContain(result => repositoryPlugin.Results.Any(x => x.Title == result.Title && x.Content == result.Content));
         await repositoryPlugin.Mock.ReceivedWithAnyArgs(1).Read(default, default, default);
@@ -19,7 +22,7 @@ public class DataAccessAdapter_Specification
 
     private readonly RepositoryPlugin_MockBuilder repositoryPlugin = new();
     private readonly Request.MockBuilder request = new();
-
+    private readonly CancellationToken token = CancellationToken.None;
 }
 
 public class RepositoryPlugin_MockBuilder

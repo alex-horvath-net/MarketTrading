@@ -9,24 +9,18 @@ public record Request(
 {
     public class MockBuilder
     {
-        public readonly Request Mock = Substitute.For<Request>("Title", "Content");
-
-        public MockBuilder() => UseValidRequest();
+        public Request Mock { get; private set; }
 
         public MockBuilder UseValidRequest()
         {
-            //Mock.Title.Returns("Title");
-            //Mock.Content.Returns("Content");
+            Mock = Substitute.For<Request>("Title", "Content");
             return this;
         }
 
         public MockBuilder UseInvalidRequest()
         {
-            UseValidRequest();
-            Mock.Title.Returns((string)null);
+            Mock = Substitute.For<Request>(null, null);
             return this;
         }
-
     }
-
 }

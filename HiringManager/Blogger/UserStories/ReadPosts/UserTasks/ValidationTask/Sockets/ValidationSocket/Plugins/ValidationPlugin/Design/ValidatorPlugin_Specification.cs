@@ -9,17 +9,21 @@ public class ValidatorPlugin_Specification
     public async void Valid_Request()
     {
         var unit = new ValidationPlugin();
-        var issues = await unit.Validate(request.UseValidRequest().Mock, CancellationToken.None);
+        request.UseValidRequest();
+
+        var issues = await unit.Validate(request.Mock, token);
 
         issues.Should().NotBeNull();
         issues.Should().BeEmpty();
     }
 
-    //[Fact]
+    [Fact]
     public async void InValid_Request()
     {
         var unit = new ValidationPlugin();
-        var issues = await unit.Validate(request.UseInvalidRequest().Mock, CancellationToken.None);
+        request.UseInvalidRequest();
+
+        var issues = await unit.Validate(request.Mock, token);
 
         issues.Should().NotBeNull();
         issues.Should().NotBeEmpty();
@@ -29,4 +33,5 @@ public class ValidatorPlugin_Specification
         issues.Should().OnlyContain(x => x.Severity == "Error");
     }
     private readonly Request.MockBuilder request = new();
+    private readonly CancellationToken token = CancellationToken.None;
 }

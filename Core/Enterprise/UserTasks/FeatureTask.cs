@@ -1,5 +1,4 @@
-﻿using Core.Enterprise.Plugins.FP;
-using Core.Enterprise.UserStory;
+﻿using Core.Enterprise.UserStory;
 using FluentAssertions;
 using Xunit;
 

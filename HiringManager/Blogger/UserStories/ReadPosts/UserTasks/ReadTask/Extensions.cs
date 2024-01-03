@@ -1,7 +1,6 @@
 ﻿using Core.Enterprise.UserStory;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket;
-using Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin;
 
 namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
 
