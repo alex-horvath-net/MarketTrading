@@ -1,8 +1,6 @@
-﻿using Core.Enterprise;
-using Core.Enterprise.UserStory;
+﻿using Core.Enterprise.UserStory;
 using FluentAssertions;
 using NSubstitute;
-using Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
 using Xunit;
 
 namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask;
@@ -12,31 +10,44 @@ public class ValidationTask(IValidationSocket socket) : IUserTask<Request, Respo
     public async Task<bool> Run(Response response, CancellationToken token)
     {
         response.Validations = await socket.Validate(response.Request, token);
-        return response.Validations.Any(x => !x.IsSuccess);
+        var hasValidationIssue = response.Validations.Any(x => !x.IsSuccess);
+        return hasValidationIssue;
     }
 
     public class Design
     {
         [Fact]
-        public void ItHasSockets()
+        public void ItHas_Sockets()
         {
-            var providePostsTask = new ValidationTask(validationSocket.Mock);
+            var validationTask = new ValidationTask(validationSocket.Mock);
 
-            providePostsTask.Should().NotBeNull();
-            providePostsTask.Should().BeAssignableTo<IUserTask<Request, Response>>();
+            validationTask.Should().NotBeNull();
+            validationTask.Should().BeAssignableTo<IUserTask<Request, Response>>();
         }
 
         [Fact]
-        public async void ItCanPopulatePostsOfResponse()
-        {
-            response.WillHaveValidRequest();
-            validationSocket.WillValid();
+        public async void ItCan_ValidateValidRequest()
+        { 
+            validationSocket.Pass();
             var validationTask = new ValidationTask(validationSocket.Mock);
 
             var terminated = await validationTask.Run(response.Mock, token);
 
             terminated.Should().BeFalse();
-            response.Mock.Validations.Should().HaveCount(0);
+            response.Mock.Validations.Should().OnlyContain(x=>x.IsSuccess);
+            await validationSocket.Mock.ReceivedWithAnyArgs().Validate(default, default);
+        }
+
+        [Fact]
+        public async void ItCan_ValidateInValidRequest()
+        {
+            validationSocket.Fail();
+            var validationTask = new ValidationTask(validationSocket.Mock);
+
+            var terminated = await validationTask.Run(response.Mock, token);
+
+            terminated.Should().BeTrue();
+            response.Mock.Validations.Should().Contain(x => !x.IsSuccess);
             await validationSocket.Mock.ReceivedWithAnyArgs().Validate(default, default);
         }
 
@@ -54,12 +65,24 @@ public interface IValidationSocket
     {
         public IValidationSocket Mock { get; } = Substitute.For<IValidationSocket>();
 
-        public MockBuilder WillValid()
+        public MockBuilder Pass()
         {
             Mock.Validate(default, default)
                 .ReturnsForAnyArgs(new List<ValidationResult>()
                 {
+                    ValidationResult.Success(),
+                    ValidationResult.Success()
+                });
+            return this;
+        }
 
+        public MockBuilder Fail()
+        {
+            Mock.Validate(default, default)
+                .ReturnsForAnyArgs(new List<ValidationResult>()
+                {
+                    ValidationResult.Success(),
+                    ValidationResult.Failed("TestErrorCode", "TestErrorMessage")
                 });
             return this;
         }

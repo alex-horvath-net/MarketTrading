@@ -1,5 +1,4 @@
 ﻿using Core.Enterprise.UserStory;
-using NSubstitute;
 
 namespace Users.Blogger.UserStories.ReadPosts;
 
@@ -13,13 +12,19 @@ public record Request(
 
         public MockBuilder UseValidRequest()
         {
-            Mock = Substitute.For<Request>("Title", "Content");
+            Mock = new Request("Title", "Content");
             return this;
         }
 
-        public MockBuilder UseInvalidRequest()
+        public MockBuilder UseInvaliedRequestWithMissingFilters()
+        { 
+            Mock = new Request(null, null);
+            return this;
+        }
+
+        public MockBuilder UseInvaliedRequestWithShortFilters()
         {
-            Mock = Substitute.For<Request>(null, null);
+            Mock = new Request("12", "21");
             return this;
         }
     }

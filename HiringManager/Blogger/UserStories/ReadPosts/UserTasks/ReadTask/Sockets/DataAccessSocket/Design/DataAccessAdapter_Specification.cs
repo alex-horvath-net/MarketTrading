@@ -11,7 +11,7 @@ public class DataAccessAdapter_Specification
     public async void Path_Without_Diversion()
     {
         var unit = new DataAccessSocket(repositoryPlugin.Mock);
-        request.UseInvalidRequest();
+        request.UseInvaliedRequestWithMissingFilters();
 
         var response = await unit.Read(request.Mock, token);
       

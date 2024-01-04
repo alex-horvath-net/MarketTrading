@@ -9,7 +9,7 @@ public class UserStoryCore<TRequest, TResponse>(IEnumerable<IUserTask<TRequest, 
 {
     public async Task<TResponse> Run(TRequest request, CancellationToken token)
     {
-        var response = new TResponse() with { Request = request };
+        var response =  new TResponse() { Request = request };
         foreach (var userTask in userTasks)
         {
             var terminated = await userTask.Run(response, token);

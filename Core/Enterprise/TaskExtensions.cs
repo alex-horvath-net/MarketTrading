@@ -2,6 +2,7 @@
 using Core.Enterprise;
 using FluentAssertions;
 using FluentAssertions.Extensions;
+using Microsoft.Extensions.Time.Testing;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -23,17 +24,18 @@ public static class TaskExtensions
         this CancellationToken _,
         TimeSpan delay)
     {
-        using var soure = new CancellationTokenSource(delay);
+        var soure = new CancellationTokenSource(delay);
+        soure.Token.Register(() => soure.Dispose());
         return soure.Token;
-
     }
 
     public static CancellationToken NewToken(
         this CancellationToken _,
-        TimeSpan delay,
-        TimeProvider time)
+        TimeSpan cancelationDelay,
+        TimeProvider timeProvider)
     {
-        using var soure = new CancellationTokenSource(delay, time);
+        var soure = new CancellationTokenSource(cancelationDelay, timeProvider);
+        soure.Token.Register(() => soure.Dispose());
         return soure.Token;
     }
 
@@ -121,6 +123,7 @@ public class TaskDesign
 {
     private readonly ITestOutputHelper output;
     private readonly CancellationToken token = CancellationToken.None;
+    private readonly FakeTimeProvider time = new FakeTimeProvider();
 
 
     private string MapToItself(string itself) => itself;
@@ -135,6 +138,48 @@ public class TaskDesign
     }
 
     public TaskDesign(ITestOutputHelper output) => this.output = output;
+
+    [Fact]
+    public void NoneToken()
+    {
+        token.Should().NotBeNull();
+        token.CanBeCanceled.Should().BeFalse();
+        token.IsCancellationRequested.Should().BeFalse();
+    }
+
+    [Fact]
+    public void NewToken()
+    {
+        var newToken = token.NewToken();
+
+        newToken.Should().NotBeNull();
+        newToken.CanBeCanceled.Should().BeTrue();
+        newToken.IsCancellationRequested.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task NewTokenWithDelay()
+    {
+
+        var cancelationDelay = 200.Milliseconds();
+        var waitForCancelation = 300.Milliseconds();
+
+        var newToken = token.NewToken(cancelationDelay);
+        await Task.Delay(waitForCancelation);
+
+        newToken.IsCancellationRequested.Should().BeTrue();
+
+    }
+
+    [Fact]
+    public void NewTokenWithDelayAndTime()
+    {
+        var newToken = token.NewToken(cancelationDelay: 200.Milliseconds(), time);
+        time.Advance(300.Milliseconds());
+
+        newToken.IsCancellationRequested.Should().BeTrue();
+    }
+
 
     [Fact]
     public void Create_A_Task_From_A_Result()
@@ -272,7 +317,7 @@ public class TaskDesign
     }
 
     [Fact]
-    public async void FireAndForget_Fail()
+    public void FireAndForget_Fail()
     {
         this.Dump(output, "before");
         var task = Task.FromException(new Exception("TestException"));  // Task.Delay(200, token).Dump(output, "during");
@@ -285,8 +330,6 @@ public class TaskDesign
         task.IsCompleted.Should().BeTrue();
         isFailed.Should().BeTrue();
     }
-
-
     [Fact]
     public async void Yield()
     {
@@ -308,12 +351,9 @@ public class TaskDesign
         this.Dump(output, "after");
     }
 
-
-
     private async Task<string> NumToStringTask(int num, CancellationToken token)
     {
         await Task.Delay(num, token);
         return $"{num:D3}";
     }
-
 }
