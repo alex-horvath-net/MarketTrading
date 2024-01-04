@@ -38,7 +38,7 @@ public static class TaskExtensions
         soure.Token.Register(() => soure.Dispose());
         return soure.Token;
     }
-
+      
     public async static void FireAndForget(
         this Task task,
         bool keepTheCallerThread = false,
@@ -330,6 +330,8 @@ public class TaskDesign
         task.IsCompleted.Should().BeTrue();
         isFailed.Should().BeTrue();
     }
+
+
     [Fact]
     public async void Yield()
     {

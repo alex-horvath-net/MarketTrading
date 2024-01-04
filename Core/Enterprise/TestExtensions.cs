@@ -6,6 +6,7 @@ namespace Core.Enterprise;
 
 public static class TestExtensions
 {
+    [DebuggerStepThrough]
     public static Task<T> Dump<T>(this Task<T> taskT, ITestOutputHelper output, string? message = null)
     {
         var sb = new StringBuilder();
@@ -26,6 +27,7 @@ public static class TestExtensions
         return taskT;
     }
 
+    [DebuggerStepThrough]
     public static Task Dump(this Task task, ITestOutputHelper output, string? message = null)
     {
         var sb = new StringBuilder();
@@ -45,6 +47,7 @@ public static class TestExtensions
         return task;
     }
 
+    [DebuggerStepThrough]
     public static T Dump<T>(this T instance, ITestOutputHelper output, string? message = null)
     {
         var sb = new StringBuilder();
