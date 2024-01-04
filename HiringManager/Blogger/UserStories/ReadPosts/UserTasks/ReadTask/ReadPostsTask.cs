@@ -1,48 +1,54 @@
 ﻿using Core.Application.UserStory.DomainModel;
+using Core.Enterprise;
 using Core.Enterprise.UserStory;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
 
 public class ReadPostsTask(ReadPostsTask.IDataAccessSocket socket) :
     IUserTask<Request, Response>
 {
-    public class Design
+    public class Design : Design<ReadPostsTask>
     {
-        private void Constructor() => unit = new ReadPostsTask(dataAccessSocket.Mock);
-        
-        private async Task Beahaviour() => terminated = await unit.Run(response.Mock, token);
+        private void Construct() => Unit = new(dataAccessSocket);
+
+        private async Task Run() => terminated = await Unit.Run(response, Token);
 
         [Fact]
         public void ItRequires_Sockets()
         {
-            Constructor();
+            Construct();
 
-            unit.Should().NotBeNull();
-            unit.Should().BeAssignableTo<IUserTask<Request, Response>>();
+            Unit.Should().NotBeNull();
+            Unit.Should().BeAssignableTo<IUserTask<Request, Response>>();
         }
 
         [Fact]
         public async void ItCan_PopulateResponseWithPosts()
         {
-            response.HasNoPosts();
-            dataAccessSocket.ProvidesPosts();
-            Constructor();
+            mockResponse.HasNoPosts();
+            mockDataAccessSocket.ProvidesPosts();
+            Construct();
 
-            await Beahaviour();
+            await Run();
 
             terminated.Should().BeFalse();
-            response.Mock.Posts.Should().NotBeEmpty();
-            await dataAccessSocket.Mock.ReceivedWithAnyArgs().Read(default, default);
+            mockResponse.Mock.Posts.Should().NotBeEmpty();
+            await mockDataAccessSocket.Mock.ReceivedWithAnyArgs().Read(default, default);
         }
 
-        private readonly IDataAccessSocket.MockBuilder dataAccessSocket = new();
-        private readonly Response.MockMuilder response = new();
-        private readonly CancellationToken token = CancellationToken.None;
-        private ReadPostsTask unit;
+        private readonly IDataAccessSocket.MockBuilder mockDataAccessSocket = new();
+        private IDataAccessSocket dataAccessSocket => mockDataAccessSocket.Mock;
+        private readonly Response.MockMuilder mockResponse = new();
+        private Response response => mockResponse.Mock;
         private bool terminated;
+
+        public Design(ITestOutputHelper output) : base(output)
+        {
+        }
     }
 
     public async Task<bool> Run(Response response, CancellationToken token)

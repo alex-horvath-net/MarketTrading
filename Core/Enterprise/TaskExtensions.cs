@@ -233,12 +233,12 @@ public class TaskDesign : Design<TaskDesign>
     public async void FireAndForget_Ok()
     {
         this.Dump(Output, "before");
-        var task = Task.Delay(200, Token.Token).Dump(Output, "during");
+        var task = Task.Delay(200, Token).Dump(Output, "during");
         var isCompleted = false;
 
         task.FireAndForget(onCompleted: () => { this.Dump(Output, "completed"); isCompleted = true; });
 
-        await Task.Delay(300, base.Token.Token);
+        await Task.Delay(300, base.Token);
         this.Dump(Output, "after");
         task.IsCompleted.Should().BeTrue();
         isCompleted.Should().BeTrue();

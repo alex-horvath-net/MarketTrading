@@ -9,5 +9,6 @@ public class Design<T>
     protected readonly ITestOutputHelper Output;
     protected readonly FakeTimeProvider Time = new();
     protected T Unit { get; set; }
-    protected CancellationTokenBuilder Token = new(); 
+    protected CancellationTokenBuilder TokenBuilder = new();
+    protected CancellationToken Token => TokenBuilder.Token;
 }
