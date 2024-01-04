@@ -7,7 +7,7 @@ public static class Extensions
 {
     public static IServiceCollection AddDataAccessSocket(this IServiceCollection services)
     {
-        services.AddScoped<IDataAccessSocket, DataAccessSocket>();
+        services.AddScoped<ReadPostsTask.IDataAccessSocket, DataAccessSocket>();
         services.AddDataAccessPlugin();
 
         return services;

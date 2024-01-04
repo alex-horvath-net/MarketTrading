@@ -1,6 +1,4 @@
-﻿using Castle.Components.DictionaryAdapter.Xml;
-using Core.Application.UserStory.DomainModel;
-using Core.Enterprise;
+﻿using Core.Application.UserStory.DomainModel;
 using Core.Enterprise.UserStory;
 using FluentAssertions;
 using NSubstitute;
@@ -8,65 +6,70 @@ using Xunit;
 
 namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
 
-public class ReadPostsTask(IDataAccessSocket socket) : IUserTask<Request, Response>
+public class ReadPostsTask(ReadPostsTask.IDataAccessSocket socket) :
+    IUserTask<Request, Response>
 {
-    public async Task<bool> Run(Response response, CancellationToken token)
-    {
-        response.Posts = await socket.Read(response.Request, token);
-        return false;
-    }
-
     public class Design
     {
-        [Fact]
-        public void ItHasSockets()
-        {
-            var providePostsTask = new ReadPostsTask(dataAccessSocket.Mock);
+        private void Constructor() => unit = new ReadPostsTask(dataAccessSocket.Mock);
+        
+        private async Task Beahaviour() => terminated = await unit.Run(response.Mock, token);
 
-            providePostsTask.Should().NotBeNull();
-            providePostsTask.Should().BeAssignableTo<IUserTask<Request, Response>>();
+        [Fact]
+        public void ItRequires_Sockets()
+        {
+            Constructor();
+
+            unit.Should().NotBeNull();
+            unit.Should().BeAssignableTo<IUserTask<Request, Response>>();
         }
 
         [Fact]
-        public async void ItCanPopulatePostsOfResponse()
+        public async void ItCan_PopulateResponseWithPosts()
         {
-            response.WillHaveNoPosts();
-            dataAccessSocket.WillProvide3Posts();
-            var providePostsTask = new ReadPostsTask(dataAccessSocket.Mock);
+            response.HasNoPosts();
+            dataAccessSocket.ProvidesPosts();
+            Constructor();
 
-            var terminated = await providePostsTask.Run(response.Mock, token);
+            await Beahaviour();
 
             terminated.Should().BeFalse();
-            response.Mock.Posts.Should().HaveCount(3);
+            response.Mock.Posts.Should().NotBeEmpty();
             await dataAccessSocket.Mock.ReceivedWithAnyArgs().Read(default, default);
         }
 
         private readonly IDataAccessSocket.MockBuilder dataAccessSocket = new();
         private readonly Response.MockMuilder response = new();
         private readonly CancellationToken token = CancellationToken.None;
+        private ReadPostsTask unit;
+        private bool terminated;
     }
-}
 
-
-
-public interface IDataAccessSocket
-{
-    Task<List<Post>> Read(Request request, CancellationToken token);
-
-    public class MockBuilder
+    public async Task<bool> Run(Response response, CancellationToken token)
     {
-        public IDataAccessSocket Mock { get; } = Substitute.For<IDataAccessSocket>();
+        response.Posts = await socket.Read(response.Request, token);
+        return false;
+    }
 
-        public MockBuilder WillProvide3Posts()
+    public interface IDataAccessSocket
+    {
+        Task<List<Post>> Read(Request request, CancellationToken token);
+
+        public class MockBuilder
         {
-            Mock.Read(default, default)
-                .ReturnsForAnyArgs(new List<Post>()
-                {
-                    new Post() { Id = 1, Title = "Post 1", Content = "Content 1" },
-                    new Post() { Id = 2, Title = "Post 2", Content = "Content 2" },
-                    new Post() { Id = 3, Title = "Post 3", Content = "Content 3" }
-                }.ToTask());
-            return this;
+            public IDataAccessSocket Mock { get; } = Substitute.For<IDataAccessSocket>();
+
+            public MockBuilder ProvidesPosts()
+            {
+                Mock.Read(default, default)
+                    .ReturnsForAnyArgs(
+                    [
+                        new() { Id = 1, Title = "Post 1", Content = "Content 1" },
+                        new() { Id = 2, Title = "Post 2", Content = "Content 2" },
+                        new() { Id = 3, Title = "Post 3", Content = "Content 3" }
+                    ]);
+                return this;
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ public record Response() : ResponseCore<Request>
     {
         public Response Mock { get; private set; } = new();
 
-        public MockMuilder WillHaveNoPosts()
+        public MockMuilder HasNoPosts()
         {
             WillHaveValidRequest();
             Mock.Posts = null;

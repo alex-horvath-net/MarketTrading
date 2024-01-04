@@ -9,7 +9,7 @@ public class UserStoryCore<TRequest, TResponse>(IEnumerable<IUserTask<TRequest, 
 {
     public async Task<TResponse> Run(TRequest request, CancellationToken token)
     {
-        var response =  new TResponse() { Request = request };
+        var response = new TResponse() { Request = request };
         foreach (var userTask in userTasks)
         {
             var terminated = await userTask.Run(response, token);
@@ -25,16 +25,13 @@ public class UserStoryCore_Design
     [Fact]
     public async void NonStoppedFeature()
     {
-        var tasks = new[]
-        {
-            oneTask.DoNotTerminate().Mock,
-            otherTask.DoNotTerminate().Mock
-        };
-        var request = new RequestCore();
-        var token = CancellationToken.None;
-        var unit = new UserStoryCore<RequestCore, ResponseCore<RequestCore>>(tasks);
+        var userStory = new UserStoryCore<RequestCore, ResponseCore<RequestCore>>(
+            [
+                oneTask.DoNotTerminate().Mock,
+                otherTask.DoNotTerminate().Mock
+            ]);
 
-        var response = await unit.Run(request, token);
+        var response = await userStory.Run(request, token);
 
         response.Should().NotBeNull();
         response.Request.Should().Be(request);
@@ -44,24 +41,22 @@ public class UserStoryCore_Design
     [Fact]
     public async void StoppedFeature()
     {
-        var tasks = new[]
-        {
-            oneTask.Terminate().Mock,
-            otherTask.DoNotTerminate().Mock
-        };
-        var request = new RequestCore();
-        var token = CancellationToken.None;
-        var unit = new UserStoryCore<RequestCore, ResponseCore<RequestCore>>(tasks);
+        var userStory = new UserStoryCore<RequestCore, ResponseCore<RequestCore>>(
+            [
+                oneTask.Terminate().Mock,
+                otherTask.DoNotTerminate().Mock
+            ]);
 
-        var response = await unit.Run(request, token);
+        var response = await userStory.Run(request, token);
 
         response.Should().NotBeNull();
         response.Request.Should().Be(request);
-        //oneTask.Mock.Received(1).Run(response, token);  
+
     }
 
     private readonly IUserTask<RequestCore, ResponseCore<RequestCore>>.MockBuilder otherTask = new();
     private readonly IUserTask<RequestCore, ResponseCore<RequestCore>>.MockBuilder oneTask = new();
-    //private readonly Featrue_MockBuilder feature = new();
+    private readonly RequestCore request = new();
+    private readonly CancellationToken token = CancellationToken.None;
 }
 

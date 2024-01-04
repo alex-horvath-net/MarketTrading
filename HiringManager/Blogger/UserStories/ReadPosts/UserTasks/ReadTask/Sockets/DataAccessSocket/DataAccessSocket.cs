@@ -3,7 +3,8 @@ using Core.Application.UserStory.DomainModel;
 
 namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket;
 
-public class DataAccessSocket(IDataAccessPlugin plugin) : IDataAccessSocket
+public class DataAccessSocket(IDataAccessPlugin plugin) 
+    : ReadPostsTask.IDataAccessSocket
 {
     public async Task<List<Post>> Read(Request request, CancellationToken token)
     {

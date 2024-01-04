@@ -10,7 +10,8 @@ public interface IUserTask<TRequest, TResponse>
 
     public class MockBuilder
     {
-        public IUserTask<RequestCore, ResponseCore<RequestCore>> Mock = Substitute.For<IUserTask<RequestCore, ResponseCore<RequestCore>>>();
+        public IUserTask<RequestCore, ResponseCore<RequestCore>> Mock = 
+            Substitute.For<IUserTask<RequestCore, ResponseCore<RequestCore>>>();
 
         public MockBuilder Terminate()
         {

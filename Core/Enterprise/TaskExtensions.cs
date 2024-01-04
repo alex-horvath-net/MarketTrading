@@ -2,7 +2,6 @@
 using Core.Enterprise;
 using FluentAssertions;
 using FluentAssertions.Extensions;
-using Microsoft.Extensions.Time.Testing;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -13,32 +12,7 @@ public static class TaskExtensions
     public static Task<T> ToTask<T>(
         this T t) => Task.FromResult(t);
 
-    public static CancellationToken NewToken(
-        this CancellationToken _)
-    {
-        using var soure = new CancellationTokenSource();
-        return soure.Token;
-    }
 
-    public static CancellationToken NewToken(
-        this CancellationToken _,
-        TimeSpan delay)
-    {
-        var soure = new CancellationTokenSource(delay);
-        soure.Token.Register(() => soure.Dispose());
-        return soure.Token;
-    }
-
-    public static CancellationToken NewToken(
-        this CancellationToken _,
-        TimeSpan cancelationDelay,
-        TimeProvider timeProvider)
-    {
-        var soure = new CancellationTokenSource(cancelationDelay, timeProvider);
-        soure.Token.Register(() => soure.Dispose());
-        return soure.Token;
-    }
-      
     public async static void FireAndForget(
         this Task task,
         bool keepTheCallerThread = false,
@@ -119,65 +93,19 @@ public static class TaskExtensions
     }
 }
 
-public class TaskDesign
+public class TaskDesign : Design<TaskDesign>
 {
-    private readonly ITestOutputHelper output;
-    private readonly CancellationToken token = CancellationToken.None;
-    private readonly FakeTimeProvider time = new FakeTimeProvider();
-
+    public TaskDesign(ITestOutputHelper output) : base(output) { }
 
     private string MapToItself(string itself) => itself;
     private int Parse(string text) => int.Parse(text);
     private DateTime ToDate(int year) => new DateTime(year, 1, 1);
     private async Task<string> GetYear()
     {
-        this.Dump(output, "before delay");
-        await Task.Delay(100).Dump(output, "during delay");
-        this.Dump(output, "after delay");
+        this.Dump(Output, "before delay");
+        await Task.Delay(100).Dump(Output, "during delay");
+        this.Dump(Output, "after delay");
         return "1984";
-    }
-
-    public TaskDesign(ITestOutputHelper output) => this.output = output;
-
-    [Fact]
-    public void NoneToken()
-    {
-        token.Should().NotBeNull();
-        token.CanBeCanceled.Should().BeFalse();
-        token.IsCancellationRequested.Should().BeFalse();
-    }
-
-    [Fact]
-    public void NewToken()
-    {
-        var newToken = token.NewToken();
-
-        newToken.Should().NotBeNull();
-        newToken.CanBeCanceled.Should().BeTrue();
-        newToken.IsCancellationRequested.Should().BeFalse();
-    }
-
-    [Fact]
-    public async Task NewTokenWithDelay()
-    {
-
-        var cancelationDelay = 200.Milliseconds();
-        var waitForCancelation = 300.Milliseconds();
-
-        var newToken = token.NewToken(cancelationDelay);
-        await Task.Delay(waitForCancelation);
-
-        newToken.IsCancellationRequested.Should().BeTrue();
-
-    }
-
-    [Fact]
-    public void NewTokenWithDelayAndTime()
-    {
-        var newToken = token.NewToken(cancelationDelay: 200.Milliseconds(), time);
-        time.Advance(300.Milliseconds());
-
-        newToken.IsCancellationRequested.Should().BeTrue();
     }
 
 
@@ -185,10 +113,10 @@ public class TaskDesign
     public void Create_A_Task_From_A_Result()
     {
         var year = "1984";
-        this.Dump(output);
+        this.Dump(Output);
 
-        var task = year.ToTask().Dump(output);
-        this.Dump(output);
+        var task = year.ToTask().Dump(Output);
+        this.Dump(Output);
 
         task.Should().NotBeNull();
         task.Should().BeOfType<Task<string>>();
@@ -199,12 +127,12 @@ public class TaskDesign
     [Fact]
     public void Create_A_Task_From_A_Method()
     {
-        this.Dump(output);
+        this.Dump(Output);
 
         var task = GetYear();
-        task.Dump(output, "during task");
+        task.Dump(Output, "during task");
 
-        this.Dump(output);
+        this.Dump(Output);
 
         task.Should().NotBeNull();
         task.IsCompleted.Should().BeFalse();
@@ -214,16 +142,16 @@ public class TaskDesign
     [Fact]
     public async Task Get_Result_Of_The_Task()
     {
-        this.Dump(output, "before creating task");
+        this.Dump(Output, "before creating task");
 
-        var task = GetYear().Dump(output, "creating task");
+        var task = GetYear().Dump(Output, "creating task");
 
-        this.Dump(output, "after creating task");
+        this.Dump(Output, "after creating task");
 
-        this.Dump(output, "before waiting for task");
+        this.Dump(Output, "before waiting for task");
 
-        var result = await task.ConfigureAwait(false).Dump(output, "during waiting for task");
-        task.Dump(output, "after waiting for task");
+        var result = await task.ConfigureAwait(false).Dump(Output, "during waiting for task");
+        task.Dump(Output, "after waiting for task");
 
         //task.Should().BeOfType<Task<string>>();
         result.Should().Be("1984");
@@ -304,14 +232,14 @@ public class TaskDesign
     [Fact]
     public async void FireAndForget_Ok()
     {
-        this.Dump(output, "before");
-        var task = Task.Delay(200, token).Dump(output, "during");
+        this.Dump(Output, "before");
+        var task = Task.Delay(200, Token.Token).Dump(Output, "during");
         var isCompleted = false;
 
-        task.FireAndForget(onCompleted: () => { this.Dump(output, "completed"); isCompleted = true; });
+        task.FireAndForget(onCompleted: () => { this.Dump(Output, "completed"); isCompleted = true; });
 
-        await Task.Delay(300, token);
-        this.Dump(output, "after");
+        await Task.Delay(300, base.Token.Token);
+        this.Dump(Output, "after");
         task.IsCompleted.Should().BeTrue();
         isCompleted.Should().BeTrue();
     }
@@ -319,14 +247,14 @@ public class TaskDesign
     [Fact]
     public void FireAndForget_Fail()
     {
-        this.Dump(output, "before");
-        var task = Task.FromException(new Exception("TestException"));  // Task.Delay(200, token).Dump(output, "during");
+        this.Dump(Output, "before");
+        var task = Task.FromException(new Exception("TestException"));  // Task.Delay(200, token).Dump(Output, "during");
         var isFailed = false;
 
 
-        task.FireAndForget(retrhrowException: false, onException: ex => { this.Dump(output, ex.Message); isFailed = true; });
+        task.FireAndForget(retrhrowException: false, onException: ex => { this.Dump(Output, ex.Message); isFailed = true; });
 
-        this.Dump(output, "after");
+        this.Dump(Output, "after");
         task.IsCompleted.Should().BeTrue();
         isFailed.Should().BeTrue();
     }
@@ -335,7 +263,7 @@ public class TaskDesign
     [Fact]
     public async void Yield()
     {
-        this.Dump(output, "before");
+        this.Dump(Output, "before");
 
         Func<Task> slowTaskExecutions = async () =>
         {
@@ -344,13 +272,13 @@ public class TaskDesign
 
             await foreach (var text in nums.Yield(NumToStringTask, token))
             {
-                this.Dump(output, text);
+                this.Dump(Output, text);
             }
         };
 
         await slowTaskExecutions.Should().CompleteWithinAsync(2000.Milliseconds());
 
-        this.Dump(output, "after");
+        this.Dump(Output, "after");
     }
 
     private async Task<string> NumToStringTask(int num, CancellationToken token)
