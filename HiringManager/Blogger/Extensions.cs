@@ -22,7 +22,7 @@ public static class Extensions
     public class Design
     {
         [Fact]
-        public async void AddBlogger()
+        public async Task AddBlogger()
         {
             var configurationBuilder = new ConfigurationBuilder();
             var configuration = configurationBuilder.Build();
@@ -46,5 +46,4 @@ public static class Extensions
             //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IFeature<Request, Response>>();
         }
     }
-
 }
