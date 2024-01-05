@@ -1,9 +1,9 @@
 ﻿using Core.Enterprise.Sockets.Validation;
 using Core.Enterprise.UserStory;
-using Users.Blogger.UserStories.ReadPostsUserStory;
-using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask;
+using Users.Blogger.ReadPostsUserStory;
+using Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask;
 
-namespace Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
+namespace Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
 
 public class ValidationSocket(IValidationPlugin plugin) : IValidationSocket
 {

@@ -2,11 +2,11 @@
 using Core.Enterprise.Plugins.Validation;
 using FluentAssertions;
 using FluentValidation;
-using Users.Blogger.UserStories.ReadPostsUserStory;
-using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
+using Users.Blogger.ReadPostsUserStory;
+using Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
 using Xunit;
 
-namespace Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin;
+namespace Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin;
 
 public class ValidationPlugin : FluentValidator<Request>, IValidationPlugin
 {

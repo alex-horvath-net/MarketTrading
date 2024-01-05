@@ -1,7 +1,7 @@
 ﻿using Core.Application.UserStory.DomainModel;
 using Core.Enterprise.UserStory;
 
-namespace Users.Blogger.UserStories.ReadPostsUserStory;
+namespace Users.Blogger.ReadPostsUserStory;
 
 public record Response() : ResponseCore<Request>
 {

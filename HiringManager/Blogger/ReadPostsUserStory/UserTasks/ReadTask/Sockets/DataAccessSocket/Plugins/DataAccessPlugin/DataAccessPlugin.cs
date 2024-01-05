@@ -1,7 +1,7 @@
 ﻿using Core.Application.Sockets.DataModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin;
+namespace Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin;
 
 public class DataAccessPlugin(Core.Application.Plugins.BlogDbContext db) : DataAccessSocket.IDataAccessPlugin
 {

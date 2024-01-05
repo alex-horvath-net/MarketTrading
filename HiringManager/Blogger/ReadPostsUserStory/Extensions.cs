@@ -2,13 +2,13 @@
 using Core.Enterprise;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ReadTask;
-using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket;
-using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask;
-using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
+using Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask;
+using Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket;
+using Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask;
+using Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
 using Xunit;
 
-namespace Users.Blogger.UserStories.ReadPostsUserStory;
+namespace Users.Blogger.ReadPostsUserStory;
 
 public static class Extensions
 {

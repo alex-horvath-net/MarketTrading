@@ -3,12 +3,12 @@ using Core.Application.UserStory.DomainModel;
 using Core.Enterprise;
 using FluentAssertions;
 using NSubstitute;
-using Users.Blogger.UserStories.ReadPostsUserStory;
-using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ReadTask;
+using Users.Blogger.ReadPostsUserStory;
+using Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket;
+namespace Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket;
 
 public class DataAccessSocket(DataAccessSocket.IDataAccessPlugin plugin) : ReadPostsTask.IDataAccessSocket
 {
