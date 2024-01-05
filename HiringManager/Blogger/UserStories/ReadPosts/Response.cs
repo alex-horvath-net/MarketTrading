@@ -25,5 +25,12 @@ public record Response() : ResponseCore<Request>
             Mock.Validations = null;
             return this;
         }
+
+        public MockMuilder HasNoValidations()
+        {
+            WillHaveValidRequest();
+            Mock.Validations = null;
+            return this;
+        }
     }
 }

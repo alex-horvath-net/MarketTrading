@@ -1,59 +1,78 @@
-﻿using Core.Enterprise.UserStory;
+﻿using Core.Enterprise;
+using Core.Enterprise.UserStory;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask;
 
 public class ValidationTask(IValidationSocket socket) : IUserTask<Request, Response>
 {
-    public async Task<bool> Run(Response response, CancellationToken token)
+    public class Design : Design<ValidationTask>
     {
-        response.Validations = await socket.Validate(response.Request, token);
-        var hasValidationIssue = response.Validations.Any(x => !x.IsSuccess);
-        return hasValidationIssue;
-    }
+        private void Construct() => unit = new(validationSocket);
 
-    public class Design
-    {
+        private async Task Run() => terminated = await unit.Run(response, token);
+
         [Fact]
         public void ItHas_Sockets()
         {
-            var validationTask = new ValidationTask(validationSocket.Mock);
+            Construct();
 
-            validationTask.Should().NotBeNull();
-            validationTask.Should().BeAssignableTo<IUserTask<Request, Response>>();
+            unit.Should().NotBeNull();
+            unit.Should().BeAssignableTo<IUserTask<Request, Response>>();
         }
 
         [Fact]
         public async void ItCan_ValidateValidRequest()
-        { 
-            validationSocket.Pass();
-            var validationTask = new ValidationTask(validationSocket.Mock);
+        {
+            mockValidationSocket.Pass();
+            Construct();
+            mockResponse.HasNoValidations();
 
-            var terminated = await validationTask.Run(response.Mock, token);
+            await Run();
 
             terminated.Should().BeFalse();
-            response.Mock.Validations.Should().OnlyContain(x=>x.IsSuccess);
-            await validationSocket.Mock.ReceivedWithAnyArgs().Validate(default, default);
+            mockResponse.Mock.Validations.Should().NotContain(x => !x.IsSuccess);
+            mockResponse.Mock.Validations.Should().BeEmpty();
+            await mockValidationSocket.Mock.ReceivedWithAnyArgs().Validate(default, default);
         }
 
         [Fact]
         public async void ItCan_ValidateInValidRequest()
         {
-            validationSocket.Fail();
-            var validationTask = new ValidationTask(validationSocket.Mock);
+            mockValidationSocket.Fail();
+            Construct();
+            mockResponse.HasNoValidations();
 
-            var terminated = await validationTask.Run(response.Mock, token);
+            await Run();
 
             terminated.Should().BeTrue();
-            response.Mock.Validations.Should().Contain(x => !x.IsSuccess);
-            await validationSocket.Mock.ReceivedWithAnyArgs().Validate(default, default);
+            mockResponse.Mock.Validations.Should().Contain(x => !x.IsSuccess);
+            await mockValidationSocket.Mock.ReceivedWithAnyArgs().Validate(default, default);
         }
 
-        private readonly IValidationSocket.MockBuilder validationSocket = new();
-        private readonly Response.MockMuilder response = new();
-        private readonly CancellationToken token = CancellationToken.None;
+        private readonly IValidationSocket.MockBuilder mockValidationSocket = new();
+        private IValidationSocket validationSocket => mockValidationSocket.Mock;
+        private readonly Response.MockMuilder mockResponse = new();
+        private Response response => mockResponse.Mock;
+        private readonly CancellationTokenBuilder tokenBuilder = new();
+        private ValidationTask unit;
+        private bool terminated;
+
+        private CancellationToken token => tokenBuilder.Token;
+
+        protected Design(ITestOutputHelper output) : base(output)
+        {
+        }
+    }
+
+    public async Task<bool> Run(Response response, CancellationToken token)
+    {
+        response.Validations = await socket.Validate(response.Request, token);
+        var hasValidationIssue = response.Validations.Any(x => !x.IsSuccess);
+        return hasValidationIssue;
     }
 }
 
@@ -70,8 +89,6 @@ public interface IValidationSocket
             Mock.Validate(default, default)
                 .ReturnsForAnyArgs(new List<ValidationResult>()
                 {
-                    ValidationResult.Success(),
-                    ValidationResult.Success()
                 });
             return this;
         }
@@ -81,7 +98,6 @@ public interface IValidationSocket
             Mock.Validate(default, default)
                 .ReturnsForAnyArgs(new List<ValidationResult>()
                 {
-                    ValidationResult.Success(),
                     ValidationResult.Failed("TestErrorCode", "TestErrorMessage")
                 });
             return this;
