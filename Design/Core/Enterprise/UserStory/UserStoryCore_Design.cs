@@ -1,4 +1,6 @@
-﻿namespace Design.Core.Enterprise.UserStory;
+﻿using Core.Enterprise.UserStory;
+
+namespace Design.Core.Enterprise.UserStory;
 
 public class UserStoryCore_Design
 {

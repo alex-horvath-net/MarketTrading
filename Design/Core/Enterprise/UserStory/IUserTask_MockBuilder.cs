@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using Core.Enterprise.UserStory;
+using NSubstitute;
 
 namespace Design.Core.Enterprise.UserStory;
 

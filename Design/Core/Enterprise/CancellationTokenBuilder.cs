@@ -1,4 +1,5 @@
-﻿using FluentAssertions.Extensions;
+﻿using Core.Enterprise;
+using FluentAssertions.Extensions;
 using Microsoft.Extensions.Time.Testing;
 
 namespace Design.Core.Enterprise;

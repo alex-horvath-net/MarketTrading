@@ -1,4 +1,6 @@
-﻿namespace Design.Core.Application.Sockets.DataModel;
+﻿using Core.Enterprise.Sockets.Validation;
+
+namespace Design.Core.Application.Sockets.DataModel;
 
 public class ValidationModelDesign
 {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Time.Testing;
+﻿using Core.Enterprise;
+using Microsoft.Extensions.Time.Testing;
 
 namespace Design.Core.Enterprise;
 

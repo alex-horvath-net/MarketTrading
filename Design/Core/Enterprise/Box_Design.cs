@@ -1,4 +1,6 @@
-﻿namespace Design.Core.Enterprise;
+﻿using Core.Enterprise;
+
+namespace Design.Core.Enterprise;
 
 public class Box_Design
 {

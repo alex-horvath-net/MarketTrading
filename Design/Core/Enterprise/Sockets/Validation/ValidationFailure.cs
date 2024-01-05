@@ -1,4 +1,6 @@
-﻿namespace Design.Core.Enterprise.Sockets.Validation;
+﻿using Core.Enterprise.Sockets.Validation;
+
+namespace Design.Core.Enterprise.Sockets.Validation;
 
 public class ValidationModel_Design
 {

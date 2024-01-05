@@ -1,4 +1,5 @@
-﻿using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+﻿using Core.Application.Sockets.DataModel;
+using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
 
 namespace Design.Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
 
@@ -6,7 +7,7 @@ public class IDataAccessPlugin_MockBuilder
 {
     public readonly IDataAccessPlugin Mock = Substitute.For<IDataAccessPlugin>();
 
-    public List<DataModel.Post> Results { get; internal set; }
+    public List<Post> Results { get; internal set; }
 
     public IDataAccessPlugin_MockBuilder MockRead()
     {

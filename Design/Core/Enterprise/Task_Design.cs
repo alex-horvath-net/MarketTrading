@@ -1,4 +1,5 @@
-﻿using FluentAssertions.Extensions;
+﻿using Core.Enterprise;
+using FluentAssertions.Extensions;
 
 namespace Design.Core.Enterprise;
 

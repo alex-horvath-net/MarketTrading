@@ -1,11 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.ReadPostsUserStory;
+using Core.Enterprise;
+using Core.Application;
+using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+using static Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationTask;
+using static Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationSocket;
 
 
 namespace Design.Users.Blogger.ReadPostsUserStory;
 
-public static class Extensions_Design
+public class Extensions_Design
 {
     [Fact]
     public async Task AddReadPostsUserStory()
@@ -22,10 +27,10 @@ public static class Extensions_Design
 
         using var serviceProvider = services.BuildServiceProvider();
 
-        serviceProvider.GetRequiredService<ValidationTask.ValidationSocket.ValidationSocket.IValidationPlugin>();
-        serviceProvider.GetRequiredService<Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket.DataAccessPlugin.PluginDesign.IDataAccessPlugin>();
+        serviceProvider.GetRequiredService<IValidationPlugin>();
+        serviceProvider.GetRequiredService<IDataAccessPlugin>();
 
-        serviceProvider.GetRequiredService<ValidationTask.ValidationTask.IValidationSocket>();
+        serviceProvider.GetRequiredService<IValidationSocket>();
         serviceProvider.GetRequiredService<IDataAccessPlugin>();
 
         //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IWorkStep<Response>>();

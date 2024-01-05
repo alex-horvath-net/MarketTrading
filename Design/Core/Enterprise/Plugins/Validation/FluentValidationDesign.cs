@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Core.Enterprise.Plugins.Validation;
+using FluentValidation;
 
 namespace Design.Core.Enterprise.Plugins.Validation;
 

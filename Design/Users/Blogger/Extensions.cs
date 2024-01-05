@@ -1,12 +1,10 @@
-﻿using Design.Users.Blogger.ReadPostsUserStory;
-using Design.Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
-using Design.Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.ReadPostsUserStory;
 using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
-using Users.Blogger.ReadPostsUserStory.ValidationTask;
 using Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket;
+using Core.Application;
+using Core.Enterprise;
 
 namespace Design.Users.Blogger;
 

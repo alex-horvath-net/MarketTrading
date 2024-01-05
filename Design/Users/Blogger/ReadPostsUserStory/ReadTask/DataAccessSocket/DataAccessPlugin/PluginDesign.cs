@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Core.Application;
+using Core.Application.Plugins;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket.DataAccessPlugin;

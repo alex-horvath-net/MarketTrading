@@ -1,4 +1,5 @@
-﻿using Design.Core.Enterprise;
+﻿using Core.Application.UserStory.DomainModel;
+using Design.Core.Enterprise;
 using Users.Blogger.ReadPostsUserStory;
 using Users.Blogger.ReadPostsUserStory.ReadTask;
 using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
@@ -38,7 +39,7 @@ public class SocketDesign : Design<Socket>
     private IDataAccessPlugin dataAccessPlugin => mockDataAccessPlugin.Mock;
     private readonly Request_MockBuilder mockRequest = new();
     private Request request => mockRequest.Mock;
-    private List<DomainModel.Post> response;
+    private List<Post> response;
 
     public SocketDesign(ITestOutputHelper output) : base(output) { }
 }
