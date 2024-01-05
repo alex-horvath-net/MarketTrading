@@ -24,6 +24,8 @@ public class SocketDesign : Design<Socket>
     [Fact]
     public async void Path_Without_Diversion()
     {
+        mockDataAccessPlugin.MockRead();
+
         Construct();
 
         mockRequest.UseInvaliedRequestWithMissingFilters();
