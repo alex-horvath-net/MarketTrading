@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket.DataAccessPlugin;
 
@@ -15,5 +16,15 @@ public partial class Plugin(BlogDbContext db) : IDataAccessPlugin
 
         var dataModel = pluginModel;
         return dataModel;
+    }
+}
+
+public static class PluginExtensions
+{
+    public static IServiceCollection AddDataAccessPlugin(this IServiceCollection services)
+    {
+        services.AddScoped<IDataAccessPlugin, Plugin>();
+
+        return services;
     }
 }
