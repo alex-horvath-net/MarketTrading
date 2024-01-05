@@ -6,7 +6,7 @@ using NSubstitute;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
+namespace Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ReadTask;
 
 public class ReadPostsTask(ReadPostsTask.IDataAccessSocket socket) :
     IUserTask<Request, Response>

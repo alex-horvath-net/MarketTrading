@@ -1,31 +1,14 @@
-﻿using FluentAssertions.Extensions;
-using Newtonsoft.Json.Linq;
-using Xunit.Abstractions;
-using Xunit;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.Common.Utilities;
+﻿using FluentAssertions;
+using FluentAssertions.Extensions;
 using Microsoft.Extensions.Time.Testing;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Core.Enterprise;
 
 public class CancellationTokenBuilder : IDisposable
 {
-    public CancellationTokenBuilder CancelAfter(TimeSpan delay) => CancelAfter(delay, TimeProvider.System);
-
-    public CancellationTokenBuilder CancelAfter(TimeSpan delay, TimeProvider time)
-    {
-        source = new(delay, time);
-        return this;
-    }
-
-    public void Dispose() => source.Dispose();
-
-    public CancellationToken Token => source.Token;
-    public CancellationToken None => CancellationToken.None;
-
-    private CancellationTokenSource source = new();
-
-    public class Design
+    public class Design :IDisposable
     {
         private void Create() => Unit = new();
         private void CancelAfterDelay() => Unit.CancelAfter(delay);
@@ -89,10 +72,26 @@ public class CancellationTokenBuilder : IDisposable
             newToken.IsCancellationRequested.Should().BeTrue();
         }
 
+        public void Dispose() => Unit?.Dispose();
 
         private readonly ITestOutputHelper Output;
         private readonly FakeTimeProvider Time = new();
         private CancellationTokenBuilder Unit { get; set; }
         private TimeSpan delay = 200.Milliseconds();
     }
+
+    public CancellationTokenBuilder CancelAfter(TimeSpan delay) => CancelAfter(delay, TimeProvider.System);
+
+    public CancellationTokenBuilder CancelAfter(TimeSpan delay, TimeProvider time)
+    {
+        source = new(delay, time);
+        return this;
+    }
+
+    public void Dispose() => source.Dispose();
+
+    public CancellationToken Token => source.Token;
+    public CancellationToken None => CancellationToken.None;
+
+    private CancellationTokenSource source = new();
 }

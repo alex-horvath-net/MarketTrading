@@ -1,6 +1,6 @@
 ﻿using Core.Enterprise.UserStory;
 
-namespace Users.Blogger.UserStories.ReadPosts;
+namespace Users.Blogger.UserStories.ReadPostsUserStory;
 
 public record Request(
     string Title,
@@ -17,7 +17,7 @@ public record Request(
         }
 
         public MockBuilder UseInvaliedRequestWithMissingFilters()
-        { 
+        {
             Mock = new Request(null, null);
             return this;
         }

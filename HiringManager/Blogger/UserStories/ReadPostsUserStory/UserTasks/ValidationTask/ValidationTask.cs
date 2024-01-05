@@ -2,10 +2,11 @@
 using Core.Enterprise.UserStory;
 using FluentAssertions;
 using NSubstitute;
+using Users.Blogger.UserStories.ReadPostsUserStory;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask;
+namespace Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask;
 
 public class ValidationTask(IValidationSocket socket) : IUserTask<Request, Response>
 {
@@ -58,12 +59,12 @@ public class ValidationTask(IValidationSocket socket) : IUserTask<Request, Respo
         private readonly Response.MockMuilder mockResponse = new();
         private Response response => mockResponse.Mock;
         private readonly CancellationTokenBuilder tokenBuilder = new();
+        private CancellationToken token => tokenBuilder.Token;
         private ValidationTask unit;
         private bool terminated;
 
-        private CancellationToken token => tokenBuilder.Token;
 
-        protected Design(ITestOutputHelper output) : base(output)
+        public Design(ITestOutputHelper output) : base(output)
         {
         }
     }

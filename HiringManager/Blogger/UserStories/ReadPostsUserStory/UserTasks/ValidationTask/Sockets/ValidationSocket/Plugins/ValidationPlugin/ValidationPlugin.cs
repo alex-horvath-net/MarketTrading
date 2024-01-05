@@ -2,9 +2,11 @@
 using Core.Enterprise.Plugins.Validation;
 using FluentAssertions;
 using FluentValidation;
+using Users.Blogger.UserStories.ReadPostsUserStory;
+using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
 using Xunit;
 
-namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin;
+namespace Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin;
 
 public class ValidationPlugin : FluentValidator<Request>, IValidationPlugin
 {
@@ -45,7 +47,7 @@ public class ValidationPlugin : FluentValidator<Request>, IValidationPlugin
 
         [Fact]
         public async void ItCan_FindMissingFiltersOfRequest()
-        { 
+        {
             var unit = new ValidationPlugin();
             request.UseInvaliedRequestWithMissingFilters();
 
@@ -59,11 +61,11 @@ public class ValidationPlugin : FluentValidator<Request>, IValidationPlugin
                 x.ErrorMessage == "'Title' can not be empty if 'Content' is empty." &&
                 x.Severity == "Error");
 
-            issues.Should().ContainSingle(x =>  
+            issues.Should().ContainSingle(x =>
                 x.PropertyName == "Content" &&
                 x.ErrorCode == "NotEmptyValidator" &&
                 x.ErrorMessage == "'Content' can not be empty if 'Title' is empty." &&
-                x.Severity == "Error"); 
+                x.Severity == "Error");
         }
 
         [Fact]

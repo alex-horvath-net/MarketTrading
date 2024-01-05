@@ -2,13 +2,13 @@
 using Core.Enterprise;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask;
-using Users.Blogger.UserStories.ReadPosts.UserTasks.ReadTask.Sockets.DataAccessSocket;
-using Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask;
-using Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket;
+using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ReadTask;
+using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket;
+using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask;
+using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
 using Xunit;
 
-namespace Users.Blogger.UserStories.ReadPosts;
+namespace Users.Blogger.UserStories.ReadPostsUserStory;
 
 public static class Extensions
 {
@@ -38,10 +38,10 @@ public static class Extensions
             using var serviceProvider = services.BuildServiceProvider();
 
             serviceProvider.GetRequiredService<IValidationPlugin>();
-            serviceProvider.GetRequiredService<IDataAccessPlugin>();
+            serviceProvider.GetRequiredService<DataAccessSocket.IDataAccessPlugin>();
 
             serviceProvider.GetRequiredService<IValidationSocket>();
-            serviceProvider.GetRequiredService<IDataAccessPlugin>();
+            serviceProvider.GetRequiredService<DataAccessSocket.IDataAccessPlugin>();
 
             //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IWorkStep<Response>>();
             //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IFeature<Request, Response>>();

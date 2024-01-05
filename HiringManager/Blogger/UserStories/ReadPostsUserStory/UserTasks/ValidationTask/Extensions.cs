@@ -1,10 +1,9 @@
 ﻿using Core.Enterprise.UserStory;
 using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.UserStories.ReadPosts;
-using Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket;
-using Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin;
+using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
+using Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket.Plugins.ValidationPlugin;
 
-namespace Users.Blogger.UserStories.ReadPosts.UserTasks.ValidationTask;
+namespace Users.Blogger.UserStories.ReadPostsUserStory.UserTasks.ValidationTask;
 
 public static class Extensions
 {
