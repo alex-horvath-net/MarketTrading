@@ -36,7 +36,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Blogger\ReadPostsUserStory\ReadTask\DataAccessSocket\Plugins\" />
 	  <Folder Include="Blogger\WritePostUserStory\" />
 	  <Folder Include="Visitor\" />
 	</ItemGroup>

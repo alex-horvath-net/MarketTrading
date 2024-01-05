@@ -1,11 +1,8 @@
-﻿using Core.Application.UserStory.DomainModel;
-using Core.Enterprise.UserStory;
-
-namespace Users.Blogger.ReadPostsUserStory;
+﻿namespace Users.Blogger.ReadPostsUserStory;
 
 public record Response() : ResponseCore<Request>
 {
-    public List<Post>? Posts { get; set; }
+    public List<DomainModel.Post>? Posts { get; set; }
 
     public class MockMuilder
     {

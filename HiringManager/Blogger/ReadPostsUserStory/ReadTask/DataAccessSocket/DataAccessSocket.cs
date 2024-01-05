@@ -1,12 +1,4 @@
-﻿
-using Core.Application.UserStory.DomainModel;
-using Core.Enterprise;
-using FluentAssertions;
-using NSubstitute;
-using Xunit;
-using Xunit.Abstractions;
-
-namespace Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+﻿namespace Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
 
 public class DataAccessSocket(DataAccessSocket.IDataAccessPlugin plugin) : ReadPostsTask.IDataAccessSocket
 {
@@ -43,17 +35,17 @@ public class DataAccessSocket(DataAccessSocket.IDataAccessPlugin plugin) : ReadP
         private IDataAccessPlugin dataAccessPlugin => mockDataAccessPlugin.Mock;
         private readonly Request.MockBuilder mockRequest = new();
         private Request request => mockRequest.Mock;
-        private List<Post> response;
+        private List<DomainModel.Post> response;
 
         public Design(ITestOutputHelper output) : base(output)
         {
         }
     }
 
-    public async Task<List<Post>> Read(Request request, CancellationToken token)
+    public async Task<List<DomainModel.Post>> Read(Request request, CancellationToken token)
     {
-        var socketDataModel = await plugin.Read(request.Title, request.Content, token);
-        var userStoryDomainModel = socketDataModel.Select(x => new Post()
+        var dataModel = await plugin.Read(request.Title, request.Content, token);
+        var userStoryDomainModel = dataModel.Select(x => new DomainModel.Post()
         {
             Title = x.Title,
             Content = x.Content
@@ -61,23 +53,25 @@ public class DataAccessSocket(DataAccessSocket.IDataAccessPlugin plugin) : ReadP
         return userStoryDomainModel;
     }
 
+
+
     public interface IDataAccessPlugin
     {
-        Task<List<Core.Application.Sockets.DataModel.Post>> Read(string title, string content, CancellationToken token);
+        Task<List<DataModel.Post>> Read(string title, string content, CancellationToken token);
 
         public class MockBuilder
         {
             public readonly IDataAccessPlugin Mock = Substitute.For<IDataAccessPlugin>();
-            public List<Core.Application.Sockets.DataModel.Post> Results { get; internal set; }
+            public List<DataModel.Post> Results { get; internal set; }
 
             public MockBuilder() => MockRead();
 
             public MockBuilder MockRead()
             {
-                Results = new List<Core.Application.Sockets.DataModel.Post>
-                {
-                    new() {  Title= "Title", Content="Content"}
-                };
+                Results =
+                [
+                    new() { Title = "Title", Content = "Content" }
+                ];
                 Mock.Read(default, default, default).ReturnsForAnyArgs(Results);
                 return this;
             }

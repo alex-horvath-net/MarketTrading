@@ -1,11 +1,9 @@
-﻿using Core.Enterprise.Plugins.Validation;
-using FluentAssertions;
+﻿
 using FluentValidation;
-using Xunit;
 
 namespace Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationPlugin;
 
-public class ValidationPlugin : FluentValidator<Request>, IValidationPlugin
+public class ValidationPlugin : FluentValidator<Request>, ValidationSocket.IValidationPlugin
 {
     public class Design
     {

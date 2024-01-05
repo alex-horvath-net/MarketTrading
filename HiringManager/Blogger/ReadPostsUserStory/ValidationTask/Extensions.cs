@@ -1,6 +1,4 @@
-﻿using Core.Enterprise.UserStory;
-using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationPlugin;
 
 namespace Users.Blogger.ReadPostsUserStory.ValidationTask;
@@ -11,7 +9,7 @@ public static class Extensions
     {
         services.AddScoped<IUserTask<Request, Response>, ValidationTask>();
         services.AddScoped<IValidationSocket, ValidationSocket.ValidationSocket>();
-        services.AddScoped<IValidationPlugin, ValidationPlugin>();
+        services.AddScoped<ValidationSocket.ValidationSocket.IValidationPlugin, ValidationPlugin>();
 
         return services;
     }

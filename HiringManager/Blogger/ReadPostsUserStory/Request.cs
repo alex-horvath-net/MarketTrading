@@ -1,6 +1,4 @@
-﻿using Core.Enterprise.UserStory;
-
-namespace Users.Blogger.ReadPostsUserStory;
+﻿namespace Users.Blogger.ReadPostsUserStory;
 
 public record Request(
     string Title,

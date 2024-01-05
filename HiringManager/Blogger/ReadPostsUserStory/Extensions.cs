@@ -1,25 +1,14 @@
-﻿using Core.Application;
-using Core.Enterprise;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.ReadPostsUserStory.ReadTask;
 using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
 using Users.Blogger.ReadPostsUserStory.ValidationTask;
 using Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket;
-using Xunit;
 
 namespace Users.Blogger.ReadPostsUserStory;
 
 public static class Extensions
 {
-    public static IServiceCollection AddReadPostsUserStory(this IServiceCollection services)
-    {
-        services.AddReadTask();
-        services.AddValidationTask();
-
-        return services;
-    }
-
     public class Design
     {
         [Fact]
@@ -37,7 +26,7 @@ public static class Extensions
 
             using var serviceProvider = services.BuildServiceProvider();
 
-            serviceProvider.GetRequiredService<IValidationPlugin>();
+            serviceProvider.GetRequiredService<ValidationSocket.IValidationPlugin>();
             serviceProvider.GetRequiredService<DataAccessSocket.IDataAccessPlugin>();
 
             serviceProvider.GetRequiredService<IValidationSocket>();
@@ -46,5 +35,13 @@ public static class Extensions
             //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IWorkStep<Response>>();
             //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IFeature<Request, Response>>();
         }
+    }
+
+    public static IServiceCollection AddReadPostsUserStory(this IServiceCollection services)
+    {
+        services.AddReadTask();
+        services.AddValidationTask();
+
+        return services;
     }
 }

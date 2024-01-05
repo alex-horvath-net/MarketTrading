@@ -1,12 +1,4 @@
-﻿using Core.Application.UserStory.DomainModel;
-using Core.Enterprise;
-using Core.Enterprise.UserStory;
-using FluentAssertions;
-using NSubstitute;
-using Xunit;
-using Xunit.Abstractions;
-
-namespace Users.Blogger.ReadPostsUserStory.ReadTask;
+﻿namespace Users.Blogger.ReadPostsUserStory.ReadTask;
 
 public class ReadPostsTask(ReadPostsTask.IDataAccessSocket socket) :
     IUserTask<Request, Response>
@@ -59,7 +51,7 @@ public class ReadPostsTask(ReadPostsTask.IDataAccessSocket socket) :
 
     public interface IDataAccessSocket
     {
-        Task<List<Post>> Read(Request request, CancellationToken token);
+        Task<List<DomainModel.Post>> Read(Request request, CancellationToken token);
 
         public class MockBuilder
         {
