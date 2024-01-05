@@ -1,11 +1,10 @@
 ﻿using Core.Enterprise.Sockets.Validation;
 using FluentAssertions;
 using NSubstitute;
-using Users.Blogger.ReadPostsUserStory;
-using Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
+using Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket;
 using Xunit;
 
-namespace Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket.Design;
+namespace Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket.Design;
 
 public class ValidationAdapter_Specification
 {

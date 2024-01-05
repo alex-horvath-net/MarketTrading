@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Core.Application;
 using Users.Blogger.ReadPostsUserStory;
-using Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask;
-using Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket;
-using Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
+using Users.Blogger.ReadPostsUserStory.ValidationTask;
+using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+using Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket;
 
 namespace Users.Blogger;
 

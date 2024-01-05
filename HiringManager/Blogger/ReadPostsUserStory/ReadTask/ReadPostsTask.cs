@@ -3,11 +3,10 @@ using Core.Enterprise;
 using Core.Enterprise.UserStory;
 using FluentAssertions;
 using NSubstitute;
-using Users.Blogger.ReadPostsUserStory;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask;
+namespace Users.Blogger.ReadPostsUserStory.ReadTask;
 
 public class ReadPostsTask(ReadPostsTask.IDataAccessSocket socket) :
     IUserTask<Request, Response>

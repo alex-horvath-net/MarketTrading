@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask;
-using Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket.Plugins.DataAccessPlugin;
+using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket.DataAccessPlugin;
 
-namespace Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket;
+namespace Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
 
 public static class Extensions
 {

@@ -2,10 +2,10 @@
 using Core.Enterprise;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask;
-using Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket;
-using Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask;
-using Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask.Sockets.ValidationSocket;
+using Users.Blogger.ReadPostsUserStory.ReadTask;
+using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+using Users.Blogger.ReadPostsUserStory.ValidationTask;
+using Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket;
 using Xunit;
 
 namespace Users.Blogger.ReadPostsUserStory;

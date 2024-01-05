@@ -2,11 +2,10 @@
 using Core.Enterprise.UserStory;
 using FluentAssertions;
 using NSubstitute;
-using Users.Blogger.ReadPostsUserStory;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Users.Blogger.ReadPostsUserStory.UserTasks.ValidationTask;
+namespace Users.Blogger.ReadPostsUserStory.ValidationTask;
 
 public class ValidationTask(IValidationSocket socket) : IUserTask<Request, Response>
 {

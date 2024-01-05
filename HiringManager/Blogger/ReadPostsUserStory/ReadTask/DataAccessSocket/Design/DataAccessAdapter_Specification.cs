@@ -3,6 +3,6 @@ using FluentAssertions;
 using NSubstitute;
 using Xunit;
 
-namespace Users.Blogger.ReadPostsUserStory.UserTasks.ReadTask.Sockets.DataAccessSocket.Design;
+namespace Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket.Design;
 
 
