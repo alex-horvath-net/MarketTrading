@@ -1,27 +1,45 @@
 ﻿
 using FluentValidation;
+using Newtonsoft.Json.Linq;
 
 namespace Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationPlugin;
 
 public class ValidationPlugin : FluentValidator<Request>, ValidationSocket.IValidationPlugin
 {
-    public class Design
+    public ValidationPlugin()
     {
+        RuleFor(request => request.Title)
+            .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator)
+            .WithMessage(request => $"'{nameof(request.Title)}' can not be empty if '{nameof(request.Content)}' is empty.")
+            .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Title), ApplyConditionTo.CurrentValidator);
+
+        RuleFor(request => request.Content)
+            .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Title), ApplyConditionTo.CurrentValidator)
+            .WithMessage(request => $"'{nameof(request.Content)}' can not be empty if '{nameof(request.Title)}' is empty.")
+            .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
+    }
+
+    public class Design : Design<ValidationPlugin>
+    {
+        private void Construct() => Unit = new ValidationPlugin();
+
+        private async Task Validate() => issues = await Unit.Validate(request, Token);
+
         [Fact]
         public void ItHas_NoDependecy()
         {
-            var unit = new ValidationPlugin();
+            Construct();
 
-            unit.Should().NotBeNull();
+            Unit.Should().NotBeNull();
         }
 
         [Fact]
         public async void ItCan_AllowValidRequest()
         {
-            var unit = new ValidationPlugin();
-            request.UseValidRequest();
+            Construct();
+            mockRequest.UseValidRequest();
 
-            var issues = await unit.Validate(request.Mock, token);
+            await Validate();
 
             issues.Should().NotBeNull();
             issues.Should().BeEmpty();
@@ -30,10 +48,10 @@ public class ValidationPlugin : FluentValidator<Request>, ValidationSocket.IVali
         [Fact]
         public async void ItCan_FindMissingFiltersOfRequest()
         {
-            var unit = new ValidationPlugin();
-            request.UseInvaliedRequestWithMissingFilters();
+            Construct();
+            mockRequest.UseInvaliedRequestWithMissingFilters();
 
-            var issues = await unit.Validate(request.Mock, token);
+            await Validate();
 
             issues.Should().NotBeNull();
             issues.Should().HaveCount(2);
@@ -53,10 +71,10 @@ public class ValidationPlugin : FluentValidator<Request>, ValidationSocket.IVali
         [Fact]
         public async void ItCan_FindShortFiltersOfRequest()
         {
-            var unit = new ValidationPlugin();
-            request.UseInvaliedRequestWithShortFilters();
+            Construct();
+            mockRequest.UseInvaliedRequestWithShortFilters();
 
-            var issues = await unit.Validate(request.Mock, token);
+            await Validate();
 
             issues.Should().NotBeNull();
             issues.Should().HaveCount(2);
@@ -73,20 +91,12 @@ public class ValidationPlugin : FluentValidator<Request>, ValidationSocket.IVali
                 x.Severity == "Error");
         }
 
-        private readonly Request.MockBuilder request = new();
-        private readonly CancellationToken token = CancellationToken.None;
-    }
+        private readonly Request.MockBuilder mockRequest = new();
+        private Request request =>mockRequest.Mock;
+        private IEnumerable<ValidationFailure> issues;
 
-    public ValidationPlugin()
-    {
-        RuleFor(request => request.Title)
-            .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator)
-            .WithMessage(request => $"'{nameof(request.Title)}' can not be empty if '{nameof(request.Content)}' is empty.")
-            .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Title), ApplyConditionTo.CurrentValidator);
-
-        RuleFor(request => request.Content)
-            .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Title), ApplyConditionTo.CurrentValidator)
-            .WithMessage(request => $"'{nameof(request.Content)}' can not be empty if '{nameof(request.Title)}' is empty.")
-            .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
+        public Design(ITestOutputHelper output) : base(output)
+        {
+        }
     }
 }

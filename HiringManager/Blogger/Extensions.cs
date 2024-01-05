@@ -36,7 +36,7 @@ public static class Extensions
             serviceProvider.GetRequiredService<ValidationSocket.IValidationPlugin>();
             serviceProvider.GetRequiredService<DataAccessSocket.IDataAccessPlugin>();
 
-            serviceProvider.GetRequiredService<IValidationSocket>();
+            serviceProvider.GetRequiredService<ValidationTask.IValidationSocket>();
             serviceProvider.GetRequiredService<DataAccessSocket.IDataAccessPlugin>();
 
             //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IWorkStep<Response>>();

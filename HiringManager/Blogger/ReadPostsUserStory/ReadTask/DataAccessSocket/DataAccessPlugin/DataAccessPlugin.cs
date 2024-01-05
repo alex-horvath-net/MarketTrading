@@ -4,8 +4,21 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket.DataAccessPlugin;
 
-public class DataAccessPlugin(Core.Application.Plugins.BlogDbContext db) : DataAccessSocket.IDataAccessPlugin
+public class DataAccessPlugin(BlogDbContext db) : DataAccessSocket.IDataAccessPlugin
 {
+    public async Task<List<DataModel.Post>> Read(string title, string content, CancellationToken token)
+    {
+        var pluginModel = await db
+            .Posts
+            .Where(post => 
+                post.Title.Contains(title) || 
+                post.Content.Contains(content))
+            .ToListAsync(token);
+
+        var dataModel = pluginModel;
+        return dataModel;
+    }
+
     public class Design
     {
         [Fact]
@@ -37,18 +50,5 @@ public class DataAccessPlugin(Core.Application.Plugins.BlogDbContext db) : DataA
 
             db.Posts.Should().NotBeEmpty();
         }
-    }
-
-    public async Task<List<DataModel.Post>> Read(string title, string content, CancellationToken token)
-    {
-        var pluginModel = await db
-            .Posts
-            .Where(post => 
-                post.Title.Contains(title) || 
-                post.Content.Contains(content))
-            .ToListAsync(token);
-
-        var dataModel = pluginModel;
-        return dataModel;
     }
 }

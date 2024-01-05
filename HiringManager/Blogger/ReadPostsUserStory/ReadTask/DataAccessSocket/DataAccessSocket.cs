@@ -2,6 +2,40 @@
 
 public class DataAccessSocket(DataAccessSocket.IDataAccessPlugin plugin) : ReadPostsTask.IDataAccessSocket
 {
+    public async Task<List<DomainModel.Post>> Read(Request request, CancellationToken token)
+    {
+        var dataModel = await plugin.Read(request.Title, request.Content, token);
+        var userStoryDomainModel = dataModel.Select(x => new DomainModel.Post()
+        {
+            Title = x.Title,
+            Content = x.Content
+        }).ToList();
+        return userStoryDomainModel;
+    }
+
+    public interface IDataAccessPlugin
+    {
+        Task<List<DataModel.Post>> Read(string title, string content, CancellationToken token);
+
+        public class MockBuilder
+        {
+            public readonly IDataAccessPlugin Mock = Substitute.For<IDataAccessPlugin>();
+            public List<DataModel.Post> Results { get; internal set; }
+
+            public MockBuilder() => MockRead();
+
+            public MockBuilder MockRead()
+            {
+                Results =
+                [
+                    new() { Title = "Title", Content = "Content" }
+                ];
+                Mock.Read(default, default, default).ReturnsForAnyArgs(Results);
+                return this;
+            }
+        }
+    }
+
     public class Design : Design<DataAccessSocket>
     {
         private void Construct() => Unit = new(dataAccessPlugin);
@@ -41,41 +75,4 @@ public class DataAccessSocket(DataAccessSocket.IDataAccessPlugin plugin) : ReadP
         {
         }
     }
-
-    public async Task<List<DomainModel.Post>> Read(Request request, CancellationToken token)
-    {
-        var dataModel = await plugin.Read(request.Title, request.Content, token);
-        var userStoryDomainModel = dataModel.Select(x => new DomainModel.Post()
-        {
-            Title = x.Title,
-            Content = x.Content
-        }).ToList();
-        return userStoryDomainModel;
-    }
-
-
-
-    public interface IDataAccessPlugin
-    {
-        Task<List<DataModel.Post>> Read(string title, string content, CancellationToken token);
-
-        public class MockBuilder
-        {
-            public readonly IDataAccessPlugin Mock = Substitute.For<IDataAccessPlugin>();
-            public List<DataModel.Post> Results { get; internal set; }
-
-            public MockBuilder() => MockRead();
-
-            public MockBuilder MockRead()
-            {
-                Results =
-                [
-                    new() { Title = "Title", Content = "Content" }
-                ];
-                Mock.Read(default, default, default).ReturnsForAnyArgs(Results);
-                return this;
-            }
-        }
-    }
 }
-

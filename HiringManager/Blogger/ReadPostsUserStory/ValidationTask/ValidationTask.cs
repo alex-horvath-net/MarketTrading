@@ -1,14 +1,43 @@
-﻿using Core.Enterprise;
-using Core.Enterprise.UserStory;
-using FluentAssertions;
-using NSubstitute;
-using Xunit;
-using Xunit.Abstractions;
+﻿namespace Users.Blogger.ReadPostsUserStory.ValidationTask;
 
-namespace Users.Blogger.ReadPostsUserStory.ValidationTask;
-
-public class ValidationTask(IValidationSocket socket) : IUserTask<Request, Response>
+public class ValidationTask(ValidationTask.IValidationSocket socket) : IUserTask<Request, Response>
 {
+    public async Task<bool> Run(Response response, CancellationToken token)
+    {
+        response.Validations = await socket.Validate(response.Request, token);
+        var hasValidationIssue = response.Validations.Any(x => !x.IsSuccess);
+        return hasValidationIssue;
+    }
+
+    public interface IValidationSocket
+    {
+        Task<IEnumerable<ValidationResult>> Validate(Request request, CancellationToken token);
+
+        public class MockBuilder
+        {
+            public IValidationSocket Mock { get; } = Substitute.For<IValidationSocket>();
+
+            public MockBuilder Pass()
+            {
+                Mock.Validate(default, default)
+                    .ReturnsForAnyArgs(new List<ValidationResult>()
+                    {
+                    });
+                return this;
+            }
+
+            public MockBuilder Fail()
+            {
+                Mock.Validate(default, default)
+                    .ReturnsForAnyArgs(new List<ValidationResult>()
+                    {
+                    ValidationResult.Failed("TestErrorCode", "TestErrorMessage")
+                    });
+                return this;
+            }
+        }
+    }
+
     public class Design : Design<ValidationTask>
     {
         private void Construct() => unit = new(validationSocket);
@@ -65,42 +94,6 @@ public class ValidationTask(IValidationSocket socket) : IUserTask<Request, Respo
 
         public Design(ITestOutputHelper output) : base(output)
         {
-        }
-    }
-
-    public async Task<bool> Run(Response response, CancellationToken token)
-    {
-        response.Validations = await socket.Validate(response.Request, token);
-        var hasValidationIssue = response.Validations.Any(x => !x.IsSuccess);
-        return hasValidationIssue;
-    }
-}
-
-public interface IValidationSocket
-{
-    Task<IEnumerable<ValidationResult>> Validate(Request request, CancellationToken token);
-
-    public class MockBuilder
-    {
-        public IValidationSocket Mock { get; } = Substitute.For<IValidationSocket>();
-
-        public MockBuilder Pass()
-        {
-            Mock.Validate(default, default)
-                .ReturnsForAnyArgs(new List<ValidationResult>()
-                {
-                });
-            return this;
-        }
-
-        public MockBuilder Fail()
-        {
-            Mock.Validate(default, default)
-                .ReturnsForAnyArgs(new List<ValidationResult>()
-                {
-                    ValidationResult.Failed("TestErrorCode", "TestErrorMessage")
-                });
-            return this;
         }
     }
 }

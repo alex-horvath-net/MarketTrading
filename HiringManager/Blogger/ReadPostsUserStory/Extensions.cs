@@ -9,6 +9,14 @@ namespace Users.Blogger.ReadPostsUserStory;
 
 public static class Extensions
 {
+    public static IServiceCollection AddReadPostsUserStory(this IServiceCollection services)
+    {
+        services.AddReadTask();
+        services.AddValidationTask();
+
+        return services;
+    }
+
     public class Design
     {
         [Fact]
@@ -29,7 +37,7 @@ public static class Extensions
             serviceProvider.GetRequiredService<ValidationSocket.IValidationPlugin>();
             serviceProvider.GetRequiredService<DataAccessSocket.IDataAccessPlugin>();
 
-            serviceProvider.GetRequiredService<IValidationSocket>();
+            serviceProvider.GetRequiredService<ValidationTask.ValidationTask.IValidationSocket>();
             serviceProvider.GetRequiredService<DataAccessSocket.IDataAccessPlugin>();
 
             //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IWorkStep<Response>>();
@@ -37,11 +45,4 @@ public static class Extensions
         }
     }
 
-    public static IServiceCollection AddReadPostsUserStory(this IServiceCollection services)
-    {
-        services.AddReadTask();
-        services.AddValidationTask();
-
-        return services;
-    }
 }
