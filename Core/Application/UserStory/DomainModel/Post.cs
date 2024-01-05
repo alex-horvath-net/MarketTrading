@@ -1,6 +1,4 @@
-﻿using NSubstitute;
-
-namespace Core.Application.UserStory.DomainModel;
+﻿namespace Core.Application.UserStory.DomainModel;
 
 public record Post
 {
@@ -9,6 +7,5 @@ public record Post
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
     public ICollection<Tag> Tags { get; set; }
-
 }
 

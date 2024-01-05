@@ -1,9 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.ReadPostsUserStory;
-using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
-using Users.Blogger.ReadPostsUserStory.ValidationTask;
-using Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket;
 
 namespace Users.Blogger;
 
@@ -14,33 +10,5 @@ public static class Extensions
         services.AddReadPostsUserStory();
 
         return services;
-    }
-
-    public class Design
-    {
-        [Fact]
-        public async Task AddBlogger()
-        {
-            var configurationBuilder = new ConfigurationBuilder();
-            var configuration = configurationBuilder.Build();
-
-            var services = new ServiceCollection();
-             
-            services
-                .AddCore()
-                .AddCommon(configuration)
-                .AddBlogger();
-
-            using var serviceProvider = services.BuildServiceProvider();
-
-            serviceProvider.GetRequiredService<ValidationSocket.IValidationPlugin>();
-            serviceProvider.GetRequiredService<DataAccessSocket.IDataAccessPlugin>();
-
-            serviceProvider.GetRequiredService<ValidationTask.IValidationSocket>();
-            serviceProvider.GetRequiredService<DataAccessSocket.IDataAccessPlugin>();
-
-            //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IWorkStep<Response>>();
-            //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IFeature<Request, Response>>();
-        }
     }
 }

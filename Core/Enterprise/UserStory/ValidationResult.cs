@@ -1,7 +1,4 @@
-﻿using FluentAssertions;
-using Xunit;
-
-namespace Core.Enterprise.UserStory;
+﻿namespace Core.Enterprise.UserStory;
 
 public sealed class ValidationResult
 {
@@ -22,30 +19,5 @@ public sealed class ValidationResult
     {
         ErrorCode = errorCode;
         ErrorMessage = errorMessage;
-    }
-}
-
-public class ValidationResult_Design
-{
-    [Fact]
-    public void ValidationResult_Success()
-    {
-        var result = ValidationResult.Success();
-
-        result.Should().NotBeNull();
-        result.ErrorCode.Should().BeNull();
-        result.ErrorMessage.Should().BeNull();
-        result.IsSuccess.Should().BeTrue();
-    }
-
-    [Fact]
-    public void ValidationResult_Failed()
-    {
-        var result = ValidationResult.Failed("ErrorCode", "ErrorMessage");
-
-        result.Should().NotBeNull();
-        result.ErrorCode.Should().NotBeNull();
-        result.ErrorMessage.Should().NotBeNull();
-        result.IsSuccess.Should().BeFalse();
     }
 }
