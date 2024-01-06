@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.ReadPostsUserStory.ReadUserTask;
-using Users.Blogger.ReadPostsUserStory.ValidationUserTask;
 
 namespace Users.Blogger.ReadPostsUserStory;
 
@@ -16,6 +14,6 @@ public record Response() : Response<Request>
 public static class UserStroryExtensions
 {
     public static IServiceCollection AddReadPostsUserStory(this IServiceCollection services) => services
-        .AddReadUserTask()
+        .AddReadTask()
         .AddValidationTask();
 }

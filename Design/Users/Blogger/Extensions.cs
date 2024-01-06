@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Core.Application;
+using Core.Enterprise;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.ReadPostsUserStory;
-using Core.Application;
-using Core.Enterprise;
-using Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket;
 
 namespace Design.Users.Blogger;
 
@@ -33,8 +32,8 @@ public static class Extensions
 
             using var serviceProvider = services.BuildServiceProvider();
 
-            serviceProvider.GetRequiredService<global::Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket.Socket.IValidationPlugin>();
-            serviceProvider.GetRequiredService<IDataAccessPlugin>();
+            serviceProvider.GetRequiredService<IValidationPlugin>();
+            serviceProvider.GetRequiredService<IReadPlugin>();
 
             //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IWorkStep<Response>>();
             //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IFeature<Request, Response>>();

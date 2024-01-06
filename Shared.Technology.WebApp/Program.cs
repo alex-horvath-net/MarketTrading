@@ -6,9 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 builder.Services.AddRazorPages();
 
-builder.Services.AddCore();
-builder.Services.AddCommon(config);
-builder.Services.AddBlogger();
+builder
+    .Services
+    .AddCore()
+    .AddCommon(config)
+    .AddBlogger();
 
 var app = builder.Build();
 
