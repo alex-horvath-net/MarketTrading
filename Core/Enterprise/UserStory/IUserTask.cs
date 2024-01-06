@@ -2,7 +2,7 @@
 
 public interface IUserTask<TRequest, TResponse>
     where TRequest : RequestCore
-    where TResponse : ResponseCore<TRequest>, new()
+    where TResponse : Response<TRequest>, new()
 {
     Task<bool> Run(TResponse response, CancellationToken token);
 }

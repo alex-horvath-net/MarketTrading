@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket.DataAccessPlugin;
+using Users.Blogger.ReadPostsUserStory.ReadUserTask;
+using Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket.DataAccessPlugin;
 
-namespace Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+namespace Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket;
 
 public class Socket(IDataAccessPlugin plugin) : IDataAccessSocket
 {
@@ -25,11 +26,7 @@ public interface IDataAccessPlugin
 
 public static class SocketExtensions
 {
-    public static IServiceCollection AddDataAccessSocket(this IServiceCollection services)
-    {
-        services.AddScoped<IDataAccessSocket, Socket>();
-        services.AddDataAccessPlugin();
-
-        return services;
-    }
+    public static IServiceCollection AddDataAccessSocket(this IServiceCollection services) => services
+        .AddScoped<IDataAccessSocket, Socket>()
+        .AddDataAccessPlugin();
 }

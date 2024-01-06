@@ -1,10 +1,10 @@
 ﻿using Core.Application.UserStory.DomainModel;
 using Design.Core.Enterprise;
 using Users.Blogger.ReadPostsUserStory;
-using Users.Blogger.ReadPostsUserStory.ReadTask;
-using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+using Users.Blogger.ReadPostsUserStory.ReadUserTask;
+using Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket;
 
-namespace Design.Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+namespace Design.Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket;
 
 public class SocketDesign : Design<Socket>
 {

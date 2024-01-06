@@ -1,7 +1,7 @@
 ﻿using Core.Application.Sockets.DataModel;
-using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+using Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket;
 
-namespace Design.Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+namespace Design.Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket;
 
 public class IDataAccessPlugin_MockBuilder
 {

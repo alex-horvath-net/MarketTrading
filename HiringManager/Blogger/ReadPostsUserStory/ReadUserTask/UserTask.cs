@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
+using Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket;
 
-namespace Users.Blogger.ReadPostsUserStory.ReadTask;
+namespace Users.Blogger.ReadPostsUserStory.ReadUserTask;
 
 public class UserTask(IDataAccessSocket socket) : IUserTask<Request, Response>
 {
@@ -19,11 +19,7 @@ public interface IDataAccessSocket
 
 public static class UserTaskExtensions
 {
-    public static IServiceCollection AddReadTask(this IServiceCollection services)
-    {
-        services.AddScoped<IUserTask<Request, Response>, UserTask>();
-        services.AddDataAccessSocket();
-
-        return services;
-    }
+    public static IServiceCollection AddReadUserTask(this IServiceCollection services) => services
+        .AddScoped<IUserTask<Request, Response>, UserTask>()
+        .AddDataAccessSocket();
 }

@@ -1,10 +1,10 @@
 ﻿using Core.Enterprise.UserStory;
 using Design.Core.Enterprise;
 using Users.Blogger.ReadPostsUserStory;
-using static Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationSocket;
-using SUT = Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationSocket;
+using static Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket.Socket;
+using SUT = Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket.Socket;
 
-namespace Design.Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket;
+namespace Design.Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket;
 
 public class ValidationSocket_Design : Design<SUT>
 {

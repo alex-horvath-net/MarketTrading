@@ -1,9 +1,9 @@
 ﻿using Core.Enterprise.Sockets.Validation;
 using Design.Core.Enterprise;
 using Users.Blogger.ReadPostsUserStory;
-using SUT = Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationPlugin.ValidationPlugin;
+using SUT = Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket.ValidationPlugin.Plugin;
 
-namespace Design.Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationPlugin;
+namespace Design.Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket.ValidationPlugin;
 
 public class ValidationPlugin_Design : Design<SUT> 
 {

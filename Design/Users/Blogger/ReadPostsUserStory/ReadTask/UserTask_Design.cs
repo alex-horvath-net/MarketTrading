@@ -1,9 +1,9 @@
 ﻿using Core.Enterprise.UserStory;
 using Design.Core.Enterprise;
 using Users.Blogger.ReadPostsUserStory;
-using Users.Blogger.ReadPostsUserStory.ReadTask;
+using Users.Blogger.ReadPostsUserStory.ReadUserTask;
 
-namespace Design.Users.Blogger.ReadPostsUserStory.ReadTask;
+namespace Design.Users.Blogger.ReadPostsUserStory.ReadUserTask;
 
 public class UserTask_Design : Design<UserTask>
 {

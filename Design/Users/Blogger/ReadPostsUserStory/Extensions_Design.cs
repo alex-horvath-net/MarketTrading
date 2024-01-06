@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.ReadPostsUserStory;
 using Core.Enterprise;
 using Core.Application;
-using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket;
-using static Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationTask;
-using static Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationSocket;
+using static Users.Blogger.ReadPostsUserStory.ValidationUserTask.UserTask;
+using static Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket.Socket;
+using Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket;
 
 
 namespace Design.Users.Blogger.ReadPostsUserStory;

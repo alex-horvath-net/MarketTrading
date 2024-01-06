@@ -1,6 +1,6 @@
 ﻿namespace Core.Enterprise.UserStory;
 
-public record ResponseCore<TRequest>()
+public record Response<TRequest>()
     where TRequest : RequestCore
 {
     public bool FeatureEnabled { get; set; }

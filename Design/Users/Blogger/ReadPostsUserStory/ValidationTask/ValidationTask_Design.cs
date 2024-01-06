@@ -1,10 +1,10 @@
 ﻿using Core.Enterprise.UserStory;
 using Design.Core.Enterprise;
 using Users.Blogger.ReadPostsUserStory;
-using static Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationTask;
-using SUT = Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationTask;
+using static Users.Blogger.ReadPostsUserStory.ValidationUserTask.UserTask;
+using SUT = Users.Blogger.ReadPostsUserStory.ValidationUserTask.UserTask;
 
-namespace Design.Users.Blogger.ReadPostsUserStory.ValidationTask;
+namespace Design.Users.Blogger.ReadPostsUserStory.ValidationUserTask;
 
 public class ValidationTask_Design : Design<SUT>
 {

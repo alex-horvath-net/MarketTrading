@@ -1,8 +1,8 @@
 ﻿namespace Core.Enterprise.UserStory;
 
-public class UserStoryCore<TRequest, TResponse>(IEnumerable<IUserTask<TRequest, TResponse>> userTasks) : IUserStory<TRequest, TResponse>
+public class UserStory<TRequest, TResponse>(IEnumerable<IUserTask<TRequest, TResponse>> userTasks) : IUserStory<TRequest, TResponse>
     where TRequest : RequestCore
-    where TResponse : ResponseCore<TRequest>, new()
+    where TResponse : Response<TRequest>, new()
 {
     public async Task<TResponse> Run(TRequest request, CancellationToken token)
     {

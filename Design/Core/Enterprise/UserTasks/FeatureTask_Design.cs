@@ -8,9 +8,9 @@ public class FeatureTask_Design
     [Fact]
     public async void FeatureFlagIsFalse()
     {
-        var response = new ResponseCore<RequestCore>();
+        var response = new Response<RequestCore>();
         var token = CancellationToken.None;
-        var unit = new FeatureTask<RequestCore, ResponseCore<RequestCore>>();
+        var unit = new FeatureTask<RequestCore, Response<RequestCore>>();
 
         var terminated = await unit.Run(response, token);
 

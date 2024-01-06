@@ -3,9 +3,9 @@ using Core.Application.Plugins;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket.DataAccessPlugin;
+using Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket.DataAccessPlugin;
 
-namespace Design.Users.Blogger.ReadPostsUserStory.ReadTask.DataAccessSocket.DataAccessPlugin;
+namespace Design.Users.Blogger.ReadPostsUserStory.ReadUserTask.DataAccessSocket.DataAccessPlugin;
 
 public class PluginDesign
 {

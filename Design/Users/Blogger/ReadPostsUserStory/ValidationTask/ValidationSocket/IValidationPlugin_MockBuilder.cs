@@ -1,7 +1,7 @@
 ﻿using Core.Enterprise.Sockets.Validation;
-using static Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket.ValidationSocket;
+using static Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket.Socket;
 
-namespace Design.Users.Blogger.ReadPostsUserStory.ValidationTask.ValidationSocket;
+namespace Design.Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket;
 
 public class IValidationPlugin_MockBuilder
 {

@@ -1,6 +1,6 @@
-﻿using Users.Blogger.ReadPostsUserStory.ReadTask;
+﻿using Users.Blogger.ReadPostsUserStory.ReadUserTask;
 
-namespace Design.Users.Blogger.ReadPostsUserStory.ReadTask;
+namespace Design.Users.Blogger.ReadPostsUserStory.ReadUserTask;
 
 public class IDataAccessSocket_MockBuilder
 {

@@ -12,7 +12,7 @@ public class UserStoryExtension_Design
         services.AddUserStory();
 
         var sp = services.BuildServiceProvider();
-        var userStory = sp.GetRequiredService<IUserStory<RequestCore, ResponseCore<RequestCore>>>();
+        var userStory = sp.GetRequiredService<IUserStory<RequestCore, Response<RequestCore>>>();
         userStory.Should().NotBeNull();
     }
 }

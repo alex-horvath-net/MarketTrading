@@ -7,7 +7,7 @@ public class UserStoryCore_Design
     [Fact]
     public async void NonStoppedFeature()
     {
-        var userStory = new UserStoryCore<RequestCore, ResponseCore<RequestCore>>(
+        var userStory = new UserStory<RequestCore, Response<RequestCore>>(
             [
                 oneTask.DoNotTerminate().Mock,
                 otherTask.DoNotTerminate().Mock
@@ -23,7 +23,7 @@ public class UserStoryCore_Design
     [Fact]
     public async void StoppedFeature()
     {
-        var userStory = new UserStoryCore<RequestCore, ResponseCore<RequestCore>>(
+        var userStory = new UserStory<RequestCore, Response<RequestCore>>(
             [
                 oneTask.Terminate().Mock,
                 otherTask.DoNotTerminate().Mock
