@@ -1,6 +1,6 @@
 ﻿namespace Core.Enterprise.UserStory;
 
-public record RequestCore
+public record Request
 {
 
 }

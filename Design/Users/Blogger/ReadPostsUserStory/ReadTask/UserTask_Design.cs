@@ -9,7 +9,7 @@ public class UserTask_Design : Design<UserTask>
 {
     private void Construct() => Unit = new(dataAccessSocket);
 
-    private async Task Run() => terminated = await Unit.Run(response, Token);
+    private async Task Run() => await Unit.Run(response, Token);
 
     [Fact]
     public void ItRequires_Sockets()
@@ -17,7 +17,7 @@ public class UserTask_Design : Design<UserTask>
         Construct();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<IUserTask<Request, Response>>();
+        Unit.Should().BeAssignableTo<IUserTask<global::Users.Blogger.ReadPostsUserStory.Request, Response>>();
     }
 
     [Fact]

@@ -10,7 +10,7 @@ public class ValidationTask_Design : Design<SUT>
 {
     private void Construct() => Unit = new(validationSocket);
 
-    private async Task Run() => terminated = await Unit.Run(response, Token);
+    private async Task Run() => await Unit.Run(response, Token);
 
     [Fact]
     public void ItHas_Sockets()
@@ -18,7 +18,7 @@ public class ValidationTask_Design : Design<SUT>
         Construct();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<IUserTask<Request, Response>>();
+        Unit.Should().BeAssignableTo<IUserTask<global::Users.Blogger.ReadPostsUserStory.Request, Response>>();
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class ValidationTask_Design : Design<SUT>
 
         await Run();
 
-        terminated.Should().BeFalse();
+        mockResponse.Mock.Terminated.Should().BeFalse();
         mockResponse.Mock.Validations.Should().NotContain(x => !x.IsSuccess);
         mockResponse.Mock.Validations.Should().BeEmpty();
         await mockValidationSocket.Mock.ReceivedWithAnyArgs().Validate(default, default);
@@ -45,7 +45,7 @@ public class ValidationTask_Design : Design<SUT>
 
         await Run();
 
-        terminated.Should().BeTrue();
+        mockResponse.Mock.Terminated.Should().BeTrue();
         mockResponse.Mock.Validations.Should().Contain(x => !x.IsSuccess);
         await mockValidationSocket.Mock.ReceivedWithAnyArgs().Validate(default, default);
     }
@@ -54,7 +54,6 @@ public class ValidationTask_Design : Design<SUT>
     private IValidationSocket validationSocket => mockValidationSocket.Mock;
     private readonly Response_MockBuilder mockResponse = new();
     private Response response => mockResponse.Mock;
-    private bool terminated;
 
 
     public ValidationTask_Design(ITestOutputHelper output) : base(output) { }

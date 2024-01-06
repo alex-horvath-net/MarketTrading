@@ -8,13 +8,13 @@ public class FeatureTask_Design
     [Fact]
     public async void FeatureFlagIsFalse()
     {
-        var response = new Response<RequestCore>();
+        var response = new Response<Request>();
         var token = CancellationToken.None;
-        var unit = new FeatureTask<RequestCore, Response<RequestCore>>();
+        var unit = new FeatureTask<Request, Response<Request>>();
 
-        var terminated = await unit.Run(response, token);
+        await unit.Run(response, token);
 
         response.FeatureEnabled.Should().BeFalse();
-        terminated.Should().BeTrue();
+        response.Terminated.Should().BeTrue();
     }
 }

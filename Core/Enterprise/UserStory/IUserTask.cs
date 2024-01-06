@@ -1,9 +1,9 @@
 ﻿namespace Core.Enterprise.UserStory;
 
 public interface IUserTask<TRequest, TResponse>
-    where TRequest : RequestCore
+    where TRequest : Request
     where TResponse : Response<TRequest>, new()
 {
-    Task<bool> Run(TResponse response, CancellationToken token);
+    Task Run(TResponse response, CancellationToken token);
 }
 

@@ -1,7 +1,7 @@
 ﻿namespace Core.Enterprise.UserStory;
 
 public class UserStory<TRequest, TResponse>(IEnumerable<IUserTask<TRequest, TResponse>> userTasks) : IUserStory<TRequest, TResponse>
-    where TRequest : RequestCore
+    where TRequest : Request
     where TResponse : Response<TRequest>, new()
 {
     public async Task<TResponse> Run(TRequest request, CancellationToken token)
@@ -9,8 +9,8 @@ public class UserStory<TRequest, TResponse>(IEnumerable<IUserTask<TRequest, TRes
         var response = new TResponse() { Request = request };
         foreach (var userTask in userTasks)
         {
-            var terminated = await userTask.Run(response, token);
-            if (terminated)
+            await userTask.Run(response, token);
+            if (response.Terminated)
                 break;
         }
         return response;

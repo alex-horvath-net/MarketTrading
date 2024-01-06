@@ -4,7 +4,7 @@ using Users.Blogger.ReadPostsUserStory.ValidationUserTask;
 
 namespace Users.Blogger.ReadPostsUserStory;
 
-public record Request(string Title, string Content) : RequestCore;
+public record Request(string Title, string Content) : Core.Enterprise.UserStory.Request;
 
 
 public record Response() : Response<Request>

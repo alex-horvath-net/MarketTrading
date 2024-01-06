@@ -3,12 +3,13 @@
 namespace Core.Enterprise.UserTasks;
 
 public class FeatureTask<TRequest, TResponse> : IUserTask<TRequest, TResponse>
-    where TRequest : RequestCore
+    where TRequest : Request
     where TResponse : Response<TRequest>, new()
 {
-    public Task<bool> Run(TResponse response, CancellationToken token)
+    public Task Run(TResponse response, CancellationToken token)
     {
         response.FeatureEnabled = false;
-        return (!response.FeatureEnabled).ToTask();
+        response.Terminated = !response.FeatureEnabled;
+        return Task.CompletedTask;
     }
 }

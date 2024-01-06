@@ -41,7 +41,7 @@ public class ValidationSocket_Design : Design<SUT>
     private readonly Request_MockBuilder mockRequest = new();
     private IEnumerable<ValidationResult> issues;
 
-    private Request request => mockRequest.Mock;
+    private global::Users.Blogger.ReadPostsUserStory.Request request => mockRequest.Mock;
 }
 
 

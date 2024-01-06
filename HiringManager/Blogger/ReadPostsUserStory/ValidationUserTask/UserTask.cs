@@ -6,11 +6,10 @@ namespace Users.Blogger.ReadPostsUserStory.ValidationUserTask;
 
 public class UserTask(UserTask.IValidationSocket socket) : IUserTask<Request, Response>
 {
-    public async Task<bool> Run(Response response, CancellationToken token)
+    public async Task Run(Response response, CancellationToken token)
     {
         response.Validations = await socket.Validate(response.Request, token);
-        var hasValidationIssue = response.Validations.Any(x => !x.IsSuccess);
-        return hasValidationIssue;
+        response.Terminated = response.Validations.Any(x => !x.IsSuccess);
     }
 
     public interface IValidationSocket
