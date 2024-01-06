@@ -29,7 +29,7 @@ public class UserTask_Design : Design<UserTask>
 
         await Run();
 
-        terminated.Should().BeFalse();
+        mockResponse.Mock.Terminated.Should().BeFalse();
         mockResponse.Mock.Posts.Should().NotBeEmpty();
         await mockDataAccessSocket.Mock.ReceivedWithAnyArgs().Read(default, default);
     }
@@ -40,5 +40,4 @@ public class UserTask_Design : Design<UserTask>
     private IDataAccessSocket dataAccessSocket => mockDataAccessSocket.Mock;
     private readonly Response_MockBuilder mockResponse = new();
     private Response response => mockResponse.Mock;
-    private bool terminated;
 }

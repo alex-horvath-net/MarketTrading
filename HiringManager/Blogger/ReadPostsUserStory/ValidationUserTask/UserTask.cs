@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket.ValidationPlugin;
 using Users.Blogger.ReadPostsUserStory.ValidationUserTask.ValidationSocket;
 
 namespace Users.Blogger.ReadPostsUserStory.ValidationUserTask;
@@ -15,7 +14,6 @@ public class UserTask(UserTask.IValidationSocket socket) : IUserTask<Request, Re
     public interface IValidationSocket
     {
         Task<IEnumerable<ValidationResult>> Validate(Request request, CancellationToken token);
-
     }
 }
 
