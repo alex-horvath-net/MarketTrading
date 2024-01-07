@@ -1,5 +1,6 @@
 ﻿using Core.Sys.Sockets.Validation;
 using Core.Sys.UserStory;
+using Core.Sys.UserStory.DomainModel;
 using Design.Core.Sys;
 using US = Users.Blogger.ReadPostsUserStory;
 
@@ -64,13 +65,13 @@ public class IValidationSocket_MockBuilder
 
     public IValidationSocket_MockBuilder Pass()
     {
-        Mock.Validate(default, default).ReturnsForAnyArgs(new List<ValidationResult>() { });
+        Mock.Validate(default, default).ReturnsForAnyArgs(new List<Validation>() { });
         return this;
     }
 
     public IValidationSocket_MockBuilder Fail()
     {
-        Mock.Validate(default, default).ReturnsForAnyArgs(new List<ValidationResult>() { ValidationResult.Failed("TestErrorCode", "TestErrorMessage") });
+        Mock.Validate(default, default).ReturnsForAnyArgs(new List<Validation>() { Validation.Failed("TestErrorCode", "TestErrorMessage") });
         return this;
     }
 
@@ -109,7 +110,7 @@ public class ValidationSocket_Design : Design<US.ValidationSocket>
     private readonly IValidationPlugin_MockBuilder mockValidationPlugin = new();
     private US.IValidationPlugin validationPlugin => mockValidationPlugin.Mock;
     private readonly Request_MockBuilder mockRequest = new();
-    private IEnumerable<ValidationResult> issues;
+    private IEnumerable<Validation> issues;
 
     private US.Request request => mockRequest.Mock;
 }
@@ -118,13 +119,13 @@ public class IValidationPlugin_MockBuilder
 {
     public readonly US.IValidationPlugin Mock = Substitute.For<US.IValidationPlugin>();
 
-    public List<ValidationFailure> Results { get; private set; }
+    public List<ValidationSocketModel> Results { get; private set; }
 
     public IValidationPlugin_MockBuilder MockFailedValidation()
     {
-        Results = new List<ValidationFailure>
+        Results = new List<ValidationSocketModel>
             {
-                new ValidationFailure("Property", "Code", "Message", "Error")
+                new ValidationSocketModel("Property", "Code", "Message", "Error")
             };
         Mock.Validate(default, default).ReturnsForAnyArgs(Results);
         return this;
@@ -206,7 +207,7 @@ public class ValidationPlugin_Design : Design<US.ValidationPlugin>
 
     private readonly Request_MockBuilder mockRequest = new();
     private US.Request request => mockRequest.Mock;
-    private IEnumerable<ValidationFailure> issues;
+    private IEnumerable<ValidationSocketModel> issues;
 
     public ValidationPlugin_Design(ITestOutputHelper output) : base(output) { }
 }

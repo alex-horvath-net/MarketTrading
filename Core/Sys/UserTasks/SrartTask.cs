@@ -3,14 +3,13 @@ using Core.Sys.UserStory.DomainModel;
 
 namespace Core.Sys.UserTasks;
 
-public class FeatureTask<TRequest, TResponse> : IUserTask<TRequest, TResponse>
+public class SrartTask<TRequest, TResponse> : IUserTask<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new()
 {
     public Task Run(TResponse response, CancellationToken token)
     {
-        response.FeatureEnabled = false;
-        response.Terminated = !response.FeatureEnabled;
+        response.StartedAt = DateTime.UtcNow;
         return Task.CompletedTask;
     }
 }

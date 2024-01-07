@@ -1,4 +1,4 @@
-﻿using Core.Sys.UserStory;
+﻿using Core.Sys.UserStory.DomainModel;
 
 namespace Design.Core.Sys.UserStory;
 

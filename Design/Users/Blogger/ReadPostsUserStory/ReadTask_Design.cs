@@ -124,7 +124,7 @@ public class IReadPlugin_MockBuilder
     }
 }
 
-public class PluginDesign
+public class ReadPlugin_Design
 {
     [Fact]
     public async void Initialize()

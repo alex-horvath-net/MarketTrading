@@ -1,4 +1,5 @@
 ﻿using Core.Sys.UserStory;
+using Core.Sys.UserStory.DomainModel;
 using NSubstitute;
 
 namespace Design.Core.Sys.UserStory;

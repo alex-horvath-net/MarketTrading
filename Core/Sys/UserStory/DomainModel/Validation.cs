@@ -1,10 +1,10 @@
-﻿namespace Core.Sys.UserStory;
+﻿namespace Core.Sys.UserStory.DomainModel;
 
-public sealed class ValidationResult
+public sealed class Validation
 {
-    public static ValidationResult Success() => new(errorCode: null, errorMessage: null);
+    public static Validation Success() => new(errorCode: null, errorMessage: null);
 
-    public static ValidationResult Failed(string errorCode, string errorMessage)
+    public static Validation Failed(string errorCode, string errorMessage)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(errorCode);
         ArgumentException.ThrowIfNullOrWhiteSpace(errorMessage);
@@ -15,7 +15,7 @@ public sealed class ValidationResult
     public string? ErrorMessage { get; }
     public bool IsSuccess => ErrorCode == null && ErrorMessage == null;
 
-    private ValidationResult(string? errorCode = null, string? errorMessage = null)
+    private Validation(string? errorCode = null, string? errorMessage = null)
     {
         ErrorCode = errorCode;
         ErrorMessage = errorMessage;

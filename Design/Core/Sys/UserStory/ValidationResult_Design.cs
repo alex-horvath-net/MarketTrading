@@ -1,4 +1,4 @@
-﻿using Core.Sys.UserStory;
+﻿using Core.Sys.UserStory.DomainModel;
 
 namespace Design.Core.Sys.UserStory;
 
@@ -7,7 +7,7 @@ public class ValidationResult_Design
     [Fact]
     public void ValidationResult_Success()
     {
-        var result = ValidationResult.Success();
+        var result = Validation.Success();
 
         result.Should().NotBeNull();
         result.ErrorCode.Should().BeNull();
@@ -18,7 +18,7 @@ public class ValidationResult_Design
     [Fact]
     public void ValidationResult_Failed()
     {
-        var result = ValidationResult.Failed("ErrorCode", "ErrorMessage");
+        var result = Validation.Failed("ErrorCode", "ErrorMessage");
 
         result.Should().NotBeNull();
         result.ErrorCode.Should().NotBeNull();

@@ -11,7 +11,7 @@ public class ValidationModel_Design
         var errorCode = "errorCode";
         var errorMessage = "errorMessage";
         var severity = "severity";
-        var result = new ValidationFailure(propertyName, errorCode, errorMessage, severity);
+        var result = new ValidationSocketModel(propertyName, errorCode, errorMessage, severity);
         result = result with { PropertyName = propertyName, ErrorCode = errorCode, ErrorMessage = errorMessage, Severity = severity };
 
         result.Should().NotBeNull();
