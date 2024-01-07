@@ -1,6 +1,6 @@
-﻿using Core.Enterprise.Sockets.Validation;
-using Core.Enterprise.UserStory;
-using Design.Core.Enterprise;
+﻿using Core.Sys.Sockets.Validation;
+using Core.Sys.UserStory;
+using Design.Core.Sys;
 using US = Users.Blogger.ReadPostsUserStory;
 
 namespace Design.Users.Blogger.ReadPostsUserStory;

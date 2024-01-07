@@ -34,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\Application\Plugins\DataAccess\" />
-    <Folder Include="Core\Application\UserTasks\Design\" />
+    <Folder Include="Core\App\Plugins\DataAccess\" />
+    <Folder Include="Core\App\UserTasks\Design\" />
     <Folder Include="Users\Blogger\WritePostUserStory\" />
     <Folder Include="Users\Visitor\" />
   </ItemGroup>

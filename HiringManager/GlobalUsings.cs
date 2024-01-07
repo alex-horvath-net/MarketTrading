@@ -1,8 +1,8 @@
-﻿global using Core.Application;
-global using Core.Application.Plugins;
-global using Core.Enterprise;
-global using Core.Enterprise.Plugins.Validation;
-global using Core.Enterprise.Sockets.Validation;
-global using Core.Enterprise.UserStory;
-global using DataModel = Core.Application.Sockets.DataModel;
-global using DomainModel = Core.Application.UserStory.DomainModel;
+﻿global using Core.App.Plugins;
+global using Core.Sys;
+global using Core.Sys.Plugins.Validation;
+global using Core.Sys.Sockets.Validation;
+global using SUS = Core.Sys.UserStory;
+global using DataModel = Core.App.Sockets.DataModel;
+global using DomainModel = Core.App.UserStory.DomainModel;
+

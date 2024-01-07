@@ -1,5 +1,5 @@
-using Core.Application;
-using Core.Enterprise;
+using Core.App;
+using Core.Sys;
 using Users.Blogger;
 
 var builder = WebApplication.CreateBuilder(args);

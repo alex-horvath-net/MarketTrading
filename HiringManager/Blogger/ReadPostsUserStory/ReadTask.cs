@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Users.Blogger.ReadPostsUserStory;
 
-public class ReadTask(IReadSocket socket) : IUserTask<Request, Response>
+public class ReadTask(IReadSocket socket) : SUS.IUserTask<Request, Response>
 {
     public async Task Run(Response response, CancellationToken token) =>
         response.Posts = await socket.Read(response.Request, token);
@@ -51,7 +51,7 @@ public class ReadPlugin(BlogDbContext db) : IReadPlugin
 public static class ReadUserExtensions
 {
     public static IServiceCollection AddReadTask(this IServiceCollection services) => services
-        .AddScoped<IUserTask<Request, Response>, ReadTask>()
+        .AddScoped<SUS.IUserTask<Request, Response>, ReadTask>()
         .AddScoped<IReadSocket, ReadSocket>()
         .AddScoped<IReadPlugin, ReadPlugin>();
 }

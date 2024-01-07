@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\UserTasks\" />
+    <Folder Include="App\UserTasks\" />
   </ItemGroup>
 
 </Project>

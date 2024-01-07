@@ -2,10 +2,10 @@
 
 namespace Users.Blogger.ReadPostsUserStory;
 
-public record Request(string Title, string Content) : Core.Enterprise.UserStory.Request;
+public record Request(string Title, string Content) : SUS.Request;
 
 
-public record Response() : Response<Request>
+public record Response() : SUS.Response<Request>
 {
     public List<DomainModel.Post>? Posts { get; set; }
 }

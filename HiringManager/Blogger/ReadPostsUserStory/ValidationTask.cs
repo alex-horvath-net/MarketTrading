@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Users.Blogger.ReadPostsUserStory;
 
-public class ValidationTask(IValidationSocket socket) : IUserTask<Request, Response>
+public class ValidationTask(IValidationSocket socket) : SUS.IUserTask<Request, Response>
 {
     public async Task Run(Response response, CancellationToken token)
     {
@@ -14,15 +14,15 @@ public class ValidationTask(IValidationSocket socket) : IUserTask<Request, Respo
 
 public interface IValidationSocket
 {
-    Task<IEnumerable<ValidationResult>> Validate(Request request, CancellationToken token);
+    Task<IEnumerable<SUS.ValidationResult>> Validate(Request request, CancellationToken token);
 }
 
 public class ValidationSocket(IValidationPlugin plugin) : IValidationSocket
 {
-    public async Task<IEnumerable<ValidationResult>> Validate(Request request, CancellationToken token)
+    public async Task<IEnumerable<SUS.ValidationResult>> Validate(Request request, CancellationToken token)
     {
         var socketModel = await plugin.Validate(request, token);
-        var userStoryModel = socketModel.Select(result => ValidationResult.Failed(result.ErrorCode, result.ErrorMessage));
+        var userStoryModel = socketModel.Select(result => SUS.ValidationResult.Failed(result.ErrorCode, result.ErrorMessage));
         return userStoryModel;
     }
 }
@@ -51,7 +51,7 @@ public class ValidationPlugin : FluentValidator<Request>, IValidationPlugin
 public static class ValidationExtensions 
 {
     public static IServiceCollection AddValidationTask(this IServiceCollection services) => services
-        .AddScoped<IUserTask<Request, Response>, ValidationTask>()
+        .AddScoped<SUS.IUserTask<Request, Response>, ValidationTask>()
         .AddScoped<IValidationSocket, ValidationSocket>()
         .AddScoped<IValidationPlugin, ValidationPlugin>();
 }

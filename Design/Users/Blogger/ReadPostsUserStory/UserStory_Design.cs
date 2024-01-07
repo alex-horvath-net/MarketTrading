@@ -1,10 +1,38 @@
-﻿using Core.Application;
-using Core.Enterprise;
+﻿using Core.App;
+using Core.Sys;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Blogger.ReadPostsUserStory;
 
 namespace Design.Users.Blogger.ReadPostsUserStory;
+
+public class Extensions_Design
+{
+    [Fact]
+    public async Task AddReadPostsUserStory()
+    {
+        var configurationBuilder = new ConfigurationBuilder();
+        var configuration = configurationBuilder.Build();
+
+        var services = new ServiceCollection();
+
+        services
+            .AddCore()
+            .AddCommon(configuration)
+            .AddReadPostsUserStory();
+
+        using var serviceProvider = services.BuildServiceProvider();
+
+        serviceProvider.GetRequiredService<IValidationPlugin>();
+        serviceProvider.GetRequiredService<IReadPlugin>();
+
+        serviceProvider.GetRequiredService<IValidationSocket>();
+        serviceProvider.GetRequiredService<IReadPlugin>();
+
+        //serviceProvider.GetRequiredService<Core.Sys.BusinessWorkFlow.IWorkStep<Response>>();
+        //serviceProvider.GetRequiredService<Core.Sys.BusinessWorkFlow.IFeature<Request, Response>>();
+    }
+}
 
 public class Request_MockBuilder
 {
@@ -56,30 +84,3 @@ public record Response_MockBuilder
     }
 }
 
-public class Extensions_Design
-{
-    [Fact]
-    public async Task AddReadPostsUserStory()
-    {
-        var configurationBuilder = new ConfigurationBuilder();
-        var configuration = configurationBuilder.Build();
-
-        var services = new ServiceCollection();
-
-        services
-            .AddCore()
-            .AddCommon(configuration)
-            .AddReadPostsUserStory();
-
-        using var serviceProvider = services.BuildServiceProvider();
-
-        serviceProvider.GetRequiredService<IValidationPlugin>();
-        serviceProvider.GetRequiredService<IReadPlugin>();
-
-        serviceProvider.GetRequiredService<IValidationSocket>();
-        serviceProvider.GetRequiredService<IReadPlugin>();
-
-        //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IWorkStep<Response>>();
-        //serviceProvider.GetRequiredService<Core.Enterprise.BusinessWorkFlow.IFeature<Request, Response>>();
-    }
-}

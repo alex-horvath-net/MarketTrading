@@ -1,20 +1,20 @@
-﻿using Core.Enterprise.UserStory;
-using Design.Core.Enterprise;
-using DomainModel = Core.Application.UserStory.DomainModel;
-using DataModel = Core.Application.Sockets.DataModel;
-using US = Users.Blogger.ReadPostsUserStory;
-using Core.Application.Plugins;
+﻿using Core.App;
+using Core.App.Plugins;
+using Core.Sys.UserStory;
+using Design.Core.Sys;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
-using Core.Application;
 using Microsoft.Extensions.DependencyInjection;
+using DataModel = Core.App.Sockets.DataModel;
+using DomainModel = Core.App.UserStory.DomainModel;
+using US = Users.Blogger.ReadPostsUserStory;
 
 namespace Design.Users.Blogger.ReadPostsUserStory;
 
+
 public class ReadTask_Design : Design<US.ReadTask>
 {
-    private void Construct() => Unit = new(readSocket);
+    private void Construct() => Unit = new US.ReadTask(readSocket);
 
     private async Task Run() => await Unit.Run(response, Token);
 
@@ -25,6 +25,7 @@ public class ReadTask_Design : Design<US.ReadTask>
 
         Unit.Should().NotBeNull();
         Unit.Should().BeAssignableTo<IUserTask<US.Request, US.Response>>();
+        
     }
 
     [Fact]
@@ -55,8 +56,8 @@ public class IReadSocket_MockBuilder
 
     public IReadSocket_MockBuilder ProvidesPosts()
     {
-        Mock.Read(default, default)
-            .ReturnsForAnyArgs(
+        Mock.Read(Arg.Any<US.Request>(), Arg.Any<CancellationToken>())
+            .Returns(
             [
                 new() { Id = 1, Title = "Post 1", Content = "Content 1" },
                 new() { Id = 2, Title = "Post 2", Content = "Content 2" },
@@ -65,7 +66,6 @@ public class IReadSocket_MockBuilder
         return this;
     }
 }
-
 
 public class ReadSocket_Design : Design<US.ReadSocket>
 {
