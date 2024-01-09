@@ -1,7 +1,7 @@
 using Core.App;
 using Core.App.Plugins.DataAccess;
 using Core.Sys;
-using Experts.Blogger;
+using Experts.Blogger.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

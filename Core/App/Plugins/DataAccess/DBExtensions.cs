@@ -13,14 +13,16 @@ public static class DBExtensions
 {
     public static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<DB>(optionsBuilder => optionsBuilder
-            .EnableDetailedErrors()
-            .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
-            .EnableSensitiveDataLogging()
-            .UseSqlite("Data Source=Test.db", options => options.CommandTimeout(60)));
+        services.AddDbContext<DB>(ConfigureDB);
 
         return services;
     }
+
+    public static void ConfigureDB(DbContextOptionsBuilder optionsBuilder) => optionsBuilder
+        .EnableDetailedErrors()
+        .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
+        .EnableSensitiveDataLogging()
+        .UseSqlite("Data Source=Test.db", options => options.CommandTimeout(60));
 
     public static WebApplication UseDataBase(this WebApplication app)
     {

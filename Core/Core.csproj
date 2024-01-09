@@ -25,4 +25,10 @@
     <Folder Include="App\UserTasks\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="App\Plugins\DataAccess\TestDatabase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

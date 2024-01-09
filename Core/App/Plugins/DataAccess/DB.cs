@@ -8,9 +8,8 @@ public class DB(DbContextOptions<DB> options) : DbContext(options)
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //modelBuilder.Entity<Post>().ToTable("Post");
-        //modelBuilder.Entity<Tag>().ToTable("Tag");
+        base.OnConfiguring(optionsBuilder); 
     }
 }

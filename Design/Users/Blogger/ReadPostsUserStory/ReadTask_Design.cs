@@ -5,7 +5,9 @@ using Core.Sys.UserStory;
 using Design.Core.Sys;
 using Experts.Blogger.ReadPostsUserStory;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using DataModel = Core.App.Sockets.DataModel;
 using DomainModel = Core.App.UserStory.DomainModel;
 using US = Experts.Blogger.ReadPostsUserStory;
@@ -137,7 +139,20 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
     [Fact]
     public async Task ItCan_Read()
     {
-        db = dbPovider.GetTestDB();
+        var dbPath = Path.Join(Environment.CurrentDirectory, $"TestDatabase.db");
+        var connectionString = $"Data Source={dbPath}";
+        var optionsBuilder = new DbContextOptionsBuilder<DB>()
+             .EnableDetailedErrors()
+             .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
+             .EnableSensitiveDataLogging()
+             .UseSqlite<DB>(connectionString, options => options.CommandTimeout(60));
+
+        db = new DB(optionsBuilder.Options);
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+        db.Database.Migrate();
+        db.Database.Seed();
+
         Create();
 
         await Use();

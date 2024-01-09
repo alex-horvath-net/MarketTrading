@@ -1,7 +1,7 @@
 ﻿using Experts.Blogger.ReadPostsUserStory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Blogger;
+namespace Experts.Blogger.Extensions;
 
 public static class BloggerExtensions
 {
