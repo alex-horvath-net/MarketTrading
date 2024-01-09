@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.App.Plugins.DataAccess;
@@ -11,13 +12,9 @@ public class DBProvider
         builder.Dev();
 
         var db = new DB(builder.Options);
-        
-        if (delet)
-            db.Database.EnsureDeleted();
 
-        db.Database.EnsureCreated();
-        db.Database.Migrate();
-        db.Database.Seed();
+        db.Scrach(delet);
+
         return db;
     }
 }

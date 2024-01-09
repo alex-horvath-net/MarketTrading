@@ -15,14 +15,14 @@ builder
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseDeveloperDataBase();
+} else
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
-} else
-{
-    app.UseDataBase();
-    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();

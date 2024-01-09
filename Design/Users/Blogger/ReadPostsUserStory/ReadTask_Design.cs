@@ -156,7 +156,7 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
         appBuilder.Services.AddCoreApplication(appBuilder.Configuration,true);
         var app = appBuilder.Build();
 
-        app.UseDataBase();
+        app.UseDeveloperDataBase();
         using var scope = app.Services.CreateScope();
         using var db = scope.ServiceProvider.GetRequiredService<DB>();
 

@@ -13,4 +13,14 @@ public class DB(DbContextOptions options) : DbContext(options)
         if (!builder.IsConfigured)
             builder.Dev();
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+    {
+        base.ConfigureConventions(builder);
+    }
 }
