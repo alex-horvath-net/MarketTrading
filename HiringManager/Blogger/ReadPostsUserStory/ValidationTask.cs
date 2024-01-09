@@ -1,8 +1,9 @@
-﻿using FluentValidation;
+﻿using Core.Sys.Sockets.ValidationModel;
+using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Users.Blogger.ReadPostsUserStory;
+namespace Experts.Blogger.ReadPostsUserStory;
 
 public class ValidationPlugin : AbstractValidator<Request>, IValidationPlugin
 {
@@ -21,7 +22,7 @@ public class ValidationPlugin : AbstractValidator<Request>, IValidationPlugin
 
     public async Task<IEnumerable<ValidationSocketModel>> Validate(Request request, CancellationToken token)
     {
-        var pluginModel = await base.ValidateAsync(request, token);
+        var pluginModel = await ValidateAsync(request, token);
         var socketModel = pluginModel.Errors.Select(ToSocketModel);
         return socketModel;
     }

@@ -1,8 +1,8 @@
 ﻿using Core.App;
 using Core.Sys;
+using Experts.Blogger.ReadPostsUserStory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Users.Blogger.ReadPostsUserStory;
 
 namespace Design.Users.Blogger.ReadPostsUserStory;
 
@@ -17,8 +17,8 @@ public class Extensions_Design
         var services = new ServiceCollection();
 
         services
-            .AddCore()
-            .AddCommon(configuration)
+            .AddCoreSystem()
+            .AddCoreApplication(configuration)
             .AddReadPostsUserStory();
 
         using var serviceProvider = services.BuildServiceProvider();

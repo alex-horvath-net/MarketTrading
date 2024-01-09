@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.App.Plugins.DataAccess;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Users.Blogger.ReadPostsUserStory;
+namespace Experts.Blogger.ReadPostsUserStory;
 
-public class ReadPlugin(BlogDbContext entityFramework) : IReadPlugin
+public class ReadPlugin(DB entityFramework) : IReadPlugin
 {
     public async Task<List<DataModel.Post>> Read(string title, string content, CancellationToken token)
     {

@@ -1,19 +1,35 @@
 ﻿namespace Core.Sys;
 
-public class CancellationTokenBuilder : IDisposable
+public class CancellationTokenBuilder() : IDisposable
 {
-    public CancellationTokenBuilder CancelAfter(TimeSpan delay) => CancelAfter(delay, TimeProvider.System);
-
-    public CancellationTokenBuilder CancelAfter(TimeSpan delay, TimeProvider time)
+    public CancellationTokenBuilder Schedule(TimeSpan delay, TimeProvider? time = null)
     {
-        source = new(delay, time);
+        this.delay = delay;
+        this.time = time??TimeProvider.System;
         return this;
     }
 
-    public void Dispose() => source.Dispose();
+    public CancellationTokenBuilder LinkTo(CancellationToken token)
+    {
+        this.source = CancellationTokenSource.CreateLinkedTokenSource(token);
+        return this;
+    }
 
-    public CancellationToken Token => source.Token;
-    public CancellationToken None => CancellationToken.None;
+    public CancellationToken Build()
+    {
+        source ??=
+            delay == TimeSpan.Zero ?
+            new CancellationTokenSource() :
+            new CancellationTokenSource(delay, time);
 
-    private CancellationTokenSource source = new();
+        return source.Token;
+    }
+
+    public void Dispose() => source?.Dispose();
+
+    public static implicit operator CancellationToken(CancellationTokenBuilder builder) => builder.Build();
+
+    private CancellationTokenSource? source;
+    private TimeSpan delay = TimeSpan.Zero;
+    private TimeProvider time = TimeProvider.System;
 }

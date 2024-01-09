@@ -1,6 +1,7 @@
 using Core.App;
+using Core.App.Plugins.DataAccess;
 using Core.Sys;
-using Users.Blogger;
+using Experts.Blogger;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -8,8 +9,8 @@ builder.Services.AddRazorPages();
 
 builder
     .Services
-    .AddCore()
-    .AddCommon(config)
+    .AddCoreSystem()
+    .AddCoreApplication(config)
     .AddBlogger();
 
 var app = builder.Build();

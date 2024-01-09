@@ -1,4 +1,4 @@
-﻿using Core.Sys.Sockets.Validation;
+﻿using Core.Sys.Sockets.ValidationModel;
 
 namespace Design.Core.App.Sockets.DataModel;
 

@@ -4,13 +4,13 @@ using Microsoft.Extensions.Time.Testing;
 
 namespace Design.Core.Sys;
 
-public class CancellationTokenBuilder_Design
+public class CancellationTokenBuilder_Design :Design<CancellationTokenBuilder>
 {
     private void Create() => Unit = new();
-    private void CancelAfterDelay() => Unit.CancelAfter(delay);
-    private void CancelAfterDelayWithTime() => Unit.CancelAfter(delay, Time);
-
-    public CancellationTokenBuilder_Design(ITestOutputHelper output) => Output = output;
+    private void Schedule() => Unit.Schedule(delay);
+    private void ScheduleWithTime() => Unit.Schedule(delay, Time);
+     
+    public CancellationTokenBuilder_Design(ITestOutputHelper output) : base(output) { }
 
     [Fact]
     public void ItRequires_NoDependecies()
@@ -21,22 +21,11 @@ public class CancellationTokenBuilder_Design
     }
 
     [Fact]
-    public void ItCan_ProvideNoneCancelableToken()
-    {
-        Create();
-
-        var token = Unit.None;
-
-        token.CanBeCanceled.Should().BeFalse();
-        token.IsCancellationRequested.Should().BeFalse();
-    }
-
-    [Fact]
     public void ItCan_ProvideNewToken()
     {
         Create();
 
-        var newToken = Unit.Token;
+        var newToken = Unit.Build();
 
         newToken.Should().NotBeNull();
         newToken.CanBeCanceled.Should().BeTrue();
@@ -48,9 +37,9 @@ public class CancellationTokenBuilder_Design
     {
         Create();
 
-        CancelAfterDelay();
+        Schedule();
 
-        var newToken = Unit.Token;
+        var newToken = Unit.Build();
         await Task.Delay(300.Milliseconds());
         newToken.IsCancellationRequested.Should().BeTrue();
     }
@@ -60,9 +49,9 @@ public class CancellationTokenBuilder_Design
     {
         Create();
 
-        CancelAfterDelayWithTime();
+        ScheduleWithTime();
 
-        var newToken = Unit.Token;
+        var newToken = Unit.Build();
         Time.Advance(300.Milliseconds());
 
         newToken.IsCancellationRequested.Should().BeTrue();
@@ -72,6 +61,6 @@ public class CancellationTokenBuilder_Design
 
     private readonly ITestOutputHelper Output;
     private readonly FakeTimeProvider Time = new();
-    private CancellationTokenBuilder Unit { get; set; }
+    
     private TimeSpan delay = 200.Milliseconds();
 }

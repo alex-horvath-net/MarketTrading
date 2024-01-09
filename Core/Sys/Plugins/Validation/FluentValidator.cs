@@ -1,5 +1,5 @@
 ﻿using Core.Sys;
-using Core.Sys.Sockets.Validation;
+using Core.Sys.Sockets.ValidationModel;
 using FluentValidation;
 using FluentValidation.Results;
 

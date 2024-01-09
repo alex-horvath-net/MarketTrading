@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Users.Blogger.ReadPostsUserStory;
+namespace Experts.Blogger.ReadPostsUserStory;
 
 public record Request(string Title, string Content) : SUS.DomainModel.Request;
 

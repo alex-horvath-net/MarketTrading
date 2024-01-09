@@ -12,7 +12,7 @@ public class Extensions_Design
     {
         var services = new ServiceCollection();
 
-        services.AddCore();
+        services.AddCoreSystem();
 
         var sp = services.BuildServiceProvider();
         var userStory = sp.GetRequiredService<IUserStory<Request, Response<Request>>>();

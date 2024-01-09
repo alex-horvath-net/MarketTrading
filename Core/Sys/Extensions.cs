@@ -6,7 +6,7 @@ namespace Core.Sys;
 
 public static class Extensions
 {
-    public static IServiceCollection AddCore(this IServiceCollection services)
+    public static IServiceCollection AddCoreSystem(this IServiceCollection services)
     {
         services.AddUserStory();
         services.AddFeatureTask();

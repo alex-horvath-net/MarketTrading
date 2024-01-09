@@ -1,12 +1,13 @@
-﻿using Core.Sys.Sockets.Validation;
+﻿using Core.Sys.Sockets.ValidationModel;
 using Core.Sys.UserStory;
 using Core.Sys.UserStory.DomainModel;
 using Design.Core.Sys;
-using US = Users.Blogger.ReadPostsUserStory;
+using Experts.Blogger.ReadPostsUserStory;
+using US = Experts.Blogger.ReadPostsUserStory;
 
 namespace Design.Users.Blogger.ReadPostsUserStory;
 
-public class ValidationTask_Design : Design<US.ValidationTask>
+public class ValidationTask_Design : Design<ValidationTask>
 {
     private void Construct() => Unit = new(validationSocket);
 
@@ -18,7 +19,7 @@ public class ValidationTask_Design : Design<US.ValidationTask>
         Construct();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<IUserTask<US.Request, US.Response>>();
+        Unit.Should().BeAssignableTo<IUserTask<Experts.Blogger.ReadPostsUserStory.Request, Response>>();
     }
 
     [Fact]
@@ -51,9 +52,9 @@ public class ValidationTask_Design : Design<US.ValidationTask>
     }
 
     private readonly IValidationSocket_MockBuilder mockValidationSocket = new();
-    private US.IValidationSocket validationSocket => mockValidationSocket.Mock;
+    private IValidationSocket validationSocket => mockValidationSocket.Mock;
     private readonly Response_MockBuilder mockResponse = new();
-    private US.Response response => mockResponse.Mock;
+    private Response response => mockResponse.Mock;
 
 
     public ValidationTask_Design(ITestOutputHelper output) : base(output) { }
@@ -61,7 +62,7 @@ public class ValidationTask_Design : Design<US.ValidationTask>
 
 public class IValidationSocket_MockBuilder
 {
-    public US.IValidationSocket Mock { get; } = Substitute.For<US.IValidationSocket>();
+    public IValidationSocket Mock { get; } = Substitute.For<IValidationSocket>();
 
     public IValidationSocket_MockBuilder Pass()
     {
@@ -77,7 +78,7 @@ public class IValidationSocket_MockBuilder
 
 }
 
-public class ValidationSocket_Design : Design<US.ValidationSocket>
+public class ValidationSocket_Design : Design<ValidationSocket>
 {
     private void Construct() => Unit = new(validationPlugin);
 
@@ -108,16 +109,16 @@ public class ValidationSocket_Design : Design<US.ValidationSocket>
     public ValidationSocket_Design(ITestOutputHelper output) : base(output) { }
 
     private readonly IValidationPlugin_MockBuilder mockValidationPlugin = new();
-    private US.IValidationPlugin validationPlugin => mockValidationPlugin.Mock;
+    private IValidationPlugin validationPlugin => mockValidationPlugin.Mock;
     private readonly Request_MockBuilder mockRequest = new();
     private IEnumerable<Validation> issues;
 
-    private US.Request request => mockRequest.Mock;
+    private Experts.Blogger.ReadPostsUserStory.Request request => mockRequest.Mock;
 }
 
 public class IValidationPlugin_MockBuilder
 {
-    public readonly US.IValidationPlugin Mock = Substitute.For<US.IValidationPlugin>();
+    public readonly IValidationPlugin Mock = Substitute.For<IValidationPlugin>();
 
     public List<ValidationSocketModel> Results { get; private set; }
 
@@ -133,7 +134,7 @@ public class IValidationPlugin_MockBuilder
 }
 
 
-public class ValidationPlugin_Design : Design<US.ValidationPlugin>
+public class ValidationPlugin_Design : Design<ValidationPlugin>
 {
     private void Construct() => Unit = new();
 
@@ -206,7 +207,7 @@ public class ValidationPlugin_Design : Design<US.ValidationPlugin>
     }
 
     private readonly Request_MockBuilder mockRequest = new();
-    private US.Request request => mockRequest.Mock;
+    private Experts.Blogger.ReadPostsUserStory.Request request => mockRequest.Mock;
     private IEnumerable<ValidationSocketModel> issues;
 
     public ValidationPlugin_Design(ITestOutputHelper output) : base(output) { }
