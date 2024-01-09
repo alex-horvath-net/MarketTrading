@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Core.App.Plugins.DataAccess;
 
-public class DB(DbContextOptions<DB> options) : DbContext(options)
+public class DB(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-        base.OnConfiguring(optionsBuilder); 
+        if (!builder.IsConfigured)
+            builder.Dev();
     }
 }

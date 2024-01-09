@@ -6,9 +6,9 @@ namespace Core.App;
 
 public static class Extensions
 {
-    public static IServiceCollection AddCoreApplication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddCoreApplication(this IServiceCollection services, IConfiguration configuration, bool isDevelopment= false)
     {
-        services.AddDataBase(configuration);
+        services.AddDataBase(configuration, isDevelopment);
 
         return services;
     }

@@ -11,18 +11,30 @@ namespace Core.App.Plugins.DataAccess;
 
 public static class DBExtensions
 {
-    public static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration, bool isDev = false)
     {
-        services.AddDbContext<DB>(ConfigureDB);
+        services.AddDbContext<DB>(builder =>
+            {
+                if (isDev)
+                    builder.Dev();
+                else
+                    builder.Prod();
+            });
 
         return services;
     }
 
-    public static void ConfigureDB(DbContextOptionsBuilder optionsBuilder) => optionsBuilder
+    public static void Dev(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
         .EnableDetailedErrors()
-        .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
+        .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
         .EnableSensitiveDataLogging()
-        .UseSqlite("Data Source=Test.db", options => options.CommandTimeout(60));
+        .UseSqlite("Data Source=TestDatabase.db", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
+
+    public static void Prod(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
+        .EnableDetailedErrors()
+        .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
+        .EnableSensitiveDataLogging()
+        .UseSqlite("Data Source=ProdDatabase.db", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
 
     public static WebApplication UseDataBase(this WebApplication app)
     {

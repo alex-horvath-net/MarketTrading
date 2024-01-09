@@ -10,7 +10,7 @@ builder.Services.AddRazorPages();
 builder
     .Services
     .AddCoreSystem()
-    .AddCoreApplication(config)
+    .AddCoreApplication(builder.Configuration, builder.Environment.IsDevelopment())
     .AddBlogger();
 
 var app = builder.Build();

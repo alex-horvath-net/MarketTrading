@@ -139,19 +139,7 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
     [Fact]
     public async Task ItCan_Read()
     {
-        var dbPath = Path.Join(Environment.CurrentDirectory, $"TestDatabase.db");
-        var connectionString = $"Data Source={dbPath}";
-        var optionsBuilder = new DbContextOptionsBuilder<DB>()
-             .EnableDetailedErrors()
-             .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
-             .EnableSensitiveDataLogging()
-             .UseSqlite<DB>(connectionString, options => options.CommandTimeout(60));
-
-        db = new DB(optionsBuilder.Options);
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();
-        db.Database.Migrate();
-        db.Database.Seed();
+        db= dbPovider.GetTestDB();
 
         Create();
 
@@ -165,7 +153,7 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
     public void UseDataBase()
     {
         var appBuilder = WebApplication.CreateBuilder();
-        appBuilder.Services.AddCoreApplication(appBuilder.Configuration);
+        appBuilder.Services.AddCoreApplication(appBuilder.Configuration,true);
         var app = appBuilder.Build();
 
         app.UseDataBase();
