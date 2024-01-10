@@ -33,50 +33,41 @@ public static class DBExtensions {
         .EnableSensitiveDataLogging()
         .UseSqlite("Data Source=ProdDatabase.db", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
 
-    public static WebApplication UseDeveloperDataBase(this WebApplication app, bool delete = false) {
+    public static DB UseDeveloperDataBase(this WebApplication app, bool delete = false) {
         app.UseMigrationsEndPoint();
 
-        using var scope = app.Services.CreateScope();
-        using var db = scope.ServiceProvider.GetRequiredService<DB>();
+        var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<DB>();
 
-        db.Scrach(delete);
+        db.Schema(delete);
 
-        return app;
-    }
+        db.Data(new Tag(Id: 1, Name: "Tag1"),
+                new Tag(Id: 2, Name: "Tag2"),
+                new Tag(Id: 3, Name: "Tag3"));
 
-    public static DB Scrach(this DB db, bool delete = false) {
-       if (delete)
-            db.Database.EnsureDeleted();
-
-        db.Database.EnsureCreated();
-        db.Database.Migrate();
-        db.Database.Seed();
+        db.Data(new Post { Id = 1, Title = "Title1", Content = "Content1", CreatedAt = DateTime.Parse("2023-12-01") },
+                new Post { Id = 2, Title = "Title2", Content = "Content2", CreatedAt = DateTime.Parse("2023-12-02") },
+                new Post { Id = 3, Title = "Title3", Content = "Content3", CreatedAt = DateTime.Parse("2023-12-03") });
 
         return db;
     }
 
-    public static void Seed(this DatabaseFacade databaseFacade) {
-        var db = (DB)((IDatabaseFacadeDependenciesAccessor)databaseFacade).Context;
+    public static DB Schema(this DB db, bool delete = false) {
+        if (delete)
+            db.Database.EnsureDeleted();
 
-        if (!db.Tags.Any()) {
-            var tags = new Tag[] {
-                new Tag(Id:1,Name:"Tag1" ),
-                new Tag(Id:2,Name:"Tag2" ),
-                new Tag(Id:3,Name:"Tag3" ),
-            };
-            db.Tags.AddRange(tags);
-            db.SaveChanges();
-        }
+        db.Database.EnsureCreated();
+        db.Database.Migrate();
 
-        if (!db.Posts.Any()) {
-            var posts = new Post[] {
-                new Post{ Id=1, Title="Title1",Content="Content1",CreatedAt=DateTime.Parse("2023-12-01")},
-                new Post{ Id=2, Title="Title2",Content="Content2",CreatedAt=DateTime.Parse("2023-12-02")},
-                new Post{ Id=3, Title="Title3",Content="Content3",CreatedAt=DateTime.Parse("2023-12-03")}
-            };
-
-            db.Posts.AddRange(posts);
-            db.SaveChanges();
-        }
+        return db;
     }
+    public static void Data<T>(this DB db, params T[] list) where T : class => db.Data(list);
+    public static DB Data<T>(this DB db, IEnumerable<T> list) where T : class {
+        var set = db.Set<T>();
+        if (!set.Any()) {
+            set.AddRange(list);
+            db.SaveChanges();
+        }
+        return db;
+    } 
 }

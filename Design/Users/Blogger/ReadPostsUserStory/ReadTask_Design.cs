@@ -113,7 +113,7 @@ public class IReadPlugin_MockBuilder {
 public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(output) {
     private void Create() => Unit = new US.ReadPlugin(db);
 
-    private async Task Use() => response = await Unit.Read(title, content, Token);
+    private async Task Use() => posts = await Unit.Read(title, content, Token);
 
     [Fact]
     public void ItRequires_Dependecies() {
@@ -132,7 +132,7 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
 
         await Use();
 
-        response.Should().NotBeEmpty();
+        posts.Should().NotBeEmpty();
     }
 
 
@@ -142,14 +142,12 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
         appBuilder.Services.AddCoreApplication(appBuilder.Configuration, isDevelopment: true);
         var app = appBuilder.Build();
 
-        app.UseDeveloperDataBase();
-        using var scope = app.Services.CreateScope();
-        using var db = scope.ServiceProvider.GetRequiredService<DB>();
-
+        var db = app.UseDeveloperDataBase();
+        
         db.Posts.Should().NotBeEmpty();
     }
 
-    private List<Post>? response;
+    private List<Post>? posts;
     private DB? db;
     private DBProvider dbPovider = new();
     string title = "Title";
