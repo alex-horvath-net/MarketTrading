@@ -7,10 +7,18 @@ public class DB(DbContextOptions options) : DbContext(options) {
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) {
-        modelBuilder.Entity<Post>()
-            .HasMany(p => p.Tags)
-            .WithMany(t => t.Posts);
+    protected override void OnModelCreating(ModelBuilder builder) {
+        
+        builder.Entity<Post>().HasMany(p => p.Tags).WithMany(t => t.Posts);
+        
+        builder.Entity<Post>().HasData(
+            new Post(1, "Title1", "Content1", DateTime.Parse("2023-12-01")),
+            new Post(2, "Title2", "Content2", DateTime.Parse("2023-12-02")),
+            new Post(3, "Title3", "Content3", DateTime.Parse("2023-12-03")));
+
+        builder.Entity<Tag>().HasData(
+            new Tag(1, "Tag1"),
+            new Tag(2, "Tag2"));
     }
 }
 /*

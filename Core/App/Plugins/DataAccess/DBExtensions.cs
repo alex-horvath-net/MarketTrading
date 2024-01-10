@@ -49,7 +49,7 @@ public static class DBExtensions {
                 new Post(2, "Title2", "Content2", DateTime.Parse("2023-12-02")),
                 new Post(3, "Title3", "Content3", DateTime.Parse("2023-12-03")));
 
-return db;
+        return db;
     }
 
     public static DB Schema(this DB db, bool delete = false) {

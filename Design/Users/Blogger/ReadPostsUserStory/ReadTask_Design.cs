@@ -117,7 +117,7 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
 
     [Fact]
     public void ItRequires_Dependecies() {
-        db = dbPovider.GetTestDB();
+        db = dbPovider.GetTestDB(true);
         Create();
 
         Unit.Should().NotBeNull();
