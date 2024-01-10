@@ -1,4 +1,5 @@
-﻿using Core.App.Sockets.DataModel;
+﻿using System.Reflection.Emit;
+using Core.App.Sockets.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.App.Plugins.DataAccess;
@@ -6,21 +7,44 @@ namespace Core.App.Plugins.DataAccess;
 public class DB(DbContextOptions options) : DbContext(options) {
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
+    public DbSet<PostTag> PostTags { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder) {
-        
-        builder.Entity<Post>().HasMany(p => p.Tags).WithMany(t => t.Posts);
-        
-        builder.Entity<Post>().HasData(
-            new Post(1, "Title1", "Content1", DateTime.Parse("2023-12-01")),
-            new Post(2, "Title2", "Content2", DateTime.Parse("2023-12-02")),
-            new Post(3, "Title3", "Content3", DateTime.Parse("2023-12-03")));
 
-        builder.Entity<Tag>().HasData(
-            new Tag(1, "Tag1"),
-            new Tag(2, "Tag2"));
+        builder
+            .Entity<PostTag>()
+            .HasKey(pt => new { pt.PostId, pt.TagId });
+
+        builder
+            .Entity<PostTag>()
+            .HasOne(pt => pt.Post)
+            .WithMany(p => p.PostTags)
+            .HasForeignKey(pt => pt.PostId);
+
+        builder
+            .Entity<PostTag>()
+            .HasOne(pt => pt.Tag)
+            .WithMany(t => t.PostTags)
+            .HasForeignKey(pt => pt.TagId);
+
+        var post1 = new Post(1, "Title1", "Content1", DateTime.Parse("2023-12-01"));
+        var post2 = new Post(2, "Title2", "Content2", DateTime.Parse("2023-12-02"));
+        var post3 = new Post(3, "Title3", "Content3", DateTime.Parse("2023-12-03"));
+
+        var tag1 = new Tag(1, "Tag1");
+        var tag2 = new Tag(2, "Tag2");
+
+        var postTag1 = new PostTag(1, 1);
+        var postTag2 = new PostTag(1, 2);
+        var postTag3 = new PostTag(2, 1);
+
+        builder.Entity<Post>().HasData(post1, post2, post3);
+        builder.Entity<Tag>().HasData(tag1, tag2);
+        builder.Entity<PostTag>().HasData(postTag1, postTag2, postTag3);
     }
 }
+
 /*
  * dotnet tool install --global dotnet-ef
  * dotnet tool update --global dotnet-ef

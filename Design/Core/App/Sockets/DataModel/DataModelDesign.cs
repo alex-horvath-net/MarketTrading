@@ -30,6 +30,6 @@ public class DataModelDesign
         post.Title.Should().Be(title);
         post.Content.Should().Be(content);
         post.CreatedAt.Should().Be(createdAt);
-        post.Tags.Should().NotBeNull();
+        post.PostTags.Should().NotBeNull();
     }
 }
