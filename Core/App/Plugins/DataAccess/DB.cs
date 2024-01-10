@@ -6,6 +6,12 @@ namespace Core.App.Plugins.DataAccess;
 public class DB(DbContextOptions options) : DbContext(options) {
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<Post>()
+            .HasMany(p => p.Tags)
+            .WithMany(t => t.Posts);
+    }
 }
 /*
  * dotnet tool install --global dotnet-ef

@@ -103,7 +103,7 @@ public class IReadPlugin_MockBuilder {
     public IReadPlugin_MockBuilder MockRead() {
         Results =
         [
-            new() { Title = "Title", Content = "Content" }
+            new Post(0, "Title", "Content", DateTime.UtcNow)
         ];
         Mock.Read(default, default, default).ReturnsForAnyArgs(Results);
         return this;
@@ -143,7 +143,7 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
         var app = appBuilder.Build();
 
         var db = app.UseDeveloperDataBase();
-        
+
         db.Posts.Should().NotBeEmpty();
     }
 

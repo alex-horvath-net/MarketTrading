@@ -1,5 +1,6 @@
 ﻿using Core.App.Sockets.DataModel;
 using Core.App.Sockets.DataModel;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Design.Core.App.Sockets.DataModel;
 
@@ -11,8 +12,8 @@ public class DataModelDesign
         var id = 1;
         var name = "Name";
         var tag = new Tag(id, name);
-        tag = tag with { Id = id, Name = name };
-        tag.Id.Should().Be(id);
+        //tag = tag with { TagId = id, Name = name };
+        tag.TagId.Should().Be(id);
         tag.Name.Should().Be(name);
     }
 
@@ -23,9 +24,9 @@ public class DataModelDesign
         var title = "Title";
         var content = "Content";
         var createdAt = DateTime.UtcNow;
-        var post = new Post();
-        post = post with { Id = id, Title = title, Content = content, CreatedAt = createdAt, Tags = new List<Tag>() };
-        post.Id.Should().Be(id);
+        var post = new Post(id, title, content, createdAt);
+        //post = post with { Id = id, Title = title, Content = content, CreatedAt = createdAt, Tags = new List<Tag>() };
+        post.PostId.Should().Be(id);
         post.Title.Should().Be(title);
         post.Content.Should().Be(content);
         post.CreatedAt.Should().Be(createdAt);

@@ -41,33 +41,33 @@ public static class DBExtensions {
 
         db.Schema(delete);
 
-        db.Data(new Tag(Id: 1, Name: "Tag1"),
-                new Tag(Id: 2, Name: "Tag2"),
-                new Tag(Id: 3, Name: "Tag3"));
+        db.Data(new Tag(1, "Tag1"),
+                new Tag(2, "Tag2"),
+                new Tag(3, "Tag3"));
 
-        db.Data(new Post { Id = 1, Title = "Title1", Content = "Content1", CreatedAt = DateTime.Parse("2023-12-01") },
-                new Post { Id = 2, Title = "Title2", Content = "Content2", CreatedAt = DateTime.Parse("2023-12-02") },
-                new Post { Id = 3, Title = "Title3", Content = "Content3", CreatedAt = DateTime.Parse("2023-12-03") });
+        db.Data(new Post(1, "Title1", "Content1", DateTime.Parse("2023-12-01")),
+                new Post(2, "Title2", "Content2", DateTime.Parse("2023-12-02")),
+                new Post(3, "Title3", "Content3", DateTime.Parse("2023-12-03")));
 
-        return db;
+return db;
     }
 
     public static DB Schema(this DB db, bool delete = false) {
-        if (delete)
-            db.Database.EnsureDeleted();
+    if (delete)
+        db.Database.EnsureDeleted();
 
-        db.Database.EnsureCreated();
-        db.Database.Migrate();
+    db.Database.EnsureCreated();
+    db.Database.Migrate();
 
-        return db;
+    return db;
+}
+public static void Data<T>(this DB db, params T[] list) where T : class => db.Data(list);
+public static DB Data<T>(this DB db, IEnumerable<T> list) where T : class {
+    var set = db.Set<T>();
+    if (!set.Any()) {
+        set.AddRange(list);
+        db.SaveChanges();
     }
-    public static void Data<T>(this DB db, params T[] list) where T : class => db.Data(list);
-    public static DB Data<T>(this DB db, IEnumerable<T> list) where T : class {
-        var set = db.Set<T>();
-        if (!set.Any()) {
-            set.AddRange(list);
-            db.SaveChanges();
-        }
-        return db;
-    } 
+    return db;
+} 
 }
