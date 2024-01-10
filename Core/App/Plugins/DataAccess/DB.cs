@@ -13,6 +13,8 @@ public class DB(DbContextOptions options) : DbContext(options) {
  * dotnet add package Microsoft.EntityFrameworkCore.Design
  * dotnet ef
  * Add-Migration InitialCreate --startup-project WenApp--Project Core --context DB --OutputDir \App\Plugins\DataAccess\Migrations
+ * 
+ * dotnet ef migrations add InitialCreate --output-dir \App\Plugins\DataAccess\Migrations
  */
 
 
