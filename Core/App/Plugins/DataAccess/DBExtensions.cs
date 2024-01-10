@@ -21,13 +21,13 @@ public static class DBExtensions {
         return services;
     }
 
-    public static void Dev(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
+    public static DbContextOptionsBuilder Dev(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
         .EnableDetailedErrors()
         .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
         .EnableSensitiveDataLogging()
         .UseSqlite("Data Source=TestDatabase.db", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
 
-    public static void Prod(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
+    public static DbContextOptionsBuilder Prod(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
         .EnableDetailedErrors()
         .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
         .EnableSensitiveDataLogging()

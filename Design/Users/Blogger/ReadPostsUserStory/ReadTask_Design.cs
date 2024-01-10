@@ -14,15 +14,13 @@ using US = Experts.Blogger.ReadPostsUserStory;
 
 namespace Design.Users.Blogger.ReadPostsUserStory;
 
-public class ReadTask_Design : Design<ReadTask>
-{
+public class ReadTask_Design : Design<ReadTask> {
     private void Construct() => Unit = new US.ReadTask(readSocket.Mock);
 
     private async Task Run() => await Unit.Run(response.Mock, Token);
 
     [Fact]
-    public void ItRequires_Sockets()
-    {
+    public void ItRequires_Sockets() {
         Construct();
 
         Unit.Should().NotBeNull();
@@ -31,8 +29,7 @@ public class ReadTask_Design : Design<ReadTask>
     }
 
     [Fact]
-    public async void ItCan_PopulateResponseWithPosts()
-    {
+    public async void ItCan_PopulateResponseWithPosts() {
         response.HasNoPosts();
         readSocket.ProvidesPosts();
         Construct();
@@ -49,12 +46,10 @@ public class ReadTask_Design : Design<ReadTask>
     private readonly IReadSocket_MockBuilder readSocket = new();
     private readonly Response_MockBuilder response = new();
 }
-public class IReadSocket_MockBuilder
-{
+public class IReadSocket_MockBuilder {
     public IReadSocket Mock { get; } = Substitute.For<IReadSocket>();
 
-    public IReadSocket_MockBuilder ProvidesPosts()
-    {
+    public IReadSocket_MockBuilder ProvidesPosts() {
         Mock.Read(Arg.Any<Request>(), Arg.Any<CancellationToken>())
             .Returns(
             [
@@ -66,15 +61,13 @@ public class IReadSocket_MockBuilder
     }
 }
 
-public class ReadSocket_Design : Design<ReadSocket>
-{
+public class ReadSocket_Design : Design<ReadSocket> {
     private void Construct() => Unit = new(readPlugin.Mock);
 
     private async Task Run() => response = await Unit.Read(request.Mock, Token);
 
     [Fact]
-    public void ItRequires_Plugins()
-    {
+    public void ItRequires_Plugins() {
         Construct();
 
         Unit.Should().NotBeNull();
@@ -82,8 +75,7 @@ public class ReadSocket_Design : Design<ReadSocket>
     }
 
     [Fact]
-    public async void Path_Without_Diversion()
-    {
+    public async void Path_Without_Diversion() {
         readPlugin.MockRead();
 
         Construct();
@@ -103,14 +95,12 @@ public class ReadSocket_Design : Design<ReadSocket>
 
     public ReadSocket_Design(ITestOutputHelper output) : base(output) { }
 }
-public class IReadPlugin_MockBuilder
-{
+public class IReadPlugin_MockBuilder {
     public readonly IReadPlugin Mock = Substitute.For<IReadPlugin>();
 
     public List<DataModel.Post> Results { get; internal set; }
 
-    public IReadPlugin_MockBuilder MockRead()
-    {
+    public IReadPlugin_MockBuilder MockRead() {
         Results =
         [
             new() { Title = "Title", Content = "Content" }
@@ -120,15 +110,13 @@ public class IReadPlugin_MockBuilder
     }
 }
 
-public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(output)
-{
+public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(output) {
     private void Create() => Unit = new US.ReadPlugin(db);
 
     private async Task Use() => response = await Unit.Read(title, content, Token);
 
     [Fact]
-    public void ItRequires_Dependecies()
-    {
+    public void ItRequires_Dependecies() {
         db = dbPovider.GetTestDB();
         Create();
 
@@ -137,9 +125,8 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
     }
 
     [Fact]
-    public async Task ItCan_Read()
-    {
-        db= dbPovider.GetTestDB();
+    public async Task ItCan_Read() {
+        db = dbPovider.GetTestDB();
 
         Create();
 
@@ -150,10 +137,9 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
 
 
     [Fact]
-    public void UseDataBase()
-    {
+    public void UseDataBase() {
         var appBuilder = WebApplication.CreateBuilder();
-        appBuilder.Services.AddCoreApplication(appBuilder.Configuration,true);
+        appBuilder.Services.AddCoreApplication(appBuilder.Configuration, isDevelopment: true);
         var app = appBuilder.Build();
 
         app.UseDeveloperDataBase();
