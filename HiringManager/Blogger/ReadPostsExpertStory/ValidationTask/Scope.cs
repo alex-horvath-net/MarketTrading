@@ -13,10 +13,10 @@ public class Scope(ISolution solution) : IScope<Request, Response>
         response.Terminated = response.Validations.Any(x => !x.IsSuccess);
     }
 
-    private Core.UserStory.DomainModel.Validation ToDomainModel(Validation solutionModel) => 
+    private Core.UserStory.DomainModel.Validation ToDomainModel(ValidationIssue solutionModel) => 
         Core.UserStory.DomainModel.Validation.Failed(solutionModel.ErrorCode, solutionModel.ErrorMessage);
 }
 
 public interface ISolution {
-    Task<IEnumerable<Common.Models.ValidationModel.Validation>> Validate(Request request, CancellationToken token);
+    Task<IEnumerable<Common.Models.ValidationModel.ValidationIssue>> Validate(Request request, CancellationToken token);
 }

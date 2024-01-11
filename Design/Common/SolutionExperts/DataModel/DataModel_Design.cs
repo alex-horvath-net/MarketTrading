@@ -1,4 +1,6 @@
-﻿namespace Common.SolutionExperts.DataModel;
+﻿using Common.Models.DataModel;
+
+namespace Common.SolutionExperts.DataModel;
 
 public class DataModel_Design {
     [Fact]

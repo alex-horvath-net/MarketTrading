@@ -23,8 +23,8 @@ public class Extensions_Design {
         serviceProvider.GetRequiredService<ValidationTask.ISolution>();
         serviceProvider.GetRequiredService<ReadTask.ISolution>();
 
-        serviceProvider.GetRequiredService<ValidationTask.ISolutionExpert>();
-        serviceProvider.GetRequiredService<ReadTask.ISolution>();
+        //serviceProvider.GetRequiredService<ValidationTask.ISolutionExpert>();
+        //serviceProvider.GetRequiredService<ReadTask.ISolution>();
 
         //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IWorkStep<Response>>();
         //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IFeature<Request, Response>>();

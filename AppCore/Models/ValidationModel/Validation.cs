@@ -1,6 +1,6 @@
 ﻿namespace Common.Models.ValidationModel;
 
-public record Validation(
+public record ValidationIssue(
     string PropertyName,
     string ErrorCode,
     string ErrorMessage,

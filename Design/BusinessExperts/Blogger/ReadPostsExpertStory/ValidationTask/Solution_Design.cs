@@ -1,12 +1,11 @@
 ﻿using Common.Models.ValidationModel;
 using Core;
-using Core.Sockets.ValidationModel;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
 
 public class Solution_Design : Design<Solution>
 {
-    private void Create() => Unit = new();
+    private void Create() => Unit = new Solution();
 
     private async Task Act() => issues = await Unit.Validate(request.Mock, Token);
 
@@ -77,7 +76,7 @@ public class Solution_Design : Design<Solution>
     }
 
     private readonly RequestMockBuilder request = new();
-    private IEnumerable<ValidationSolutionExpertModel> issues;
+    private IEnumerable<ValidationIssue> issues;
 
     public Solution_Design(ITestOutputHelper output) : base(output) { }
 }

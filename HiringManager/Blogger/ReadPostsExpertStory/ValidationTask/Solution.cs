@@ -17,13 +17,13 @@ public class Solution : AbstractValidator<Request>, ISolution {
             .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
     }
 
-    public async Task<IEnumerable<Validation>> Validate(Request request, CancellationToken token) {
+    public async Task<IEnumerable<ValidationIssue>> Validate(Request request, CancellationToken token) {
         var technologyModel = await ValidateAsync(request, token);
         var solutionModel = technologyModel.Errors.Select(ToSolutionModel);
         return solutionModel;
     }
        
-    private Validation ToSolutionModel(ValidationFailure technologyModel) => new(
+    private ValidationIssue ToSolutionModel(ValidationFailure technologyModel) => new(
         technologyModel.PropertyName,
         technologyModel.ErrorCode,
         technologyModel.ErrorMessage,
