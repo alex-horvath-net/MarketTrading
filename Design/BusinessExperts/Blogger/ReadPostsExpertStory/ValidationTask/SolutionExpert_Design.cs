@@ -35,7 +35,7 @@ public class SolutionExpert_Design : Design<SolutionExpert>
     public SolutionExpert_Design(ITestOutputHelper output) : base(output) { }
 
     private readonly SolutionMockBuilder solution = new();
-    private readonly Request_MockBuilder request = new();
+    private readonly RequestMockBuilder request = new();
     private IEnumerable<ValidationDomainModel> issues;
 }
 
