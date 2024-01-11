@@ -35,7 +35,7 @@ public class SolutionExpert_Design : Design<SolutionExpert>
     }
 
     private readonly SolutionMockBuilder solution = new();
-    private readonly Request_MockBuilder request = new();
+    private readonly RequestMockBuilder request = new();
     private List<Common.ExpertStories.DomainModel.Post> response;
 
     public SolutionExpert_Design(ITestOutputHelper output) : base(output) { }

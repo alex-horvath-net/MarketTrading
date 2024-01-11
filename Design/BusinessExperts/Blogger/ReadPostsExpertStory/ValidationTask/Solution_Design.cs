@@ -75,7 +75,7 @@ public class Solution_Design : Design<Solution>
             x.Severity == "Error");
     }
 
-    private readonly Request_MockBuilder request = new();
+    private readonly RequestMockBuilder request = new();
     private IEnumerable<ValidationSolutionExpertModel> issues;
 
     public Solution_Design(ITestOutputHelper output) : base(output) { }

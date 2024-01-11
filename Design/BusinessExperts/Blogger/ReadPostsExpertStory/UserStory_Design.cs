@@ -31,24 +31,26 @@ public class Extensions_Design {
     }
 }
 
-public class Request_MockBuilder {
+
+public class RequestMockBuilder {
     public Request Mock { get; private set; }
 
-    public Request_MockBuilder UseValidRequest() {
+    public RequestMockBuilder UseValidRequest() {
         Mock = new Request("Title", "Content");
         return this;
     }
 
-    public Request_MockBuilder UseInvaliedRequestWithMissingFilters() {
+    public RequestMockBuilder UseInvaliedRequestWithMissingFilters() {
         Mock = new Request(null, null);
         return this;
     }
 
-    public Request_MockBuilder UseInvaliedRequestWithShortFilters() {
+    public RequestMockBuilder UseInvaliedRequestWithShortFilters() {
         Mock = new Request("12", "21");
         return this;
     }
 }
+
 
 public record ResponseMockBuilder {
     public Response Mock { get; private set; } = new();
@@ -60,7 +62,7 @@ public record ResponseMockBuilder {
     }
 
     public ResponseMockBuilder WillHaveValidRequest() {
-        Mock.Request = new Request_MockBuilder().UseValidRequest().Mock;
+        Mock.Request = new RequestMockBuilder().UseValidRequest().Mock;
         Mock.FeatureEnabled = true;
         Mock.Validations = null;
         return this;

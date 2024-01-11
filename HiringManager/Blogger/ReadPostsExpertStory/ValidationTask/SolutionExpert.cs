@@ -9,6 +9,10 @@ public class SolutionExpert(ISolution solution) : ISolutionExpert {
         var scopeModel = expertModel.Select(result => ValidationDomainModel.Failed(result.ErrorCode, result.ErrorMessage));
         return scopeModel;
     }
+
+    public async Task<IEnumerable<ValidationDomainModel>> Validate2(Request request, CancellationToken token) =>
+        from expertModel in await solution.Validate(request, token)
+        select ValidationDomainModel.Failed(expertModel.ErrorCode, expertModel.ErrorMessage);
 }
 
 public interface ISolution {
