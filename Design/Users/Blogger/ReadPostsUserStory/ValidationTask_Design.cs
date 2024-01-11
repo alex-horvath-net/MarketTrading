@@ -1,7 +1,7 @@
 ﻿using AppPolicy.Sockets.ValidationModel;
 using AppPolicy.UserStory;
 using AppPolicy.UserStory.DomainModel;
-using Design.AppPolicy;
+using Design.Core.Sys;
 using Experts.Blogger.ReadPostsUserStory;
 using US = Experts.Blogger.ReadPostsUserStory;
 

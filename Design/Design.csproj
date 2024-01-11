@@ -31,7 +31,7 @@
     <ProjectReference Include="..\AppCore\AppCore.csproj" />
     <ProjectReference Include="..\AppPolicy\AppPolicy.csproj" />
     <ProjectReference Include="..\HiringManager\Experts.csproj" />
-    <ProjectReference Include="..\Shared.Technology.WebApp\WebApi.csproj" />
+    <ProjectReference Include="..\Shared.Technology.WebApp\WebSite.csproj" />
   </ItemGroup>
 
   <ItemGroup>

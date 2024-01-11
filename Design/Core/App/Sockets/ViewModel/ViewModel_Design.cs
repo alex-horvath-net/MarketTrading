@@ -1,13 +1,11 @@
 ﻿using AppCore.Sockets.ViewModel;
 using AppCore.Sockets.ViewModel;
 
-namespace Design.AppCore.Sockets.ViewModel;
+namespace Design.Core.App.Sockets.ViewModel;
 
-public class ViewModel_Design
-{
+public class ViewModel_Design {
     [Fact]
-    public void Tag()
-    {
+    public void Tag() {
         var id = 1;
         var name = "Name";
         var tag = new Tag();
@@ -17,8 +15,7 @@ public class ViewModel_Design
     }
 
     [Fact]
-    public void Post()
-    {
+    public void Post() {
         var id = 1;
         var title = "Title";
         var content = "Content";

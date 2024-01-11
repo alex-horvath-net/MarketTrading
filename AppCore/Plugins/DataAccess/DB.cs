@@ -50,7 +50,7 @@ public class DB(DbContextOptions options) : DbContext(options) {
  * dotnet tool update --global dotnet-ef
  * dotnet add package Microsoft.EntityFrameworkCore.Design
  * dotnet ef
- * Add-Migration InitialCreate --startup-project WebApp --Project Core --context DB --OutputDir \App\Plugins\DataAccess\Migrations
+ * Add-Migration InitialCreate --startup-project WebSite --Project Core --context DB --OutputDir \App\Plugins\DataAccess\Migrations
  * 
  * 
  * 

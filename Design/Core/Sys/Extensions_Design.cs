@@ -3,13 +3,11 @@ using AppPolicy.UserStory;
 using AppPolicy.UserStory.DomainModel;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Design.AppPolicy;
+namespace Design.Core.Sys;
 
-public class Extensions_Design
-{
+public class Extensions_Design {
     [Fact]
-    public void AddUserStory_Registers_All_UserStory()
-    {
+    public void AddUserStory_Registers_All_UserStory() {
         var services = new ServiceCollection();
 
         services.AddCoreSystem();

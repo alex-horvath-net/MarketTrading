@@ -3,13 +3,11 @@ using AppPolicy.UserStory.DomainModel;
 using AppPolicy.UserTasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Design.AppPolicy.UserTasks;
+namespace Design.Core.Sys.UserTasks;
 
-public class Extensions_Design
-{
+public class Extensions_Design {
     [Fact]
-    public void AddFeatureTask_Registers_All_UserTask()
-    {
+    public void AddFeatureTask_Registers_All_UserTask() {
         var services = new ServiceCollection();
 
         services.AddFeatureTask();

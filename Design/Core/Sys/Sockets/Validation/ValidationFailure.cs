@@ -1,12 +1,10 @@
 ﻿using AppPolicy.Sockets.ValidationModel;
 
-namespace Design.AppPolicy.Sockets.Validation;
+namespace Design.Core.Sys.Sockets.Validation;
 
-public class ValidationModel_Design
-{
+public class ValidationModel_Design {
     [Fact]
-    public void Ctor()
-    {
+    public void Ctor() {
         var propertyName = "propertyName";
         var errorCode = "errorCode";
         var errorMessage = "errorMessage";

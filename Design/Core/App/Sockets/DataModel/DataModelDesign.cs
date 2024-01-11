@@ -2,13 +2,11 @@
 using AppCore.Sockets.DataModel;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace Design.AppCore.Sockets.DataModel;
+namespace Design.Core.App.Sockets.DataModel;
 
-public class DataModelDesign
-{
+public class DataModelDesign {
     [Fact]
-    public void Tag()
-    {
+    public void Tag() {
         var id = 1;
         var name = "Name";
         var tag = new Tag(id, name);
@@ -18,8 +16,7 @@ public class DataModelDesign
     }
 
     [Fact]
-    public void Post()
-    {
+    public void Post() {
         var id = 1;
         var title = "Title";
         var content = "Content";

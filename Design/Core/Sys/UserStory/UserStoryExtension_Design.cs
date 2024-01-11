@@ -1,13 +1,11 @@
 ﻿using AppPolicy.UserStory;
 using AppPolicy.UserStory.DomainModel;
 using Microsoft.Extensions.DependencyInjection;
-namespace Design.AppPolicy.UserStory;
+namespace Design.Core.Sys.UserStory;
 
-public class UserStoryExtension_Design
-{
+public class UserStoryExtension_Design {
     [Fact]
-    public void AddUserStory_Registers_All_UserStory()
-    {
+    public void AddUserStory_Registers_All_UserStory() {
         var services = new ServiceCollection();
 
         services.AddUserStory();

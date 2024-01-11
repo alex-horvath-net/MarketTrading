@@ -1,7 +1,7 @@
 ﻿using AppCore;
 using AppCore.Plugins.DataAccess;
 using AppPolicy.UserStory;
-using Design.AppPolicy;
+using Design.Core.Sys;
 using Experts.Blogger.ReadPostsUserStory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;

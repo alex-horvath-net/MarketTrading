@@ -1,12 +1,10 @@
 ﻿using AppPolicy.UserStory.DomainModel;
 
-namespace Design.AppPolicy.UserStory;
+namespace Design.Core.Sys.UserStory;
 
-public class RequestCore_Design
-{
+public class RequestCore_Design {
     [Fact]
-    public void Test_RequestCore()
-    {
+    public void Test_RequestCore() {
         var request = new Request();
 
         request = request with { };
