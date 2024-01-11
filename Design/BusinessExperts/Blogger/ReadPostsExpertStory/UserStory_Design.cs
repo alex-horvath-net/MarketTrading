@@ -50,23 +50,23 @@ public class Request_MockBuilder {
     }
 }
 
-public record Response_MockBuilder {
+public record ResponseMockBuilder {
     public Response Mock { get; private set; } = new();
 
-    public Response_MockBuilder HasNoPosts() {
+    public ResponseMockBuilder HasNoPosts() {
         WillHaveValidRequest();
         Mock.Posts = null;
         return this;
     }
 
-    public Response_MockBuilder WillHaveValidRequest() {
+    public ResponseMockBuilder WillHaveValidRequest() {
         Mock.Request = new Request_MockBuilder().UseValidRequest().Mock;
         Mock.FeatureEnabled = true;
         Mock.Validations = null;
         return this;
     }
 
-    public Response_MockBuilder HasNoValidations() {
+    public ResponseMockBuilder HasNoValidations() {
         WillHaveValidRequest();
         Mock.Validations = null;
         return this;

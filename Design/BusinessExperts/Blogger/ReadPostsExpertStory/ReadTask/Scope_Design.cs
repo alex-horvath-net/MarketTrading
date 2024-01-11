@@ -5,14 +5,14 @@ namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
 
 public class Scope_Design : Design<Scope>
 {
-    private void Construct() => Unit = new Scope(readSocket.Mock);
+    private void Create() => Unit = new Scope(expert.Mock);
 
     private async Task Act() => await Unit.Run(response.Mock, Token);
 
     [Fact]
     public void ItRequires_Sockets()
     {
-        Construct();
+        Create();
 
         Unit.Should().NotBeNull();
         Unit.Should().BeAssignableTo<IScope<Request, Response>>();
@@ -23,20 +23,20 @@ public class Scope_Design : Design<Scope>
     public async void ItCan_PopulateResponseWithPosts()
     {
         response.HasNoPosts();
-        readSocket.ProvidesPosts();
-        Construct();
+        expert.ProvidesPosts();
+        Create();
 
         await Act();
 
         response.Mock.Terminated.Should().BeFalse();
         response.Mock.Posts.Should().NotBeEmpty();
-        await readSocket.Mock.Received().Read(Arg.Any<Request>(), Arg.Any<CancellationToken>());
+        await expert.Mock.Received().Read(Arg.Any<Request>(), Arg.Any<CancellationToken>());
     }
 
     public Scope_Design(ITestOutputHelper output) : base(output) { }
 
-    private readonly SolutionExpertMockBuilder readSocket = new();
-    private readonly Response_MockBuilder response = new();
+    private readonly SolutionExpertMockBuilder expert = new();
+    private readonly ResponseMockBuilder response = new();
 }
 
 

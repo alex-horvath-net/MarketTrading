@@ -5,14 +5,14 @@ namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
 
 public class SolutionExpert_Design : Design<SolutionExpert>
 {
-    private void Construct() => Unit = new(readPlugin.Mock);
+    private void Create() => Unit = new(solution.Mock);
 
     private async Task Act() => response = await Unit.Read(request.Mock, Token);
 
     [Fact]
     public void ItRequires_Plugins()
     {
-        Construct();
+        Create();
 
         Unit.Should().NotBeNull();
         Unit.Should().BeAssignableTo<ISolutionExpert>();
@@ -21,20 +21,20 @@ public class SolutionExpert_Design : Design<SolutionExpert>
     [Fact]
     public async void Path_Without_Diversion()
     {
-        readPlugin.MockRead();
+        solution.MockRead();
 
-        Construct();
+        Create();
 
         request.UseInvaliedRequestWithMissingFilters();
 
         await Act();
 
         response.Should().NotBeNullOrEmpty();
-        response.Should().OnlyContain(result => readPlugin.Results.Any(x => x.Title == result.Title && x.Content == result.Content));
-        await readPlugin.Mock.ReceivedWithAnyArgs(1).Read(default, default, default);
+        response.Should().OnlyContain(result => solution.Results.Any(x => x.Title == result.Title && x.Content == result.Content));
+        await solution.Mock.ReceivedWithAnyArgs(1).Read(default, default, default);
     }
 
-    private readonly SolutionMockBuilder readPlugin = new();
+    private readonly SolutionMockBuilder solution = new();
     private readonly Request_MockBuilder request = new();
     private List<Common.ExpertStories.DomainModel.Post> response;
 

@@ -6,14 +6,14 @@ namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
 
 public class Scope_Design : Design<Scope>
 {
-    private void Construct() => Unit = new(validationSocket);
+    private void Create() => Unit = new(expert.Mock);
 
-    private async Task Act() => await Unit.Run(response, Token);
+    private async Task Act() => await Unit.Run(response.Mock, Token);
 
     [Fact]
     public void ItHas_Sockets()
     {
-        Construct();
+        Create();
 
         Unit.Should().NotBeNull();
         Unit.Should().BeAssignableTo<IScope<Request, Response>>();
@@ -22,39 +22,36 @@ public class Scope_Design : Design<Scope>
     [Fact]
     public async void ItCan_ValidateValidRequest()
     {
-        mockValidationSocket.Pass();
-        Construct();
-        mockResponse.HasNoValidations();
+        expert.Pass();
+        Create();
+        response.HasNoValidations();
 
         await Act();
 
-        mockResponse.Mock.Terminated.Should().BeFalse();
-        mockResponse.Mock.Validations.Should().NotContain(x => !x.IsSuccess);
-        mockResponse.Mock.Validations.Should().BeEmpty();
-        await mockValidationSocket.Mock.ReceivedWithAnyArgs().Validate(default, default);
+        response.Mock.Terminated.Should().BeFalse();
+        response.Mock.Validations.Should().NotContain(x => !x.IsSuccess);
+        response.Mock.Validations.Should().BeEmpty();
+        await expert.Mock.ReceivedWithAnyArgs().Validate(default, default);
     }
 
     [Fact]
     public async void ItCan_ValidateInValidRequest()
     {
-        mockValidationSocket.Fail();
-        Construct();
-        mockResponse.HasNoValidations();
+        expert.Fail();
+        Create();
+        response.HasNoValidations();
 
         await Act();
 
-        mockResponse.Mock.Terminated.Should().BeTrue();
-        mockResponse.Mock.Validations.Should().Contain(x => !x.IsSuccess);
-        await mockValidationSocket.Mock.ReceivedWithAnyArgs().Validate(default, default);
+        response.Mock.Terminated.Should().BeTrue();
+        response.Mock.Validations.Should().Contain(x => !x.IsSuccess);
+        await expert.Mock.ReceivedWithAnyArgs().Validate(default, default);
     }
-
-    private readonly SolutionExpertMockBuilder mockValidationSocket = new();
-    private ISolutionExpert validationSocket => mockValidationSocket.Mock;
-    private readonly Response_MockBuilder mockResponse = new();
-    private Response response => mockResponse.Mock;
-
-
+    
     public Scope_Design(ITestOutputHelper output) : base(output) { }
+
+    private readonly SolutionExpertMockBuilder expert = new();
+    private readonly ResponseMockBuilder response = new();
 }
 
 

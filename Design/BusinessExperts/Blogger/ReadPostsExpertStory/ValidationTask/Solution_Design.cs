@@ -5,14 +5,14 @@ namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
 
 public class Solution_Design : Design<Solution>
 {
-    private void Construct() => Unit = new();
+    private void Create() => Unit = new();
 
-    private async Task Act() => issues = await Unit.Validate(request, Token);
+    private async Task Act() => issues = await Unit.Validate(request.Mock, Token);
 
     [Fact]
     public void ItHas_NoDependecy()
     {
-        Construct();
+        Create();
 
         Unit.Should().NotBeNull();
     }
@@ -20,8 +20,8 @@ public class Solution_Design : Design<Solution>
     [Fact]
     public async void ItCan_AllowValidRequest()
     {
-        Construct();
-        mockRequest.UseValidRequest();
+        Create();
+        request.UseValidRequest();
 
         await Act();
 
@@ -32,8 +32,8 @@ public class Solution_Design : Design<Solution>
     [Fact]
     public async void ItCan_FindMissingFiltersOfRequest()
     {
-        Construct();
-        mockRequest.UseInvaliedRequestWithMissingFilters();
+        Create();
+        request.UseInvaliedRequestWithMissingFilters();
 
         await Act();
 
@@ -55,8 +55,8 @@ public class Solution_Design : Design<Solution>
     [Fact]
     public async void ItCan_FindShortFiltersOfRequest()
     {
-        Construct();
-        mockRequest.UseInvaliedRequestWithShortFilters();
+        Create();
+        request.UseInvaliedRequestWithShortFilters();
 
         await Act();
 
@@ -75,8 +75,7 @@ public class Solution_Design : Design<Solution>
             x.Severity == "Error");
     }
 
-    private readonly Request_MockBuilder mockRequest = new();
-    private Request request => mockRequest.Mock;
+    private readonly Request_MockBuilder request = new();
     private IEnumerable<ValidationSolutionExpertModel> issues;
 
     public Solution_Design(ITestOutputHelper output) : base(output) { }

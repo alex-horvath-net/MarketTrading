@@ -6,14 +6,14 @@ namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
 
 public class SolutionExpert_Design : Design<SolutionExpert>
 {
-    private void Construct() => Unit = new(validationPlugin);
+    private void Create() => Unit = new(solution.Mock);
 
-    private async Task Act() => issues = await Unit.Validate(request, Token);
+    private async Task Act() => issues = await Unit.Validate(request.Mock, Token);
 
     [Fact]
     public async void ItRequires_Plugins()
     {
-        Construct();
+        Create();
 
         Unit.Should().NotBeNull();
     }
@@ -21,25 +21,22 @@ public class SolutionExpert_Design : Design<SolutionExpert>
     [Fact]
     public async void Path_Without_Diversion()
     {
-        mockValidationPlugin.MockFailedValidation();
-        Construct();
-        mockRequest.UseValidRequest();
+        solution.MockFailedValidation();
+        Create();
+        request.UseValidRequest();
 
         await Act();
 
         issues.Should().NotBeNullOrEmpty();
-        issues.Should().OnlyContain(result => mockValidationPlugin.Results.Any(x => x.ErrorCode == result.ErrorCode && x.ErrorMessage == result.ErrorMessage));
-        await mockValidationPlugin.Mock.ReceivedWithAnyArgs(1).Validate(default, default);
+        issues.Should().OnlyContain(result => solution.Results.Any(x => x.ErrorCode == result.ErrorCode && x.ErrorMessage == result.ErrorMessage));
+        await solution.Mock.ReceivedWithAnyArgs(1).Validate(default, default);
     }
 
     public SolutionExpert_Design(ITestOutputHelper output) : base(output) { }
 
-    private readonly SolutionMockBuilder mockValidationPlugin = new();
-    private ISolution validationPlugin => mockValidationPlugin.Mock;
-    private readonly Request_MockBuilder mockRequest = new();
+    private readonly SolutionMockBuilder solution = new();
+    private readonly Request_MockBuilder request = new();
     private IEnumerable<ValidationDomainModel> issues;
-
-    private Request request => mockRequest.Mock;
 }
 
 public class SolutionMockBuilder {
