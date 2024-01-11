@@ -17,15 +17,15 @@ public class Solution : AbstractValidator<Request>, ISolution {
             .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
     }
 
-    public async Task<IEnumerable<ValidationSocketModel>> Validate(Request request, CancellationToken token) {
-        var pluginModel = await ValidateAsync(request, token);
-        var socketModel = pluginModel.Errors.Select(ToSocketModel);
-        return socketModel;
+    public async Task<IEnumerable<ValidationSolutionExpertModel>> Validate(Request request, CancellationToken token) {
+        var solutionModel = await ValidateAsync(request, token);
+        var expertModel = solutionModel.Errors.Select(ToExpertModel);
+        return expertModel;
     }
 
-    private ValidationSocketModel ToSocketModel(ValidationFailure pluginModel) => new(
-        pluginModel.PropertyName,
-        pluginModel.ErrorCode,
-        pluginModel.ErrorMessage,
-        pluginModel.Severity.ToString());
+    private ValidationSolutionExpertModel ToExpertModel(ValidationFailure solutionModel) => new(
+        solutionModel.PropertyName,
+        solutionModel.ErrorCode,
+        solutionModel.ErrorMessage,
+        solutionModel.Severity.ToString());
 }

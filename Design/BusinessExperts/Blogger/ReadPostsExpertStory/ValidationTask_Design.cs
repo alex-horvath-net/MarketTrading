@@ -109,12 +109,12 @@ public class ValidationSocket_Design : Design<ExpertTask.SolutionExpert> {
 public class IValidationPlugin_MockBuilder {
     public readonly ExpertTask.ISolution Mock = Substitute.For<ExpertTask.ISolution>();
 
-    public List<ValidationSocketModel> Results { get; private set; }
+    public List<ValidationSolutionExpertModel> Results { get; private set; }
 
     public IValidationPlugin_MockBuilder MockFailedValidation() {
-        Results = new List<ValidationSocketModel>
+        Results = new List<ValidationSolutionExpertModel>
             {
-                new ValidationSocketModel("Property", "Code", "Message", "Error")
+                new ValidationSolutionExpertModel("Property", "Code", "Message", "Error")
             };
         Mock.Validate(default, default).ReturnsForAnyArgs(Results);
         return this;
@@ -191,7 +191,7 @@ public class ValidationPlugin_Design : Design<ExpertTask.Solution> {
 
     private readonly Request_MockBuilder mockRequest = new();
     private ExpertStory.Request request => mockRequest.Mock;
-    private IEnumerable<ValidationSocketModel> issues;
+    private IEnumerable<ValidationSolutionExpertModel> issues;
 
     public ValidationPlugin_Design(ITestOutputHelper output) : base(output) { }
 }
