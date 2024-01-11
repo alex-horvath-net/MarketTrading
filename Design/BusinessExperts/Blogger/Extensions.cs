@@ -29,8 +29,8 @@ public static class Extensions {
 
             using var serviceProvider = services.BuildServiceProvider();
 
+            serviceProvider.GetRequiredService<ReadPostsExpertStory.ReadTask.ISolution>();
             serviceProvider.GetRequiredService<ReadPostsExpertStory.ValidationTask.ISolution>();
-            serviceProvider.GetRequiredService<IReadPlugin>();
 
             //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IWorkStep<Response>>();
             //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IFeature<Request, Response>>();

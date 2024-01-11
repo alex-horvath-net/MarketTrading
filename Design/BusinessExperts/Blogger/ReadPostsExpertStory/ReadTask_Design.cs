@@ -1,4 +1,5 @@
 ﻿using BusinessExperts.Blogger.ReadPostsExpertStory;
+using BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
 using Common;
 using Common.Plugins.DataAccess;
 using Core.UserStory;
@@ -10,8 +11,8 @@ using US = BusinessExperts.Blogger.ReadPostsExpertStory;
 
 namespace Design.BusinessExperts.Blogger.ReadPostsExpertStory;
 
-public class ReadTask_Design : Design<ReadTask> {
-    private void Construct() => Unit = new ReadTask(readSocket.Mock);
+public class ReadTask_Design : Design<Scope> {
+    private void Construct() => Unit = new Scope(readSocket.Mock);
 
     private async Task Run() => await Unit.Run(response.Mock, Token);
 
@@ -43,7 +44,7 @@ public class ReadTask_Design : Design<ReadTask> {
     private readonly Response_MockBuilder response = new();
 }
 public class IReadSocket_MockBuilder {
-    public IReadSocket Mock { get; } = Substitute.For<IReadSocket>();
+    public ISolutionExpert Mock { get; } = Substitute.For<ISolutionExpert>();
 
     public IReadSocket_MockBuilder ProvidesPosts() {
         Mock.Read(Arg.Any<Request>(), Arg.Any<CancellationToken>())
@@ -57,7 +58,7 @@ public class IReadSocket_MockBuilder {
     }
 }
 
-public class ReadSocket_Design : Design<ReadSocket> {
+public class ReadSocket_Design : Design<SolutionExpert> {
     private void Construct() => Unit = new(readPlugin.Mock);
 
     private async Task Run() => response = await Unit.Read(request.Mock, Token);
@@ -67,7 +68,7 @@ public class ReadSocket_Design : Design<ReadSocket> {
         Construct();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<IReadSocket>();
+        Unit.Should().BeAssignableTo<ISolutionExpert>();
     }
 
     [Fact]
@@ -92,7 +93,7 @@ public class ReadSocket_Design : Design<ReadSocket> {
     public ReadSocket_Design(ITestOutputHelper output) : base(output) { }
 }
 public class IReadPlugin_MockBuilder {
-    public readonly IReadPlugin Mock = Substitute.For<IReadPlugin>();
+    public readonly ISolution Mock = Substitute.For<ISolution>();
 
     public List<DataModel.Post> Results { get; internal set; }
 
@@ -106,8 +107,8 @@ public class IReadPlugin_MockBuilder {
     }
 }
 
-public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(output) {
-    private void Create() => Unit = new ReadPlugin(db);
+public class ReadPlugin_Design(ITestOutputHelper output) : Design<Solution>(output) {
+    private void Create() => Unit = new Solution(db);
 
     private async Task Use() => posts = await Unit.Read(title, content, Token);
 
@@ -117,7 +118,7 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
         Create();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<IReadPlugin>();
+        Unit.Should().BeAssignableTo<ISolution>();
     }
 
     [Fact]
