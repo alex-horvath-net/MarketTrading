@@ -1,4 +1,4 @@
-using BusinessExperts.Blogger.Extensions;
+using BusinessExperts.Blogger;
 using Common;
 using Common.Plugins.DataAccess;
 using Core;
