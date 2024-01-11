@@ -7,7 +7,7 @@ public class Solution_Design : Design<Solution>
 {
     private void Construct() => Unit = new();
 
-    private async Task Validate() => issues = await Unit.Validate(request, Token);
+    private async Task Act() => issues = await Unit.Validate(request, Token);
 
     [Fact]
     public void ItHas_NoDependecy()
@@ -23,7 +23,7 @@ public class Solution_Design : Design<Solution>
         Construct();
         mockRequest.UseValidRequest();
 
-        await Validate();
+        await Act();
 
         issues.Should().NotBeNull();
         issues.Should().BeEmpty();
@@ -35,7 +35,7 @@ public class Solution_Design : Design<Solution>
         Construct();
         mockRequest.UseInvaliedRequestWithMissingFilters();
 
-        await Validate();
+        await Act();
 
         issues.Should().NotBeNull();
         issues.Should().HaveCount(2);
@@ -58,7 +58,7 @@ public class Solution_Design : Design<Solution>
         Construct();
         mockRequest.UseInvaliedRequestWithShortFilters();
 
-        await Validate();
+        await Act();
 
         issues.Should().NotBeNull();
         issues.Should().HaveCount(2);

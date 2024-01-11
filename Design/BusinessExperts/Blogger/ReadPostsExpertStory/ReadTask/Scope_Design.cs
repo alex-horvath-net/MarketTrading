@@ -7,7 +7,7 @@ public class Scope_Design : Design<Scope>
 {
     private void Construct() => Unit = new Scope(readSocket.Mock);
 
-    private async Task Run() => await Unit.Run(response.Mock, Token);
+    private async Task Act() => await Unit.Run(response.Mock, Token);
 
     [Fact]
     public void ItRequires_Sockets()
@@ -26,7 +26,7 @@ public class Scope_Design : Design<Scope>
         readSocket.ProvidesPosts();
         Construct();
 
-        await Run();
+        await Act();
 
         response.Mock.Terminated.Should().BeFalse();
         response.Mock.Posts.Should().NotBeEmpty();

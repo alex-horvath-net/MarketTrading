@@ -7,7 +7,7 @@ public class SolutionExpert_Design : Design<SolutionExpert>
 {
     private void Construct() => Unit = new(readPlugin.Mock);
 
-    private async Task Run() => response = await Unit.Read(request.Mock, Token);
+    private async Task Act() => response = await Unit.Read(request.Mock, Token);
 
     [Fact]
     public void ItRequires_Plugins()
@@ -27,7 +27,7 @@ public class SolutionExpert_Design : Design<SolutionExpert>
 
         request.UseInvaliedRequestWithMissingFilters();
 
-        await Run();
+        await Act();
 
         response.Should().NotBeNullOrEmpty();
         response.Should().OnlyContain(result => readPlugin.Results.Any(x => x.Title == result.Title && x.Content == result.Content));

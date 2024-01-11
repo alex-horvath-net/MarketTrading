@@ -10,7 +10,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
 {
     private void Create() => Unit = new Solution(db);
 
-    private async Task Use() => posts = await Unit.Read(title, content, Token);
+    private async Task Act() => posts = await Unit.Read(title, content, Token);
 
     [Fact]
     public void ItRequires_Dependecies()
@@ -29,7 +29,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
 
         Create();
 
-        await Use();
+        await Act();
 
         posts.Should().NotBeEmpty();
     }

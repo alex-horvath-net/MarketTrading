@@ -8,7 +8,7 @@ public class Scope_Design : Design<Scope>
 {
     private void Construct() => Unit = new(validationSocket);
 
-    private async Task Run() => await Unit.Run(response, Token);
+    private async Task Act() => await Unit.Run(response, Token);
 
     [Fact]
     public void ItHas_Sockets()
@@ -26,7 +26,7 @@ public class Scope_Design : Design<Scope>
         Construct();
         mockResponse.HasNoValidations();
 
-        await Run();
+        await Act();
 
         mockResponse.Mock.Terminated.Should().BeFalse();
         mockResponse.Mock.Validations.Should().NotContain(x => !x.IsSuccess);
@@ -41,7 +41,7 @@ public class Scope_Design : Design<Scope>
         Construct();
         mockResponse.HasNoValidations();
 
-        await Run();
+        await Act();
 
         mockResponse.Mock.Terminated.Should().BeTrue();
         mockResponse.Mock.Validations.Should().Contain(x => !x.IsSuccess);

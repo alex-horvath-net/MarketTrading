@@ -8,7 +8,7 @@ public class SolutionExpert_Design : Design<SolutionExpert>
 {
     private void Construct() => Unit = new(validationPlugin);
 
-    private async Task Validate() => issues = await Unit.Validate(request, Token);
+    private async Task Act() => issues = await Unit.Validate(request, Token);
 
     [Fact]
     public async void ItRequires_Plugins()
@@ -25,7 +25,7 @@ public class SolutionExpert_Design : Design<SolutionExpert>
         Construct();
         mockRequest.UseValidRequest();
 
-        await Validate();
+        await Act();
 
         issues.Should().NotBeNullOrEmpty();
         issues.Should().OnlyContain(result => mockValidationPlugin.Results.Any(x => x.ErrorCode == result.ErrorCode && x.ErrorMessage == result.ErrorMessage));
