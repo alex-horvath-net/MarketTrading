@@ -1,19 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Common.SolutionExperts.DataModel;
 using Common.Solutions.DataAccess;
+using Common.Models.DataModel;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
 
-public class Solution(DB entityFramework) : ISolution {
-    public async Task<List<Post>> Read(string title, string content, CancellationToken token) {
-        var solutionModel = await entityFramework
+public class Solution(DB db) : ISolution {
+    public async Task<IEnumerable<Post>> Read(string title, string content, CancellationToken token) {
+        var technologyModel = await db
             .Posts
             .Include(x => x.PostTags)
             .ThenInclude(x => x.Tag)
             .Where(post => post.Title.Contains(title) || post.Content.Contains(content))
             .ToListAsync(token);
 
-        var expertModel = solutionModel.Select(model => model).ToList();
-        return expertModel;
+        var solutionModel = technologyModel.Select(model => model);
+        return solutionModel;
     }
 }

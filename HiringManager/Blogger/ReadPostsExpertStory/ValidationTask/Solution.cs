@@ -1,4 +1,4 @@
-﻿using Core.Sockets.ValidationModel;
+﻿using Common.Models.ValidationModel;
 using FluentValidation;
 using FluentValidation.Results;
 
@@ -17,15 +17,15 @@ public class Solution : AbstractValidator<Request>, ISolution {
             .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
     }
 
-    public async Task<IEnumerable<ValidationSolutionExpertModel>> Validate(Request request, CancellationToken token) {
-        var solutionModel = await ValidateAsync(request, token);
-        var expertModel = solutionModel.Errors.Select(ToExpertModel);
-        return expertModel;
+    public async Task<IEnumerable<Validation>> Validate(Request request, CancellationToken token) {
+        var technologyModel = await ValidateAsync(request, token);
+        var solutionModel = technologyModel.Errors.Select(ToSolutionModel);
+        return solutionModel;
     }
-
-    private ValidationSolutionExpertModel ToExpertModel(ValidationFailure solutionModel) => new(
-        solutionModel.PropertyName,
-        solutionModel.ErrorCode,
-        solutionModel.ErrorMessage,
-        solutionModel.Severity.ToString());
+       
+    private Validation ToSolutionModel(ValidationFailure technologyModel) => new(
+        technologyModel.PropertyName,
+        technologyModel.ErrorCode,
+        technologyModel.ErrorMessage,
+        technologyModel.Severity.ToString());
 }

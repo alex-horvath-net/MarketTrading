@@ -1,4 +1,6 @@
-﻿namespace Common.ExpertStories.DomainModel;
+﻿using Common.Models.DomainModel;
+
+namespace Common.ExpertStories.DomainModel;
 
 public class DomainModel_Design {
     [Fact]

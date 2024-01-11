@@ -62,13 +62,13 @@ public class SolutionExpertMockBuilder
 
     public SolutionExpertMockBuilder Pass()
     {
-        Mock.Validate(default, default).ReturnsForAnyArgs(new List<ValidationDomainModel>() { });
+        Mock.Validate(default, default).ReturnsForAnyArgs(new List<Validation>() { });
         return this;
     }
 
     public SolutionExpertMockBuilder Fail()
     {
-        Mock.Validate(default, default).ReturnsForAnyArgs(new List<ValidationDomainModel>() { ValidationDomainModel.Failed("TestErrorCode", "TestErrorMessage") });
+        Mock.Validate(default, default).ReturnsForAnyArgs(new List<Validation>() { Validation.Failed("TestErrorCode", "TestErrorMessage") });
         return this;
     }
 

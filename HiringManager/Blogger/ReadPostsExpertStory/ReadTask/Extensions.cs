@@ -7,6 +7,6 @@ public static class Extensions
 {
     public static IServiceCollection AddReadTask(this IServiceCollection services) => services
         .AddScoped<IScope<Request, Response>, Scope>()
-        .AddScoped<ISolutionExpert, SolutionExpert>()
+        //.AddScoped<ISolutionExpert, SolutionExpert>()
         .AddScoped<ISolution, Solution>();
 } 

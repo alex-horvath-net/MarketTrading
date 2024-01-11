@@ -1,4 +1,4 @@
-﻿namespace Common.SolutionExperts.ViewModel;
+﻿namespace Common.Models.ViewModel;
 
 public record Post {
     public int Id { get; set; }

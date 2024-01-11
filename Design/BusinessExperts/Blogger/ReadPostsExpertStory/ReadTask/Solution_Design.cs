@@ -1,5 +1,5 @@
 ﻿using Common;
-using Common.SolutionExperts.DataModel;
+using Common.Models.DataModel;
 using Common.Solutions.DataAccess;
 using Core;
 using Microsoft.AspNetCore.Builder;

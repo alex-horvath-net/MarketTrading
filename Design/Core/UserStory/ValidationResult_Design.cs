@@ -5,7 +5,7 @@ namespace Core.UserStory;
 public class ValidationResult_Design {
     [Fact]
     public void ValidationResult_Success() {
-        var result = ValidationDomainModel.Success();
+        var result = Validation.Success();
 
         result.Should().NotBeNull();
         result.ErrorCode.Should().BeNull();
@@ -15,7 +15,7 @@ public class ValidationResult_Design {
 
     [Fact]
     public void ValidationResult_Failed() {
-        var result = ValidationDomainModel.Failed("ErrorCode", "ErrorMessage");
+        var result = Validation.Failed("ErrorCode", "ErrorMessage");
 
         result.Should().NotBeNull();
         result.ErrorCode.Should().NotBeNull();

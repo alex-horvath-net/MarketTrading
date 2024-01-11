@@ -1,4 +1,5 @@
-﻿using Common.SolutionExperts.DataModel;
+﻿using Common.Models.DataModel;
+using Common.Models.DomainModel;
 using Core;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
@@ -36,7 +37,7 @@ public class SolutionExpert_Design : Design<SolutionExpert>
 
     private readonly SolutionMockBuilder solution = new();
     private readonly RequestMockBuilder request = new();
-    private List<Common.ExpertStories.DomainModel.Post> response;
+    private List<Common.Models.DomainModel.Post> response;
 
     public SolutionExpert_Design(ITestOutputHelper output) : base(output) { }
 }

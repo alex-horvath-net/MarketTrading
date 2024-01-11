@@ -1,6 +1,7 @@
-﻿namespace Common.ExpertStories.DomainModel;
+﻿namespace Common.Models.DomainModel;
 
-public record Post {
+public record Post
+{
     public int Id { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }

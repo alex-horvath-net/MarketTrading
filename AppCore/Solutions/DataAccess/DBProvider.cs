@@ -1,4 +1,3 @@
-using Common.SolutionExperts.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Common.Solutions.DataAccess;

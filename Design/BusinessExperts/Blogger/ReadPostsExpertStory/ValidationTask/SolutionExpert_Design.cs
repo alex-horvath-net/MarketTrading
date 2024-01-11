@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Common.Models.ValidationModel;
+using Core;
 using Core.Sockets.ValidationModel;
 using Core.UserStory.DomainModel;
 
@@ -36,7 +37,7 @@ public class SolutionExpert_Design : Design<SolutionExpert>
 
     private readonly SolutionMockBuilder solution = new();
     private readonly RequestMockBuilder request = new();
-    private IEnumerable<ValidationDomainModel> issues;
+    private IEnumerable<Core.UserStory.DomainModel.Validation> issues;
 }
 
 public class SolutionMockBuilder {

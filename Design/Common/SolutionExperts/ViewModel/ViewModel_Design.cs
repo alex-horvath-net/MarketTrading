@@ -1,4 +1,6 @@
-﻿namespace Common.SolutionExperts.ViewModel;
+﻿using Common.Models.ViewModel;
+
+namespace Common.SolutionExperts.ViewModel;
 
 public class ViewModel_Design {
     [Fact]
