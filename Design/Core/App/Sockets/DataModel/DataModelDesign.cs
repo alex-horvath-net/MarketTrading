@@ -1,8 +1,8 @@
-﻿using Core.App.Sockets.DataModel;
-using Core.App.Sockets.DataModel;
+﻿using AppCore.Sockets.DataModel;
+using AppCore.Sockets.DataModel;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace Design.Core.App.Sockets.DataModel;
+namespace Design.AppCore.Sockets.DataModel;
 
 public class DataModelDesign
 {

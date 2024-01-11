@@ -1,2 +1,2 @@
-﻿namespace Design.Core.Sys.UserStory;
+﻿namespace Design.AppPolicy.UserStory;
 

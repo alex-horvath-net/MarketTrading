@@ -1,5 +1,5 @@
-﻿using Core.App;
-using Core.Sys;
+﻿using AppCore;
+using AppPolicy;
 using Experts.Blogger.ReadPostsUserStory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,8 +32,8 @@ public static class Extensions {
             serviceProvider.GetRequiredService<IValidationPlugin>();
             serviceProvider.GetRequiredService<IReadPlugin>();
 
-            //serviceProvider.GetRequiredService<Core.Sys.BusinessWorkFlow.IWorkStep<Response>>();
-            //serviceProvider.GetRequiredService<Core.Sys.BusinessWorkFlow.IFeature<Request, Response>>();
+            //serviceProvider.GetRequiredService<AppPolicy.BusinessWorkFlow.IWorkStep<Response>>();
+            //serviceProvider.GetRequiredService<AppPolicy.BusinessWorkFlow.IFeature<Request, Response>>();
         }
     }
 }

@@ -1,12 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AppCore.UserStory.DomainModel;
+using AppPolicy.UserStory.DomainModel;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPostsUserStory;
 
-public record Request(string Title, string Content) : SUS.DomainModel.Request;
+public record Request(string Title, string Content) : AppPolicy.UserStory.DomainModel.Request;
 
-public record Response() : SUS.DomainModel.Response<Request>
-{
-    public List<DomainModel.Post>? Posts { get; set; }
+public record Response() : Response<Request> {
+    public List<Post>? Posts { get; set; }
 }
 
 public static class UserStroryExtensions

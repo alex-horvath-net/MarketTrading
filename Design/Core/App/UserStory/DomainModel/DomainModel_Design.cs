@@ -1,6 +1,7 @@
-﻿using Core.App.UserStory.DomainModel;
+﻿using AppCore.UserStory.DomainModel;
+using AppCore.UserStory.DomainModel;
 
-namespace Design.Core.App.UserStory.DomainModel;
+namespace Design.AppCore.UserStory.DomainModel;
 
 public class DomainModel_Design
 {

@@ -1,6 +1,6 @@
-﻿using Core.Sys.UserStory.DomainModel;
+﻿using AppPolicy.UserStory.DomainModel;
 
-namespace Design.Core.Sys.UserStory;
+namespace Design.AppPolicy.UserStory;
 
 public class RequestCore_Design
 {

@@ -1,15 +1,14 @@
-﻿using Core.App;
-using Core.App.Plugins.DataAccess;
-using Core.App.Sockets.DataModel;
-using Core.Sys.UserStory;
-using Design.Core.Sys;
+﻿using AppCore;
+using AppCore.Plugins.DataAccess;
+using AppPolicy.UserStory;
+using Design.AppPolicy;
 using Experts.Blogger.ReadPostsUserStory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using DataModel = Core.App.Sockets.DataModel;
-using DomainModel = Core.App.UserStory.DomainModel;
+using DataModel = AppCore.Sockets.DataModel;
+using DomainModel = AppCore.UserStory.DomainModel;
 using US = Experts.Blogger.ReadPostsUserStory;
 
 namespace Design.Users.Blogger.ReadPostsUserStory;
@@ -103,7 +102,7 @@ public class IReadPlugin_MockBuilder {
     public IReadPlugin_MockBuilder MockRead() {
         Results =
         [
-            new Post(0, "Title", "Content", DateTime.UtcNow)
+            new DataModel.Post(0, "Title", "Content", DateTime.UtcNow)
         ];
         Mock.Read(default, default, default).ReturnsForAnyArgs(Results);
         return this;
@@ -147,7 +146,7 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
         db.Posts.Should().NotBeEmpty();
     }
 
-    private List<Post>? posts;
+    private List<DataModel.Post>? posts;
     private DB? db;
     private DBProvider dbPovider = new();
     string title = "Title";

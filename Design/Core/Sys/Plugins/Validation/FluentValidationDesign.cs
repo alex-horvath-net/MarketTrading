@@ -1,7 +1,7 @@
-﻿using Core.Sys.Plugins.Validation;
+﻿using AppPolicy.Plugins.Validation;
 using FluentValidation;
 
-namespace Design.Core.Sys.Plugins.Validation;
+namespace Design.AppPolicy.Plugins.Validation;
 
 public class FluentValidationDesign
 {

@@ -1,7 +1,8 @@
-﻿using Core.Sys;
+﻿using AppPolicy;
+using AppPolicy;
 using FluentAssertions.Extensions;
 
-namespace Design.Core.Sys;
+namespace Design.AppPolicy;
 
 public class Task_Design : Design<Task_Design>
 {

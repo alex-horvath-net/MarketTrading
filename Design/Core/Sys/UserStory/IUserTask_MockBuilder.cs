@@ -1,8 +1,8 @@
-﻿using Core.Sys.UserStory;
-using Core.Sys.UserStory.DomainModel;
+﻿using AppPolicy.UserStory;
+using AppPolicy.UserStory.DomainModel;
 using NSubstitute;
 
-namespace Design.Core.Sys.UserStory;
+namespace Design.AppPolicy.UserStory;
 
 public class IUserTask_MockBuilder
 {

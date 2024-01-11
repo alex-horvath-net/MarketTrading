@@ -1,6 +1,6 @@
-﻿using Core.Sys.Sockets.ValidationModel;
+﻿using AppPolicy.Sockets.ValidationModel;
 
-namespace Design.Core.App.Sockets.DataModel;
+namespace Design.AppCore.Sockets.DataModel;
 
 public class ValidationModelDesign
 {

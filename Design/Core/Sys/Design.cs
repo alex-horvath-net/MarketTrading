@@ -1,7 +1,7 @@
-﻿using Core.Sys;
+﻿using AppPolicy;
 using Microsoft.Extensions.Time.Testing;
 
-namespace Design.Core.Sys;
+namespace Design.AppPolicy;
 
 public class Design<T>
 {

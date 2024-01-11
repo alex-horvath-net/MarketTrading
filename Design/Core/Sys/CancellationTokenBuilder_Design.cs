@@ -1,8 +1,8 @@
-﻿using Core.Sys;
+﻿using AppPolicy;
 using FluentAssertions.Extensions;
 using Microsoft.Extensions.Time.Testing;
 
-namespace Design.Core.Sys;
+namespace Design.AppPolicy;
 
 public class CancellationTokenBuilder_Design :Design<CancellationTokenBuilder>
 {

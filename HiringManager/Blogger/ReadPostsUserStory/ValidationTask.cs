@@ -1,4 +1,6 @@
-﻿using Core.Sys.Sockets.ValidationModel;
+﻿using AppPolicy.Sockets.ValidationModel;
+using AppPolicy.UserStory;
+using AppPolicy.UserStory.DomainModel;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,10 +45,10 @@ public interface IValidationPlugin
 
 public class ValidationSocket(IValidationPlugin plugin) : IValidationSocket
 {
-    public async Task<IEnumerable<SUS.DomainModel.Validation>> Validate(Request request, CancellationToken token)
+    public async Task<IEnumerable<Validation>> Validate(Request request, CancellationToken token)
     {
         var socketModel = await plugin.Validate(request, token);
-        var userStoryModel = socketModel.Select(result => SUS.DomainModel.Validation.Failed(result.ErrorCode, result.ErrorMessage));
+        var userStoryModel = socketModel.Select(result => Validation.Failed(result.ErrorCode, result.ErrorMessage));
         return userStoryModel;
     }
 }
@@ -54,12 +56,11 @@ public class ValidationSocket(IValidationPlugin plugin) : IValidationSocket
 
 public interface IValidationSocket
 {
-    Task<IEnumerable<SUS.DomainModel.Validation>> Validate(Request request, CancellationToken token);
+    Task<IEnumerable<Validation>> Validate(Request request, CancellationToken token);
 }
 
 
-public class ValidationTask(IValidationSocket socket) : SUS.IUserTask<Request, Response>
-{
+public class ValidationTask(IValidationSocket socket) : IUserTask<Request, Response> {
     public async Task Run(Response response, CancellationToken token)
     {
         response.Validations = await socket.Validate(response.Request, token);
@@ -72,7 +73,7 @@ public class ValidationTask(IValidationSocket socket) : SUS.IUserTask<Request, R
 public static class ValidationExtensions
 {
     public static IServiceCollection AddValidationTask(this IServiceCollection services) => services
-        .AddScoped<SUS.IUserTask<Request, Response>, ValidationTask>()
+        .AddScoped<IUserTask<Request, Response>, ValidationTask>()
         .AddScoped<IValidationSocket, ValidationSocket>()
         .AddScoped<IValidationPlugin, ValidationPlugin>();
 }

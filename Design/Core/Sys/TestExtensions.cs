@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 
-namespace Design.Core.Sys;
+namespace Design.AppPolicy;
 
 public static class TestExtensions
 {

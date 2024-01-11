@@ -1,7 +1,7 @@
-﻿using Core.Sys.UserStory;
-using Core.Sys.UserStory.DomainModel;
+﻿using AppPolicy.UserStory.DomainModel;
+using AppPolicy.UserStory;
 
-namespace Design.Core.Sys.UserStory;
+namespace Design.AppPolicy.UserStory;
 
 public class UserStoryCore_Design
 {

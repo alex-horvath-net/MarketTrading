@@ -1,6 +1,10 @@
-﻿using Core.App.Plugins.DataAccess;
+﻿
+using AppCore.Plugins.DataAccess;
+using DataModel= AppCore.Sockets.DataModel;
+using DomainModel = AppCore.UserStory.DomainModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using AppPolicy.UserStory;
 
 namespace Experts.Blogger.ReadPostsUserStory;
 
@@ -46,8 +50,7 @@ public interface IReadSocket
 }
 
 
-public class ReadTask(IReadSocket socket) : SUS.IUserTask<Request, Response>
-{
+public class ReadTask(IReadSocket socket) : IUserTask<Request, Response> {
     public async Task Run(Response response, CancellationToken token) =>
         response.Posts = await socket.Read(response.Request, token);
 }
@@ -56,7 +59,7 @@ public class ReadTask(IReadSocket socket) : SUS.IUserTask<Request, Response>
 public static class ReadUserExtensions
 {
     public static IServiceCollection AddReadTask(this IServiceCollection services) => services
-        .AddScoped<SUS.IUserTask<Request, Response>, ReadTask>()
+        .AddScoped<IUserTask<Request, Response>, ReadTask>()
         .AddScoped<IReadSocket, ReadSocket>()
         .AddScoped<IReadPlugin, ReadPlugin>();
 }

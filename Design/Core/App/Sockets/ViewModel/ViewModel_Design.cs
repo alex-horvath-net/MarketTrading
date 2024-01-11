@@ -1,6 +1,7 @@
-﻿using Core.App.Sockets.ViewModel;
+﻿using AppCore.Sockets.ViewModel;
+using AppCore.Sockets.ViewModel;
 
-namespace Design.Core.App.Sockets.ViewModel;
+namespace Design.AppCore.Sockets.ViewModel;
 
 public class ViewModel_Design
 {

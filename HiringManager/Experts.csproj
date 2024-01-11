@@ -19,8 +19,10 @@
 	  <Folder Include="Visitor\" />
 	</ItemGroup>
 
+
 	<ItemGroup>
-	  <ProjectReference Include="..\Core\Core.csproj" />
+	  <ProjectReference Include="..\AppCore\AppCore.csproj" />
+	  <ProjectReference Include="..\AppPolicy\AppPolicy.csproj" />
 	</ItemGroup>
 
 </Project>

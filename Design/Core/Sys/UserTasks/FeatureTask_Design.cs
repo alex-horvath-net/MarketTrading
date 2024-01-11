@@ -1,7 +1,7 @@
-﻿using Core.Sys.UserTasks;
-using Core.Sys.UserStory.DomainModel;
+﻿using AppPolicy.UserTasks;
+using AppPolicy.UserStory.DomainModel;
 
-namespace Design.Core.Sys.UserTasks;
+namespace Design.AppPolicy.UserTasks;
 
 public class FeatureTask_Design
 {

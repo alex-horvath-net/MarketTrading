@@ -1,7 +1,7 @@
-﻿using Core.Sys.UserStory;
-using Core.Sys.UserStory.DomainModel;
+﻿using AppPolicy.UserStory;
+using AppPolicy.UserStory.DomainModel;
 using Microsoft.Extensions.DependencyInjection;
-namespace Design.Core.Sys.UserStory;
+namespace Design.AppPolicy.UserStory;
 
 public class UserStoryExtension_Design
 {

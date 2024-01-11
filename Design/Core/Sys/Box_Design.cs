@@ -1,7 +1,6 @@
-﻿using Core.Sys;
-using Core.Sys;
+﻿using AppPolicy;
 
-namespace Design.Core.Sys;
+namespace Design.AppPolicy;
 
 public class Box_Design
 {

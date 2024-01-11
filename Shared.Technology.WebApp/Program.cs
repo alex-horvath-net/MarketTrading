@@ -1,6 +1,6 @@
-using Core.App;
-using Core.App.Plugins.DataAccess;
-using Core.Sys;
+using AppCore;
+using AppCore.Plugins.DataAccess;
+using AppPolicy;
 using Experts.Blogger.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,7 +1,7 @@
-﻿using Core.Sys.Sockets.ValidationModel;
-using Core.Sys.UserStory;
-using Core.Sys.UserStory.DomainModel;
-using Design.Core.Sys;
+﻿using AppPolicy.Sockets.ValidationModel;
+using AppPolicy.UserStory;
+using AppPolicy.UserStory.DomainModel;
+using Design.AppPolicy;
 using Experts.Blogger.ReadPostsUserStory;
 using US = Experts.Blogger.ReadPostsUserStory;
 

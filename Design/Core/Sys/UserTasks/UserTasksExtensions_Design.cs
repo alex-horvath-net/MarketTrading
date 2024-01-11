@@ -1,9 +1,9 @@
-﻿using Core.Sys.UserStory;
-using Core.Sys.UserStory.DomainModel;
-using Core.Sys.UserTasks;
+﻿using AppPolicy.UserStory;
+using AppPolicy.UserStory.DomainModel;
+using AppPolicy.UserTasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Design.Core.Sys.UserTasks;
+namespace Design.AppPolicy.UserTasks;
 
 public class Extensions_Design
 {
