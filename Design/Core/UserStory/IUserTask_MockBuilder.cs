@@ -6,7 +6,7 @@ namespace Design.Core.UserStory;
 
 public class IUserTask_MockBuilder
 {
-    public IUserTask<Request, Response<Request>> Mock = Substitute.For<IUserTask<Request, Response<Request>>>();
+    public IScope<Request, Response<Request>> Mock = Substitute.For<IScope<Request, Response<Request>>>();
 
     public IUserTask_MockBuilder Terminate()
     {

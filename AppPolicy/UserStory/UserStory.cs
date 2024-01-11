@@ -2,7 +2,7 @@
 
 namespace Core.UserStory;
 
-public class UserStory<TRequest, TResponse>(IEnumerable<IUserTask<TRequest, TResponse>> userTasks) : IUserStory<TRequest, TResponse>
+public class UserStory<TRequest, TResponse>(IEnumerable<IScope<TRequest, TResponse>> userTasks) : IUserStory<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new() {
     public async Task<TResponse> Run(TRequest request, CancellationToken token) {
@@ -22,7 +22,7 @@ public interface IUserStory<TRequest, TResponse>
     Task<TResponse> Run(TRequest request, CancellationToken token);
 }
 
-public interface IUserTask<TRequest, TResponse>
+public interface IScope<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new() {
     Task Run(TResponse response, CancellationToken token);

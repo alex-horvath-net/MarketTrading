@@ -1,11 +1,13 @@
-﻿using Core.Sockets.ValidationModel;
+﻿using ExpertStory=BusinessExperts.Blogger.ReadPostsExpertStory;
+using ExpertTask=BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
+using Core.Sockets.ValidationModel;
 using Core.UserStory;
 using Core.UserStory.DomainModel;
 using Design.Core;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory;
+namespace Design.BusinessExperts.Blogger.ReadPostsExpertStory;
 
-public class ValidationTask_Design : Design<ValidationTask> {
+public class ValidationTask_Design : Design<ExpertTask.Scope> {
     private void Construct() => Unit = new(validationSocket);
 
     private async Task Run() => await Unit.Run(response, Token);
@@ -15,7 +17,7 @@ public class ValidationTask_Design : Design<ValidationTask> {
         Construct();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<IUserTask<ReadPostsExpertStory.Request, Response>>();
+        Unit.Should().BeAssignableTo<IScope<ExpertStory.Request, ExpertStory.Response>>();
     }
 
     [Fact]
@@ -46,30 +48,30 @@ public class ValidationTask_Design : Design<ValidationTask> {
     }
 
     private readonly IValidationSocket_MockBuilder mockValidationSocket = new();
-    private IValidationSocket validationSocket => mockValidationSocket.Mock;
+    private ExpertTask.ISolutionExpert validationSocket => mockValidationSocket.Mock;
     private readonly Response_MockBuilder mockResponse = new();
-    private Response response => mockResponse.Mock;
+    private ExpertStory.Response response => mockResponse.Mock;
 
 
     public ValidationTask_Design(ITestOutputHelper output) : base(output) { }
 }
 
 public class IValidationSocket_MockBuilder {
-    public IValidationSocket Mock { get; } = Substitute.For<IValidationSocket>();
+    public ExpertTask.ISolutionExpert Mock { get; } = Substitute.For<ExpertTask.ISolutionExpert>();
 
     public IValidationSocket_MockBuilder Pass() {
-        Mock.Validate(default, default).ReturnsForAnyArgs(new List<Validation>() { });
+        Mock.Validate(default, default).ReturnsForAnyArgs(new List<ValidationDomainModel>() { });
         return this;
     }
 
     public IValidationSocket_MockBuilder Fail() {
-        Mock.Validate(default, default).ReturnsForAnyArgs(new List<Validation>() { Validation.Failed("TestErrorCode", "TestErrorMessage") });
+        Mock.Validate(default, default).ReturnsForAnyArgs(new List<ValidationDomainModel>() { ValidationDomainModel.Failed("TestErrorCode", "TestErrorMessage") });
         return this;
     }
 
 }
 
-public class ValidationSocket_Design : Design<ValidationSocket> {
+public class ValidationSocket_Design : Design<ExpertTask.SolutionExpert> {
     private void Construct() => Unit = new(validationPlugin);
 
     private async Task Validate() => issues = await Unit.Validate(request, Token);
@@ -97,15 +99,15 @@ public class ValidationSocket_Design : Design<ValidationSocket> {
     public ValidationSocket_Design(ITestOutputHelper output) : base(output) { }
 
     private readonly IValidationPlugin_MockBuilder mockValidationPlugin = new();
-    private IValidationPlugin validationPlugin => mockValidationPlugin.Mock;
+    private ExpertTask.ISolution validationPlugin => mockValidationPlugin.Mock;
     private readonly Request_MockBuilder mockRequest = new();
-    private IEnumerable<Validation> issues;
+    private IEnumerable<ValidationDomainModel> issues;
 
-    private ReadPostsExpertStory.Request request => mockRequest.Mock;
+    private ExpertStory.Request request => mockRequest.Mock;
 }
 
 public class IValidationPlugin_MockBuilder {
-    public readonly IValidationPlugin Mock = Substitute.For<IValidationPlugin>();
+    public readonly ExpertTask.ISolution Mock = Substitute.For<ExpertTask.ISolution>();
 
     public List<ValidationSocketModel> Results { get; private set; }
 
@@ -120,7 +122,7 @@ public class IValidationPlugin_MockBuilder {
 }
 
 
-public class ValidationPlugin_Design : Design<ValidationPlugin> {
+public class ValidationPlugin_Design : Design<ExpertTask.Solution> {
     private void Construct() => Unit = new();
 
     private async Task Validate() => issues = await Unit.Validate(request, Token);
@@ -188,7 +190,7 @@ public class ValidationPlugin_Design : Design<ValidationPlugin> {
     }
 
     private readonly Request_MockBuilder mockRequest = new();
-    private ReadPostsExpertStory.Request request => mockRequest.Mock;
+    private ExpertStory.Request request => mockRequest.Mock;
     private IEnumerable<ValidationSocketModel> issues;
 
     public ValidationPlugin_Design(ITestOutputHelper output) : base(output) { }

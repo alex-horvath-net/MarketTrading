@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Design.BusinessExperts.Blogger;
+namespace BusinessExperts.Blogger;
 
 public static class Extensions {
     public static IServiceCollection AddBlogger(this IServiceCollection services) {
@@ -29,7 +29,7 @@ public static class Extensions {
 
             using var serviceProvider = services.BuildServiceProvider();
 
-            serviceProvider.GetRequiredService<IValidationPlugin>();
+            serviceProvider.GetRequiredService<ReadPostsExpertStory.ValidationTask.ISolution>();
             serviceProvider.GetRequiredService<IReadPlugin>();
 
             //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IWorkStep<Response>>();

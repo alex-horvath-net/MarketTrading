@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using BusinessExperts.Blogger.ReadPostsExpertStory;
+using Common;
 using Common.Plugins.DataAccess;
 using Core.UserStory;
 using Design.Core;
@@ -7,10 +8,10 @@ using DataModel = Common.Sockets.DataModel;
 using DomainModel = Common.UserStory.DomainModel;
 using US = BusinessExperts.Blogger.ReadPostsExpertStory;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory;
+namespace Design.BusinessExperts.Blogger.ReadPostsExpertStory;
 
 public class ReadTask_Design : Design<ReadTask> {
-    private void Construct() => Unit = new US.ReadTask(readSocket.Mock);
+    private void Construct() => Unit = new ReadTask(readSocket.Mock);
 
     private async Task Run() => await Unit.Run(response.Mock, Token);
 
@@ -19,7 +20,7 @@ public class ReadTask_Design : Design<ReadTask> {
         Construct();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<IUserTask<Request, Response>>();
+        Unit.Should().BeAssignableTo<IScope<Request, Response>>();
 
     }
 
@@ -93,7 +94,7 @@ public class ReadSocket_Design : Design<ReadSocket> {
 public class IReadPlugin_MockBuilder {
     public readonly IReadPlugin Mock = Substitute.For<IReadPlugin>();
 
-    public List<Common.Sockets.DataModel.Post> Results { get; internal set; }
+    public List<DataModel.Post> Results { get; internal set; }
 
     public IReadPlugin_MockBuilder MockRead() {
         Results =
@@ -106,7 +107,7 @@ public class IReadPlugin_MockBuilder {
 }
 
 public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(output) {
-    private void Create() => Unit = new US.ReadPlugin(db);
+    private void Create() => Unit = new ReadPlugin(db);
 
     private async Task Use() => posts = await Unit.Read(title, content, Token);
 
@@ -142,7 +143,7 @@ public class ReadPlugin_Design(ITestOutputHelper output) : Design<ReadPlugin>(ou
         db.Posts.Should().NotBeEmpty();
     }
 
-    private List<Common.Sockets.DataModel.Post>? posts;
+    private List<DataModel.Post>? posts;
     private DB? db;
     private DBProvider dbPovider = new();
     string title = "Title";

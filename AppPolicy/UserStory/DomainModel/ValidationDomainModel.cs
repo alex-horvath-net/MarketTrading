@@ -1,9 +1,9 @@
 ﻿namespace Core.UserStory.DomainModel;
 
-public sealed class Validation {
-    public static Validation Success() => new(errorCode: null, errorMessage: null);
+public sealed class ValidationDomainModel {
+    public static ValidationDomainModel Success() => new(errorCode: null, errorMessage: null);
 
-    public static Validation Failed(string errorCode, string errorMessage) {
+    public static ValidationDomainModel Failed(string errorCode, string errorMessage) {
         ArgumentException.ThrowIfNullOrWhiteSpace(errorCode);
         ArgumentException.ThrowIfNullOrWhiteSpace(errorMessage);
         return new(errorCode, errorMessage);
@@ -13,7 +13,7 @@ public sealed class Validation {
     public string? ErrorMessage { get; }
     public bool IsSuccess => ErrorCode == null && ErrorMessage == null;
 
-    private Validation(string? errorCode = null, string? errorMessage = null) {
+    private ValidationDomainModel(string? errorCode = null, string? errorMessage = null) {
         ErrorCode = errorCode;
         ErrorMessage = errorMessage;
     }

@@ -15,7 +15,7 @@ public class Extensions_Design
         services.AddFeatureTask();
 
         var sp = services.BuildServiceProvider();
-        var userStory = sp.GetRequiredService<IUserTask<Request, Response<Request>>>();
+        var userStory = sp.GetRequiredService<IScope<Request, Response<Request>>>();
         userStory.Should().NotBeNull();
     }
 }
