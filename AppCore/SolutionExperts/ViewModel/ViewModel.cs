@@ -1,4 +1,4 @@
-﻿namespace Common.UserStory.DomainModel;
+﻿namespace Common.SolutionExperts.ViewModel;
 
 public record Post {
     public int Id { get; set; }
@@ -8,3 +8,7 @@ public record Post {
     public ICollection<Tag> Tags { get; set; }
 }
 
+public record Tag {
+    public int Id { get; set; }
+    public string Name { get; set; }
+}

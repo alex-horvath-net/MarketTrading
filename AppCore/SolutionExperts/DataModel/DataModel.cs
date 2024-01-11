@@ -1,4 +1,4 @@
-﻿namespace Common.Sockets.DataModel;
+﻿namespace Common.SolutionExperts.DataModel;
 
 public record Post(int PostId, string Title, string Content, DateTime CreatedAt) {
     public List<PostTag> PostTags { get; set; } = [];

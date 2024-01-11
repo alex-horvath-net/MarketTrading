@@ -1,2 +1,2 @@
-﻿namespace Design.Core.UserStory;
+﻿namespace Core.UserStory;
 

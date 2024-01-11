@@ -1,4 +1,4 @@
-﻿using Common.Sockets.DataModel;
+﻿using Common.SolutionExperts.DataModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Common.Plugins.DataAccess;
+namespace Common.Solutions.DataAccess;
 
 public static class DBExtensions {
     public static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration, bool isDev = false) {

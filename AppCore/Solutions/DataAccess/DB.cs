@@ -1,7 +1,7 @@
-﻿using Common.Sockets.DataModel;
+﻿using Common.SolutionExperts.DataModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace Common.Plugins.DataAccess;
+namespace Common.Solutions.DataAccess;
 
 public class DB(DbContextOptions options) : DbContext(options) {
     public DbSet<Post> Posts { get; set; }

@@ -1,4 +1,4 @@
-﻿using Common.UserStory.DomainModel;
+﻿using Common.ExpertStories.DomainModel;
 using Core.UserStory;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;

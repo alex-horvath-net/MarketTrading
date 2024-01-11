@@ -1,6 +1,6 @@
-﻿using Common.Plugins.DataAccess;
-using Microsoft.EntityFrameworkCore;
-using Common.Sockets.DataModel;
+﻿using Microsoft.EntityFrameworkCore;
+using Common.SolutionExperts.DataModel;
+using Common.Solutions.DataAccess;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
 

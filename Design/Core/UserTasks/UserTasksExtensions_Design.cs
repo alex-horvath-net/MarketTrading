@@ -1,15 +1,12 @@
 ﻿using Core.UserStory;
 using Core.UserStory.DomainModel;
-using Core.UserTasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Design.Core.UserTasks;
+namespace Core.UserTasks;
 
-public class Extensions_Design
-{
+public class Extensions_Design {
     [Fact]
-    public void AddFeatureTask_Registers_All_UserTask()
-    {
+    public void AddFeatureTask_Registers_All_UserTask() {
         var services = new ServiceCollection();
 
         services.AddFeatureTask();

@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <RootNamespace />
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,8 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Plugins\DataAccess\" />
-    <Folder Include="Common\UserTasks\Design\" />
+    <Folder Include="Common\ExpertTasks\" />
+    <Folder Include="Common\Solutions\DataAccess\" />
     <Folder Include="BusinessExperts\Blogger\WritePostExpertStory\" />
     <Folder Include="BusinessExperts\Visitor\" />
   </ItemGroup>

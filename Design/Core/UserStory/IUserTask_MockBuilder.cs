@@ -1,15 +1,12 @@
-﻿using Core.UserStory;
-using Core.UserStory.DomainModel;
+﻿using Core.UserStory.DomainModel;
 using NSubstitute;
 
-namespace Design.Core.UserStory;
+namespace Core.UserStory;
 
-public class IUserTask_MockBuilder
-{
+public class IUserTask_MockBuilder {
     public IScope<Request, Response<Request>> Mock = Substitute.For<IScope<Request, Response<Request>>>();
 
-    public IUserTask_MockBuilder Terminate()
-    {
+    public IUserTask_MockBuilder Terminate() {
         Mock.Run(default, default)
             .ReturnsForAnyArgs(Task.CompletedTask)
             .AndDoes(call => call.Arg<Response<Request>>().Terminated = true);
@@ -17,8 +14,7 @@ public class IUserTask_MockBuilder
         return this;
     }
 
-    public IUserTask_MockBuilder DoNotTerminate()
-    {
+    public IUserTask_MockBuilder DoNotTerminate() {
         Mock.Run(default, default)
             .ReturnsForAnyArgs(Task.CompletedTask)
             .AndDoes(call => call.Arg<Response<Request>>().Terminated = false);

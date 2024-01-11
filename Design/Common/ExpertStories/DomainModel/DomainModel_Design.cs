@@ -1,13 +1,8 @@
-﻿using Common.UserStory.DomainModel;
-using Common.UserStory.DomainModel;
+﻿namespace Common.ExpertStories.DomainModel;
 
-namespace Design.Common.UserStory.DomainModel;
-
-public class DomainModel_Design
-{
+public class DomainModel_Design {
     [Fact]
-    public void Tag()
-    {
+    public void Tag() {
         var id = 1;
         var name = "Name";
         var tag = new Tag(id, name);
@@ -17,8 +12,7 @@ public class DomainModel_Design
     }
 
     [Fact]
-    public void Post()
-    {
+    public void Post() {
         var id = 1;
         var title = "Title";
         var content = "Content";

@@ -1,10 +1,8 @@
-﻿using Core;
-using Microsoft.Extensions.Time.Testing;
+﻿using Microsoft.Extensions.Time.Testing;
 
-namespace Design.Core;
+namespace Core;
 
-public class Design<T>
-{
+public class Design<T> {
     protected T Unit { get; set; }
     protected readonly ITestOutputHelper Output;
     protected readonly FakeTimeProvider Time = new();

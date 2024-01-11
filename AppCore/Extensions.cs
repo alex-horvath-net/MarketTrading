@@ -1,4 +1,4 @@
-﻿using Common.Plugins.DataAccess;
+﻿using Common.Solutions.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

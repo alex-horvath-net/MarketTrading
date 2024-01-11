@@ -1,13 +1,10 @@
-﻿using Core.UserTasks;
-using Core.UserStory.DomainModel;
+﻿using Core.UserStory.DomainModel;
 
-namespace Design.Core.UserTasks;
+namespace Core.UserTasks;
 
-public class FeatureTask_Design
-{
+public class FeatureTask_Design {
     [Fact]
-    public async void FeatureFlagIsFalse()
-    {
+    public async void FeatureFlagIsFalse() {
         var response = new Response<Request>();
         var token = CancellationToken.None;
         var unit = new FeatureTask<Request, Response<Request>>();

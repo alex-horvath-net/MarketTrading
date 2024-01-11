@@ -1,13 +1,10 @@
-﻿using Core.UserStory;
-using Core.UserStory.DomainModel;
+﻿using Core.UserStory.DomainModel;
 
-namespace Design.Core.UserStory;
+namespace Core.UserStory;
 
-public class UserStoryCore_Design
-{
+public class UserStoryCore_Design {
     [Fact]
-    public async void NonStoppedFeature()
-    {
+    public async void NonStoppedFeature() {
         var userStory = new UserStory<Request, Response<Request>>(
             [
                 oneTask.DoNotTerminate().Mock,
@@ -22,8 +19,7 @@ public class UserStoryCore_Design
     }
 
     [Fact]
-    public async void StoppedFeature()
-    {
+    public async void StoppedFeature() {
         var userStory = new UserStory<Request, Response<Request>>(
             [
                 oneTask.Terminate().Mock,

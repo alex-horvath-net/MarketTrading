@@ -1,4 +1,4 @@
-﻿using Common.UserStory.DomainModel;
+﻿using Common.ExpertStories.DomainModel;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
 
@@ -18,7 +18,7 @@ public class SolutionExpert(ISolution solution) : ISolutionExpert
 
 
 public interface ISolution {
-    Task<List<Common.Sockets.DataModel.Post>> Read(string title, string content, CancellationToken token);
+    Task<List<Common.SolutionExperts.DataModel.Post>> Read(string title, string content, CancellationToken token);
 }
 
 

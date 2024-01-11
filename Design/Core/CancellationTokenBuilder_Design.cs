@@ -1,11 +1,9 @@
-﻿using Core;
-using FluentAssertions.Extensions;
+﻿using FluentAssertions.Extensions;
 using Microsoft.Extensions.Time.Testing;
 
-namespace Design.Core;
+namespace Core;
 
-public class CancellationTokenBuilder_Design : Design<CancellationTokenBuilder>
-{
+public class CancellationTokenBuilder_Design : Design<CancellationTokenBuilder> {
     private void Create() => Unit = new();
     private void Schedule() => Unit.Schedule(delay);
     private void ScheduleWithTime() => Unit.Schedule(delay, Time);
@@ -13,16 +11,14 @@ public class CancellationTokenBuilder_Design : Design<CancellationTokenBuilder>
     public CancellationTokenBuilder_Design(ITestOutputHelper output) : base(output) { }
 
     [Fact]
-    public void ItRequires_NoDependecies()
-    {
+    public void ItRequires_NoDependecies() {
         Create();
 
         Unit.Should().NotBeNull();
     }
 
     [Fact]
-    public void ItCan_ProvideNewToken()
-    {
+    public void ItCan_ProvideNewToken() {
         Create();
 
         var newToken = Unit.Build();
@@ -33,8 +29,7 @@ public class CancellationTokenBuilder_Design : Design<CancellationTokenBuilder>
     }
 
     [Fact]
-    public async Task ItCan_ProvideNewTokenWithScheduledCancelation()
-    {
+    public async Task ItCan_ProvideNewTokenWithScheduledCancelation() {
         Create();
 
         Schedule();
@@ -45,8 +40,7 @@ public class CancellationTokenBuilder_Design : Design<CancellationTokenBuilder>
     }
 
     [Fact]
-    public void ItCan_ProvideNewTokenWithScheduledCancelationAndTime()
-    {
+    public void ItCan_ProvideNewTokenWithScheduledCancelationAndTime() {
         Create();
 
         ScheduleWithTime();

@@ -1,6 +1,6 @@
 using BusinessExperts.Blogger;
 using Common;
-using Common.Plugins.DataAccess;
+using Common.Solutions.DataAccess;
 using Core;
 
 var builder = WebApplication.CreateBuilder(args);

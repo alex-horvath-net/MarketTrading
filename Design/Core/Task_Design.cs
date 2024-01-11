@@ -1,18 +1,15 @@
 ﻿using Core;
-using Core;
 using FluentAssertions.Extensions;
 
-namespace Design.Core;
+namespace Core;
 
-public class Task_Design : Design<Task_Design>
-{
+public class Task_Design : Design<Task_Design> {
     public Task_Design(ITestOutputHelper output) : base(output) { }
 
     private string MapToItself(string itself) => itself;
     private int Parse(string text) => int.Parse(text);
     private DateTime ToDate(int year) => new DateTime(year, 1, 1);
-    private async Task<string> GetYear()
-    {
+    private async Task<string> GetYear() {
         this.Dump(Output, "before delay");
         await Task.Delay(100).Dump(Output, "during delay");
         this.Dump(Output, "after delay");
@@ -21,8 +18,7 @@ public class Task_Design : Design<Task_Design>
 
 
     [Fact]
-    public void Create_A_Task_From_A_Result()
-    {
+    public void Create_A_Task_From_A_Result() {
         var year = "1984";
         this.Dump(Output);
 
@@ -36,8 +32,7 @@ public class Task_Design : Design<Task_Design>
     }
 
     [Fact]
-    public void Create_A_Task_From_A_Method()
-    {
+    public void Create_A_Task_From_A_Method() {
         this.Dump(Output);
 
         var task = GetYear();
@@ -51,8 +46,7 @@ public class Task_Design : Design<Task_Design>
     }
 
     [Fact]
-    public async Task Get_Result_Of_The_Task()
-    {
+    public async Task Get_Result_Of_The_Task() {
         this.Dump(Output, "before creating task");
 
         var task = GetYear().Dump(Output, "creating task");
@@ -69,8 +63,7 @@ public class Task_Design : Design<Task_Design>
     }
 
     [Fact]
-    public async Task Change_Task_By_Lambda()
-    {
+    public async Task Change_Task_By_Lambda() {
         var oldTask = GetYear();
 
         var newTask = oldTask.Select(Parse);
@@ -79,8 +72,7 @@ public class Task_Design : Design<Task_Design>
         result.Should().Be(1984);
     }
     [Fact]
-    public async Task Change_Task_By_Linq()
-    {
+    public async Task Change_Task_By_Linq() {
         var task = "1984".ToTask();
 
         var result = await (
@@ -90,8 +82,7 @@ public class Task_Design : Design<Task_Design>
         result.Should().Be(1984);
     }
     [Fact]
-    public async void Map_Functor_1()
-    {
+    public async void Map_Functor_1() {
         var task = "1984".ToTask();
 
         var result = await task.Select(MapToItself);
@@ -99,8 +90,7 @@ public class Task_Design : Design<Task_Design>
         result.Should().Be("1984");
     }
     [Fact]
-    public async void Map_Functor_2()
-    {
+    public async void Map_Functor_2() {
         var task = "1984".ToTask();
 
         var sequentialResult = await task.Select(Parse).Select(ToDate);
@@ -109,8 +99,7 @@ public class Task_Design : Design<Task_Design>
         sequentialResult.Should().Be(nestedResult);
     }
     [Fact]
-    public async void Join()
-    {
+    public async void Join() {
         var task = "1984".ToTask();
         var nestedTask = task.ToTask();
 
@@ -119,8 +108,7 @@ public class Task_Design : Design<Task_Design>
         result.Should().Be("1984");
     }
     [Fact]
-    public async void SelectMany_Lambda()
-    {
+    public async void SelectMany_Lambda() {
         var task = "1984".ToTask();
 
         var result = await task.SelectMany(text => Parse(text).ToTask());
@@ -128,8 +116,7 @@ public class Task_Design : Design<Task_Design>
         result.Should().Be(1984);
     }
     [Fact]
-    public async void SelectMany_Linq()
-    {
+    public async void SelectMany_Linq() {
         var task = "1984".ToTask();
 
         var result = await (
@@ -141,8 +128,7 @@ public class Task_Design : Design<Task_Design>
     }
 
     [Fact]
-    public async void FireAndForget_Ok()
-    {
+    public async void FireAndForget_Ok() {
         this.Dump(Output, "before");
         var task = Task.Delay(200, Token).Dump(Output, "during");
         var isCompleted = false;
@@ -156,8 +142,7 @@ public class Task_Design : Design<Task_Design>
     }
 
     [Fact]
-    public void FireAndForget_Fail()
-    {
+    public void FireAndForget_Fail() {
         this.Dump(Output, "before");
         var task = Task.FromException(new Exception("TestException"));  // Task.Delay(200, token).Dump(Output, "during");
         var isFailed = false;
@@ -172,17 +157,14 @@ public class Task_Design : Design<Task_Design>
 
 
     [Fact]
-    public async void Yield()
-    {
+    public async void Yield() {
         this.Dump(Output, "before");
 
-        Func<Task> slowTaskExecutions = async () =>
-        {
+        Func<Task> slowTaskExecutions = async () => {
             var token = CancellationToken.None;
             var nums = Enumerable.Range(0, 10).Select(_ => Random.Shared.Next(100, 500)).ToList();
 
-            await foreach (var text in nums.Yield(NumToStringTask, token))
-            {
+            await foreach (var text in nums.Yield(NumToStringTask, token)) {
                 this.Dump(Output, text);
             }
         };
@@ -192,8 +174,7 @@ public class Task_Design : Design<Task_Design>
         this.Dump(Output, "after");
     }
 
-    private async Task<string> NumToStringTask(int num, CancellationToken token)
-    {
+    private async Task<string> NumToStringTask(int num, CancellationToken token) {
         await Task.Delay(num, token);
         return $"{num:D3}";
     }

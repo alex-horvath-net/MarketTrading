@@ -1,15 +1,12 @@
-﻿using Core;
-using Core.UserStory;
+﻿using Core.UserStory;
 using Core.UserStory.DomainModel;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Design.Core;
+namespace Core;
 
-public class Extensions_Design
-{
+public class Extensions_Design {
     [Fact]
-    public void AddUserStory_Registers_All_UserStory()
-    {
+    public void AddUserStory_Registers_All_UserStory() {
         var services = new ServiceCollection();
 
         services.AddCoreSystem();

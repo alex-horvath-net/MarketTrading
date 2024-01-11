@@ -27,7 +27,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="UserTasks\" />
+    <Folder Include="ExpertTasks\" />
   </ItemGroup>
   
   <ItemGroup>
