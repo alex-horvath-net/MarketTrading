@@ -1,4 +1,4 @@
-﻿namespace AppCore.Sockets.ViewModel;
+﻿namespace Common.Sockets.ViewModel;
 
 public record Tag {
     public int Id { get; set; }

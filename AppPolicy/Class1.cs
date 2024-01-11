@@ -1,4 +1,4 @@
-﻿namespace AppPolicy {
+﻿namespace Core {
     public class Class1 {
 
     }

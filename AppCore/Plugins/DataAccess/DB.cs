@@ -1,8 +1,8 @@
 ﻿using System.Reflection.Emit;
-using AppCore.Sockets.DataModel;
+using Common.Sockets.DataModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppCore.Plugins.DataAccess;
+namespace Common.Plugins.DataAccess;
 
 public class DB(DbContextOptions options) : DbContext(options) {
     public DbSet<Post> Posts { get; set; }

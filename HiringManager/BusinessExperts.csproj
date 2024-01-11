@@ -1,0 +1,28 @@
+﻿  <Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>preview</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Blogger\ReadPostsExpertStory\UserStory\**" />
+	  <EmbeddedResource Remove="Blogger\ReadPostsExpertStory\UserStory\**" />
+	  <None Remove="Blogger\ReadPostsExpertStory\UserStory\**" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="Blogger\WritePostExpertStory\" />
+	  <Folder Include="Visitor\" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\AppCore\Common.csproj" />
+	  <ProjectReference Include="..\AppPolicy\Core.csproj" />
+	</ItemGroup>
+
+</Project>

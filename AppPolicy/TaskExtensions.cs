@@ -1,8 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using AppPolicy;
-using AppPolicy;
+using Core;
 
-namespace AppPolicy;
+namespace Core;
 
 public static class TaskExtensions {
     public static Task<T> ToTask<T>(

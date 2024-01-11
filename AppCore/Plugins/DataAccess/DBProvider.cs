@@ -1,7 +1,7 @@
-using AppCore.Sockets.DataModel;
+using Common.Sockets.DataModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppCore.Plugins.DataAccess;
+namespace Common.Plugins.DataAccess;
 
 public class DBProvider {
     public DB GetTestDB(bool delete = false) {

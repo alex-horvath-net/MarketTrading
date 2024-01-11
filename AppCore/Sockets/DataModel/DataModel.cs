@@ -1,4 +1,4 @@
-﻿namespace AppCore.Sockets.DataModel;
+﻿namespace Common.Sockets.DataModel;
 
 public record Post(int PostId, string Title, string Content, DateTime CreatedAt) {
     public List<PostTag> PostTags { get; set; } = [];

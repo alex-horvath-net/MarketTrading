@@ -1,6 +1,6 @@
-﻿using AppPolicy.UserStory.DomainModel;
+﻿using Core.UserStory.DomainModel;
 
-namespace AppPolicy.UserStory;
+namespace Core.UserStory;
 
 public class UserStory<TRequest, TResponse>(IEnumerable<IUserTask<TRequest, TResponse>> userTasks) : IUserStory<TRequest, TResponse>
     where TRequest : Request

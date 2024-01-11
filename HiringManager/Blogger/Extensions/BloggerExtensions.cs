@@ -1,10 +1,9 @@
-﻿using Experts.Blogger.ReadPostsUserStory;
+﻿using BusinessExperts.Blogger.ReadPostsExpertStory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Blogger.Extensions;
+namespace BusinessExperts.Blogger.Extensions;
 
-public static class BloggerExtensions
-{
+public static class BloggerExtensions {
     public static IServiceCollection AddBlogger(this IServiceCollection services) => services
         .AddReadPostsUserStory();
 }

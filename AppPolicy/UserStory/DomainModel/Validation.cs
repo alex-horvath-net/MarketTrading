@@ -1,4 +1,4 @@
-﻿namespace AppPolicy.UserStory.DomainModel;
+﻿namespace Core.UserStory.DomainModel;
 
 public sealed class Validation {
     public static Validation Success() => new(errorCode: null, errorMessage: null);

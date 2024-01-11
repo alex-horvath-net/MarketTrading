@@ -1,7 +1,7 @@
-﻿using AppPolicy.UserStory;
-using AppPolicy.UserStory.DomainModel;
+﻿using Core.UserStory;
+using Core.UserStory.DomainModel;
 
-namespace AppPolicy.UserTasks;
+namespace Core.UserTasks;
 
 public class EndTask<TRequest, TResponse> : IUserTask<TRequest, TResponse>
     where TRequest : Request

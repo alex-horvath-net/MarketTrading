@@ -1,4 +1,4 @@
-﻿namespace AppPolicy;
+﻿namespace Core;
 
 public readonly record struct Box<T> {
     public Box() { IsEmpty = true; }

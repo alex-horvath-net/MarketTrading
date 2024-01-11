@@ -1,7 +1,7 @@
-﻿using AppPolicy.UserStory;
+﻿using Core.UserStory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AppPolicy.UserTasks;
+namespace Core.UserTasks;
 
 public static class Extensions {
     public static IServiceCollection AddFeatureTask(this IServiceCollection services) {

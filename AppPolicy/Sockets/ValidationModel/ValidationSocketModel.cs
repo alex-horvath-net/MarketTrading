@@ -1,4 +1,4 @@
-﻿namespace AppPolicy.Sockets.ValidationModel;
+﻿namespace Core.Sockets.ValidationModel;
 
 public sealed record ValidationSocketModel(
     string PropertyName,

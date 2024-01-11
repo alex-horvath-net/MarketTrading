@@ -1,4 +1,4 @@
-﻿namespace AppPolicy;
+﻿namespace Core;
 
 public static class BoxExtensions {
     public static Box<T> ToBox<T>(this T content) => new Box<T>(content);

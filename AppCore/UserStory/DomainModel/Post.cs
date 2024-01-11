@@ -1,4 +1,4 @@
-﻿namespace AppCore.UserStory.DomainModel;
+﻿namespace Common.UserStory.DomainModel;
 
 public record Post {
     public int Id { get; set; }

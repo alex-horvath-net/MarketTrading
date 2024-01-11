@@ -1,7 +1,7 @@
-using AppCore;
-using AppCore.Plugins.DataAccess;
-using AppPolicy;
-using Experts.Blogger.Extensions;
+using BusinessExperts.Blogger.Extensions;
+using Common;
+using Common.Plugins.DataAccess;
+using Core;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

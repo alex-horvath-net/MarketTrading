@@ -1,4 +1,4 @@
-﻿namespace AppPolicy.UserStory.DomainModel;
+﻿namespace Core.UserStory.DomainModel;
 
 public record Response<TRequest>()
     where TRequest : Request {

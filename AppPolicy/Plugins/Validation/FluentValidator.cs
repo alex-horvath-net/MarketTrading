@@ -1,9 +1,9 @@
-﻿using AppPolicy.Sockets.ValidationModel;
-using AppPolicy;
+﻿using Core;
 using FluentValidation;
 using FluentValidation.Results;
+using Core.Sockets.ValidationModel;
 
-namespace AppPolicy.Plugins.Validation;
+namespace Core.Plugins.Validation;
 
 public abstract class FluentValidator<T> : AbstractValidator<T> {
     public async Task<IEnumerable<ValidationSocketModel>> Validate(T request, CancellationToken token) {

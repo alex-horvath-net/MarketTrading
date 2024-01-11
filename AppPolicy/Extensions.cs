@@ -1,8 +1,8 @@
-﻿using AppPolicy.UserStory;
-using AppPolicy.UserTasks;
+﻿using Core.UserStory;
+using Core.UserTasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AppPolicy;
+namespace Core;
 
 public static class Extensions {
     public static IServiceCollection AddCoreSystem(this IServiceCollection services) {

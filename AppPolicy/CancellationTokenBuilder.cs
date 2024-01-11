@@ -1,4 +1,4 @@
-﻿namespace AppPolicy;
+﻿namespace Core;
 
 public class CancellationTokenBuilder() : IDisposable {
     public CancellationTokenBuilder Schedule(TimeSpan delay, TimeProvider? time = null) {
