@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using BusinessExperts.Blogger.ReadPostsExpertStory;
 
-namespace WebSite.Pages {
-    public class IndexModel : PageModel {
-        private readonly ILogger<IndexModel> _logger;
+namespace WebSite.Pages; 
+public class IndexModel(
+    BusinessExperts.Blogger.Expert blogger, 
+    ILogger<IndexModel> logger) : PageModel {
 
-        public IndexModel(ILogger<IndexModel> logger) {
-            _logger = logger;
-            _logger.LogInformation($"{Thread.CurrentThread.ManagedThreadId} IndexModel is created.");
-        }
-
-        public async Task OnGetAsync() {
-            _logger.LogInformation($"{Thread.CurrentThread.ManagedThreadId} start OnGetAsync.");
-            _logger.LogInformation($"{Thread.CurrentThread.ManagedThreadId} end OnGetAsync.");
-        }
+    public async Task OnGetAsync() {
+        var posts = await blogger.ReadPosts.Run(new Request("Title", "Content"), CancellationToken.None);  
     }
 }

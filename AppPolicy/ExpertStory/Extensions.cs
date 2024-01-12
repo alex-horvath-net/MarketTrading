@@ -4,7 +4,7 @@ namespace Core.ExpertStory;
 
 public static class Extensions {
     public static IServiceCollection AddUserStory(this IServiceCollection services) {
-        services.AddScoped(typeof(IUserStory<,>), typeof(UserStory<,>));
+        services.AddScoped(typeof(IExpertStory<,>), typeof(ExpertStory<,>));
 
         return services;
     }

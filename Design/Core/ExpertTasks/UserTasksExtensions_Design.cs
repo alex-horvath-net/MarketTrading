@@ -2,7 +2,7 @@
 using Core.ExpertStory.DomainModel;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.UserTasks;
+namespace Core.ExpertTasks;
 
 public class Extensions_Design {
     [Fact]

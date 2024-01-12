@@ -10,7 +10,7 @@ public class UserStoryExtension_Design {
         services.AddUserStory();
 
         var sp = services.BuildServiceProvider();
-        var userStory = sp.GetRequiredService<IUserStory<Request, Response<Request>>>();
+        var userStory = sp.GetRequiredService<IExpertStory<Request, Response<Request>>>();
         userStory.Should().NotBeNull();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Core.ExpertStory.DomainModel;
 
-namespace Core.UserTasks;
+namespace Core.ExpertTasks;
 
 public class FeatureTask_Design {
     [Fact]

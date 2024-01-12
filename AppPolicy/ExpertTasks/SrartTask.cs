@@ -1,14 +1,13 @@
 ﻿using Core.ExpertStory;
 using Core.ExpertStory.DomainModel;
 
-namespace Core.UserTasks;
+namespace Core.ExpertTasks;
 
-public class FeatureTask<TRequest, TResponse> : IScope<TRequest, TResponse>
+public class SrartTask<TRequest, TResponse> : IScope<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new() {
     public Task Run(TResponse response, CancellationToken token) {
-        response.FeatureEnabled = false;
-        response.Terminated = !response.FeatureEnabled;
+        response.StartedAt = DateTime.UtcNow;
         return Task.CompletedTask;
     }
 }

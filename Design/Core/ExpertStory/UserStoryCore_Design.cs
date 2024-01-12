@@ -5,7 +5,7 @@ namespace Core.ExpertStory;
 public class UserStoryCore_Design {
     [Fact]
     public async void NonStoppedFeature() {
-        var userStory = new UserStory<Request, Response<Request>>(
+        var userStory = new ExpertStory<Request, Response<Request>>(
             [
                 oneTask.DoNotTerminate().Mock,
                 otherTask.DoNotTerminate().Mock
@@ -20,7 +20,7 @@ public class UserStoryCore_Design {
 
     [Fact]
     public async void StoppedFeature() {
-        var userStory = new UserStory<Request, Response<Request>>(
+        var userStory = new ExpertStory<Request, Response<Request>>(
             [
                 oneTask.Terminate().Mock,
                 otherTask.DoNotTerminate().Mock

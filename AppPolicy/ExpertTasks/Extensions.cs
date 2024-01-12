@@ -1,7 +1,7 @@
 ﻿using Core.ExpertStory;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.UserTasks;
+namespace Core.ExpertTasks;
 
 public static class Extensions {
     public static IServiceCollection AddFeatureTask(this IServiceCollection services) {
