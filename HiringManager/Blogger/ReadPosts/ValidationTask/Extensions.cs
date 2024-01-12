@@ -1,8 +1,8 @@
-﻿using BusinessExperts.Blogger.ReadPosts;
-using Core.ExpertStory;
+﻿using Core.ExpertStory;
+using Experts.Blogger.ReadPosts;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BusinessExperts.Blogger.ReadPosts.ValidationTask;
+namespace Experts.Blogger.ReadPosts.ValidationTask;
 
 public static class Extensions {
     public static IServiceCollection AddValidationTask(this IServiceCollection services) => services

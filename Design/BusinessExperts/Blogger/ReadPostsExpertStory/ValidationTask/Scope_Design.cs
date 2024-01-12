@@ -1,10 +1,10 @@
-﻿using BusinessExperts.Blogger.ReadPosts;
-using BusinessExperts.Blogger.ReadPosts.ValidationTask;
-using Common.Solutions.DataModel.ValidationModel;
+﻿using Common.Solutions.DataModel.ValidationModel;
 using Core;
 using Core.ExpertStory;
+using Experts.Blogger.ReadPosts;
+using Experts.Blogger.ReadPosts.ValidationTask;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
+namespace Experts.Blogger.ReadPostsExpertStory.ValidationTask;
 
 public class Scope_Design : Design<Scope> {
     private void Create() => Unit = new Scope(solution);

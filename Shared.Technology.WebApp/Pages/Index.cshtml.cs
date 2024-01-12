@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using BusinessExperts.Blogger.ReadPosts;
+using Experts.Blogger.ReadPosts;
+using Experts.Blogger;
 
-namespace WebSite.Pages; 
+namespace WebSite.Pages;
 public class IndexModel(
-    BusinessExperts.Blogger.Expert blogger, 
+    Expert blogger, 
     ILogger<IndexModel> logger) : PageModel {
 
     public async Task OnGetAsync() {

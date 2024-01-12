@@ -1,7 +1,7 @@
-using BusinessExperts.Blogger;
 using Common;
 using Common.Solutions.Data.MainDB;
 using Core;
+using Experts.Blogger;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

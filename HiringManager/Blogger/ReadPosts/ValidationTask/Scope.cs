@@ -1,9 +1,9 @@
-﻿using BusinessExperts.Blogger.ReadPosts;
-using Common.Solutions.DataModel.ValidationModel;
+﻿using Common.Solutions.DataModel.ValidationModel;
 using Core.ExpertStory;
 using Core.ExpertStory.DomainModel;
+using Experts.Blogger.ReadPosts;
 
-namespace BusinessExperts.Blogger.ReadPosts.ValidationTask;
+namespace Experts.Blogger.ReadPosts.ValidationTask;
 
 public class Scope(ISolution solution) : IScope<Request, Response> {
     public async Task Run(Response response, CancellationToken token) {

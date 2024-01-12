@@ -1,7 +1,7 @@
-﻿using BusinessExperts.Blogger.ReadPosts;
+﻿using Experts.Blogger.ReadPosts;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BusinessExperts.Blogger;
+namespace Experts.Blogger;
 
 public record Expert(
     ExpertStrory ReadPosts);

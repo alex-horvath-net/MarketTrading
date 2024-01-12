@@ -1,8 +1,8 @@
-﻿using BusinessExperts.Blogger.ReadPosts;
-using Core.ExpertStory;
+﻿using Core.ExpertStory;
+using Experts.Blogger.ReadPosts;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BusinessExperts.Blogger.ReadPosts.ReadTask;
+namespace Experts.Blogger.ReadPosts.ReadTask;
 
 public static class Extensions {
     public static IServiceCollection AddReadTask(this IServiceCollection services) => services

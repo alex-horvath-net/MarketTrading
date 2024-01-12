@@ -1,9 +1,9 @@
-﻿using BusinessExperts.Blogger.ReadPosts;
-using BusinessExperts.Blogger.ReadPosts.ValidationTask;
-using Common.Solutions.DataModel.ValidationModel;
+﻿using Common.Solutions.DataModel.ValidationModel;
 using Core;
+using Experts.Blogger.ReadPosts;
+using Experts.Blogger.ReadPosts.ValidationTask;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
+namespace Experts.Blogger.ReadPostsExpertStory.ValidationTask;
 
 public class Solution_Design : Design<Solution>
 {

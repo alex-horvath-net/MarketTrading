@@ -1,10 +1,10 @@
-﻿using BusinessExperts.Blogger.ReadPosts;
-using BusinessExperts.Blogger.ReadPosts.ReadTask;
-using Common.Solutions.Data.MainDB.DataModel;
+﻿using Common.Solutions.Data.MainDB.DataModel;
 using Core;
 using Core.ExpertStory;
+using Experts.Blogger.ReadPosts;
+using Experts.Blogger.ReadPosts.ReadTask;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
+namespace Experts.Blogger.ReadPostsExpertStory.ReadTask;
 
 public class Scope_Design : Design<Scope> {
     private void Create() => Unit = new Scope(solution);

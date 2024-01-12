@@ -1,9 +1,8 @@
-﻿using BusinessExperts.Blogger.ReadPosts;
-using Common.Solutions.DataModel.ValidationModel;
+﻿using Common.Solutions.DataModel.ValidationModel;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace BusinessExperts.Blogger.ReadPosts.ValidationTask;
+namespace Experts.Blogger.ReadPosts.ValidationTask;
 
 public class Solution : AbstractValidator<Request>, ISolution {
     public Solution() {

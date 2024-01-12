@@ -1,6 +1,6 @@
 ﻿using Core.ExpertStory;
 
-namespace BusinessExperts.Blogger.ReadPosts.ReadTask;
+namespace Experts.Blogger.ReadPosts.ReadTask;
 
 public class Scope(ISolution solution) : IScope<Request, Response> {
     public async Task Run(Response response, CancellationToken token) {

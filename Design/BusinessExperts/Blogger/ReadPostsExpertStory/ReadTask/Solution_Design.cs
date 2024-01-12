@@ -1,12 +1,12 @@
-﻿using BusinessExperts.Blogger.ReadPosts;
-using BusinessExperts.Blogger.ReadPosts.ReadTask;
-using Common;
+﻿using Common;
 using Common.Solutions.Data.MainDB;
 using Common.Solutions.Data.MainDB.DataModel;
 using Core;
+using Experts.Blogger.ReadPosts;
+using Experts.Blogger.ReadPosts.ReadTask;
 using Microsoft.AspNetCore.Builder;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
+namespace Experts.Blogger.ReadPostsExpertStory.ReadTask;
 
 public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output)
 {
