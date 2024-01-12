@@ -8,15 +8,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Blogger\ReadPostsExpertStory\UserStory\**" />
-	  <EmbeddedResource Remove="Blogger\ReadPostsExpertStory\UserStory\**" />
-	  <None Remove="Blogger\ReadPostsExpertStory\UserStory\**" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-	  <Folder Include="Blogger\WritePostExpertStory\" />
-	  <Folder Include="Visitor\" />
+	  <Compile Remove="Blogger\ReadPosts\UserStory\**" />
+	  <EmbeddedResource Remove="Blogger\ReadPosts\UserStory\**" />
+	  <None Remove="Blogger\ReadPosts\UserStory\**" />
 	</ItemGroup>
 
 

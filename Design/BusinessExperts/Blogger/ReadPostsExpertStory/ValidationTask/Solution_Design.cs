@@ -1,4 +1,6 @@
-﻿using Common.Solutions.DataModel.ValidationModel;
+﻿using BusinessExperts.Blogger.ReadPosts;
+using BusinessExperts.Blogger.ReadPosts.ValidationTask;
+using Common.Solutions.DataModel.ValidationModel;
 using Core;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;

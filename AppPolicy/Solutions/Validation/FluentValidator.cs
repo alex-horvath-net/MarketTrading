@@ -3,7 +3,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Core.Sockets.ValidationModel;
 
-namespace Core.Plugins.Validation;
+namespace Core.Solutions.Validation;
 
 public abstract class FluentValidator<T> : AbstractValidator<T> {
     public async Task<IEnumerable<ValidationSolutionExpertModel>> Validate(T request, CancellationToken token) {

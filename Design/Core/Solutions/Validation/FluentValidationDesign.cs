@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Core.Plugins.Validation;
+namespace Core.Solutions.Validation;
 
 public class FluentValidationDesign {
     [Fact]

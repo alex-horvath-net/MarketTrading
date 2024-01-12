@@ -1,11 +1,11 @@
-﻿using BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
-using BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
+﻿using BusinessExperts.Blogger.ReadPosts.ReadTask;
+using BusinessExperts.Blogger.ReadPosts.ValidationTask;
 using Common.Scope.ScopeModel;
 using Core.ExpertStory;
 using Core.ExpertStory.DomainModel;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory;
+namespace BusinessExperts.Blogger.ReadPosts;
 
 public class ExpertStrory(IEnumerable<IScope<Request, Response>> tasks) : ExpertStory<Request, Response>(tasks) {
 }

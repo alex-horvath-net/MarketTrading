@@ -1,8 +1,9 @@
-﻿using Common.Solutions.Data.MainDB;
+﻿using BusinessExperts.Blogger.ReadPosts;
+using Common.Solutions.Data.MainDB;
 using Common.Solutions.Data.MainDB.DataModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
+namespace BusinessExperts.Blogger.ReadPosts.ReadTask;
 
 public class Solution(MainDB db) : ISolution {
     public async Task<IEnumerable<Post>> Read(Request request, CancellationToken token) {

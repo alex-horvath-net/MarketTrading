@@ -1,8 +1,9 @@
-﻿using Common.Solutions.DataModel.ValidationModel;
+﻿using BusinessExperts.Blogger.ReadPosts;
+using Common.Solutions.DataModel.ValidationModel;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
+namespace BusinessExperts.Blogger.ReadPosts.ValidationTask;
 
 public class Solution : AbstractValidator<Request>, ISolution {
     public Solution() {
@@ -22,7 +23,7 @@ public class Solution : AbstractValidator<Request>, ISolution {
         var solutionModel = technologyModel.Errors.Select(ToSolutionModel);
         return solutionModel;
     }
-       
+
     private ValidationIssue ToSolutionModel(ValidationFailure technologyModel) => new(
         technologyModel.PropertyName,
         technologyModel.ErrorCode,

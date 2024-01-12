@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using BusinessExperts.Blogger.ReadPostsExpertStory;
+using BusinessExperts.Blogger.ReadPosts;
 
 namespace WebSite.Pages; 
 public class IndexModel(
