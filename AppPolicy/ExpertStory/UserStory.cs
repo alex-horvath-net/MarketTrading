@@ -1,6 +1,6 @@
-﻿using Core.UserStory.DomainModel;
+﻿using Core.ExpertStory.DomainModel;
 
-namespace Core.UserStory;
+namespace Core.ExpertStory;
 
 public class UserStory<TRequest, TResponse>(IEnumerable<IScope<TRequest, TResponse>> userTasks) : IUserStory<TRequest, TResponse>
     where TRequest : Request
@@ -20,10 +20,4 @@ public interface IUserStory<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new() {
     Task<TResponse> Run(TRequest request, CancellationToken token);
-}
-
-public interface IScope<TRequest, TResponse>
-    where TRequest : Request
-    where TResponse : Response<TRequest>, new() {
-    Task Run(TResponse response, CancellationToken token);
 }

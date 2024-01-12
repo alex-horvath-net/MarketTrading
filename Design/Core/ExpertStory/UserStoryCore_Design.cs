@@ -1,6 +1,6 @@
-﻿using Core.UserStory.DomainModel;
+﻿using Core.ExpertStory.DomainModel;
 
-namespace Core.UserStory;
+namespace Core.ExpertStory;
 
 public class UserStoryCore_Design {
     [Fact]

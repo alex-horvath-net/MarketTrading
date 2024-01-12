@@ -1,6 +1,6 @@
-﻿using Core.UserStory.DomainModel;
+﻿using Core.ExpertStory.DomainModel;
 using Microsoft.Extensions.DependencyInjection;
-namespace Core.UserStory;
+namespace Core.ExpertStory;
 
 public class UserStoryExtension_Design {
     [Fact]

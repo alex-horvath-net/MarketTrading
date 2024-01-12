@@ -1,5 +1,5 @@
-﻿using Core.UserStory;
-using Core.UserStory.DomainModel;
+﻿using Core.ExpertStory;
+using Core.ExpertStory.DomainModel;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core;

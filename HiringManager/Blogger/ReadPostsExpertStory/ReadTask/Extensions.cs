@@ -1,4 +1,4 @@
-﻿using Core.UserStory;
+﻿using Core.ExpertStory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;

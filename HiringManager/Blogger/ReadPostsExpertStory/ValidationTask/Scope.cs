@@ -1,5 +1,6 @@
 ﻿using Common.Solutions.Validation.ValidationModel;
-using Core.UserStory;
+using Core.ExpertStory;
+using Core.ExpertStory.DomainModel;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
 
@@ -13,8 +14,8 @@ public class Scope(ISolution solution) : IScope<Request, Response>
         response.Terminated = response.Validations.Any(x => !x.IsSuccess);
     }
 
-    private Core.UserStory.DomainModel.Validation ToScopeModel(ValidationIssue solutionModel) => 
-        Core.UserStory.DomainModel.Validation.Failed(solutionModel.ErrorCode, solutionModel.ErrorMessage);
+    private Validation ToScopeModel(ValidationIssue solutionModel) =>
+        Validation.Failed(solutionModel.ErrorCode, solutionModel.ErrorMessage);
 }
 
 public interface ISolution {

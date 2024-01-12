@@ -1,7 +1,7 @@
-﻿using Core.UserStory.DomainModel;
+﻿using Core.ExpertStory.DomainModel;
 using NSubstitute;
 
-namespace Core.UserStory;
+namespace Core.ExpertStory;
 
 public class IUserTask_MockBuilder {
     public IScope<Request, Response<Request>> Mock = Substitute.For<IScope<Request, Response<Request>>>();

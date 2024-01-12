@@ -1,6 +1,6 @@
 ﻿using Common.Solutions.Data.MainDB.DataModel;
 using Core;
-using Core.UserStory;
+using Core.ExpertStory;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
 

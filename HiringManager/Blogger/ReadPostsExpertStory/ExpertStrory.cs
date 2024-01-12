@@ -1,9 +1,9 @@
 ﻿using Common.Scope.ScopeModel;
-using Core.UserStory.DomainModel;
+using Core.ExpertStory.DomainModel;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory;
 
-public record Request(string Title, string Content) : Core.UserStory.DomainModel.Request {
+public record Request(string Title, string Content) : Core.ExpertStory.DomainModel.Request {
     public static Request Empty { get; } = new(default, default);
 }
 

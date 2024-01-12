@@ -1,4 +1,4 @@
-﻿using Core.UserStory.DomainModel;
+﻿using Core.ExpertStory.DomainModel;
 
 namespace Core.UserTasks;
 
