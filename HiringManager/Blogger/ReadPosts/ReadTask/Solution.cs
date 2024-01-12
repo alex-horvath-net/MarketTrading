@@ -1,6 +1,5 @@
 ﻿using Common.Solutions.Data.MainDB;
 using Common.Solutions.Data.MainDB.DataModel;
-using Experts.Blogger.ReadPosts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Experts.Blogger.ReadPosts.ReadTask;

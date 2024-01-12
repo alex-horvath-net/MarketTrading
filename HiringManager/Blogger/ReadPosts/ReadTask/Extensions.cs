@@ -1,5 +1,4 @@
 ﻿using Core.ExpertStory;
-using Experts.Blogger.ReadPosts;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPosts.ReadTask;
