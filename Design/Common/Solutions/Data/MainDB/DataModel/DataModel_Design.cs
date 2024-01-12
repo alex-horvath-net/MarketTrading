@@ -1,10 +1,10 @@
-﻿using Common.Solutions.Data.MainDB.DataModel;  
+﻿namespace Common.Solutions.Data.MainDB.DataModel;
 
-namespace Common.SolutionExperts.DataModel;
-
-public class DataModel_Design {
+public class DataModel_Design
+{
     [Fact]
-    public void Tag_Design() {
+    public void Tag_Design()
+    {
         var id = 1;
         var name = "Name";
         var tag = new Tag(id, name);
@@ -14,7 +14,8 @@ public class DataModel_Design {
     }
 
     [Fact]
-    public void Post_Design() {
+    public void Post_Design()
+    {
         var id = 1;
         var title = "Title";
         var content = "Content";

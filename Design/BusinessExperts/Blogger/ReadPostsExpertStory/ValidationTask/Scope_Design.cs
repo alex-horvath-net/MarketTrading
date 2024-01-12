@@ -1,4 +1,4 @@
-﻿using Common.Solutions.Validation.ValidationModel;
+﻿using Common.Solutions.DataModel.ValidationModel;
 using Core;
 using Core.ExpertStory;
 

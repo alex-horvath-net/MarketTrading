@@ -1,10 +1,12 @@
 ﻿using Core.Sockets.ValidationModel;
 
-namespace Common.SolutionExperts.DataModel;
+namespace Core.Sockets;
 
-public class ValidationModelDesign {
+public class ValidationModelDesign
+{
     [Fact]
-    public void Ctor() {
+    public void Ctor()
+    {
         var propertyName = "propertyName";
         var errorCode = "errorCode";
         var errorMessage = "errorMessage";

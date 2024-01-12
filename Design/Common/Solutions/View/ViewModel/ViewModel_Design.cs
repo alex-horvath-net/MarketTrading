@@ -1,20 +1,21 @@
-﻿using Common.Scope.ScopeModel;
+﻿namespace Common.Solutions.View.ViewModel;
 
-namespace Common.ExpertStories.DomainModel;
-
-public class DomainModel_Design {
+public class ViewModel_Design
+{
     [Fact]
-    public void Tag() {
+    public void Tag()
+    {
         var id = 1;
         var name = "Name";
-        var tag = new Tag(id, name);
+        var tag = new Tag();
         tag = tag with { Id = id, Name = name };
         tag.Id.Should().Be(id);
         tag.Name.Should().Be(name);
     }
 
     [Fact]
-    public void Post() {
+    public void Post()
+    {
         var id = 1;
         var title = "Title";
         var content = "Content";
