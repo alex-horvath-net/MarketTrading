@@ -10,7 +10,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
 {
     private void Create() => Unit = new Solution(db);
 
-    private async Task Act() => posts = await Unit.Read(request.Mock, Token);
+    private async Task Act() => posts = await Unit.Read(request, Token);
 
     [Fact]
     public void ItRequires_Dependecies()
@@ -25,7 +25,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
     [Fact]
     public async Task ItCan_Read()
     {
-        request.UseValidRequest();
+        request = request.MockValidRequest();
         db = databasePovider.GetTestDB();
 
         Create();
@@ -51,6 +51,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
     private IEnumerable<Post>? posts;
     private DB? db;
     private DBProvider databasePovider = new();
-    private readonly RequestMockBuilder request = new();
-
+    private Request request = Request.Empty;
 }
+
+

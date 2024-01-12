@@ -1,19 +1,16 @@
 ﻿using Common.Models.ValidationModel;
 using Core;
 using Core.UserStory;
-using Core.UserStory.DomainModel;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
 
-public class Scope_Design : Design<Scope>
-{
-    private void Create() => Unit = new Scope(solution.Mock);
+public class Scope_Design : Design<Scope> {
+    private void Create() => Unit = new Scope(solution);
 
-    private async Task Act() => await Unit.Run(response.Mock, Token);
+    private async Task Act() => await Unit.Run(response, Token);
 
     [Fact]
-    public void ItHas_Sockets()
-    {
+    public void ItHas_Sockets() {
         Create();
 
         Unit.Should().NotBeNull();
@@ -21,74 +18,56 @@ public class Scope_Design : Design<Scope>
     }
 
     [Fact]
-    public async void ItCan_ValidateValidRequest()
-    {
-        solution.Pass();
+    public async void ItCan_ValidateValidRequest() {
+        solution.MockPass();
         Create();
-        response.HasNoValidations();
+        response.MockNoValidations();
 
         await Act();
 
-        response.Mock.Terminated.Should().BeFalse();
-        response.Mock.Validations.Should().NotContain(x => !x.IsSuccess);
-        response.Mock.Validations.Should().BeEmpty();
-        await solution.Mock.ReceivedWithAnyArgs().Validate(default, default);
+        response.Terminated.Should().BeFalse();
+        response.Validations.Should().NotContain(x => !x.IsSuccess);
+        response.Validations.Should().BeEmpty();
+        await solution.ReceivedWithAnyArgs().Validate(default, default);
     }
 
     [Fact]
-    public async void ItCan_ValidateInValidRequest()
-    {
-        solution.Fail();
+    public async void ItCan_ValidateInValidRequest() {
+        solution.MockFail();
         Create();
-        response.HasNoValidations();
+        response.MockNoValidations();
 
         await Act();
 
-        response.Mock.Terminated.Should().BeTrue();
-        response.Mock.Validations.Should().Contain(x => !x.IsSuccess);
-        await solution.Mock.ReceivedWithAnyArgs().Validate(default, default);
+        response.Terminated.Should().BeTrue();
+        response.Validations.Should().Contain(x => !x.IsSuccess);
+        await solution.ReceivedWithAnyArgs().Validate(default, default);
     }
-    
+
     public Scope_Design(ITestOutputHelper output) : base(output) { }
 
-    private readonly SolutionMockBuilder solution = new();
-    private readonly ResponseMockBuilder response = new();
+    public readonly ISolution solution = Substitute.For<ISolution>();
+    private readonly Response response = Response.Empty;
 }
 
 
-public class SolutionMockBuilder
-{
-    public ISolution Mock { get; } = Substitute.For<ISolution>();
-
-
-    public SolutionMockBuilder Pass()
-    {
-        Mock.Validate(default, default).ReturnsForAnyArgs(new List<ValidationIssue>() { });
-        return this;
+public static class SolutionExtensions {
+    public static ISolution MockPass(this ISolution solution) {
+        solution
+            .Validate(default, default)
+            .ReturnsForAnyArgs(new List<ValidationIssue>() { });
+        return solution;
     }
 
-    public SolutionMockBuilder Fail()
-    {
-        Mock.Validate(default, default).ReturnsForAnyArgs(new List<ValidationIssue>() 
-        {
-            new ValidationIssue("TestPropertyName", "TestErrorCode", "TestErrorMessage", "TestSeverity") 
-        });
-        return this;
+    public static ISolution MockFail(this ISolution solution) {
+        solution
+            .Validate(default, default)
+            .ReturnsForAnyArgs(new List<ValidationIssue>()
+            {
+                new ("TestPropertyName", "TestErrorCode", "TestErrorMessage", "TestSeverity")
+            });
+        return solution;
     }
 
 }
 
-//public class SolutionMockBuilder {
-//    public readonly ISolution Mock = Substitute.For<ISolution>();
-
-//    public List<ValidationSolutionExpertModel> Results { get; private set; }
-
-//    public SolutionMockBuilder MockFailedValidation() {
-//        Results = new List<ValidationSolutionExpertModel>
-//            {
-//                new ValidationSolutionExpertModel("Property", "Code", "Message", "Error")
-//            };
-//        Mock.Validate(default, default).ReturnsForAnyArgs(Results);
-//        return this;
-//    }
-//}

@@ -7,7 +7,7 @@ public class Solution_Design : Design<Solution>
 {
     private void Create() => Unit = new Solution();
 
-    private async Task Act() => issues = await Unit.Validate(request.Mock, Token);
+    private async Task Act() => issues = await Unit.Validate(request, Token);
 
     [Fact]
     public void ItHas_NoDependecy()
@@ -21,7 +21,7 @@ public class Solution_Design : Design<Solution>
     public async void ItCan_AllowValidRequest()
     {
         Create();
-        request.UseValidRequest();
+        request = request.MockValidRequest();
 
         await Act();
 
@@ -33,7 +33,7 @@ public class Solution_Design : Design<Solution>
     public async void ItCan_FindMissingFiltersOfRequest()
     {
         Create();
-        request.UseInvaliedRequestWithMissingFilters();
+        request = request.MockMissingpProperties();
 
         await Act();
 
@@ -56,7 +56,7 @@ public class Solution_Design : Design<Solution>
     public async void ItCan_FindShortFiltersOfRequest()
     {
         Create();
-        request.UseInvaliedRequestWithShortFilters();
+        request = request.MockTooShortProperties();
 
         await Act();
 
@@ -75,7 +75,7 @@ public class Solution_Design : Design<Solution>
             x.Severity == "Error");
     }
 
-    private readonly RequestMockBuilder request = new();
+    private Request request = Request.Empty;
     private IEnumerable<ValidationIssue> issues;
 
     public Solution_Design(ITestOutputHelper output) : base(output) { }

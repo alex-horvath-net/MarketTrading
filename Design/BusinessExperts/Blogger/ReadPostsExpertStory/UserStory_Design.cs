@@ -32,46 +32,36 @@ public class Extensions_Design {
 }
 
 
-public class RequestMockBuilder {
-    public Request Mock { get; private set; }
+public static class RequestExtensions {
+    public static Request MockValidRequest(this Request request) =>
+        new Request("Title", "Content");
 
-    public RequestMockBuilder UseValidRequest() {
-        Mock = new Request("Title", "Content");
-        return this;
-    }
+    public static Request MockMissingpProperties(this Request request) =>
+        request = new Request(null, null);
 
-    public RequestMockBuilder UseInvaliedRequestWithMissingFilters() {
-        Mock = new Request(null, null);
-        return this;
-    }
-
-    public RequestMockBuilder UseInvaliedRequestWithShortFilters() {
-        Mock = new Request("12", "21");
-        return this;
-    }
+    public static Request MockTooShortProperties(this Request request) =>
+        new Request("12", "21");
 }
 
 
-public record ResponseMockBuilder {
-    public Response Mock { get; private set; } = new();
-
-    public ResponseMockBuilder HasNoPosts() {
-        WillHaveValidRequest();
-        Mock.Posts = null;
-        return this;
+public static class ResponseExtensions {
+    public static Response MockNoPosts(this Response response) {
+        response.MockValidRequest();
+        response.Posts = null;
+        return response;
     }
 
-    public ResponseMockBuilder WillHaveValidRequest() {
-        Mock.Request = new RequestMockBuilder().UseValidRequest().Mock;
-        Mock.FeatureEnabled = true;
-        Mock.Validations = null;
-        return this;
+    public static Response MockValidRequest(this Response response) {
+        response.Request = Request.Empty.MockValidRequest();
+        response.FeatureEnabled = true;
+        response.Validations = null;
+        return response;
     }
 
-    public ResponseMockBuilder HasNoValidations() {
-        WillHaveValidRequest();
-        Mock.Validations = null;
-        return this;
+    public static Response MockNoValidations(this Response response) {
+        response.MockValidRequest();
+        response.Validations = null;
+        return response;
     }
 }
 
