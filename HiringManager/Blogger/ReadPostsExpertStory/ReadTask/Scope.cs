@@ -1,5 +1,4 @@
-﻿using Common.Models.DataModel;
-using Core.UserStory;
+﻿using Core.UserStory;
 
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
@@ -8,11 +7,11 @@ public class Scope(ISolution solution) : IScope<Request, Response> {
     public async Task Run(Response response, CancellationToken token) {
 
         var solutionModel = await solution.Read(response.Request, token);
-        var domainModel = solutionModel.Select(ToDomainModel);
-        response.Posts = domainModel;
+        var scopeModel = solutionModel.Select(ToScopeModel);
+        response.Posts = scopeModel;
     }
 
-    private Common.Models.DomainModel.Post ToDomainModel(Post solutionModel) => new() {
+    private Common.Scope.ScopeModel.Post ToScopeModel(Common.Solutions.Data.MainDB.DataModel.Post solutionModel) => new() {
         Title = solutionModel.Title,
         Content = solutionModel.Content
     };
@@ -20,5 +19,5 @@ public class Scope(ISolution solution) : IScope<Request, Response> {
 
 
 public interface ISolution {
-    Task<IEnumerable<Post>> Read(Request Request, CancellationToken token);
+    Task<IEnumerable<Common.Solutions.Data.MainDB.DataModel.Post>> Read(Request Request, CancellationToken token);
 }

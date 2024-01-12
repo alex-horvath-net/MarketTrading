@@ -1,4 +1,4 @@
-﻿using Common.Models.ViewModel;
+﻿using Common.Solutions.View.ViewModel;
 
 namespace Common.SolutionExperts.ViewModel;
 

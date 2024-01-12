@@ -1,4 +1,4 @@
-﻿using Common.Models.DataModel;
+﻿using Common.Solutions.Data.MainDB.DataModel;
 using Core;
 using Core.UserStory;
 

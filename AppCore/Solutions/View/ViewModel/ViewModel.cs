@@ -1,4 +1,4 @@
-﻿namespace Common.Models.DomainModel;
+﻿namespace Common.Solutions.View.ViewModel;
 
 public record Post
 {
@@ -9,4 +9,8 @@ public record Post
     public ICollection<Tag> Tags { get; set; }
 }
 
-public record Tag(int Id, string Name);
+public record Tag
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}

@@ -1,6 +1,6 @@
 ﻿using Common;
-using Common.Models.DataModel;
-using Common.Solutions.DataAccess;
+using Common.Solutions.Data.MainDB;
+using Common.Solutions.Data.MainDB.DataModel;
 using Core;
 using Microsoft.AspNetCore.Builder;
 
@@ -15,7 +15,6 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
     [Fact]
     public void ItRequires_Dependecies()
     {
-        db = databasePovider.GetTestDB(true);
         Create();
 
         Unit.Should().NotBeNull();
@@ -26,8 +25,6 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
     public async Task ItCan_Read()
     {
         request = request.MockValidRequest();
-        db = databasePovider.GetTestDB();
-
         Create();
 
         await Act();
@@ -43,14 +40,13 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
         appBuilder.Services.AddCoreApplication(appBuilder.Configuration, isDevelopment: true);
         var app = appBuilder.Build();
 
-        var db = app.UseDeveloperDataBase();
+        var mainDB = app.UseDeveloperDataBase();
 
-        db.Posts.Should().NotBeEmpty();
+        mainDB.Posts.Should().NotBeEmpty();
     }
 
     private IEnumerable<Post>? posts;
-    private DB? db;
-    private DBProvider databasePovider = new();
+    private readonly MainDB db = new MainDB().Schema(false);
     private Request request = Request.Empty;
 }
 

@@ -1,4 +1,4 @@
-﻿namespace Common.Models.ViewModel;
+﻿namespace Common.Scope.ScopeModel;
 
 public record Post {
     public int Id { get; set; }
@@ -6,9 +6,4 @@ public record Post {
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
     public ICollection<Tag> Tags { get; set; }
-}
-
-public record Tag {
-    public int Id { get; set; }
-    public string Name { get; set; }
 }

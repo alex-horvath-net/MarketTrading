@@ -1,4 +1,4 @@
-﻿using Common.Models.DataModel;
+﻿using Common.Solutions.Data.MainDB.DataModel;  
 
 namespace Common.SolutionExperts.DataModel;
 

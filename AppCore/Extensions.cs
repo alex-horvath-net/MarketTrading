@@ -1,4 +1,4 @@
-﻿using Common.Solutions.DataAccess;
+﻿using Common.Solutions.Data.MainDB;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

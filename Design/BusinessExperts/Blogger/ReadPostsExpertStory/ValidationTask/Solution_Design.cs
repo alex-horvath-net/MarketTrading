@@ -1,4 +1,4 @@
-﻿using Common.Models.ValidationModel;
+﻿using Common.Solutions.Validation.ValidationModel;
 using Core;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;

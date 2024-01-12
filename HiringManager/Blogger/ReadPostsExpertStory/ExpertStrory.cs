@@ -1,4 +1,4 @@
-﻿using Common.Models.DomainModel;
+﻿using Common.Scope.ScopeModel;
 using Core.UserStory.DomainModel;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory;

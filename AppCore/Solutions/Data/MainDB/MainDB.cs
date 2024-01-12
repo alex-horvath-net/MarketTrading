@@ -1,16 +1,20 @@
-﻿using Common.Models.DataModel;
+﻿using Common.Solutions.Data.MainDB.DataModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace Common.Solutions.DataAccess;
+namespace Common.Solutions.Data.MainDB;
 
-public class DB(DbContextOptions options) : DbContext(options) {
+public class MainDB(DbContextOptions options) : DbContext(options)
+{
+    public MainDB():this(new DbContextOptionsBuilder().Dev().Options) {
+    }
+    
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<PostTag> PostTags { get; set; }
 
 
-    protected override void OnModelCreating(ModelBuilder builder) {
-
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
         builder
             .Entity<PostTag>()
             .HasKey(pt => new { pt.PostId, pt.TagId });

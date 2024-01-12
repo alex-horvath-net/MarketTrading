@@ -1,4 +1,4 @@
-﻿using Common.Models.ValidationModel;
+﻿using Common.Solutions.Validation.ValidationModel;
 using Core.UserStory;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
@@ -8,15 +8,15 @@ public class Scope(ISolution solution) : IScope<Request, Response>
     public async Task Run(Response response, CancellationToken token)
     {
         var solutionModel = await solution.Validate(response.Request, token);
-        var domainModel = solutionModel.Select(ToDomainModel);
-        response.Validations = domainModel;
+        var scopeModel = solutionModel.Select(ToScopeModel);
+        response.Validations = scopeModel;
         response.Terminated = response.Validations.Any(x => !x.IsSuccess);
     }
 
-    private Core.UserStory.DomainModel.Validation ToDomainModel(ValidationIssue solutionModel) => 
+    private Core.UserStory.DomainModel.Validation ToScopeModel(ValidationIssue solutionModel) => 
         Core.UserStory.DomainModel.Validation.Failed(solutionModel.ErrorCode, solutionModel.ErrorMessage);
 }
 
 public interface ISolution {
-    Task<IEnumerable<Common.Models.ValidationModel.ValidationIssue>> Validate(Request request, CancellationToken token);
+    Task<IEnumerable<ValidationIssue>> Validate(Request request, CancellationToken token);
 }

@@ -1,4 +1,4 @@
-﻿using Common.Models.ValidationModel;
+﻿using Common.Solutions.Validation.ValidationModel;
 using FluentValidation;
 using FluentValidation.Results;
 

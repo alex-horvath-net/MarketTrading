@@ -1,4 +1,4 @@
-﻿using Common.Models.DomainModel;
+﻿using Common.Scope.ScopeModel;
 
 namespace Common.ExpertStories.DomainModel;
 

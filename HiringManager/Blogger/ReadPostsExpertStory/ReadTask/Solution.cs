@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Common.Solutions.DataAccess;
-using Common.Models.DataModel;
+﻿using Common.Solutions.Data.MainDB;
+using Common.Solutions.Data.MainDB.DataModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
 
-public class Solution(DB db) : ISolution {
+public class Solution(MainDB db) : ISolution {
     public async Task<IEnumerable<Post>> Read(Request request, CancellationToken token) {
         var technologyModel = await db
             .Posts
