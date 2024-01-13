@@ -3,7 +3,7 @@ using Core.ExpertStory.DomainModel;
 
 namespace Core.ExpertTasks;
 
-public class EndTask<TRequest, TResponse> : IScope<TRequest, TResponse>
+public class EndTask<TRequest, TResponse> : IExpertTask<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new() {
     public Task Run(TResponse response, CancellationToken token) {

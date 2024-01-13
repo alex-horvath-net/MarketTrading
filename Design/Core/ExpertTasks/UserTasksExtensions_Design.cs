@@ -12,7 +12,7 @@ public class Extensions_Design {
         services.AddFeatureTask();
 
         var sp = services.BuildServiceProvider();
-        var userStory = sp.GetRequiredService<IScope<Request, Response<Request>>>();
+        var userStory = sp.GetRequiredService<IExpertTask<Request, Response<Request>>>();
         userStory.Should().NotBeNull();
     }
 }

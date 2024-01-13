@@ -2,10 +2,12 @@
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace Experts.Blogger.ReadPosts.ValidationTask;
+namespace Experts.Blogger.ReadPosts.Validation.Solutions;
 
-public class Solution : AbstractValidator<Request>, ISolution {
-    public Solution() {
+public class Solution : AbstractValidator<Request>, ISolution
+{
+    public Solution()
+    {
         RuleFor(request => request.Title)
             .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator)
             .WithMessage(request => $"'{nameof(request.Title)}' can not be empty if '{nameof(request.Content)}' is empty.")
@@ -17,10 +19,12 @@ public class Solution : AbstractValidator<Request>, ISolution {
             .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
     }
 
-    public async Task<IEnumerable<ValidationIssue>> Validate(Request request, CancellationToken token) {
+    public async Task<IEnumerable<Core.ExpertStory.DomainModel.Validation>> Validate(Request request, CancellationToken token)
+    {
         var technologyModel = await ValidateAsync(request, token);
         var solutionModel = technologyModel.Errors.Select(ToSolutionModel);
-        return solutionModel;
+        var scopeModel = solutionModel.Select(ToScopeModel);
+        return scopeModel;
     }
 
     private ValidationIssue ToSolutionModel(ValidationFailure technologyModel) => new(
@@ -28,4 +32,7 @@ public class Solution : AbstractValidator<Request>, ISolution {
         technologyModel.ErrorCode,
         technologyModel.ErrorMessage,
         technologyModel.Severity.ToString());
+
+    private Core.ExpertStory.DomainModel.Validation ToScopeModel(ValidationIssue solutionModel) =>
+        Core.ExpertStory.DomainModel.Validation.Failed(solutionModel.ErrorCode, solutionModel.ErrorMessage);
 }

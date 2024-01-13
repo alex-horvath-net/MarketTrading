@@ -1,22 +1,20 @@
 ﻿using Common;
 using Common.Solutions.Data.MainDB;
-using Common.Solutions.Data.MainDB.DataModel;
 using Core;
 using Experts.Blogger.ReadPosts;
-using Experts.Blogger.ReadPosts.ReadTask;
+using Experts.Blogger.ReadPosts.Read;
+using Experts.Blogger.ReadPosts.Read.Solutions;
 using Microsoft.AspNetCore.Builder;
 
-namespace Experts.Blogger.ReadPostsExpertStory.ReadTask;
+namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
 
-public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output)
-{
+public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output) {
     private void Create() => Unit = new Solution(db);
 
     private async Task Act() => posts = await Unit.Read(request, Token);
 
     [Fact]
-    public void ItRequires_Dependecies()
-    {
+    public void ItRequires_Dependecies() {
         Create();
 
         Unit.Should().NotBeNull();
@@ -24,8 +22,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
     }
 
     [Fact]
-    public async Task ItCan_Read()
-    {
+    public async Task ItCan_Read() {
         request = request.MockValidRequest();
         Create();
 
@@ -36,8 +33,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
 
 
     [Fact]
-    public void UseDataBase()
-    {
+    public void UseDataBase() {
         var appBuilder = WebApplication.CreateBuilder();
         appBuilder.Services.AddCoreApplication(appBuilder.Configuration, isDevelopment: true);
         var app = appBuilder.Build();
@@ -47,7 +43,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
         mainDB.Posts.Should().NotBeEmpty();
     }
 
-    private IEnumerable<Post>? posts;
+    private IEnumerable<Common.Scope.ScopeModel.Post>? posts;
     private readonly MainDB db = new MainDB().Schema(false);
     private Request request = Request.Empty;
 }

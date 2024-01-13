@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Experts.Blogger;
 
 public record Expert(
-    ExpertStrory ReadPosts);
+    ReadPosts.ExpertStrory ReadPosts);
 
 
 public static class Extensions {

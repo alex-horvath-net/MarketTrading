@@ -1,13 +1,14 @@
-﻿using Common.Solutions.Data.MainDB.DataModel;
+﻿using BusinessExperts.Blogger.ReadPostsExpertStory;
+using Common.Solutions.Data.MainDB.DataModel;
 using Core;
 using Core.ExpertStory;
 using Experts.Blogger.ReadPosts;
-using Experts.Blogger.ReadPosts.ReadTask;
+using Experts.Blogger.ReadPosts.Read;
 
-namespace Experts.Blogger.ReadPostsExpertStory.ReadTask;
+namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
 
-public class Scope_Design : Design<Scope> {
-    private void Create() => Unit = new Scope(solution);
+public class Scope_Design : Design<ExpertTask> {
+    private void Create() => Unit = new ExpertTask(solution);
 
     private async Task Act() => await Unit.Run(response, Token);
 
@@ -16,7 +17,7 @@ public class Scope_Design : Design<Scope> {
         Create();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<IScope<Request, Response>>();
+        Unit.Should().BeAssignableTo<IExpertTask<Request, Response>>();
     }
 
     [Fact]
@@ -44,10 +45,10 @@ public static class SolutionExtensions {
     public static ISolution MockPosts(this ISolution solution) {
         solution
             .Read(default, default)
-            .ReturnsForAnyArgs(new List<Post> {
-                new(1, "Title1", "Content1", DateTime.UtcNow),
-                new(2, "Title2", "Content2", DateTime.UtcNow),
-                new(3, "Title3", "Content3", DateTime.UtcNow)
+            .ReturnsForAnyArgs(new List<Common.Scope.ScopeModel.Post> {
+                new(){ Id= 1, Title= "Title1", Content= "Content1",  CreatedAt= DateTime.UtcNow},
+                new(){ Id= 2, Title= "Title2", Content= "Content2",  CreatedAt= DateTime.UtcNow},
+                new(){ Id= 3, Title= "Title3", Content= "Content3",  CreatedAt= DateTime.UtcNow}
             });
         return solution;
     }

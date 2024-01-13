@@ -1,11 +1,10 @@
 ﻿using Common;
 using Core;
 using Experts.Blogger.ReadPosts;
-using Experts.Blogger.ReadPosts.ValidationTask;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Blogger.ReadPostsExpertStory;
+namespace BusinessExperts.Blogger.ReadPostsExpertStory;
 
 public class Extensions_Design {
     [Fact]
@@ -22,8 +21,8 @@ public class Extensions_Design {
 
         using var serviceProvider = services.BuildServiceProvider();
 
-        serviceProvider.GetRequiredService<ISolution>();
-        serviceProvider.GetRequiredService<Experts.Blogger.ReadPosts.ReadTask.ISolution>();
+        serviceProvider.GetRequiredService<Experts.Blogger.ReadPosts.Validation.ISolution>();
+        serviceProvider.GetRequiredService<Experts.Blogger.ReadPosts.Read.ISolution>();
 
         //serviceProvider.GetRequiredService<ValidationTask.ISolutionExpert>();
         //serviceProvider.GetRequiredService<ReadTask.ISolution>();
