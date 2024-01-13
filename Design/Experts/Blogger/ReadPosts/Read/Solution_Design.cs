@@ -1,12 +1,10 @@
 ﻿using Common;
+using Common.ExpertStrory.StoryModel;
 using Common.Solutions.Data.MainDB;
 using Core;
-using Experts.Blogger.ReadPosts;
-using Experts.Blogger.ReadPosts.Read;
-using Experts.Blogger.ReadPosts.Read.Solutions;
 using Microsoft.AspNetCore.Builder;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory.ReadTask;
+namespace Experts.Blogger.ReadPosts.Read;
 
 public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output) {
     private void Create() => Unit = new Solution(db);
@@ -43,7 +41,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
         mainDB.Posts.Should().NotBeEmpty();
     }
 
-    private IEnumerable<Common.Scope.ScopeModel.Post>? posts;
+    private IEnumerable<Post>? posts;
     private readonly MainDB db = new MainDB().Schema(false);
     private Request request = Request.Empty;
 }

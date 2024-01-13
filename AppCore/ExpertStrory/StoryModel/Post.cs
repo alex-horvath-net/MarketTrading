@@ -1,4 +1,4 @@
-﻿namespace Common.Scope.ScopeModel;
+﻿namespace Common.ExpertStrory.StoryModel;
 
 public record Post {
     public int Id { get; set; }

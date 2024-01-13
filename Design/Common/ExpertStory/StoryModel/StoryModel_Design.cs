@@ -1,6 +1,8 @@
-﻿namespace Common.Scope.ScopeModel;
+﻿using Common.ExpertStrory.StoryModel;
 
-public class ScopeModel_Design {
+namespace Common.ExpertStory.StoryModel;
+
+public class StoryModel_Design {
     [Fact]
     public void Tag() {
         var id = 1;

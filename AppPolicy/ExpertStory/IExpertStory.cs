@@ -1,4 +1,4 @@
-﻿using Core.ExpertStory.DomainModel;
+﻿using Core.ExpertStory.StoryModel;
 
 namespace Core.ExpertStory;
 

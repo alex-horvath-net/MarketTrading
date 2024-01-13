@@ -1,10 +1,10 @@
-﻿using Core.ExpertStory.DomainModel;
+﻿namespace Core.ExpertStory.StoryModel;
 
-namespace Core.ExpertStory;
-
-public class ValidationResult_Design {
+public class Validation_Design
+{
     [Fact]
-    public void ValidationResult_Success() {
+    public void ValidationResult_Success()
+    {
         var result = Validation.Success();
 
         result.Should().NotBeNull();
@@ -14,7 +14,8 @@ public class ValidationResult_Design {
     }
 
     [Fact]
-    public void ValidationResult_Failed() {
+    public void ValidationResult_Failed()
+    {
         var result = Validation.Failed("ErrorCode", "ErrorMessage");
 
         result.Should().NotBeNull();

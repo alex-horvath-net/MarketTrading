@@ -36,8 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BusinessExperts\Blogger\WritePostExpertStory\" />
-    <Folder Include="BusinessExperts\Visitor\" />
+    <Folder Include="Experts\Blogger\WritePostExpertStory\" />
+    <Folder Include="Experts\Visitor\" />
   </ItemGroup>
 
 </Project>

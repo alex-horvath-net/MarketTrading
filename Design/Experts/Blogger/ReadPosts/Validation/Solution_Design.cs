@@ -1,8 +1,6 @@
 ﻿using Core;
-using Experts.Blogger.ReadPosts;
-using Experts.Blogger.ReadPosts.Validation.Solutions;
 
-namespace BusinessExperts.Blogger.ReadPostsExpertStory.ValidationTask;
+namespace Experts.Blogger.ReadPosts.Validation;
 
 public class Solution_Design : Design<Solution> {
     private void Create() => Unit = new Solution();
@@ -40,13 +38,13 @@ public class Solution_Design : Design<Solution> {
             //x.PropertyName == "Title" &&
             x.ErrorCode == "NotEmptyValidator" &&
             x.ErrorMessage == "'Title' can not be empty if 'Content' is empty.");
-            //x.Severity == "Error");
+        //x.Severity == "Error");
 
         issues.Should().ContainSingle(x =>
             //x.PropertyName == "Content" &&
             x.ErrorCode == "NotEmptyValidator" &&
-            x.ErrorMessage == "'Content' can not be empty if 'Title' is empty." );
-            //x.Severity == "Error");
+            x.ErrorMessage == "'Content' can not be empty if 'Title' is empty.");
+        //x.Severity == "Error");
     }
 
     [Fact]
@@ -61,20 +59,20 @@ public class Solution_Design : Design<Solution> {
         issues.Should().ContainSingle(x =>
             //x.PropertyName == "Title" &&
             x.ErrorCode == "MinimumLengthValidator" &&
-            x.ErrorMessage == "The length of 'Title' must be at least 3 characters. You entered 2 characters." 
+            x.ErrorMessage == "The length of 'Title' must be at least 3 characters. You entered 2 characters."
             //x.Severity == "Error"
             );
 
         issues.Should().ContainSingle(x =>
             //x.PropertyName == "Content" &&
             x.ErrorCode == "MinimumLengthValidator" &&
-            x.ErrorMessage == "The length of 'Content' must be at least 3 characters. You entered 2 characters." 
+            x.ErrorMessage == "The length of 'Content' must be at least 3 characters. You entered 2 characters."
             //x.Severity == "Error"
             );
     }
 
     private Request request = Request.Empty;
-    private IEnumerable<Core.ExpertStory.DomainModel.Validation> issues;
+    private IEnumerable<Core.ExpertStory.StoryModel.Validation> issues;
 
     public Solution_Design(ITestOutputHelper output) : base(output) { }
 }

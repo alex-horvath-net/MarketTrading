@@ -1,10 +1,10 @@
-﻿using Core.ExpertStory.DomainModel;
+﻿namespace Core.ExpertStory.StoryModel;
 
-namespace Core.ExpertStory;
-
-public class RequestCore_Design {
+public class Request_Design
+{
     [Fact]
-    public void Test_RequestCore() {
+    public void Test_RequestCore()
+    {
         var request = new Request();
 
         request = request with { };

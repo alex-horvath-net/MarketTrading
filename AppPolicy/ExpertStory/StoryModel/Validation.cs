@@ -1,4 +1,4 @@
-﻿namespace Core.ExpertStory.DomainModel;
+﻿namespace Core.ExpertStory.StoryModel;
 
 public class Validation {
     public static Validation Success() => new(errorCode: null, errorMessage: null);

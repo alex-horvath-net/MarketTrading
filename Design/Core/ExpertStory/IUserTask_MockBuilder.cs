@@ -1,4 +1,4 @@
-﻿using Core.ExpertStory.DomainModel;
+﻿using Core.ExpertStory.StoryModel;
 using NSubstitute;
 
 namespace Core.ExpertStory;

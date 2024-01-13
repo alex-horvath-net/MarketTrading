@@ -8,8 +8,3 @@ public class ExpertTask(ISolution solution) : IExpertTask<Request, Response> {
         response.Terminated = response.Validations.Any(x => !x.IsSuccess);
     }
 }
-
-
-public interface ISolution {
-    Task<IEnumerable<Core.ExpertStory.DomainModel.Validation>> Validate(Request request, CancellationToken token);
-}

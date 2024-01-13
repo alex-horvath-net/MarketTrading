@@ -29,5 +29,10 @@
   <ItemGroup>
     <ProjectReference Include="..\AppPolicy\Core.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="ExpertTask\" />
+    <Folder Include="Scope\" />
+  </ItemGroup>
 
 </Project>

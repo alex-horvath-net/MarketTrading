@@ -1,8 +1,6 @@
-﻿using Common.Scope.ScopeModel;
+﻿using Common.ExpertStrory.StoryModel;
 using Core.ExpertStory;
-using Core.ExpertStory.DomainModel;
-using Experts.Blogger.ReadPosts.Read;
-using Experts.Blogger.ReadPosts.Validation;
+using Core.ExpertStory.StoryModel;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPosts;
@@ -11,7 +9,7 @@ public class ExpertStrory(IEnumerable<IExpertTask<Request, Response>> tasks) : E
 }
 
 
-public record Request(string Title, string Content) : Core.ExpertStory.DomainModel.Request {
+public record Request(string Title, string Content) : Core.ExpertStory.StoryModel.Request {
     public static Request Empty { get; } = new(default, default);
 }
 
@@ -27,8 +25,8 @@ public static class Extensions {
         .AddScoped<ExpertStory<Request, Response>, ExpertStrory>()
 
         .AddScoped<IExpertTask<Request, Response>, Read.ExpertTask>()
-        .AddScoped<Read.ISolution, Read.Solutions.Solution>()
+        .AddScoped<Read.ISolution, Read.Solution>()
 
         .AddScoped<IExpertTask<Request, Response>, Validation.ExpertTask>()
-        .AddScoped<Validation.ISolution, Validation.Solutions.Solution>();
+        .AddScoped<Validation.ISolution, Validation.Solution>();
 }

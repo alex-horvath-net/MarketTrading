@@ -1,12 +1,11 @@
-﻿using Common.Solutions.Data.MainDB;
+﻿using Common.ExpertStrory.StoryModel;
+using Common.Solutions.Data.MainDB;
 using Microsoft.EntityFrameworkCore;
 
-namespace Experts.Blogger.ReadPosts.Read.Solutions;
+namespace Experts.Blogger.ReadPosts.Read;
 
-public class Solution(MainDB db) : ISolution
-{
-    public async Task<IEnumerable<Common.Scope.ScopeModel.Post>> Read(Request request, CancellationToken token)
-    {
+public class Solution(MainDB db) : ISolution {
+    public async Task<IEnumerable<Post>> Read(Request request, CancellationToken token) {
         var technologyModel = await db
             .Posts
             .Include(x => x.PostTags)
@@ -15,13 +14,13 @@ public class Solution(MainDB db) : ISolution
             .ToListAsync(token);
 
         var solutionModel = technologyModel.Select(model => model);
-        
+
         var scopeModel = solutionModel.Select(ToScopeModel);
-        
+
         return scopeModel;
     }
 
-    private Common.Scope.ScopeModel.Post ToScopeModel(Common.Solutions.Data.MainDB.DataModel.Post solutionModel) => new() {
+    private Post ToScopeModel(Common.Solutions.Data.MainDB.DataModel.Post solutionModel) => new() {
         Title = solutionModel.Title,
         Content = solutionModel.Content
     };
