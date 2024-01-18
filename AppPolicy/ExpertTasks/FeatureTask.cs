@@ -3,7 +3,7 @@ using Core.ExpertStory.StoryModel;
 
 namespace Core.ExpertTasks;
 
-public class FeatureTask<TRequest, TResponse> : IExpertTask<TRequest, TResponse>
+public class FeatureTask<TRequest, TResponse> : IProblem<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new() {
     public Task Run(TResponse response, CancellationToken token) {

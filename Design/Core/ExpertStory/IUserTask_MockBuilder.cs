@@ -4,7 +4,7 @@ using NSubstitute;
 namespace Core.ExpertStory;
 
 public class IUserTask_MockBuilder {
-    public IExpertTask<Request, Response<Request>> Mock = Substitute.For<IExpertTask<Request, Response<Request>>>();
+    public IProblem<Request, Response<Request>> Mock = Substitute.For<IProblem<Request, Response<Request>>>();
 
     public IUserTask_MockBuilder Terminate() {
         Mock.Run(default, default)

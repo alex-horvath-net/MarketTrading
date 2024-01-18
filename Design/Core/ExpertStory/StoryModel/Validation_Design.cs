@@ -5,7 +5,7 @@ public class Validation_Design
     [Fact]
     public void ValidationResult_Success()
     {
-        var result = Validation.Success();
+        var result = ValidationResult.Success();
 
         result.Should().NotBeNull();
         result.ErrorCode.Should().BeNull();
@@ -16,7 +16,7 @@ public class Validation_Design
     [Fact]
     public void ValidationResult_Failed()
     {
-        var result = Validation.Failed("ErrorCode", "ErrorMessage");
+        var result = ValidationResult.Failed("ErrorCode", "ErrorMessage");
 
         result.Should().NotBeNull();
         result.ErrorCode.Should().NotBeNull();

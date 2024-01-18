@@ -2,7 +2,7 @@
 
 namespace Core.ExpertStory;
 
-public interface IExpertTask<TRequest, TResponse>
+public interface IProblem<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new() {
     Task Run(TResponse response, CancellationToken token);

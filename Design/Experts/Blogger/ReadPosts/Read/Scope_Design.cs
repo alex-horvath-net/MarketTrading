@@ -3,8 +3,8 @@ using Core.ExpertStory;
 
 namespace Experts.Blogger.ReadPosts.Read;
 
-public class ExpertTask_Design : Design<ExpertTask> {
-    private void Create() => Unit = new ExpertTask(solution);
+public class ExpertTask_Design : Design<Problem> {
+    private void Create() => Unit = new Problem(solution);
 
     private async Task Act() => await Unit.Run(response, Token);
 
@@ -13,7 +13,7 @@ public class ExpertTask_Design : Design<ExpertTask> {
         Create();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<IExpertTask<Request, Response>>();
+        Unit.Should().BeAssignableTo<IProblem<Request, Response>>();
     }
 
     [Fact]

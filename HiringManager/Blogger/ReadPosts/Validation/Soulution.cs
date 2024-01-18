@@ -4,8 +4,10 @@ using FluentValidation.Results;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 
-public class Solution : AbstractValidator<Request>, ISolution {
-    public Solution() {
+public class Solution : AbstractValidator<Request>, ISolution
+{
+    public Solution()
+    {
         RuleFor(request => request.Title)
             .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator)
             .WithMessage(request => $"'{nameof(request.Title)}' can not be empty if '{nameof(request.Content)}' is empty.")
@@ -17,11 +19,12 @@ public class Solution : AbstractValidator<Request>, ISolution {
             .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
     }
 
-    public async Task<IEnumerable<Core.ExpertStory.StoryModel.Validation>> Validate(Request request, CancellationToken token) {
-        var result = await ValidateAsync(request, token);
-        var solutionModel = result.Errors.Select(ToSolutionModel);
-        var taskModel = solutionModel.Select(ToTaskModel);
-        return taskModel;
+    public async Task<IEnumerable<Core.ExpertStory.StoryModel.ValidationResult>> Validate(Request request, CancellationToken token)
+    {
+        var technology = await ValidateAsync(request, token);
+        var model = technology.Errors.Select(ToSolutionModel);
+        var domain = model.Select(ToTaskModel);
+        return domain;
     }
 
     private ValidationIssue ToSolutionModel(ValidationFailure technologyModel) => new(
@@ -30,6 +33,8 @@ public class Solution : AbstractValidator<Request>, ISolution {
         technologyModel.ErrorMessage,
         technologyModel.Severity.ToString());
 
-    private Core.ExpertStory.StoryModel.Validation ToTaskModel(ValidationIssue solutionModel) =>
-        Core.ExpertStory.StoryModel.Validation.Failed(solutionModel.ErrorCode, solutionModel.ErrorMessage);
+    private Core.ExpertStory.StoryModel.ValidationResult ToTaskModel(ValidationIssue solutionModel) =>
+        Core.ExpertStory.StoryModel.ValidationResult.Failed(solutionModel.ErrorCode, solutionModel.ErrorMessage);
 }
+
+
