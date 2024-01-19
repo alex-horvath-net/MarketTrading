@@ -1,5 +1,6 @@
 ﻿using Common;
 using Core;
+using Experts.Blogger.ReadPosts.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -2,6 +2,7 @@
 using Common.Solutions.Data.MainDB;
 using Common.Strory.Model;
 using Core;
+using Experts.Blogger.ReadPosts.Model;
 using Microsoft.AspNetCore.Builder;
 
 namespace Experts.Blogger.ReadPosts.Read;
@@ -9,7 +10,7 @@ namespace Experts.Blogger.ReadPosts.Read;
 public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output) {
     private void Create() => Unit = new Solution(db);
 
-    private async Task Act() => posts = await Unit.Read(request, Token);
+    private async Task Act() => posts = await Unit.Read(request, token);
 
     [Fact]
     public void ItRequires_Dependecies() {

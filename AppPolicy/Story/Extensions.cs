@@ -3,8 +3,8 @@
 namespace Core.Story;
 
 public static class Extensions {
-    public static IServiceCollection AddUserStory(this IServiceCollection services) {
-        services.AddScoped(typeof(IExpertStory<,>), typeof(Story<,>));
+    public static IServiceCollection AddStory(this IServiceCollection services) {
+        services.AddScoped(typeof(IStory<,>), typeof(Story<,>));
 
         return services;
     }

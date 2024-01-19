@@ -1,5 +1,6 @@
 ﻿using Common.Strory.Model;
 using Core.Story;
+using Experts.Blogger.ReadPosts.Model;
 
 namespace Experts.Blogger.ReadPosts.Read;
 

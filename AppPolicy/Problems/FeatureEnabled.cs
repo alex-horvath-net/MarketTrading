@@ -1,13 +1,14 @@
 ﻿using Core.Story;
 using Core.Story.Model;
 
-namespace Core.ExpertTasks;
+namespace Core.Problems;
 
-public class EndTask<TRequest, TResponse> : IProblem<TRequest, TResponse>
+public class FeatureEnabled<TRequest, TResponse> : IProblem<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new() {
     public Task Run(TResponse response, CancellationToken token) {
-        response.EndAt = DateTime.UtcNow;
+        response.FeatureEnabled = false;
+        response.Terminated = !response.FeatureEnabled;
         return Task.CompletedTask;
     }
 }

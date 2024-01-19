@@ -1,9 +1,9 @@
 ﻿using Core.Story;
 using Core.Story.Model;
 
-namespace Core.ExpertTasks;
+namespace Core.Problems;
 
-public class SrartTask<TRequest, TResponse> : IProblem<TRequest, TResponse>
+public class Started<TRequest, TResponse> : IProblem<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new() {
     public Task Run(TResponse response, CancellationToken token) {

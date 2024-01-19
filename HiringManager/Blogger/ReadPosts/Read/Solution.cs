@@ -1,6 +1,7 @@
 ﻿using Common.Solutions.Data.MainDB;
 using Common.Strory.Model;
 using Core;
+using Experts.Blogger.ReadPosts.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Experts.Blogger.ReadPosts.Read;

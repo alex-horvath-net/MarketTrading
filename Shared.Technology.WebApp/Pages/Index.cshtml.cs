@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Experts.Blogger.ReadPosts;
+using Experts.Blogger.ReadPosts.Model;
 using Experts.Blogger;
 
 namespace WebSite.Pages;

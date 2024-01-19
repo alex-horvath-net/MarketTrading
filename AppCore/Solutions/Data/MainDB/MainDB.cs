@@ -5,9 +5,10 @@ namespace Common.Solutions.Data.MainDB;
 
 public class MainDB(DbContextOptions options) : DbContext(options)
 {
-    public MainDB():this(new DbContextOptionsBuilder().Dev().Options) {
+    public MainDB() : this(new DbContextOptionsBuilder().Dev().Options)
+    {
     }
-    
+
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<PostTag> PostTags { get; set; }

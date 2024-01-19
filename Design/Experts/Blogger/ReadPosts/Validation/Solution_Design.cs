@@ -1,12 +1,13 @@
 ﻿using Core;
 using Core.Story.Model;
+using Experts.Blogger.ReadPosts.Model;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 
-public class Solution_Design : Design<Solution> {
+public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output) {
     private void Create() => Unit = new Solution();
 
-    private async Task Act() => issues = await Unit.Validate(request, Token);
+    private async Task Act() => issues = await Unit.Validate(request, token);
 
     [Fact]
     public void ItHas_NoDependecy() {
@@ -72,9 +73,7 @@ public class Solution_Design : Design<Solution> {
             );
     }
 
-    private Request request = Request.Empty();
+    private Model.Request request = Model.Request.Empty();
     private IEnumerable<ValidationResult> issues;
-
-    public Solution_Design(ITestOutputHelper output) : base(output) { }
 }
 

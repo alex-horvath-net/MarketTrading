@@ -7,10 +7,10 @@ public class UserStoryExtension_Design {
     public void AddUserStory_Registers_All_UserStory() {
         var services = new ServiceCollection();
 
-        services.AddUserStory();
+        services.AddStory();
 
         var sp = services.BuildServiceProvider();
-        var userStory = sp.GetRequiredService<IExpertStory<Request, Response<Request>>>();
+        var userStory = sp.GetRequiredService<IStory<Request, Response<Request>>>();
         userStory.Should().NotBeNull();
     }
 }

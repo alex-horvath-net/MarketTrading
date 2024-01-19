@@ -1,10 +1,11 @@
 ﻿using Core;
 using Core.Story.Model;
+using Experts.Blogger.ReadPosts.Model;
 using FluentValidation;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 
-public class Solution : AbstractValidator<Request>, ISolution {
+public class Solution : AbstractValidator<Model.Request>, ISolution {
     public Solution() {
         RuleFor(request => request.Title)
             .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator)
@@ -17,7 +18,7 @@ public class Solution : AbstractValidator<Request>, ISolution {
             .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
     }
 
-    public async Task<IEnumerable<ValidationResult>> Validate(Request request, CancellationToken token) {
+    public async Task<IEnumerable<ValidationResult>> Validate(Model.Request request, CancellationToken token) {
         var solutionModel = await ValidateAsync(request, token);
         
         var problemModel = solutionModel

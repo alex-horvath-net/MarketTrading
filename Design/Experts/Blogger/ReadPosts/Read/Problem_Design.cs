@@ -1,13 +1,13 @@
 ﻿using Common.Strory.Model;
 using Core;
 using Core.Story;
-
+using Experts.Blogger.ReadPosts.Model;
 namespace Experts.Blogger.ReadPosts.Read;
 
-public class Problem_Design : Design<Problem> {
-    private void Create() => Unit = new Problem(solution);
+public class Problem_Design(ITestOutputHelper output) : Design<Problem>(output) {
+    private void Create() => Unit = new(solution);
 
-    private async Task Act() => await Unit.Run(response, Token);
+    private async Task Act() => await Unit.Run(response, token);
 
     [Fact]
     public void ItRequires_Solutions() {
@@ -26,11 +26,9 @@ public class Problem_Design : Design<Problem> {
         await Act();
 
         await solution.ReceivedRead();
-        response.Terminated.Should().BeFalse();
         response.Posts.Should().NotBeEmpty();
+        response.Terminated.Should().BeFalse();
     }
-
-    public Problem_Design(ITestOutputHelper output) : base(output) { }
 
     public readonly ISolution solution = Substitute.For<ISolution>();
     private Response response = Response.Empty();

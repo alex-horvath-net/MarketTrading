@@ -1,20 +1,21 @@
 ﻿using Core;
 using Core.Story;
 using Core.Story.Model;
+using Experts.Blogger.ReadPosts.Model;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 
-public class Problem_Design : Design<Problem> {
+public class Problem_Design(ITestOutputHelper output) : Design<Problem>(output) {
     private void Create() => Unit = new Problem(solution);
 
-    private async Task Act() => await Unit.Run(response, Token);
+    private async Task Act() => await Unit.Run(response, token);
 
     [Fact]
     public void ItHas_Sockets() {
         Create();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<IProblem<Request, Response>>();
+        Unit.Should().BeAssignableTo<IProblem<Model.Request, Model.Response>>();
     }
 
     [Fact]
@@ -43,8 +44,6 @@ public class Problem_Design : Design<Problem> {
         response.Validations.Should().Contain(x => !x.IsSuccess);
         await solution.ReceivedWithAnyArgs().Validate(default, default);
     }
-
-    public Problem_Design(ITestOutputHelper output) : base(output) { }
 
     public readonly ISolution solution = Substitute.For<ISolution>();
     private readonly Response response = Response.Empty();
