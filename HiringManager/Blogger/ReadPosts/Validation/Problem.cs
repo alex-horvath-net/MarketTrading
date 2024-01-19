@@ -1,4 +1,5 @@
-﻿using Core.ExpertStory;
+﻿using Core.Story;
+using Core.Story.StoryModel;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 
@@ -12,5 +13,5 @@ public class Problem(ISolution solution) : IProblem<Request, Response> {
 
 public interface ISolution
 {
-    Task<IEnumerable<Core.ExpertStory.StoryModel.ValidationResult>> Validate(Request request, CancellationToken token);
+    Task<IEnumerable<ValidationResult>> Validate(Request request, CancellationToken token);
 }

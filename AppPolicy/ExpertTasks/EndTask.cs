@@ -1,5 +1,5 @@
-﻿using Core.ExpertStory;
-using Core.ExpertStory.StoryModel;
+﻿using Core.Story;
+using Core.Story.StoryModel;
 
 namespace Core.ExpertTasks;
 

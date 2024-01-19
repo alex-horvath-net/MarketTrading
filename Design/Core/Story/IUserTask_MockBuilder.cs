@@ -1,7 +1,7 @@
-﻿using Core.ExpertStory.StoryModel;
+﻿using Core.Story.StoryModel;
 using NSubstitute;
 
-namespace Core.ExpertStory;
+namespace Core.Story;
 
 public class IUserTask_MockBuilder {
     public IProblem<Request, Response<Request>> Mock = Substitute.For<IProblem<Request, Response<Request>>>();

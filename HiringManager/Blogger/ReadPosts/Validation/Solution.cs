@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Story.StoryModel;
 using FluentValidation;
 
 namespace Experts.Blogger.ReadPosts.Validation;
@@ -16,12 +17,12 @@ public class Solution : AbstractValidator<Request>, ISolution {
             .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
     }
 
-    public async Task<IEnumerable<Core.ExpertStory.StoryModel.ValidationResult>> Validate(Request request, CancellationToken token) {
+    public async Task<IEnumerable<ValidationResult>> Validate(Request request, CancellationToken token) {
         var solutionModel = await ValidateAsync(request, token);
         
         var problemModel = solutionModel
             .Errors
-            .Select(model => Core.ExpertStory.StoryModel.ValidationResult.Failed(model.ErrorCode, model.ErrorMessage));
+            .Select(model => ValidationResult.Failed(model.ErrorCode, model.ErrorMessage));
 
         return problemModel;
     }

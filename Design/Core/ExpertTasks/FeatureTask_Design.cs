@@ -1,4 +1,4 @@
-﻿using Core.ExpertStory.StoryModel;
+﻿using Core.Story.StoryModel;
 
 namespace Core.ExpertTasks;
 

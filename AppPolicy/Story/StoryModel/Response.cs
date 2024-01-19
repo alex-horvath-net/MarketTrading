@@ -1,4 +1,4 @@
-﻿namespace Core.ExpertStory.StoryModel;
+﻿namespace Core.Story.StoryModel;
 
 public record Response<TRequest>()
     where TRequest : Request {

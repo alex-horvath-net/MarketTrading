@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.ExpertStory;
+namespace Core.Story;
 
 public static class Extensions {
     public static IServiceCollection AddUserStory(this IServiceCollection services) {

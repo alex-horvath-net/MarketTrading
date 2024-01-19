@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Story.StoryModel;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 
@@ -72,7 +73,7 @@ public class Solution_Design : Design<Solution> {
     }
 
     private Request request = Request.Empty;
-    private IEnumerable<Core.ExpertStory.StoryModel.ValidationResult> issues;
+    private IEnumerable<ValidationResult> issues;
 
     public Solution_Design(ITestOutputHelper output) : base(output) { }
 }

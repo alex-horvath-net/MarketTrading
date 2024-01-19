@@ -1,5 +1,5 @@
-﻿using Core.ExpertStory;
-using Core.ExpertStory.StoryModel;
+﻿using Core.Story;
+using Core.Story.StoryModel;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.ExpertTasks;

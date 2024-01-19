@@ -1,5 +1,6 @@
 ﻿using Core;
-using Core.ExpertStory;
+using Core.Story;
+using Core.Story.StoryModel;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 
@@ -54,16 +55,16 @@ public static class SolutionExtensions {
     public static ISolution MockPass(this ISolution solution) {
         solution
             .Validate(default, default)
-            .ReturnsForAnyArgs(new List<Core.ExpertStory.StoryModel.ValidationResult>() { });
+            .ReturnsForAnyArgs(new List<ValidationResult>() { });
         return solution;
     }
 
     public static ISolution MockFail(this ISolution solution) {
         solution
             .Validate(default, default)
-            .ReturnsForAnyArgs(new List<Core.ExpertStory.StoryModel.ValidationResult>()
+            .ReturnsForAnyArgs(new List<ValidationResult>()
             {
-                Core.ExpertStory.StoryModel.ValidationResult.Failed("TestErrorCode", "TestErrorMessage")
+                ValidationResult.Failed("TestErrorCode", "TestErrorMessage")
                 //new ("TestPropertyName", "TestErrorCode", "TestErrorMessage", "TestSeverity")
             });
         return solution;

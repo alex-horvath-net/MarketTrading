@@ -1,4 +1,4 @@
-﻿using Core.ExpertStory;
+﻿using Core.Story;
 using Experts.Blogger.ReadPosts;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,16 +7,28 @@ namespace Experts.Blogger;
 public record Expert(ReadPosts.Strory ReadPosts);
 
 
-public static class Extensions
-{
+public static class Extensions {
     public static IServiceCollection AddBlogger(this IServiceCollection services) => services
         .AddScoped<Expert>()
         .AddScoped<Story<Request, Response>, Strory>()
-            
-            .AddScoped<IProblem<Request, Response>, ReadPosts.Read.Problem>()
-            .AddScoped<ReadPosts.Read.ISolution, ReadPosts.Read.Solution>()
 
-            .AddScoped<IProblem<Request, Response>, ReadPosts.Validation.Problem>()
-            .AddScoped<ReadPosts.Validation.ISolution, ReadPosts.Validation.Solution>();
+            .AddProblem<
+                ReadPosts.Validation.Problem,
+                ReadPosts.Validation.ISolution,
+                ReadPosts.Validation.Solution>()
+
+            .AddProblem<
+                ReadPosts.Read.Problem,
+                ReadPosts.Read.ISolution,
+                ReadPosts.Read.Solution>()
+        ;
+
+    private static IServiceCollection AddProblem<P, R, S>(this IServiceCollection services)
+        where P : class, IProblem<Request, Response>
+        where R : class
+        where S : class, R => services
+
+           .AddScoped<IProblem<Request, Response>, P>()
+           .AddScoped<R, S>();
 }
 

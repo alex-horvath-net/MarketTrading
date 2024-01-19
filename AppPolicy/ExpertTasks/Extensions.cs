@@ -1,4 +1,4 @@
-﻿using Core.ExpertStory;
+﻿using Core.Story;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.ExpertTasks;

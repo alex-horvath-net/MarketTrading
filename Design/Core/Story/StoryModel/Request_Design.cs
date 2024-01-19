@@ -1,10 +1,8 @@
-﻿namespace Core.ExpertStory.StoryModel;
+﻿namespace Core.Story.StoryModel;
 
-public class Request_Design
-{
+public class Request_Design {
     [Fact]
-    public void Test_RequestCore()
-    {
+    public void Test_RequestCore() {
         var request = new Request();
 
         request = request with { };
