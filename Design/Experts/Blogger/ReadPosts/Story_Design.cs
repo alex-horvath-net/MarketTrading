@@ -1,35 +1,6 @@
 ﻿using Experts.Blogger.ReadPosts.Model;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPosts;
-
-public class Extensions_Design {
-    [Fact]
-    public async Task AddBlogger_Test() {
-        var configurationBuilder = new ConfigurationBuilder();
-        var configuration = configurationBuilder.Build();
-
-        var services = new ServiceCollection();
-
-        services
-            //.AddCoreSystem()
-            //.AddCoreApplication(configuration)
-            .AddBlogger();
-
-        using var serviceProvider = services.BuildServiceProvider();
-
-        serviceProvider.GetRequiredService<Validation.ISolution>();
-        serviceProvider.GetRequiredService<Read.ISolution>();
-
-        //serviceProvider.GetRequiredService<ValidationTask.ISolutionExpert>();
-        //serviceProvider.GetRequiredService<ReadTask.ISolution>();
-
-        //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IWorkStep<Response>>();
-        //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IFeature<Request, Response>>();
-    }
-}
-
 
 public static class RequestExtensions {
     public static Request MockValidRequest(this Request request) =>
@@ -62,4 +33,3 @@ public static class ResponseExtensions {
         return response;
     }
 }
-

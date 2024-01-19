@@ -24,7 +24,7 @@ public class FeatureEnabled_Design
     {
         var services = new ServiceCollection();
 
-        //services.AddProblems();
+        services.AddStory();
 
         var sp = services.BuildServiceProvider();
         var problem = sp.GetRequiredService<FeatureEnabled<Request, Response<Request>>>();

@@ -2,14 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Story.Solutions.Data.MainDB;
 
 public static class Extensions {
-    public static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration, bool isDev = false) {
+    public static IServiceCollection AddMainDB(this IServiceCollection services, IConfiguration configuration, string environment = "Development") {
         services.AddDbContext<MainDB>(builder => {
-            if (isDev)
+            if (environment == Environments.Development)
                 builder.Dev();
             else
                 builder.Prod();

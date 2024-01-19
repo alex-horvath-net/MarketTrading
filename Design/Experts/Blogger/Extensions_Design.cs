@@ -1,29 +1,24 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Story;
+using Story.Solutions.Data.MainDB;
 
 namespace Experts.Blogger;
 
 public class Extensions_Design {
     [Fact]
-    public void AddBlogger_Des() {
+    public void Expert_Is_Available() {
         var configurationBuilder = new ConfigurationBuilder();
         var configuration = configurationBuilder.Build();
-        var env = Environments.Development;
-        var services = new ServiceCollection();
+        var environment = Environments.Development;
+        var services = new ServiceCollection(); 
 
         services
-            //.AddCoreSystem()
-            //.AddCoreApplication(configuration, isDevelopment: true)
+            .AddMainDB(configuration, environment)
             .AddBlogger();
 
         using var serviceProvider = services.BuildServiceProvider();
 
-        serviceProvider.GetRequiredService<ReadPosts.Read.ISolution>();
-        serviceProvider.GetRequiredService<ReadPosts.Validation.ISolution>();
-
-        //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IWorkStep<Response>>();
-        //serviceProvider.GetRequiredService<Core.BusinessWorkFlow.IFeature<Request, Response>>();
+        serviceProvider.GetRequiredService<Expert>(); 
     }
 }

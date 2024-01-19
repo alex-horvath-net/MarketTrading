@@ -3,6 +3,7 @@ using Experts.Blogger.ReadPosts.Model;
 using Microsoft.AspNetCore.Builder;
 using Story.Solutions.Data.MainDB;
 using Story;
+using Microsoft.Extensions.Hosting;
 
 
 namespace Experts.Blogger.ReadPosts.Read;
@@ -34,7 +35,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
     [Fact]
     public void UseDataBase() {
         var appBuilder = WebApplication.CreateBuilder();
-        //appBuilder.Services.AddCoreApplication(appBuilder.Configuration, isDevelopment: true);
+        appBuilder.Services.AddMainDB(appBuilder.Configuration, Environments.Development);
         var app = appBuilder.Build();
 
         var mainDB = app.UseDeveloperDataBase();
