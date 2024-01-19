@@ -3,7 +3,7 @@ using Core.ExpertStory;
 
 namespace Experts.Blogger.ReadPosts.Read;
 
-public class ExpertTask_Design : Design<Problem> {
+public class Problem_Design : Design<Problem> {
     private void Create() => Unit = new Problem(solution);
 
     private async Task Act() => await Unit.Run(response, Token);
@@ -29,7 +29,7 @@ public class ExpertTask_Design : Design<Problem> {
         await solution.ReceivedWithAnyArgs().Read(default, default);
     }
 
-    public ExpertTask_Design(ITestOutputHelper output) : base(output) { }
+    public Problem_Design(ITestOutputHelper output) : base(output) { }
 
     public readonly ISolution solution = Substitute.For<ISolution>();
     private Response response = Response.Empty;

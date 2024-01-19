@@ -4,14 +4,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger;
 
-public record Expert(ReadPosts.ExpertStrory ReadPosts);
+public record Expert(ReadPosts.Strory ReadPosts);
 
 
 public static class Extensions
 {
     public static IServiceCollection AddBlogger(this IServiceCollection services) => services
         .AddScoped<Expert>()
-        .AddScoped<ExpertStory<Request, Response>, ExpertStrory>()
+        .AddScoped<Story<Request, Response>, Strory>()
+            
             .AddScoped<IProblem<Request, Response>, ReadPosts.Read.Problem>()
             .AddScoped<ReadPosts.Read.ISolution, ReadPosts.Read.Solution>()
 

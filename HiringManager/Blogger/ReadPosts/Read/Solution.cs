@@ -7,22 +7,19 @@ namespace Experts.Blogger.ReadPosts.Read;
 
 public class Solution(MainDB db) : ISolution {
     public async Task<IEnumerable<Post>> Read(Request request, CancellationToken token) {
-        var technology = await db
+        var solutionModel = await db
             .Posts
             .Include(x => x.PostTags)
             .ThenInclude(x => x.Tag)
             .Where(post => post.Title.Contains(request.Title) || post.Content.Contains(request.Content))
             .ToListAsync(token);
 
-        var model = technology.Select(tech => tech);
+        var problemModel = solutionModel
+            .Select(model => new Post() {
+                Title = model.Title,
+                Content = model.Content
+            });
 
-        var problem = model.Select(ToScopeModel);
-
-        return problem;
+        return problemModel;
     }
-
-    private Post ToScopeModel(Common.Solutions.Data.MainDB.DataModel.Post solutionModel) => new() {
-        Title = solutionModel.Title,
-        Content = solutionModel.Content
-    };
 }

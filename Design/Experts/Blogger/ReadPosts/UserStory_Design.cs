@@ -7,7 +7,7 @@ namespace Experts.Blogger.ReadPosts;
 
 public class Extensions_Design {
     [Fact]
-    public async Task AddReadPostsUserStory() {
+    public async Task AddBlogger_Test() {
         var configurationBuilder = new ConfigurationBuilder();
         var configuration = configurationBuilder.Build();
 
@@ -16,7 +16,7 @@ public class Extensions_Design {
         services
             .AddCoreSystem()
             .AddCoreApplication(configuration)
-            .AddReadPostsUserStory();
+            .AddBlogger();
 
         using var serviceProvider = services.BuildServiceProvider();
 

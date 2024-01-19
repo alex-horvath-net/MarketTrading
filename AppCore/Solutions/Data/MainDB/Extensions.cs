@@ -6,12 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Common.Solutions.Data.MainDB;
 
-public static class Extensions
-{
-    public static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration, bool isDev = false)
-    {
-        services.AddDbContext<MainDB>(builder =>
-        {
+public static class Extensions {
+    public static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration, bool isDev = false) {
+        services.AddDbContext<MainDB>(builder => {
             if (isDev)
                 builder.Dev();
             else
@@ -25,16 +22,15 @@ public static class Extensions
         .EnableDetailedErrors()
         .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
         .EnableSensitiveDataLogging()
-        .UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=DevDB;Integrated Security=True;Trust Server Certificate=True", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
+        .UseSqlServer(@"Data Source=.;Initial Catalog=DevDB;Integrated Security=True;Trust Server Certificate=True", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
 
     public static DbContextOptionsBuilder Prod(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
         .EnableDetailedErrors()
         .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
         .EnableSensitiveDataLogging()
-        .UseSqlServer(@"Server=.\SQLEXPRESS;Database=ProdDB;Trusted_Connection=True;", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
+        .UseSqlServer(@"Server=.;Database=ProdDB;Trusted_Connection=True;", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
 
-    public static MainDB UseDeveloperDataBase(this WebApplication app, bool delete = false)
-    {
+    public static MainDB UseDeveloperDataBase(this WebApplication app, bool delete = false) {
         //app.UseMigrationsEndPoint();
 
         var scope = app.Services.CreateScope();
@@ -53,21 +49,18 @@ public static class Extensions
         return db;
     }
 
-    public static MainDB Schema(this MainDB db, bool delete = false)
-    {
-        //if (delete)
-        //db.Database.EnsureDeleted();
+    public static MainDB Schema(this MainDB db, bool delete = false) {
+        if (delete)
+            db.Database.EnsureDeleted();
         //db.Database.EnsureCreated();
-        //db.Database.Migrate();
+        db.Database.Migrate();
 
         return db;
     }
     public static void Data<T>(this MainDB db, params T[] list) where T : class => db.Data(list);
-    public static MainDB Data<T>(this MainDB db, IEnumerable<T> list) where T : class
-    {
+    public static MainDB Data<T>(this MainDB db, IEnumerable<T> list) where T : class {
         var set = db.Set<T>();
-        if (!set.Any())
-        {
+        if (!set.Any()) {
             set.AddRange(list);
             db.SaveChanges();
         }

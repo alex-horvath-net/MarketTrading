@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ExpertTask\**" />
+    <Compile Remove="Scope\**" />
+    <EmbeddedResource Remove="ExpertTask\**" />
+    <EmbeddedResource Remove="Scope\**" />
+    <None Remove="ExpertTask\**" />
+    <None Remove="Scope\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -28,11 +37,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\AppPolicy\Core.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="ExpertTask\" />
-    <Folder Include="Scope\" />
   </ItemGroup>
 
 </Project>
