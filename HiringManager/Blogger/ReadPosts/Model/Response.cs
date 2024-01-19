@@ -1,5 +1,4 @@
-﻿using Core.Story.Model;
-using Story.Problem.Model;
+﻿using Story.Model;
 
 namespace Experts.Blogger.ReadPosts.Model;
 

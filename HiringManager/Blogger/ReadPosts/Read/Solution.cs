@@ -1,13 +1,12 @@
 ﻿using Core;
 using Experts.Blogger.ReadPosts.Model;
 using Microsoft.EntityFrameworkCore;
-using Story.Problem.Model;
 using Story.Solutions.Data.MainDB;
 
 namespace Experts.Blogger.ReadPosts.Read;
 
 public class Solution(MainDB db) : ISolution {
-    public async Task<IEnumerable<Post>> Read(Request request, CancellationToken token) {
+    public async Task<IEnumerable<Story.Model.Post>> Read(Request request, CancellationToken token) {
         var solutionModel = await db
             .Posts
             .Include(x => x.PostTags)
@@ -16,7 +15,7 @@ public class Solution(MainDB db) : ISolution {
             .ToListAsync(token);
 
         var problemModel = solutionModel
-            .Select(model => new Post() {
+            .Select(model => new Story.Model.Post() {
                 Title = model.Title,
                 Content = model.Content
             });

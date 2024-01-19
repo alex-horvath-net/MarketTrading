@@ -1,9 +1,9 @@
 ﻿using Core;
 using Experts.Blogger.ReadPosts.Model;
 using Microsoft.AspNetCore.Builder;
-using Story;
-using Story.Problem.Model;
 using Story.Solutions.Data.MainDB;
+using Story;
+
 
 namespace Experts.Blogger.ReadPosts.Read;
 
@@ -34,7 +34,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
     [Fact]
     public void UseDataBase() {
         var appBuilder = WebApplication.CreateBuilder();
-        appBuilder.Services.AddCoreApplication(appBuilder.Configuration, isDevelopment: true);
+        //appBuilder.Services.AddCoreApplication(appBuilder.Configuration, isDevelopment: true);
         var app = appBuilder.Build();
 
         var mainDB = app.UseDeveloperDataBase();
@@ -42,7 +42,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
         mainDB.Posts.Should().NotBeEmpty();
     }
 
-    private IEnumerable<Post>? posts;
+    private IEnumerable<Story.Model.Post>? posts;
     private readonly MainDB db = new MainDB().Schema(false);
     private Request request = Request.Empty();
 }

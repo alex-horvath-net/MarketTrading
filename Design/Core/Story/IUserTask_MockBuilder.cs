@@ -1,5 +1,6 @@
-﻿using Core.Story.Model;
-using NSubstitute;
+﻿using NSubstitute;
+using Story;
+using Story.Model;
 
 namespace Core.Story;
 

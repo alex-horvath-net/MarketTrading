@@ -1,6 +1,6 @@
-﻿using Core.Story;
-using Core.Story.Model;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Story;
+using Story.Model;
 
 namespace Core;
 
@@ -9,7 +9,7 @@ public class Extensions_Design {
     public void AddUserStory_Registers_All_UserStory() {
         var services = new ServiceCollection();
 
-        services.AddCoreSystem();
+        //services.AddCoreSystem();
 
         var sp = services.BuildServiceProvider();
         var userStory = sp.GetRequiredService<IStory<Request, Response<Request>>>();

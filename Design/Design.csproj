@@ -44,4 +44,8 @@
     <ProjectReference Include="..\Shared.Technology.WebApp\WebSite.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Story\Model\" />
+  </ItemGroup>
+
 </Project>

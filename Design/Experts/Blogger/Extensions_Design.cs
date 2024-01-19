@@ -1,7 +1,4 @@
-﻿using Core;
-using Experts.Blogger.ReadPosts.Read;
-using Experts.Blogger.ReadPosts.Validation;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Story;
@@ -17,8 +14,8 @@ public class Extensions_Design {
         var services = new ServiceCollection();
 
         services
-            .AddCoreSystem()
-            .AddCoreApplication(configuration, isDevelopment: true)
+            //.AddCoreSystem()
+            //.AddCoreApplication(configuration, isDevelopment: true)
             .AddBlogger();
 
         using var serviceProvider = services.BuildServiceProvider();

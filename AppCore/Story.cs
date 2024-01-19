@@ -1,7 +1,7 @@
-﻿using Core.Problems;
-using Core.Story.Model;
+﻿using Story.Model;
+using Story.Problems;
 
-namespace Core.Story;
+namespace Story;
 
 public class Story<TRequest, TResponse>(IEnumerable<IProblem<TRequest, TResponse>> problems) : IStory<TRequest, TResponse>
     where TRequest : Request

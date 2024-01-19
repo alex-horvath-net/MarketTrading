@@ -1,10 +1,8 @@
-﻿using Core.Story.Model;
-
-namespace Core.Problems;
+﻿namespace Story.Problems;
 
 public class Completed<TRequest, TResponse> //: IProblem<TRequest, TResponse>
-    where TRequest : Request
-    where TResponse : Response<TRequest>, new() {
+    where TRequest : Model.Request
+    where TResponse : Model.Response<TRequest>, new() {
 
     public Task Run(TResponse response, CancellationToken token) {
         response.EndAt = DateTime.UtcNow;

@@ -1,5 +1,5 @@
-﻿using Core.Story;
-using Experts.Blogger.ReadPosts.Model;
+﻿using Experts.Blogger.ReadPosts.Model;
+using Story;
 
 namespace Experts.Blogger.ReadPosts.Presentation;
 

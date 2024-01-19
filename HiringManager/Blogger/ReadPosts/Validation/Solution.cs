@@ -1,5 +1,5 @@
-﻿using Core.Solutions.Validation;
-using FluentValidation;
+﻿using FluentValidation;
+using Story.Solutions.Validation;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 

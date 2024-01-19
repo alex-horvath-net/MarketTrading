@@ -1,4 +1,6 @@
-﻿namespace Story.Problem.Model;
+﻿using Story.Model;
+
+namespace Story.Problem.Model;
 
 public class Model_Design {
     [Fact]

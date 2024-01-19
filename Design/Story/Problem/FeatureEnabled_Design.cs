@@ -1,11 +1,14 @@
-﻿using Core.Story.Model;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Story.Model;
+using Story.Problems;
 
-namespace Core.Problems;
+namespace Story.Problem;
 
-public class FeatureEnabled_Design {
+public class FeatureEnabled_Design
+{
     [Fact]
-    public async void FeatureFlagIsFalse() {
+    public async void FeatureFlagIsFalse()
+    {
         var response = new Response<Request>();
         var token = CancellationToken.None;
         var unit = new FeatureEnabled<Request, Response<Request>>();
@@ -17,10 +20,11 @@ public class FeatureEnabled_Design {
     }
 
     [Fact]
-    public void AddFeatureTask_Registers_All_UserTask() {
+    public void AddFeatureTask_Registers_All_UserTask()
+    {
         var services = new ServiceCollection();
 
-        services.AddProblems();
+        //services.AddProblems();
 
         var sp = services.BuildServiceProvider();
         var problem = sp.GetRequiredService<FeatureEnabled<Request, Response<Request>>>();

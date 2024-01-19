@@ -1,4 +1,5 @@
-﻿using Core.Story.Model;
+﻿using Story;
+using Story.Model;
 
 namespace Core.Story;
 

@@ -1,6 +1,6 @@
-﻿using Core.Story.Model;
+﻿using Story.Model;
 
-namespace Core.Story;
+namespace Story;
 
 public interface IStory<TRequest, TResponse>
     where TRequest : Request

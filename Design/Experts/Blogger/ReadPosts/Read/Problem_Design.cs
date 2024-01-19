@@ -1,7 +1,7 @@
 ﻿using Core;
-using Core.Story;
 using Experts.Blogger.ReadPosts.Model;
-using Story.Problem.Model;
+using Story;
+
 namespace Experts.Blogger.ReadPosts.Read;
 
 public class Problem_Design(ITestOutputHelper output) : Design<Problem>(output) {
@@ -40,7 +40,7 @@ public static class SolutionExtensions {
     public static ISolution CanReceveRead(this ISolution solution) {
         solution
             .Read(default, default)
-            .ReturnsForAnyArgs(new List<Post> {
+            .ReturnsForAnyArgs(new List<Story.Model.Post> {
                 new(){ Id= 1, Title= "Title1", Content= "Content1",  CreatedAt= DateTime.UtcNow},
                 new(){ Id= 2, Title= "Title2", Content= "Content2",  CreatedAt= DateTime.UtcNow},
                 new(){ Id= 3, Title= "Title3", Content= "Content3",  CreatedAt= DateTime.UtcNow}

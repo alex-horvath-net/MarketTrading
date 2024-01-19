@@ -1,7 +1,6 @@
-﻿using Core.Story;
-using Core.Story.Model;
+﻿using Story.Model;
 
-namespace Core.Problems;
+namespace Story.Problems;
 
 public class Started<TRequest, TResponse> //: IProblem<TRequest, TResponse>
     where TRequest : Request

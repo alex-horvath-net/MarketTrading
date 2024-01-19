@@ -1,7 +1,7 @@
-﻿using Core.Story;
-using Experts.Blogger.ReadPosts;
+﻿using Experts.Blogger.ReadPosts;
 using Experts.Blogger.ReadPosts.Model;
 using Microsoft.Extensions.DependencyInjection;
+using Story;
 
 namespace Experts.Blogger;
 
