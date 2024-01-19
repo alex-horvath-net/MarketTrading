@@ -3,19 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Common.Solutions.Data.MainDB;
 
-public class MainDB(DbContextOptions options) : DbContext(options)
-{
-    public MainDB() : this(new DbContextOptionsBuilder().Dev().Options)
-    {
-    }
+public class MainDB(DbContextOptions options) : DbContext(options) {
+    public MainDB() : this(new DbContextOptionsBuilder().Dev().Options) { }
 
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<PostTag> PostTags { get; set; }
 
-
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
+    protected override void OnModelCreating(ModelBuilder builder) {
         builder
             .Entity<PostTag>()
             .HasKey(pt => new { pt.PostId, pt.TagId });
@@ -39,9 +34,9 @@ public class MainDB(DbContextOptions options) : DbContext(options)
         var tag1 = new Tag(1, "Tag1");
         var tag2 = new Tag(2, "Tag2");
 
-        var postTag1 = new PostTag(1, 1);
-        var postTag2 = new PostTag(1, 2);
-        var postTag3 = new PostTag(2, 1);
+        var postTag1 = new PostTag(post1.PostId, tag1.TagId);
+        var postTag2 = new PostTag(post1.PostId, tag2.TagId);
+        var postTag3 = new PostTag(post2.PostId, tag1.TagId);
 
         builder.Entity<Post>().HasData(post1, post2, post3);
         builder.Entity<Tag>().HasData(tag1, tag2);

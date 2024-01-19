@@ -1,8 +1,6 @@
-﻿using Common.Solutions.Data.MainDB.Model;
+﻿namespace Common.Solutions.Data.MainDB.Model;
 
-namespace Common.Solutions.Data.MainDB.DataModel;
-
-public class DataModel_Design {
+public class Model_Design {
     [Fact]
     public void Tag_Design() {
         var id = 1;

@@ -1,13 +1,11 @@
-﻿using Common.Strory.Model;
+﻿namespace Common.Solutions.View.Model;
 
-namespace Common.ExpertStory.StoryModel;
-
-public class StoryModel_Design {
+public class Model_Design {
     [Fact]
     public void Tag() {
         var id = 1;
         var name = "Name";
-        var tag = new Tag(id, name);
+        var tag = new Tag();
         tag = tag with { Id = id, Name = name };
         tag.Id.Should().Be(id);
         tag.Name.Should().Be(name);

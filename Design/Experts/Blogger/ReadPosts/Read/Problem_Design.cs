@@ -1,4 +1,4 @@
-﻿using Common.Strory.Model;
+﻿using Common.Problem.Model;
 using Core;
 using Core.Story;
 using Experts.Blogger.ReadPosts.Model;

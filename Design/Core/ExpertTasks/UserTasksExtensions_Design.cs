@@ -10,7 +10,7 @@ public class Extensions_Design {
     public void AddFeatureTask_Registers_All_UserTask() {
         var services = new ServiceCollection();
 
-        services.AddFeatureTask();
+        services.AddProblems();
 
         var sp = services.BuildServiceProvider();
         var userStory = sp.GetRequiredService<IProblem<Request, Response<Request>>>();

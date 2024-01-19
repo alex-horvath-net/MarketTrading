@@ -1,5 +1,5 @@
-﻿using Common.Solutions.Data.MainDB;
-using Common.Strory.Model;
+﻿using Common.Problem.Model;
+using Common.Solutions.Data.MainDB;
 using Core;
 using Experts.Blogger.ReadPosts.Model;
 using Microsoft.EntityFrameworkCore;

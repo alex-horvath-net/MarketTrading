@@ -1,23 +1,18 @@
-﻿using Common.Solutions.View.Model;
+﻿namespace Common.Problem.Model;
 
-namespace Common.Solutions.View.ViewModel;
-
-public class ViewModel_Design
-{
+public class Model_Design {
     [Fact]
-    public void Tag()
-    {
+    public void Tag() {
         var id = 1;
         var name = "Name";
-        var tag = new Tag();
+        var tag = new Tag(id, name);
         tag = tag with { Id = id, Name = name };
         tag.Id.Should().Be(id);
         tag.Name.Should().Be(name);
     }
 
     [Fact]
-    public void Post()
-    {
+    public void Post() {
         var id = 1;
         var title = "Title";
         var content = "Content";
