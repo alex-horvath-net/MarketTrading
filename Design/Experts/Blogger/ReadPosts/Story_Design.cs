@@ -43,7 +43,6 @@ public static class RequestExtensions {
         new Request("12", "21");
 }
 
-
 public static class ResponseExtensions {
     public static Response MockNoPosts(this Response response) {
         response.MockValidRequest();
@@ -52,7 +51,7 @@ public static class ResponseExtensions {
     }
 
     public static Response MockValidRequest(this Response response) {
-        response.Request = Request.Empty.MockValidRequest();
+        response.Request = Request.Empty().MockValidRequest();
         response.FeatureEnabled = true;
         response.Validations = null;
         return response;

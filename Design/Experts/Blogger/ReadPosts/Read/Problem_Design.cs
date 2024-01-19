@@ -1,4 +1,4 @@
-﻿using Common.Strory.StoryModel;
+﻿using Common.Strory.Model;
 using Core;
 using Core.Story;
 
@@ -20,26 +20,26 @@ public class Problem_Design : Design<Problem> {
     [Fact]
     public async void ItCan_PopulatePosts() {
         response = response.MockNoPosts();
-        solution.MockPosts();
+        solution.CanReceveRead();
         Create();
 
         await Act();
 
+        await solution.ReceivedRead();
         response.Terminated.Should().BeFalse();
         response.Posts.Should().NotBeEmpty();
-        await solution.ReceivedWithAnyArgs().Read(default, default);
     }
 
     public Problem_Design(ITestOutputHelper output) : base(output) { }
 
     public readonly ISolution solution = Substitute.For<ISolution>();
-    private Response response = Response.Empty;
+    private Response response = Response.Empty();
 }
 
 
 public static class SolutionExtensions {
 
-    public static ISolution MockPosts(this ISolution solution) {
+    public static ISolution CanReceveRead(this ISolution solution) {
         solution
             .Read(default, default)
             .ReturnsForAnyArgs(new List<Post> {
@@ -47,6 +47,11 @@ public static class SolutionExtensions {
                 new(){ Id= 2, Title= "Title2", Content= "Content2",  CreatedAt= DateTime.UtcNow},
                 new(){ Id= 3, Title= "Title3", Content= "Content3",  CreatedAt= DateTime.UtcNow}
             });
+        return solution;
+    }
+
+    public static async Task<ISolution> ReceivedRead(this ISolution solution) {
+        await solution.ReceivedWithAnyArgs().Read(default, default);
         return solution;
     }
 }

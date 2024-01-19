@@ -1,6 +1,6 @@
 ﻿using Common;
 using Common.Solutions.Data.MainDB;
-using Common.Strory.StoryModel;
+using Common.Strory.Model;
 using Core;
 using Microsoft.AspNetCore.Builder;
 
@@ -43,7 +43,7 @@ public class Solution_Design(ITestOutputHelper output) : Design<Solution>(output
 
     private IEnumerable<Post>? posts;
     private readonly MainDB db = new MainDB().Schema(false);
-    private Request request = Request.Empty;
+    private Request request = Request.Empty();
 }
 
 

@@ -1,4 +1,4 @@
-﻿using Common.Strory.StoryModel;
+﻿using Common.Strory.Model;
 using Core.Story;
 using Core.Story.Model;
 
@@ -9,11 +9,11 @@ public class Strory(IEnumerable<IProblem<Request, Response>> tasks) : Story<Requ
 
 
 public record Request(string Title, string Content) : Core.Story.Model.Request {
-    public static readonly Request Empty  = new(default, default);
+    public static Request Empty()  => new(default, default);
 }
 
 
 public record Response() : Response<Request> {
-    public static readonly Response Empty = new();
+    public static Response Empty() => new();
     public IEnumerable<Post>? Posts { get; set; }
 }

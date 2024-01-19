@@ -4,7 +4,7 @@ using Core.Story.Model;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 
-public class ExpertTask_Design : Design<Problem> {
+public class Problem_Design : Design<Problem> {
     private void Create() => Unit = new Problem(solution);
 
     private async Task Act() => await Unit.Run(response, Token);
@@ -44,10 +44,10 @@ public class ExpertTask_Design : Design<Problem> {
         await solution.ReceivedWithAnyArgs().Validate(default, default);
     }
 
-    public ExpertTask_Design(ITestOutputHelper output) : base(output) { }
+    public Problem_Design(ITestOutputHelper output) : base(output) { }
 
     public readonly ISolution solution = Substitute.For<ISolution>();
-    private readonly Response response = Response.Empty;
+    private readonly Response response = Response.Empty();
 }
 
 

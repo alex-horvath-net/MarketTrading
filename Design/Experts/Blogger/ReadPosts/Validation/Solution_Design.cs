@@ -72,7 +72,7 @@ public class Solution_Design : Design<Solution> {
             );
     }
 
-    private Request request = Request.Empty;
+    private Request request = Request.Empty();
     private IEnumerable<ValidationResult> issues;
 
     public Solution_Design(ITestOutputHelper output) : base(output) { }

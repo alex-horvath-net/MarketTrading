@@ -1,3 +1,3 @@
-﻿namespace Common.Strory.StoryModel;
+﻿namespace Common.Strory.Model;
 
 public record Tag(int Id, string Name);

@@ -1,5 +1,5 @@
 ﻿using Common.Solutions.Data.MainDB;
-using Common.Strory.StoryModel;
+using Common.Strory.Model;
 using Core;
 using Microsoft.EntityFrameworkCore;
 

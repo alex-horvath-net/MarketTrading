@@ -1,5 +1,4 @@
-﻿using Common.Strory.StoryModel;
-using Common.Strory.StoryModel;
+﻿using Common.Strory.Model;
 
 namespace Common.ExpertStory.StoryModel;
 
