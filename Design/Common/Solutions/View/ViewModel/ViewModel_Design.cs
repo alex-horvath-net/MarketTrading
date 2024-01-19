@@ -1,4 +1,6 @@
-﻿namespace Common.Solutions.View.ViewModel;
+﻿using Common.Solutions.View.Model;
+
+namespace Common.Solutions.View.ViewModel;
 
 public class ViewModel_Design
 {

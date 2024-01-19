@@ -1,4 +1,4 @@
-﻿namespace Common.ExpertStrory.StoryModel;
+﻿namespace Common.Strory.StoryModel;
 
 public record Post {
     public int Id { get; set; }

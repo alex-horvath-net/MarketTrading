@@ -1,4 +1,4 @@
-﻿namespace Common.Solutions.Data.MainDB.DataModel;
+﻿namespace Common.Solutions.Data.MainDB.Model;
 
 public class DataModel_Design
 {

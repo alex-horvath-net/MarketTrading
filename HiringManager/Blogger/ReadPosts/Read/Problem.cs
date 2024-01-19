@@ -1,4 +1,4 @@
-﻿using Common.ExpertStrory.StoryModel;
+﻿using Common.Strory.StoryModel;
 using Core.Story;
 
 namespace Experts.Blogger.ReadPosts.Read;

@@ -1,4 +1,4 @@
-﻿namespace Core.Story.StoryModel;
+﻿namespace Core.Story.Model;
 
 public class ValidationResult {
     public static ValidationResult Success() => new(errorCode: null, errorMessage: null);
@@ -12,7 +12,7 @@ public class ValidationResult {
     public string? ErrorCode { get; }
     public string? ErrorMessage { get; }
     public bool IsSuccess => ErrorCode == null && ErrorMessage == null;
-
+     
     private ValidationResult(string? errorCode = null, string? errorMessage = null) {
         ErrorCode = errorCode;
         ErrorMessage = errorMessage;

@@ -1,6 +1,6 @@
-﻿using Common.ExpertStrory.StoryModel;
+﻿using Common.Strory.StoryModel;
 using Core.Story;
-using Core.Story.StoryModel;
+using Core.Story.Model;
 
 namespace Experts.Blogger.ReadPosts;
 
@@ -8,7 +8,7 @@ public class Strory(IEnumerable<IProblem<Request, Response>> tasks) : Story<Requ
 }
 
 
-public record Request(string Title, string Content) : Core.Story.StoryModel.Request {
+public record Request(string Title, string Content) : Core.Story.Model.Request {
     public static readonly Request Empty  = new(default, default);
 }
 

@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Common.Strory.StoryModel;
+using Core;
 using Core.Story;
 
 namespace Experts.Blogger.ReadPosts.Read;
@@ -41,7 +42,7 @@ public static class SolutionExtensions {
     public static ISolution MockPosts(this ISolution solution) {
         solution
             .Read(default, default)
-            .ReturnsForAnyArgs(new List<Common.ExpertStrory.StoryModel.Post> {
+            .ReturnsForAnyArgs(new List<Post> {
                 new(){ Id= 1, Title= "Title1", Content= "Content1",  CreatedAt= DateTime.UtcNow},
                 new(){ Id= 2, Title= "Title2", Content= "Content2",  CreatedAt= DateTime.UtcNow},
                 new(){ Id= 3, Title= "Title3", Content= "Content3",  CreatedAt= DateTime.UtcNow}

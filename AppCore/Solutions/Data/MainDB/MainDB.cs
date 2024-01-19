@@ -1,4 +1,4 @@
-﻿using Common.Solutions.Data.MainDB.DataModel;
+﻿using Common.Solutions.Data.MainDB.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Common.Solutions.Data.MainDB;

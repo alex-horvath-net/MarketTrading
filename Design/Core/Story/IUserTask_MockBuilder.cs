@@ -1,4 +1,4 @@
-﻿using Core.Story.StoryModel;
+﻿using Core.Story.Model;
 using NSubstitute;
 
 namespace Core.Story;

@@ -1,4 +1,4 @@
-﻿using Core.Story.StoryModel;
+﻿using Core.Story.Model;
 using Microsoft.Extensions.DependencyInjection;
 namespace Core.Story;
 

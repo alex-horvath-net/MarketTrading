@@ -1,4 +1,6 @@
-﻿namespace Core.Story.StoryModel;
+﻿using Core.Story.Model;
+
+namespace Core.Story.StoryModel;
 
 public class Request_Design {
     [Fact]

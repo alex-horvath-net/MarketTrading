@@ -1,7 +1,7 @@
-﻿using Core.Story.StoryModel;
+﻿using Core.Story.Model;
 
 namespace Core.Story;
- 
+
 public class UserStoryCore_Design {
     [Fact]
     public async void NonStoppedFeature() {

@@ -1,6 +1,6 @@
 ﻿using Core;
 using Core.Story;
-using Core.Story.StoryModel;
+using Core.Story.Model;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 

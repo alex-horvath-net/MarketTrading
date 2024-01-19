@@ -1,4 +1,4 @@
-﻿namespace Common.Solutions.DataModel.ValidationModel;
+﻿namespace Common.Solutions.Validation.Model;
 
 public record ValidationIssue(
     string PropertyName,
