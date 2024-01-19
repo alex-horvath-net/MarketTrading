@@ -4,14 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Common.Solutions.Data.MainDB;
+namespace Story.Solutions.Data.MainDB;
 
-public static class Extensions
-{
-    public static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration, bool isDev = false)
-    {
-        services.AddDbContext<MainDB>(builder =>
-        {
+public static class Extensions {
+    public static IServiceCollection AddDataBase(this IServiceCollection services, IConfiguration configuration, bool isDev = false) {
+        services.AddDbContext<MainDB>(builder => {
             if (isDev)
                 builder.Dev();
             else
@@ -33,8 +30,7 @@ public static class Extensions
         .EnableSensitiveDataLogging()
         .UseSqlServer(@"Server=.;Database=ProdDB;Trusted_Connection=True;", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
 
-    public static MainDB UseDeveloperDataBase(this WebApplication app, bool delete = false)
-    {
+    public static MainDB UseDeveloperDataBase(this WebApplication app, bool delete = false) {
         //app.UseMigrationsEndPoint();
 
         var scope = app.Services.CreateScope();
@@ -53,8 +49,7 @@ public static class Extensions
         return db;
     }
 
-    public static MainDB Schema(this MainDB db, bool delete = false)
-    {
+    public static MainDB Schema(this MainDB db, bool delete = false) {
         if (delete)
             db.Database.EnsureDeleted();
         //db.Database.EnsureCreated();
@@ -63,11 +58,9 @@ public static class Extensions
         return db;
     }
     public static void Data<T>(this MainDB db, params T[] list) where T : class => db.Data(list);
-    public static MainDB Data<T>(this MainDB db, IEnumerable<T> list) where T : class
-    {
+    public static MainDB Data<T>(this MainDB db, IEnumerable<T> list) where T : class {
         var set = db.Set<T>();
-        if (!set.Any())
-        {
+        if (!set.Any()) {
             set.AddRange(list);
             db.SaveChanges();
         }

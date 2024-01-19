@@ -5,10 +5,10 @@ namespace Core.Problems;
 
 public static class Extensions {
     public static IServiceCollection AddProblems(this IServiceCollection services) {
-        services.AddScoped(typeof(IProblem<,>), typeof(Started<,>));
-        services.AddScoped(typeof(IProblem<,>), typeof(FeatureEnabled<,>));
+        services.AddScoped(typeof(Started<,>));
+        services.AddScoped(typeof(FeatureEnabled<,>));
 
-        services.AddScoped(typeof(IProblem<,>), typeof(Completed<,>));
+        services.AddScoped(typeof(Completed<,>));
 
         return services;
     }

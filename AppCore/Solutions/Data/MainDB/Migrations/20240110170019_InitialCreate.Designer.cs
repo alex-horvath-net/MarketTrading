@@ -8,8 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Common.Solutions.Data.MainDB.Migrations
-{
+namespace Story.Solutions.Data.MainDB.Migrations {
     [DbContext(typeof(MainDB))]
     [Migration("20240110170019_InitialCreate")]
     partial class InitialCreate
@@ -24,7 +23,7 @@ namespace Common.Solutions.Data.MainDB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Common.Sockets.DataModel.Post", b =>
+            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.Post", b =>
                 {
                     b.Property<int>("PostId")
                         .ValueGeneratedOnAdd()
@@ -71,7 +70,7 @@ namespace Common.Solutions.Data.MainDB.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Common.Sockets.DataModel.PostTag", b =>
+            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.PostTag", b =>
                 {
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -103,7 +102,7 @@ namespace Common.Solutions.Data.MainDB.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Common.Sockets.DataModel.Tag", b =>
+            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.Tag", b =>
                 {
                     b.Property<int>("TagId")
                         .ValueGeneratedOnAdd()
@@ -132,7 +131,7 @@ namespace Common.Solutions.Data.MainDB.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Common.Sockets.DataModel.PostTag", b =>
+            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.PostTag", b =>
                 {
                     b.HasOne("Common.Sockets.DataModel.Post", "Post")
                         .WithMany("PostTags")
@@ -140,7 +139,7 @@ namespace Common.Solutions.Data.MainDB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Common.Sockets.DataModel.Tag", "Tag")
+                    b.HasOne("Story.Solutions.Data.MainDB.Model.Tag", "Tag")
                         .WithMany("PostTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -151,12 +150,12 @@ namespace Common.Solutions.Data.MainDB.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("Common.Sockets.DataModel.Post", b =>
+            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.Post", b =>
                 {
                     b.Navigation("PostTags");
                 });
 
-            modelBuilder.Entity("Common.Sockets.DataModel.Tag", b =>
+            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.Tag", b =>
                 {
                     b.Navigation("PostTags");
                 });

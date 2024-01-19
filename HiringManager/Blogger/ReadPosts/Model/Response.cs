@@ -1,5 +1,5 @@
-﻿using Common.Problem.Model;
-using Core.Story.Model;
+﻿using Core.Story.Model;
+using Story.Problem.Model;
 
 namespace Experts.Blogger.ReadPosts.Model;
 

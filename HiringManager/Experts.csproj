@@ -15,7 +15,7 @@
 
 
 	<ItemGroup>
-	  <ProjectReference Include="..\AppCore\Common.csproj" />
+	  <ProjectReference Include="..\AppCore\Story.csproj" />
 	  <ProjectReference Include="..\AppPolicy\Core.csproj" />
 	</ItemGroup>
 

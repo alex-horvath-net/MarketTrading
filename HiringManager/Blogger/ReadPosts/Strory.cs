@@ -3,5 +3,5 @@ using Experts.Blogger.ReadPosts.Model;
 
 namespace Experts.Blogger.ReadPosts;
 
-public class Strory(IEnumerable<IProblem<Request, Response>> tasks) : Story<Request, Response>(tasks) {
+public class Strory(IEnumerable<IProblem<Request, Response>> problems) : Story<Request, Response>(problems) {
 }

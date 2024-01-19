@@ -1,8 +1,8 @@
-﻿using Common;
-using Core;
+﻿using Core;
 using Experts.Blogger.ReadPosts.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Story;
 
 namespace Experts.Blogger.ReadPosts;
 

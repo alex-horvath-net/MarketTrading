@@ -12,10 +12,8 @@ public class FluentValidationDesign {
         var socketModel = await validatorPlugin.Validate(request, token);
 
         socketModel.Should().ContainSingle(e =>
-            e.PropertyName == "Name" &&
             e.ErrorCode == "MinimumLengthValidator" &&
-            e.ErrorMessage == "The length of 'Name' must be at least 5 characters. You entered 4 characters." &&
-            e.Severity == "Error");
+            e.ErrorMessage == "The length of 'Name' must be at least 5 characters. You entered 4 characters.");
     }
 
     [Fact]

@@ -1,22 +1,18 @@
 ﻿using Core;
 using FluentValidation;
-using FluentValidation.Results;
-using Core.Sockets.ValidationModel;
 
 namespace Core.Solutions.Validation;
 
 public abstract class FluentValidator<T> : AbstractValidator<T> {
-    public async Task<IEnumerable<ValidationSolutionExpertModel>> Validate(T request, CancellationToken token) {
-        var pluginModel = await ValidateAsync(request, token);
-        var socketModel = pluginModel.Errors.Select(ToSocketModel);
-        return socketModel;
-    }
+    public async Task<IEnumerable<Story.Model.ValidationResult>> Validate(T request, CancellationToken token) {
+        var solutionModel = await ValidateAsync(request, token);
 
-    private ValidationSolutionExpertModel ToSocketModel(ValidationFailure plugin) => new(
-        plugin.PropertyName,
-        plugin.ErrorCode,
-        plugin.ErrorMessage,
-        plugin.Severity.ToString());
+        var problemModel = solutionModel
+            .Errors
+            .Select(model => Story.Model.ValidationResult.Failed(model.ErrorCode, model.ErrorMessage));
+
+        return problemModel;
+    }
 }
 
 

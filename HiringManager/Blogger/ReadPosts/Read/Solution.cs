@@ -1,8 +1,8 @@
-﻿using Common.Problem.Model;
-using Common.Solutions.Data.MainDB;
-using Core;
+﻿using Core;
 using Experts.Blogger.ReadPosts.Model;
 using Microsoft.EntityFrameworkCore;
+using Story.Problem.Model;
+using Story.Solutions.Data.MainDB;
 
 namespace Experts.Blogger.ReadPosts.Read;
 

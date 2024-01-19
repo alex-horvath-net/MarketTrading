@@ -11,7 +11,6 @@ public class Problem(ISolution solution) : IProblem<Model.Request, Response> {
     }
 }
 
-
 public interface ISolution
 {
     Task<IEnumerable<ValidationResult>> Validate(Model.Request request, CancellationToken token);

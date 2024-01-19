@@ -1,7 +1,6 @@
-﻿namespace Common.Solutions.View.Model;
+﻿namespace Story.Solutions.View.Model;
 
-public record Post
-{
+public record Post {
     public int Id { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
@@ -9,8 +8,7 @@ public record Post
     public ICollection<Tag> Tags { get; set; }
 }
 
-public record Tag
-{
+public record Tag {
     public int Id { get; set; }
     public string Name { get; set; }
 }

@@ -1,7 +1,7 @@
-﻿using Common.Problem.Model;
-using Core;
+﻿using Core;
 using Core.Story;
 using Experts.Blogger.ReadPosts.Model;
+using Story.Problem.Model;
 namespace Experts.Blogger.ReadPosts.Read;
 
 public class Problem_Design(ITestOutputHelper output) : Design<Problem>(output) {

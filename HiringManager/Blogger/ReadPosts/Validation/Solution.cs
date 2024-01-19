@@ -1,11 +1,9 @@
-﻿using Core;
-using Core.Story.Model;
-using Experts.Blogger.ReadPosts.Model;
+﻿using Core.Solutions.Validation;
 using FluentValidation;
 
 namespace Experts.Blogger.ReadPosts.Validation;
 
-public class Solution : AbstractValidator<Model.Request>, ISolution {
+public class Solution : FluentValidator<Model.Request>, ISolution {
     public Solution() {
         RuleFor(request => request.Title)
             .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator)
@@ -17,16 +15,4 @@ public class Solution : AbstractValidator<Model.Request>, ISolution {
             .WithMessage(request => $"'{nameof(request.Content)}' can not be empty if '{nameof(request.Title)}' is empty.")
             .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
     }
-
-    public async Task<IEnumerable<ValidationResult>> Validate(Model.Request request, CancellationToken token) {
-        var solutionModel = await ValidateAsync(request, token);
-        
-        var problemModel = solutionModel
-            .Errors
-            .Select(model => ValidationResult.Failed(model.ErrorCode, model.ErrorMessage));
-
-        return problemModel;
-    }
 }
-
-

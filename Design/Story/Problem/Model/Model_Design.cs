@@ -1,11 +1,11 @@
-﻿namespace Common.Solutions.View.Model;
+﻿namespace Story.Problem.Model;
 
 public class Model_Design {
     [Fact]
     public void Tag() {
         var id = 1;
         var name = "Name";
-        var tag = new Tag();
+        var tag = new Tag(id, name);
         tag = tag with { Id = id, Name = name };
         tag.Id.Should().Be(id);
         tag.Name.Should().Be(name);
