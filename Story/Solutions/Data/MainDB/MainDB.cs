@@ -49,7 +49,7 @@ public class MainDB(DbContextOptions options) : DbContext(options) {
  * dotnet tool update --global dotnet-ef
  * dotnet add package Microsoft.EntityFrameworkCore.Design
  * dotnet ef
- * Add-Migration InitialCreate --startup-project WebSite --Project Core --context DB --OutputDir \App\Plugins\DataAccess\Migrations
+ * Add-Migration InitialCreate --startup-project WebSite --Project Story --context DevDB --OutputDir Story\Solutions\Data\MainDB\Migrations
  * 
  * 
  * 
