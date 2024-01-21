@@ -67,7 +67,8 @@ public class MainDB(DbContextOptions options) : DbContext(options) {
  *      Installing the tools:       Install-Package Microsoft.EntityFrameworkCore.Tools
  *      Update the tools:           Update-Package Microsoft.EntityFrameworkCore.Tools
  *      Verify the installation:    Get-Help about_EntityFrameworkCore
- *      ?command line arguments:    Update-Database -Args '--environment Production'
+ *      Add-Migration InitialCreate -startupproject WebSite -Project Story -context MainDB -OutputDir Solutions\Data\MainDB\Migrations
+ *      Update-Database -startupproject WebSite -Project Story -context MainDB -Args '--environment Development'
  */
 
 
