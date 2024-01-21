@@ -1,4 +1,4 @@
-﻿namespace Story.Solutions.Validation.Model;
+﻿namespace Common.Solutions.Validation.Model;
 
 public record ValidationIssue(
     string PropertyName,

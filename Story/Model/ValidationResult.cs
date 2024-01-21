@@ -1,4 +1,4 @@
-﻿namespace Story.Model;
+﻿namespace Common.Model;
 
 public class ValidationResult {
     public static ValidationResult Success() => new(errorCode: null, errorMessage: null);

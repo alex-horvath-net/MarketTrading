@@ -1,6 +1,6 @@
-﻿using Story.Model;
+﻿using Common.Model;
 
-namespace Story.Problems;
+namespace Common.Problems;
 
 public class FeatureEnabled<TRequest, TResponse> //: IProblem<TRequest, TResponse>
     where TRequest : Request

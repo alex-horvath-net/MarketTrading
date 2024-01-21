@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Experts", "Experts\Experts.csproj", "{E452C5E0-B527-4143-8896-FE03363196AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Story", "Story\Story.csproj", "{D1FC4DAC-2539-4ECE-AAF8-65D2B1A83A38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Story\Common.csproj", "{D1FC4DAC-2539-4ECE-AAF8-65D2B1A83A38}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSite", "WebSite\WebSite.csproj", "{65D425DD-FC01-46F2-AF0D-1FDA0820494D}"
 EndProject

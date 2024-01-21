@@ -1,4 +1,4 @@
-﻿namespace Story.Solutions.Data.MainDB.Model;
+﻿namespace Common.Solutions.Data.MainDB.Model;
 
 
 public record PostTag(int PostId, int TagId) {

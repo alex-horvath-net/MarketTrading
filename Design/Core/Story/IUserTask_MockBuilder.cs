@@ -1,6 +1,6 @@
-﻿using NSubstitute;
-using Story;
-using Story.Model;
+﻿using Common;
+using Common.Model;
+using NSubstitute;
 
 namespace Core.Story;
 

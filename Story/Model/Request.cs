@@ -1,4 +1,4 @@
-﻿namespace Story.Model;
+﻿namespace Common.Model;
 
 public record Request {
 

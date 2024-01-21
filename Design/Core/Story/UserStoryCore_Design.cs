@@ -1,5 +1,5 @@
-﻿using Story;
-using Story.Model;
+﻿using Common.Model;
+using Story;
 
 namespace Core.Story;
 
@@ -16,7 +16,7 @@ public class UserStoryCore_Design {
 
         response.Should().NotBeNull();
         response.Request.Should().Be(request);
-        response.Validations.Should().BeNull();
+        response.ValidationResults.Should().BeNull();
     }
 
     [Fact]

@@ -5,12 +5,10 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Story.Solutions.Data.MainDB;
 
 #nullable disable
 
-namespace Story.Solutions.Data.MainDB.Migrations
-{
+namespace Story.Solutions.Data.MainDB.Migrations {
     [DbContext(typeof(MainDB))]
     [Migration("20240121154749_InitialCreate")]
     partial class InitialCreate

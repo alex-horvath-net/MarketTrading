@@ -1,8 +1,10 @@
-﻿namespace Story.Problems;
+﻿using Common.Model;
+
+namespace Common.Problems;
 
 public class Completed<TRequest, TResponse> //: IProblem<TRequest, TResponse>
-    where TRequest : Model.Request
-    where TResponse : Model.Response<TRequest>, new() {
+    where TRequest : Request
+    where TResponse : Response<TRequest>, new() {
 
     public Task Run(TResponse response, CancellationToken token) {
         response.EndAt = DateTime.UtcNow;

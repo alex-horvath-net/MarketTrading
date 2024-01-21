@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Story;
-using Story.Model;
+﻿using Common;
+using Common.Model;
+using Microsoft.Extensions.DependencyInjection;
 namespace Core.Story;
 
 public class UserStoryExtension_Design {

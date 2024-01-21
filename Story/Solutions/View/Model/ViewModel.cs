@@ -1,4 +1,4 @@
-﻿namespace Story.Solutions.View.Model;
+﻿namespace Common.Solutions.View.Model;
 
 public record Post {
     public int Id { get; set; }

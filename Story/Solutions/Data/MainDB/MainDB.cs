@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Story.Solutions.Data.MainDB.Model;
+﻿using Common.Solutions.Data.MainDB.Model;
+using Microsoft.EntityFrameworkCore;
 
-namespace Story.Solutions.Data.MainDB;
+namespace Common.Solutions.Data.MainDB;
 
 public class MainDB(DbContextOptions options) : DbContext(options) {
     public MainDB() : this(new DbContextOptionsBuilder().Dev().Options) { }

@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Story.Model;
+﻿using Common;
+using Common.Model;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Story;
 

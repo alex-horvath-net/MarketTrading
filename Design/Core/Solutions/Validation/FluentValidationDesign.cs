@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using Story.Solutions.Validation;
+﻿using Common.Solutions.Validation;
+using FluentValidation;
 
 namespace Core.Solutions.Validation;
 

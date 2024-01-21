@@ -1,14 +1,13 @@
-﻿using Experts.Blogger.ReadPosts;
-using Experts.Blogger.ReadPosts.Model;
+﻿using Common;
+using Experts.Blogger.ReadPosts;
 using Microsoft.Extensions.DependencyInjection;
-using Story;
 
 namespace Experts.Blogger;
 
 public static class Extensions {
     public static IServiceCollection AddBlogger(this IServiceCollection services) => services
         .AddScoped<Expert>()
-        .AddScoped<Story<Request, Response>, Strory>()
+        .AddScoped<Story<Request, Response>, ReadPosts>()
 
             .AddProblem<
                 ReadPosts.Validation.Problem,

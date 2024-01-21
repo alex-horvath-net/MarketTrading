@@ -1,8 +1,9 @@
-﻿using Story;
+﻿using Common;
+using Experts.Blogger.ReadPosts;
 
 namespace Experts.Blogger;
 
 public record Expert(
-    Story<ReadPosts.Model.Request, ReadPosts.Model.Response> ReadPosts
+    Story<Request, Response> ReadPosts
     );
 

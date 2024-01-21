@@ -1,4 +1,4 @@
-﻿using Story.Model;
+﻿using Common.Model;
 
 namespace Core.Story.StoryModel;
 

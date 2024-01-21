@@ -4,12 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Story.Solutions.Data.MainDB;
 
 #nullable disable
 
-namespace Story.Solutions.Data.MainDB.Migrations
-{
+namespace Story.Solutions.Data.MainDB.Migrations {
     [DbContext(typeof(MainDB))]
     partial class MainDBModelSnapshot : ModelSnapshot
     {
