@@ -34,9 +34,9 @@
     <PackageReference Include="xunit.abstractions" Version="2.0.3" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
   </ItemGroup>
-  
+
   <ItemGroup>
-    <ProjectReference Include="..\AppPolicy\Core.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

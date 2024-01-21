@@ -15,7 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\HiringManager\Experts.csproj" />
+	  <ProjectReference Include="..\Experts\Experts.csproj" />
 	</ItemGroup>
 
 </Project>

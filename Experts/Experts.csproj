@@ -13,10 +13,8 @@
 	  <None Remove="Blogger\ReadPosts\UserStory\**" />
 	</ItemGroup>
 
-
 	<ItemGroup>
-	  <ProjectReference Include="..\AppCore\Story.csproj" />
-	  <ProjectReference Include="..\AppPolicy\Core.csproj" />
+	  <ProjectReference Include="..\Story\Story.csproj" />
 	</ItemGroup>
 
 </Project>
