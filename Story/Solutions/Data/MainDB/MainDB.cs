@@ -11,36 +11,35 @@ public class MainDB(DbContextOptions options) : DbContext(options) {
     public DbSet<PostTag> PostTags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder) {
-        builder
-            .Entity<PostTag>()
-            .HasKey(pt => new { pt.PostId, pt.TagId });
+        base.OnModelCreating(builder);
 
-        builder
-            .Entity<PostTag>()
-            .HasOne(pt => pt.Post)
-            .WithMany(p => p.PostTags)
-            .HasForeignKey(pt => pt.PostId);
+        builder.Entity<PostTag>(entity => {
+            entity.HasKey(pt => new { pt.PostId, pt.TagId });
 
-        builder
-            .Entity<PostTag>()
-            .HasOne(pt => pt.Tag)
-            .WithMany(t => t.PostTags)
-            .HasForeignKey(pt => pt.TagId);
+            entity.HasOne(pt => pt.Post)
+                  .WithMany(p => p.PostTags)
+                  .HasForeignKey(pt => pt.PostId);
 
-        var post1 = new Post(1, "Title1", "Content1", DateTime.Parse("2023-12-01"));
-        var post2 = new Post(2, "Title2", "Content2", DateTime.Parse("2023-12-02"));
-        var post3 = new Post(3, "Title3", "Content3", DateTime.Parse("2023-12-03"));
+            entity.HasOne(pt => pt.Tag)
+                  .WithMany(t => t.PostTags)
+                  .HasForeignKey(pt => pt.TagId);
+        });
 
-        var tag1 = new Tag(1, "Tag1");
-        var tag2 = new Tag(2, "Tag2");
 
-        var postTag1 = new PostTag(post1.PostId, tag1.TagId);
-        var postTag2 = new PostTag(post1.PostId, tag2.TagId);
-        var postTag3 = new PostTag(post2.PostId, tag1.TagId);
 
-        builder.Entity<Post>().HasData(post1, post2, post3);
-        builder.Entity<Tag>().HasData(tag1, tag2);
-        builder.Entity<PostTag>().HasData(postTag1, postTag2, postTag3);
+        builder.Entity<Post>().HasData(
+            new(1, "Title1", "Content1", DateTime.Parse("2023-12-01")),
+            new(2, "Title2", "Content2", DateTime.Parse("2023-12-02")),
+            new(3, "Title3", "Content3", DateTime.Parse("2023-12-03")));
+
+        builder.Entity<Tag>().HasData(
+            new(1, "Tag1"),
+            new(2, "Tag2"));
+
+        builder.Entity<PostTag>().HasData(
+            new(1, 1),
+            new(1, 2),
+            new(2, 1));
     }
 }
 
