@@ -1,4 +1,6 @@
-﻿using Common.Solutions.Validation;
+﻿
+using Common.Business;
+using Common.Solutions.Validation;
 using FluentValidation;
 
 namespace Common.Solutions.Validation;
@@ -35,6 +37,6 @@ public class FluentValidationDesign
     {
         public TestValidator() => RuleFor(x => x.Name).MinimumLength(5);
     }
-    public record TestRequest(string Name);
+    public record TestRequest(string Name): Request();
 }
 

@@ -58,7 +58,7 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
         response.Terminated.Should().BeFalse();
     }
 
-    private readonly Story.IValidation validation = Substitute.For<Story.IValidation>();
+    private readonly IValidation<Story.Request> validation = Substitute.For<IValidation<Story.Request>>();
     private readonly Story.IRepository repository = Substitute.For<Story.IRepository>();
     private readonly Story.Request request = Story.Request.Empty();
     private Story.Response response = Story.Response.Empty();
@@ -137,17 +137,15 @@ public class Validation_Design(ITestOutputHelper output) : Design<Validation>(ou
     private IEnumerable<ValidationResult> issues;
 }
 
-
-
 public static class Extensions {
-    public static Story.IValidation MockPass(this Story.IValidation solution) {
+    public static IValidation<Story.Request> MockPass(this IValidation<Story.Request> solution) {
         solution
             .Validate(default, default)
             .ReturnsForAnyArgs(new List<ValidationResult>() { });
         return solution;
     }
 
-    public static Story.IValidation MockFail(this Story.IValidation solution) {
+    public static IValidation<Story.Request> MockFail(this IValidation<Story.Request> solution) {
         solution
             .Validate(default, default)
             .ReturnsForAnyArgs(new List<ValidationResult>()

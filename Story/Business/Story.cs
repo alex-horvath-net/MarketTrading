@@ -1,4 +1,7 @@
-﻿namespace Common.Business;
+﻿using System.ComponentModel.DataAnnotations;
+using Azure.Core;
+
+namespace Common.Business;
 
 public interface IStory<TRequest, TResponse>
     where TRequest : Request
@@ -6,7 +9,7 @@ public interface IStory<TRequest, TResponse>
     Task<TResponse> Run(TRequest request, CancellationToken token);
 }
 
-public class Story<TRequest, TResponse>() : IStory<TRequest, TResponse>
+public class Story<TRequest, TResponse>(IValidation<TRequest> validator) : IStory<TRequest, TResponse>
     where TRequest : Request
     where TResponse : Response<TRequest>, new() {
     public async Task<TResponse> Run(TRequest request, CancellationToken token) {
@@ -17,7 +20,10 @@ public class Story<TRequest, TResponse>() : IStory<TRequest, TResponse>
         response.FeatureEnabled = false;
         response.Terminated = !response.FeatureEnabled;
 
-        await RunCore(response, token);
+        response.ValidationResults = await validator.Validate(response.Request, token);
+        response.Terminated = response.ValidationResults.Any(x => !x.IsSuccess);
+        if (!response.Terminated)
+            await RunCore(response, token);
 
         response.EndAt = DateTime.UtcNow;
 
@@ -31,3 +37,9 @@ public class Story<TRequest, TResponse>() : IStory<TRequest, TResponse>
 
     public virtual Task RunCore(TResponse response, CancellationToken token) => Task.CompletedTask;
 }
+
+
+public interface IValidation<TRequest> where TRequest : Request {
+    Task<IEnumerable<ValidationResult>> Validate(TRequest request, CancellationToken token);
+}
+

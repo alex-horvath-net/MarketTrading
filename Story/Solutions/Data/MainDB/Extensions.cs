@@ -23,13 +23,13 @@ public static class Extensions {
         .EnableDetailedErrors()
         .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
         .EnableSensitiveDataLogging()
-        .UseSqlServer(@"Data Source=.;Initial Catalog=DevDB;Integrated Security=True;Trust Server Certificate=True", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
+        .UseSqlServer(@"Data Source=.;Initial Catalog=MainDB-Dev;Integrated Security=True;Trust Server Certificate=True", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
 
     public static DbContextOptionsBuilder Prod(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
         .EnableDetailedErrors()
         .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
         .EnableSensitiveDataLogging()
-        .UseSqlServer(@"Server=.;Database=ProdDB;Trusted_Connection=True;", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
+        .UseSqlServer(@"Server=.;Database=MainDB-Prod;Trusted_Connection=True;", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
 
     public static MainDB UseDeveloperDataBase(this WebApplication app, bool delete = false) {
         //app.UseMigrationsEndPoint();
