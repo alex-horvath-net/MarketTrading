@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Common;
+namespace Common.Business;
 
 public static class Extensions {
     public static IServiceCollection AddStory(this IServiceCollection services) {

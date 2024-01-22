@@ -1,6 +1,6 @@
-﻿using Common.Model;
+﻿using Common.Business.Model;
 
-namespace Story.Problem.Model;
+namespace Common.Problem.Model;
 
 public class Model_Design {
     [Fact]

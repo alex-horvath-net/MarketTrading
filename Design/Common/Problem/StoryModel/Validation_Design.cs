@@ -1,4 +1,4 @@
-﻿using Common.Model;
+﻿using Common.Business;
 
 namespace Common.Problem.StoryModel;
 

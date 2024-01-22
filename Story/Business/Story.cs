@@ -1,8 +1,14 @@
-﻿namespace Common;
+﻿namespace Common.Business;
+
+public interface IStory<TRequest, TResponse>
+    where TRequest : Request
+    where TResponse : Response<TRequest>, new() {
+    Task<TResponse> Run(TRequest request, CancellationToken token);
+}
 
 public class Story<TRequest, TResponse>() : IStory<TRequest, TResponse>
-    where TRequest : Model.Request
-    where TResponse : Model.Response<TRequest>, new() {
+    where TRequest : Request
+    where TResponse : Response<TRequest>, new() {
     public async Task<TResponse> Run(TRequest request, CancellationToken token) {
         var response = new TResponse();
 

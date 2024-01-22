@@ -1,4 +1,4 @@
-﻿using Common.Model;
+﻿using Common.Business;
 
 namespace Common.Problem;
 
@@ -18,8 +18,6 @@ public class UserStoryCore_Design
 
 
 
-    private readonly IUserTask_MockBuilder otherTask = new();
-    private readonly IUserTask_MockBuilder oneTask = new();
     private readonly Request request = new();
     private readonly CancellationToken token = CancellationToken.None;
 }

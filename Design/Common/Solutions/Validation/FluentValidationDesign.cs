@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Common.Solutions.Validation;
+using FluentValidation;
 
 namespace Common.Solutions.Validation;
 

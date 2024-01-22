@@ -1,4 +1,4 @@
-﻿using Common;
+﻿using Common.Business;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger;

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Common.Solutions.Data.MainDB.Migrations
 {
-    /// <inheritdoc />
+    /// <inheritdoc /> 
     public partial class InitialCreate : Migration
     {
         /// <inheritdoc />

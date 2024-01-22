@@ -23,7 +23,7 @@ namespace Common.Solutions.Data.MainDB.Migrations {
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.Post", b =>
+            modelBuilder.Entity("Common.Solutions.Data.MainDB.Model.Post", b =>
                 {
                     b.Property<int>("PostId")
                         .ValueGeneratedOnAdd()
@@ -70,7 +70,7 @@ namespace Common.Solutions.Data.MainDB.Migrations {
                         });
                 });
 
-            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.PostTag", b =>
+            modelBuilder.Entity("Common.Solutions.Data.MainDB.Model.PostTag", b =>
                 {
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -102,7 +102,7 @@ namespace Common.Solutions.Data.MainDB.Migrations {
                         });
                 });
 
-            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.Tag", b =>
+            modelBuilder.Entity("Common.Solutions.Data.MainDB.Model.Tag", b =>
                 {
                     b.Property<int>("TagId")
                         .ValueGeneratedOnAdd()
@@ -131,15 +131,15 @@ namespace Common.Solutions.Data.MainDB.Migrations {
                         });
                 });
 
-            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.PostTag", b =>
+            modelBuilder.Entity("Common.Solutions.Data.MainDB.Model.PostTag", b =>
                 {
-                    b.HasOne("Story.Solutions.Data.MainDB.Model.Post", "Post")
+                    b.HasOne("Common.Solutions.Data.MainDB.Model.Post", "Post")
                         .WithMany("PostTags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Story.Solutions.Data.MainDB.Model.Tag", "Tag")
+                    b.HasOne("Common.Solutions.Data.MainDB.Model.Tag", "Tag")
                         .WithMany("PostTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -150,12 +150,12 @@ namespace Common.Solutions.Data.MainDB.Migrations {
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.Post", b =>
+            modelBuilder.Entity("Common.Solutions.Data.MainDB.Model.Post", b =>
                 {
                     b.Navigation("PostTags");
                 });
 
-            modelBuilder.Entity("Story.Solutions.Data.MainDB.Model.Tag", b =>
+            modelBuilder.Entity("Common.Solutions.Data.MainDB.Model.Tag", b =>
                 {
                     b.Navigation("PostTags");
                 });

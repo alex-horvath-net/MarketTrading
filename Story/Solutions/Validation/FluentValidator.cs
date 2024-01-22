@@ -1,4 +1,4 @@
-﻿using Common.Model;
+﻿using Common.Business;
 using Core;
 using FluentValidation;
 
@@ -8,11 +8,11 @@ public abstract class FluentValidator<T> : AbstractValidator<T> {
     public async Task<IEnumerable<ValidationResult>> Validate(T request, CancellationToken token) {
         var solutionModel = await ValidateAsync(request, token);
 
-        var problemModel = solutionModel
+        var businessModel = solutionModel
             .Errors
             .Select(model => ValidationResult.Failed(model.ErrorCode, model.ErrorMessage));
 
-        return problemModel;
+        return businessModel;
     }
 }
 

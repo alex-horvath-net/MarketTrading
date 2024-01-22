@@ -1,5 +1,4 @@
-﻿using Common;
-using Common.Model;
+﻿using Common.Business;
 using Microsoft.Extensions.DependencyInjection;
 namespace Common.Problem;
 

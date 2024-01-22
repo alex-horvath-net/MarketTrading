@@ -1,14 +1,11 @@
-﻿using Common;
-using Common.Model;
+﻿using Common.Business;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Story;
+namespace Common;
 
-public class Extensions_Design
-{
+public class Extensions_Design {
     [Fact]
-    public void AddUserStory_Registers_All_UserStory()
-    {
+    public void AddUserStory_Registers_All_UserStory() {
         var services = new ServiceCollection();
 
         services.AddStory();

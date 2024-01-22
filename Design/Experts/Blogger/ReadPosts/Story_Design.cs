@@ -1,5 +1,5 @@
-﻿using Common;
-using Common.Model;
+﻿using Common.Business;
+using Common.Business.Model;
 using Core;
 
 namespace Experts.Blogger.ReadPosts;
@@ -161,7 +161,7 @@ public static class Extensions {
     public static Story.IRepository CanReceveRead(this Story.IRepository solution) {
         solution
             .Read(default, default)
-            .ReturnsForAnyArgs(new List<Common.Model.Post> {
+            .ReturnsForAnyArgs(new List<Post> {
                         new(){ Id= 1, Title= "Title1", Content= "Content1",  CreatedAt= DateTime.UtcNow},
                         new(){ Id= 2, Title= "Title2", Content= "Content2",  CreatedAt= DateTime.UtcNow},
                         new(){ Id= 3, Title= "Title3", Content= "Content3",  CreatedAt= DateTime.UtcNow}

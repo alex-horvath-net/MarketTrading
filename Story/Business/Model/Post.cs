@@ -1,4 +1,4 @@
-﻿namespace Common.Model;
+﻿namespace Common.Business.Model;
 
 public record Post {
     public int Id { get; set; }
