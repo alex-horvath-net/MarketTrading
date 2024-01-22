@@ -8,8 +8,7 @@ namespace Experts.Blogger;
 public class Extensions_Design {
     [Fact]
     public void Expert_Is_Available() {
-        var configurationBuilder = new ConfigurationBuilder();
-        var configuration = configurationBuilder.Build();
+        var configuration = new ConfigurationBuilder().Build();
         var environment = Environments.Development;
         var services = new ServiceCollection(); 
 

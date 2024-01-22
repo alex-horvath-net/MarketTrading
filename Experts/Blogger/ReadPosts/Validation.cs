@@ -1,10 +1,10 @@
-﻿using Common.Business;
-using Common.Solutions.Validation;
+﻿using Core.Business;
+using Core.Solutions.Validation;
 using FluentValidation;
 
 namespace Experts.Blogger.ReadPosts;
 
-public class Validation : FluentValidator<Story.Request>, IValidation<Story.Request> {
+public class Validation : ValidationCore<Story.Request>, IValidation<Story.Request> {
     public Validation() {
         RuleFor(request => request.Title)
             .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator)

@@ -1,4 +1,4 @@
-﻿namespace Common.Business;
+﻿namespace Core.Business;
 
 public record Response<TRequest>()
     where TRequest : Request {

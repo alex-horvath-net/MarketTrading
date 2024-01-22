@@ -1,4 +1,6 @@
-﻿namespace Common.Solutions.Data.MainDB.Model;
+﻿using Common.Solutions.Data.MainDB.Model;
+
+namespace Common.Solutions.Data.MainDB.Model;
 
 public class Model_Design {
     [Fact]

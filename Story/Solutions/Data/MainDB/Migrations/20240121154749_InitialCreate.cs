@@ -7,9 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Common.Solutions.Data.MainDB.Migrations
 {
+
     /// <inheritdoc /> 
     public partial class InitialCreate : Migration
     {
+        
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {

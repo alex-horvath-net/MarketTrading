@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Azure.Core;
 
-namespace Common.Business;
+namespace Core.Business;
 
 public interface IStory<TRequest, TResponse>
     where TRequest : Request

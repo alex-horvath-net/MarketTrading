@@ -1,4 +1,4 @@
-﻿namespace Common.Business;
+﻿namespace Core.Business;
 
 public class ValidationResult {
     public static ValidationResult Success() => new(errorCode: null, errorMessage: null);

@@ -1,6 +1,6 @@
-﻿using Common.Business;
-using Common.Business.Model;
+﻿using Common.Business.Model;
 using Core;
+using Core.Business;
 
 namespace Experts.Blogger.ReadPosts;
 

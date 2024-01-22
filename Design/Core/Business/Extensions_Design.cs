@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-namespace Common.Business;
+namespace Core.Business;
 
-public class UserStoryExtension_Design {
+public class Extensions_Design {
     [Fact]
     public void AddUserStory_Registers_All_UserStory() {
         var services = new ServiceCollection();

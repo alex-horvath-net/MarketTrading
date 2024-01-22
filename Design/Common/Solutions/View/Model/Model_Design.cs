@@ -1,6 +1,4 @@
-﻿using Common.Solutions.View.Model;
-
-namespace Common.Solutions.View.Model;
+﻿namespace Common.Solutions.View.Model;
 
 public class Model_Design {
     [Fact]

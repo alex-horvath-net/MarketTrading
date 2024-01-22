@@ -1,17 +1,13 @@
-﻿
-using Common.Business;
-using Common.Solutions.Validation;
+﻿using Core.Business;
 using FluentValidation;
 
-namespace Common.Solutions.Validation;
+namespace Core.Solutions.Validation;
 
-public class FluentValidationDesign
-{
+public class ValidationCore_Design {
     [Fact]
-    public async void TestValidator_OneFailure()
-    {
+    public async void TestValidator_OneFailure() {
         var validatorPlugin = new TestValidator();
-        var request = new TestRequest("1234");
+        var request = new TestRequest("1234"); 
         var token = CancellationToken.None;
 
         var socketModel = await validatorPlugin.Validate(request, token);
@@ -22,8 +18,7 @@ public class FluentValidationDesign
     }
 
     [Fact]
-    public async void TestValidator_NoFailure()
-    {
+    public async void TestValidator_NoFailure() {
         var validatorPlugin = new TestValidator();
         var request = new TestRequest("12345");
         var token = CancellationToken.None;
@@ -33,10 +28,9 @@ public class FluentValidationDesign
         socketModel.Should().BeEmpty();
     }
 
-    public class TestValidator : FluentValidator<TestRequest>
-    {
+    public class TestValidator : ValidationCore<TestRequest> {
         public TestValidator() => RuleFor(x => x.Name).MinimumLength(5);
     }
-    public record TestRequest(string Name): Request();
+    public record TestRequest(string Name) : Request();
 }
 

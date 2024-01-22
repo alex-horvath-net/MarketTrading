@@ -1,10 +1,10 @@
-﻿using Common.Business;
+﻿namespace Core.Business;
 
-namespace Common.Business.StoryModel;
-
-public class Validation_Design {
+public class Validation_Design
+{
     [Fact]
-    public void ValidationResult_Success() {
+    public void ValidationResult_Success()
+    {
         var result = ValidationResult.Success();
 
         result.Should().NotBeNull();
@@ -14,7 +14,8 @@ public class Validation_Design {
     }
 
     [Fact]
-    public void ValidationResult_Failed() {
+    public void ValidationResult_Failed()
+    {
         var result = ValidationResult.Failed("ErrorCode", "ErrorMessage");
 
         result.Should().NotBeNull();

@@ -1,8 +1,8 @@
 ﻿using Experts.Blogger.ReadPosts;
 
-namespace Common.Business;
+namespace Core.Business;
 
-public class UserStoryCore_Design {
+public class Story_Design {
     [Fact]
     public async void Provide_Response() {
         validation.MockPass();

@@ -1,4 +1,4 @@
-﻿using Common.Business;
+﻿using Core.Business;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Common;

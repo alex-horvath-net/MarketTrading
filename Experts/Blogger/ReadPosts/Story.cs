@@ -1,4 +1,5 @@
 ﻿using Common.Business;
+using Core.Business;
 using Common.Business.Model;
 
 namespace Experts.Blogger.ReadPosts;
@@ -18,7 +19,7 @@ public class Story(
     }
     
 
-    public record Request(string Title, string Content) : global::Common.Business.Request {
+    public record Request(string Title, string Content) : Core.Business.Request {
         public static Request Empty() => new(default, default);
     }
         
