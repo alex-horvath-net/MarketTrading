@@ -1,7 +1,7 @@
 ﻿namespace Core.Business;
 
-public record Response<TRequest>()
-    where TRequest : Request {
+public record ResponseCore<TRequest>()
+    where TRequest : RequestCore {
     public DateTime StartedAt { get; set; }
     public DateTime EndAt { get; set; }
     public bool FeatureEnabled { get; set; }

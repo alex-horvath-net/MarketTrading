@@ -6,7 +6,7 @@ public class Story_Design {
     [Fact]
     public async void Provide_Response() {
         validation.MockPass();
-        var userStory = new Story<Request, Response<Request>>(validation);
+        var userStory = new StoryCore<RequestCore, ResponseCore<RequestCore>>(validation);
 
         var response = await userStory.Run(request, token);
 
@@ -17,21 +17,21 @@ public class Story_Design {
 
 
 
-    private readonly IValidation<Request> validation = Substitute.For<IValidation<Request>>();
-    private readonly Request request = new();
+    private readonly IValidation<RequestCore> validation = Substitute.For<IValidation<RequestCore>>();
+    private readonly RequestCore request = new();
     private readonly CancellationToken token = CancellationToken.None;
 }
 
 
 public static class Extensions {
-    public static IValidation<Request> MockPass(this IValidation<Request> solution) {
+    public static IValidation<RequestCore> MockPass(this IValidation<RequestCore> solution) {
         solution
             .Validate(default, default)
             .ReturnsForAnyArgs(new List<ValidationResult>() { });
         return solution;
     }
 
-    public static IValidation<Request> MockFail(this IValidation<Request> solution) {
+    public static IValidation<RequestCore> MockFail(this IValidation<RequestCore> solution) {
         solution
             .Validate(default, default)
             .ReturnsForAnyArgs(new List<ValidationResult>()

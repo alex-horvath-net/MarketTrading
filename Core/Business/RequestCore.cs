@@ -1,5 +1,5 @@
 ﻿namespace Core.Business;
 
-public record Request {
+public record RequestCore {
 
 }

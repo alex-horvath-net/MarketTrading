@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Experts.Blogger.ReadPosts;
 
-public class Validation : ValidationCore<Story.Request>, IValidation<Story.Request> {
+public class Validation : ValidationCore<Request>, IValidation<Request> {
     public Validation() {
         RuleFor(request => request.Title)
             .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator)

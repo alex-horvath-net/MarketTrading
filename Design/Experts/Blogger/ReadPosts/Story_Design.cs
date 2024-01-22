@@ -14,7 +14,7 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
         Create();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<Story<Story.Request, Story.Response>>();
+        Unit.Should().BeAssignableTo<StoryCore<Request, Response>>();
     }
 
     [Fact]
@@ -58,10 +58,10 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
         response.Terminated.Should().BeFalse();
     }
 
-    private readonly IValidation<Story.Request> validation = Substitute.For<IValidation<Story.Request>>();
-    private readonly Story.IRepository repository = Substitute.For<Story.IRepository>();
-    private readonly Story.Request request = Story.Request.Empty();
-    private Story.Response response = Story.Response.Empty();
+    private readonly IValidation<Request> validation = Substitute.For<IValidation<Request>>();
+    private readonly IRepository repository = Substitute.For<IRepository>();
+    private readonly Request request = new Request(default, default);
+    private Response response = new Response();
 }
 
 public class Validation_Design(ITestOutputHelper output) : Design<Validation>(output) {
@@ -133,19 +133,19 @@ public class Validation_Design(ITestOutputHelper output) : Design<Validation>(ou
             );
     }
 
-    private Story.Request request = Story.Request.Empty();
+    private Request request = new(default, default);
     private IEnumerable<ValidationResult> issues;
 }
 
 public static class Extensions {
-    public static IValidation<Story.Request> MockPass(this IValidation<Story.Request> solution) {
+    public static IValidation<Request> MockPass(this IValidation<Request> solution) {
         solution
             .Validate(default, default)
             .ReturnsForAnyArgs(new List<ValidationResult>() { });
         return solution;
     }
 
-    public static IValidation<Story.Request> MockFail(this IValidation<Story.Request> solution) {
+    public static IValidation<Request> MockFail(this IValidation<Request> solution) {
         solution
             .Validate(default, default)
             .ReturnsForAnyArgs(new List<ValidationResult>()
@@ -156,7 +156,7 @@ public static class Extensions {
         return solution;
     }
 
-    public static Story.IRepository CanReceveRead(this Story.IRepository solution) {
+    public static IRepository CanReceveRead(this IRepository solution) {
         solution
             .Read(default, default)
             .ReturnsForAnyArgs(new List<Post> {
@@ -167,35 +167,35 @@ public static class Extensions {
         return solution;
     }
 
-    public static async Task<Story.IRepository> ReceivedRead(this Story.IRepository solution) {
+    public static async Task<IRepository> ReceivedRead(this IRepository solution) {
         await solution.ReceivedWithAnyArgs().Read(default, default);
         return solution;
     }
 
 
-    public static Story.Request MockValidRequest(this Story.Request request) =>
-        new Story.Request("Title", "Content");
+    public static Request MockValidRequest(this Request request) =>
+        new Request("Title", "Content");
 
-    public static Story.Request MockMissingpProperties(this Story.Request request) =>
-        request = new Story.Request(null, null);
+    public static Request MockMissingpProperties(this Request request) =>
+        request = new Request(null, null);
 
-    public static Story.Request MockTooShortProperties(this Story.Request request) =>
-        new Story.Request("12", "21");
+    public static Request MockTooShortProperties(this Request request) =>
+        new Request("12", "21");
 
-    public static Story.Response MockNoPosts(this Story.Response response) {
+    public static Response MockNoPosts(this Response response) {
         response.MockValidRequest();
         response.Posts = null;
         return response;
     }
 
-    public static Story.Response MockValidRequest(this Story.Response response) {
-        response.Request = Story.Request.Empty().MockValidRequest();
+    public static Response MockValidRequest(this Response response) {
+        response.Request = new Request(default, default).MockValidRequest();
         response.FeatureEnabled = true;
         response.ValidationResults = null;
         return response;
     }
 
-    public static Story.Response MockNoValidations(this Story.Response response) {
+    public static Response MockNoValidations(this Response response) {
         response.MockValidRequest();
         response.ValidationResults = null;
         return response;

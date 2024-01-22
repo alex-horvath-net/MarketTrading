@@ -31,6 +31,6 @@ public class ValidationCore_Design {
     public class TestValidator : ValidationCore<TestRequest> {
         public TestValidator() => RuleFor(x => x.Name).MinimumLength(5);
     }
-    public record TestRequest(string Name) : Request();
+    public record TestRequest(string Name) : RequestCore();
 }
 

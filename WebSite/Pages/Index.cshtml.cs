@@ -8,6 +8,6 @@ public class IndexModel(Expert blogger, ILogger<IndexModel> logger) : PageModel
 
     public async Task OnGetAsync()
     {
-        var posts = await blogger.ReadPosts.Run(new  Story.Request("Title", "Content"), CancellationToken.None);
+        var posts = await blogger.ReadPosts.Run(new  Request("Title", "Content"), CancellationToken.None);
     }
 }

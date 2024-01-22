@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Experts.Blogger.ReadPosts;
 
 
-public class Repository(MainDB db) : Story.IRepository {
-    public async Task<IEnumerable<Post>> Read(Story.Request request, CancellationToken token) {
+public class Repository(MainDB db) : IRepository {
+    public async Task<IEnumerable<Post>> Read(Request request, CancellationToken token) {
         var solutionModel = await db
             .Posts
             .Include(x => x.PostTags)
