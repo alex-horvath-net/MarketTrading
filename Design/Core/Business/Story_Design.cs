@@ -1,12 +1,10 @@
-﻿using Experts.Blogger.ReadPosts;
-
-namespace Core.Business;
+﻿namespace Core.Business;
 
 public class Story_Design {
     [Fact]
     public async void Provide_Response() {
         validation.MockPass();
-        var userStory = new StoryCore<RequestCore, ResponseCore<RequestCore>>(validation);
+        var userStory = new TestStory(validation, logger);
 
         var response = await userStory.Run(request, token);
 
@@ -17,21 +15,21 @@ public class Story_Design {
 
 
 
-    private readonly IValidation<RequestCore> validation = Substitute.For<IValidation<RequestCore>>();
+    private readonly IValidator<RequestCore> validation = Substitute.For<IValidator<RequestCore>>();
+    private readonly ILogger<TestStory> logger = Substitute.For<ILogger<TestStory>>();
     private readonly RequestCore request = new();
     private readonly CancellationToken token = CancellationToken.None;
 }
 
-
 public static class Extensions {
-    public static IValidation<RequestCore> MockPass(this IValidation<RequestCore> solution) {
+    public static IValidator<RequestCore> MockPass(this IValidator<RequestCore> solution) {
         solution
             .Validate(default, default)
             .ReturnsForAnyArgs(new List<ValidationResult>() { });
         return solution;
     }
 
-    public static IValidation<RequestCore> MockFail(this IValidation<RequestCore> solution) {
+    public static IValidator<RequestCore> MockFail(this IValidator<RequestCore> solution) {
         solution
             .Validate(default, default)
             .ReturnsForAnyArgs(new List<ValidationResult>()

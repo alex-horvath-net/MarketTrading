@@ -5,7 +5,7 @@ using Core.Business;
 namespace Experts.Blogger.ReadPosts;
 
 public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
-    private void Create() => Unit = new Story(validation, repository);
+    private void Create() => Unit = new Story(repository, validator, logger);
 
     private async Task Act() => response = await Unit.Run(request, token);
 
@@ -14,12 +14,12 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
         Create();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<StoryCore<Request, Response>>();
+        Unit.Should().BeAssignableTo<StoryCore<Request, Response, Story>>();
     }
 
     [Fact]
     public async void ItCan_ValidateValidRequest() {
-        validation.MockPass();
+        validator.MockPass();
         Create();
         request.MockValidRequest();
 
@@ -28,12 +28,12 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
         response.CompletedAt.Should().NotBeNull();
         response.ValidationResults.Should().NotContain(x => !x.IsSuccess);
         response.ValidationResults.Should().BeEmpty();
-        await validation.ReceivedWithAnyArgs().Validate(default, default);
+        await validator.ReceivedWithAnyArgs().Validate(default, default);
     }
 
     [Fact]
     public async void ItCan_ValidateInValidRequest() {
-        validation.MockFail();
+        validator.MockFail();
         Create();
         request.MockMissingpProperties();
 
@@ -41,7 +41,7 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
 
         response.CompletedAt.Should().BeNull();
         response.ValidationResults.Should().Contain(x => !x.IsSuccess);
-        await validation.ReceivedWithAnyArgs().Validate(default, default);
+        await validator.ReceivedWithAnyArgs().Validate(default, default);
     }
 
 
@@ -58,8 +58,9 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
         response.CompletedAt.Should().NotBeNull();
     }
 
-    private readonly IValidation<Request> validation = Substitute.For<IValidation<Request>>();
+    private readonly IValidator validator = Substitute.For<IValidator>();
     private readonly IRepository repository = Substitute.For<IRepository>();
+    private readonly ILogger<Story> logger = Substitute.For<ILogger<Story>>();
     private readonly Request request = new Request(default, default);
     private Response response = new Response();
 }
@@ -138,14 +139,14 @@ public class Validation_Design(ITestOutputHelper output) : Design<Validation>(ou
 }
 
 public static class Extensions {
-    public static IValidation<Request> MockPass(this IValidation<Request> solution) {
+    public static IValidator<Request> MockPass(this IValidator<Request> solution) {
         solution
             .Validate(default, default)
             .ReturnsForAnyArgs(new List<ValidationResult>() { });
         return solution;
     }
 
-    public static IValidation<Request> MockFail(this IValidation<Request> solution) {
+    public static IValidator<Request> MockFail(this IValidator<Request> solution) {
         solution
             .Validate(default, default)
             .ReturnsForAnyArgs(new List<ValidationResult>()
