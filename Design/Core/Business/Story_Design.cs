@@ -10,7 +10,7 @@ public class Story_Design {
 
         response.Should().NotBeNull();
         response.Request.Should().Be(request);
-        response.ValidationResults.Should().BeEmpty();
+        response.Issues.Should().BeEmpty();
     }
 
 

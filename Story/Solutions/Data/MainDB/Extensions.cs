@@ -8,26 +8,28 @@ using Microsoft.Extensions.Logging;
 namespace Common.Solutions.Data.MainDB;
 
 public static class Extensions {
-    public static IServiceCollection AddMainDB(this IServiceCollection services, IConfiguration configuration, string environment = "Development") {
+    public static IServiceCollection AddCommonSolutions(this IServiceCollection services, IConfiguration configuration) => services
+        .AddMainDB(configuration);
+
+        public static IServiceCollection AddMainDB(this IServiceCollection services, IConfiguration configuration, string environment = "Development") {
         services.AddDbContext<MainDB>(builder => {
             if (environment == Environments.Development)
-                builder.Dev();
+                builder.Dev(configuration);
             else
-                builder.Prod();
+                builder.Prod(configuration);
         });
-
         return services;
     }
 
-    public static DbContextOptionsBuilder Dev(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
+    public static DbContextOptionsBuilder Dev(this DbContextOptionsBuilder optionsBuilder, IConfiguration configuration) => optionsBuilder
         .EnableDetailedErrors()
-        .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
+        .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddConfiguration(configuration)))
         .EnableSensitiveDataLogging()
         .UseSqlServer(@"Data Source=.;Initial Catalog=MainDB-Dev;Integrated Security=True;Trust Server Certificate=True", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
-
-    public static DbContextOptionsBuilder Prod(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
+     
+    public static DbContextOptionsBuilder Prod(this DbContextOptionsBuilder optionsBuilder, IConfiguration configuration) => optionsBuilder
         .EnableDetailedErrors()
-        .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Debug)))
+        .UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddConfiguration(configuration)))
         .EnableSensitiveDataLogging()
         .UseSqlServer(@"Server=.;Database=MainDB-Prod;Trusted_Connection=True;", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
 

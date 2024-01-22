@@ -26,8 +26,8 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
         await Act();
 
         response.CompletedAt.Should().NotBeNull();
-        response.ValidationResults.Should().NotContain(x => !x.IsSuccess);
-        response.ValidationResults.Should().BeEmpty();
+        response.Issues.Should().NotContain(x => !x.IsSuccess);
+        response.Issues.Should().BeEmpty();
         await validator.ReceivedWithAnyArgs().Validate(default, default);
     }
 
@@ -40,7 +40,7 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
         await Act();
 
         response.CompletedAt.Should().BeNull();
-        response.ValidationResults.Should().Contain(x => !x.IsSuccess);
+        response.Issues.Should().Contain(x => !x.IsSuccess);
         await validator.ReceivedWithAnyArgs().Validate(default, default);
     }
 
@@ -191,14 +191,14 @@ public static class Extensions {
 
     public static Response MockValidRequest(this Response response) {
         response.Request = new Request(default, default).MockValidRequest();
-        response.FeatureEnabled = true;
-        response.ValidationResults = null;
+        response.Enabled = true;
+        response.Issues = null;
         return response;
     }
 
     public static Response MockNoValidations(this Response response) {
         response.MockValidRequest();
-        response.ValidationResults = null;
+        response.Issues = null;
         return response;
     }
 }

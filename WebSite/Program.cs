@@ -1,4 +1,6 @@
+using Common;
 using Common.Solutions.Data.MainDB;
+using Core;
 using Experts.Blogger;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +9,8 @@ builder.Services.AddRazorPages();
 
 builder
     .Services
-    //.AddCoreApplication(builder.Configuration, builder.Environment.IsDevelopment())
+    .AddCore(config)
+    .AddCommon(config)
     .AddBlogger();
 
 var app = builder.Build();
