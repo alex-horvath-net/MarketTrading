@@ -12,10 +12,13 @@
   <ItemGroup>
     <Compile Remove="Experts\Blogger\WritePostExpertStory\**" />
     <Compile Remove="Experts\Visitor\**" />
+    <Compile Remove="Common\Model\**" />
     <EmbeddedResource Remove="Experts\Blogger\WritePostExpertStory\**" />
     <EmbeddedResource Remove="Experts\Visitor\**" />
+    <EmbeddedResource Remove="Common\Model\**" />
     <None Remove="Experts\Blogger\WritePostExpertStory\**" />
     <None Remove="Experts\Visitor\**" />
+    <None Remove="Common\Model\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +38,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Story\Model\" />
   </ItemGroup>
 
   <ItemGroup>

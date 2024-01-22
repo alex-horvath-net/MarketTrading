@@ -1,11 +1,13 @@
 ﻿using Common;
 using Common.Model;
 using Microsoft.Extensions.DependencyInjection;
-namespace Core.Story;
+namespace Common.Problem;
 
-public class UserStoryExtension_Design {
+public class UserStoryExtension_Design
+{
     [Fact]
-    public void AddUserStory_Registers_All_UserStory() {
+    public void AddUserStory_Registers_All_UserStory()
+    {
         var services = new ServiceCollection();
 
         services.AddStory();

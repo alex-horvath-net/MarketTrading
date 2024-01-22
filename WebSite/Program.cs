@@ -1,7 +1,5 @@
 using Common.Solutions.Data.MainDB;
-using Core;
 using Experts.Blogger;
-using Story;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

@@ -2,12 +2,14 @@
 using Common.Model;
 using NSubstitute;
 
-namespace Core.Story;
+namespace Common.Problem;
 
-public class IUserTask_MockBuilder {
+public class IUserTask_MockBuilder
+{
     public IProblem<Request, Response<Request>> Mock = Substitute.For<IProblem<Request, Response<Request>>>();
 
-    public IUserTask_MockBuilder Terminate() {
+    public IUserTask_MockBuilder Terminate()
+    {
         Mock.Run(default, default)
             .ReturnsForAnyArgs(Task.CompletedTask)
             .AndDoes(call => call.Arg<Response<Request>>().Terminated = true);
@@ -15,7 +17,8 @@ public class IUserTask_MockBuilder {
         return this;
     }
 
-    public IUserTask_MockBuilder DoNotTerminate() {
+    public IUserTask_MockBuilder DoNotTerminate()
+    {
         Mock.Run(default, default)
             .ReturnsForAnyArgs(Task.CompletedTask)
             .AndDoes(call => call.Arg<Response<Request>>().Terminated = false);

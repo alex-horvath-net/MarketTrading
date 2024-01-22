@@ -39,7 +39,7 @@
 //    public static ISolution CanReceveRead(this ISolution solution) {
 //        solution
 //            .Read(default, default)
-//            .ReturnsForAnyArgs(new List<Story.Model.Post> {
+//            .ReturnsForAnyArgs(new List<Common.Model.Post> {
 //                new(){ Id= 1, Title= "Title1", Content= "Content1",  CreatedAt= DateTime.UtcNow},
 //                new(){ Id= 2, Title= "Title2", Content= "Content2",  CreatedAt= DateTime.UtcNow},
 //                new(){ Id= 3, Title= "Title3", Content= "Content3",  CreatedAt= DateTime.UtcNow}

@@ -1,5 +1,4 @@
 ﻿using Common.Model;
-using Story.Model;
 
 namespace Story.Problem.Model;
 

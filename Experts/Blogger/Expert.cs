@@ -1,9 +1,7 @@
-﻿using Common;
-using Experts.Blogger.ReadPosts;
-
+﻿
 namespace Experts.Blogger;
 
 public record Expert(
-    Story<Request, Response> ReadPosts
+    Common.Story<ReadPosts.Story.Request, ReadPosts.Story.Response> ReadPosts
     );
 

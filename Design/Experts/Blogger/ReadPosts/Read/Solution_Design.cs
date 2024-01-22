@@ -1,6 +1,6 @@
 ﻿//using Core;
 //using Microsoft.AspNetCore.Builder;
-//using Story.Solutions.Data.MainDB;
+//using Common.Solutions.Data.MainDB;
 //using Story;
 //using Microsoft.Extensions.Hosting;
 
@@ -42,7 +42,7 @@
 //        mainDB.Posts.Should().NotBeEmpty();
 //    }
 
-//    private IEnumerable<Story.Model.Post>? posts;
+//    private IEnumerable<Common.Model.Post>? posts;
 //    private readonly MainDB db = new MainDB().Schema(false);
 //    private Request request = Request.Empty();
 //}

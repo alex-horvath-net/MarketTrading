@@ -1,5 +1,4 @@
 ﻿using Common;
-using Experts.Blogger.ReadPosts;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger;
@@ -7,25 +6,11 @@ namespace Experts.Blogger;
 public static class Extensions {
     public static IServiceCollection AddBlogger(this IServiceCollection services) => services
         .AddScoped<Expert>()
-        .AddScoped<Story<Request, Response>, ReadPosts>()
+        .AddScoped<Story<ReadPosts.Story.Request, ReadPosts.Story.Response>, ReadPosts.Story>()
+        .AddScoped<ReadPosts.Story.IValidation, ReadPosts.Validation>()
+        .AddScoped<ReadPosts.Story.IRepository, ReadPosts.Repository>()
 
-            .AddProblem<
-                ReadPosts.Validation.Problem,
-                ReadPosts.Validation.ISolution,
-                ReadPosts.Validation.Solution>()
-
-            .AddProblem<
-                ReadPosts.Read.Problem,
-                ReadPosts.Read.ISolution,
-                ReadPosts.Read.Solution>()
         ;
 
-    private static IServiceCollection AddProblem<P, R, S>(this IServiceCollection services)
-        where P : class, IProblem<Request, Response>
-        where R : class
-        where S : class, R => services
-
-           .AddScoped<IProblem<Request, Response>, P>()
-           .AddScoped<R, S>();
 }
 
