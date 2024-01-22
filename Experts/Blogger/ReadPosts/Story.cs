@@ -4,7 +4,7 @@ using Core.Business;
 namespace Experts.Blogger.ReadPosts;
 
 public class Story(
-    IValidation<Request> validator, 
+    IValidation<Request> validator,
     IRepository repository) : StoryCore<Request, Response>(validator) {
 
     public override async Task RunCore(Response response, CancellationToken token) {
@@ -18,7 +18,8 @@ public record Response() : ResponseCore<Request> {
 }
 
 
-public record Request(string Title, string Content) : RequestCore;
+public record Request(string Title, string Content) : RequestCore {
+}
 
 
 public interface IRepository {

@@ -10,4 +10,7 @@ public static class Extensions {
         services.AddScoped(typeof(IValidation<>), typeof(ValidationCore<>));
         return services;
     }
+
+    public static bool HasIssue(this IEnumerable<ValidationResult> results) => results.Any(x => x.IsFailed);
 }
+ 

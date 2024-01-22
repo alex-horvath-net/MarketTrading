@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Azure.Core;
-
-namespace Core.Business;
+﻿namespace Core.Business;
 
 public interface IStory<TRequest, TResponse>
     where TRequest : RequestCore
@@ -15,17 +12,21 @@ public class StoryCore<TRequest, TResponse>(IValidation<TRequest> validator) : I
     public async Task<TResponse> Run(TRequest request, CancellationToken token) {
         var response = new TResponse();
 
-        response.Request = request;
         response.StartedAt = DateTime.UtcNow;
-        response.FeatureEnabled = false;
-        response.Terminated = !response.FeatureEnabled;
+
+        response.Request = request;
+
+        response.FeatureEnabled = true;
+        if (!response.FeatureEnabled)
+            return response;
 
         response.ValidationResults = await validator.Validate(response.Request, token);
-        response.Terminated = response.ValidationResults.Any(x => !x.IsSuccess);
-        if (!response.Terminated)
-            await RunCore(response, token);
+        if (response.ValidationResults.HasIssue())
+            return response;
+        
+        await RunCore(response, token);
 
-        response.EndAt = DateTime.UtcNow;
+        response.CompletedAt = DateTime.UtcNow;
 
         return response;
     }

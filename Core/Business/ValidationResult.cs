@@ -12,6 +12,7 @@ public class ValidationResult {
     public string? ErrorCode { get; }
     public string? ErrorMessage { get; }
     public bool IsSuccess => ErrorCode == null && ErrorMessage == null;
+    public bool IsFailed => !IsSuccess;
 
     private ValidationResult(string? errorCode = null, string? errorMessage = null) {
         ErrorCode = errorCode;

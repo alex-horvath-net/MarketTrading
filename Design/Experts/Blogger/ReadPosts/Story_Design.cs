@@ -25,7 +25,7 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
 
         await Act();
 
-        response.Terminated.Should().BeFalse();
+        response.CompletedAt.Should().NotBeNull();
         response.ValidationResults.Should().NotContain(x => !x.IsSuccess);
         response.ValidationResults.Should().BeEmpty();
         await validation.ReceivedWithAnyArgs().Validate(default, default);
@@ -39,7 +39,7 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
 
         await Act();
 
-        response.Terminated.Should().BeTrue();
+        response.CompletedAt.Should().BeNull();
         response.ValidationResults.Should().Contain(x => !x.IsSuccess);
         await validation.ReceivedWithAnyArgs().Validate(default, default);
     }
@@ -55,7 +55,7 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
 
         await repository.ReceivedRead();
         response.Posts.Should().NotBeEmpty();
-        response.Terminated.Should().BeFalse();
+        response.CompletedAt.Should().NotBeNull();
     }
 
     private readonly IValidation<Request> validation = Substitute.For<IValidation<Request>>();
