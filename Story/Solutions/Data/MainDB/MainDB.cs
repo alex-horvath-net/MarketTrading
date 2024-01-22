@@ -1,10 +1,11 @@
 ﻿using Common.Solutions.Data.MainDB.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Common.Solutions.Data.MainDB;
 
 public class MainDB(DbContextOptions options) : DbContext(options) {
-    public MainDB() : this(new DbContextOptionsBuilder().Dev().Options) { }
+    public MainDB(IConfiguration configuration) : this(new DbContextOptionsBuilder().Dev(configuration).Options) { }
 
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
