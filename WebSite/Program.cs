@@ -1,26 +1,21 @@
 using Common;
-using Common.Solutions.Data.MainDB;
 using Core;
-using Experts.Blogger;
+using Experts;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 builder.Services.AddRazorPages();
 
-builder
-    .Services
+builder.Services
     .AddCore(config)
     .AddCommon(config)
-    .AddBlogger();
+    .AddExperts();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()) {
     app.UseDeveloperExceptionPage();
-    app.UseDeveloperDataBase();
-} else
-{
+} else {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
