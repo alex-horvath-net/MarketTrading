@@ -1,4 +1,4 @@
 ﻿namespace Common;
-public class Common(Solutions.Solutions Solutions);
+public record Common(Solutions.Solutions Solutions);
 
 

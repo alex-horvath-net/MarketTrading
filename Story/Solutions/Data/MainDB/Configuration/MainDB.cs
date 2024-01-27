@@ -1,2 +1,2 @@
 ﻿namespace Common.Solutions.Data.MainDB.Configuration;
-public class MainDB(string ConnectionString);
+public record MainDB(string ConnectionString);

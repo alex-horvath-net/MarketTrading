@@ -1,2 +1,2 @@
 ﻿namespace Common.Solutions.Data;
-public class Data(MainDB.Configuration.MainDB MainDB);
+public record Data(MainDB.Configuration.MainDB MainDB);

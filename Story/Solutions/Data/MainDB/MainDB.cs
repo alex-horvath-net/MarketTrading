@@ -1,10 +1,13 @@
 ﻿using Common.Solutions.Data.MainDB.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Common.Solutions.Data.MainDB;
 
-public class MainDB(DbContextOptions<MainDB> options) : DbContext(options) {
-    //public MainDB() : this(new DbContextOptionsBuilder().Dev().Options) { }
+public class MainDB(DbContextOptions<MainDB> options, IOptions<Common> common ) : DbContext(options) {
+    
+
+    //public MainDB() : this(new DbContextOptionsBuilder().Dev().Options) { } 
 
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
@@ -17,8 +20,9 @@ public class MainDB(DbContextOptions<MainDB> options) : DbContext(options) {
         optionsBuilder
             .EnableDetailedErrors()
             .EnableSensitiveDataLogging()
-            .UseSqlServer($"name = ConnectionStrings:{nameof(MainDB)}", sqlOptionsBuilder => {
-                sqlOptionsBuilder.CommandTimeout(60);
+            .UseSqlServer(common.Value.Solutions.Data.MainDB.ConnectionString, sqlOptionsBuilder => {
+            //.UseSqlServer($"name = ConnectionStrings:{nameof(MainDB)}", sqlOptionsBuilder => {
+                 sqlOptionsBuilder.CommandTimeout(60);
             });
 
 
