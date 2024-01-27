@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Common.Solutions.Data.MainDB;
 
@@ -12,12 +11,14 @@ public static class Extensions {
         .AddMainDB();
 
         public static IServiceCollection AddMainDB(this IServiceCollection services, string environment = "Development") {
-        services.AddDbContext<MainDB>(builder => {
-            if (environment == Environments.Development)
-                builder.Dev();
-            else
-                builder.Prod();
-        });
+       // var v = configuration.connectionString("MainDB");   
+        services.AddDbContext<MainDB>(optionsBuilder => {
+           optionsBuilder .UseSqlServer("name=ConnectionStrings:DefaultConnection");
+        //if (environment == Environments.Development)
+        //    optionsBuilder.Dev();
+        //else
+        //    optionsBuilder.Prod();
+    });
         return services;
     }
 
@@ -25,7 +26,8 @@ public static class Extensions {
         .EnableDetailedErrors()
         //.UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddConfiguration(configuration)))
         .EnableSensitiveDataLogging()
-        .UseSqlServer("MainDB", sqliteBuilder => sqliteBuilder.CommandTimeout(60));
+        //.UseSqlServer(configuration.GetConnectionString("MainDB"), sqlServerOptionsBuilder => sqlServerOptionsBuilder.CommandTimeout(60));
+        .UseSqlServer("MainDB", sql => sql.CommandTimeout(60));
      
     public static DbContextOptionsBuilder Prod(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
         .EnableDetailedErrors()

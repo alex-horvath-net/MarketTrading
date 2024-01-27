@@ -1,15 +1,29 @@
 ﻿using Common.Solutions.Data.MainDB.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Common.Solutions.Data.MainDB;
 
-public class MainDB(DbContextOptions options) : DbContext(options) {
-    public MainDB() : this(new DbContextOptionsBuilder().Dev().Options) { }
+public class MainDB(DbContextOptions<MainDB> options) : DbContext(options) {
+    //public MainDB() : this(new DbContextOptionsBuilder().Dev().Options) { }
 
     public DbSet<Post> Posts { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<PostTag> PostTags { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        if (optionsBuilder.IsConfigured)
+            return;
+
+        optionsBuilder
+            .EnableDetailedErrors()
+            .EnableSensitiveDataLogging()
+            .UseSqlServer($"name = ConnectionStrings:{nameof(MainDB)}", sqlOptionsBuilder => {
+                sqlOptionsBuilder.CommandTimeout(60);
+            });
+
+
+        base.OnConfiguring(optionsBuilder);
+    }
 
     protected override void OnModelCreating(ModelBuilder builder) {
         base.OnModelCreating(builder);
