@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 namespace Common.Solutions.Data.MainDB;
 
 public static class Extensions {
-    public static IServiceCollection AddCommonSolutions(this IServiceCollection services, IConfiguration configuration) => services
+    public static IServiceCollection AddCommonSolutions(this IServiceCollection services) => services
         .AddMainDB();
 
         public static IServiceCollection AddMainDB(this IServiceCollection services, string environment = "Development") {
