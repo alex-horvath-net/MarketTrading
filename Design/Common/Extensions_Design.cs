@@ -15,7 +15,7 @@ public class Extensions_Design {
                     Environment.CurrentDirectory,
                     "../../../../Design/appsettings.json"));
         var configuration = new ConfigurationBuilder().AddJsonFile(filePath).Build();
-        services.AddCoreSolutions(configuration);
+        services.AddCoreSolutions();
         services.AddCoreBusiness();
 
         var sp = services.BuildServiceProvider();

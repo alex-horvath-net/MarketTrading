@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Common.Solutions.Data.MainDB.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,18 +8,37 @@ using Microsoft.Extensions.Hosting;
 namespace Common.Solutions.Data.MainDB;
 
 public static class Extensions {
-    public static IServiceCollection AddCommonSolutions(this IServiceCollection services) => services
-        .AddMainDB();
 
-        public static IServiceCollection AddMainDB(this IServiceCollection services, string environment = "Development") {
-       // var v = configuration.connectionString("MainDB");   
-        services.AddDbContext<MainDB>(optionsBuilder => {
-           optionsBuilder .UseSqlServer("name=ConnectionStrings:DefaultConnection");
+    public static IServiceCollection AddMyLibraryService2(this IServiceCollection services, Action<TransientFaultHandlingOptions> optionBuilder = null) => services
+       .AddOptionsWithValidateOnStart<TransientFaultHandlingOptions>()
+       .Configure<IConfiguration, IHostEnvironment>((options, config, env) => {
+           config
+           .GetSection(TransientFaultHandlingOptions.SectionName)
+           .Bind(options);
+
+           optionBuilder ??= _ => { };
+           optionBuilder(options);
+       })
+       .ValidateDataAnnotations()
+       .Validate(options => !options.Enabled || options.AutoRetryDelay > TimeSpan.Zero, "AutoRetryDelay must be set if Enabeled.")
+       .Services;
+
+
+    public static IServiceCollection AddCommonSolutions(this IServiceCollection services) => services
+       .AddMainDB();
+
+    public static IServiceCollection AddMainDB(this IServiceCollection services) {
+        // var v = configuration.connectionString("MainDB");   
+        services.AddDbContext<MainDB>();
+        //services.AddDbContext<MainDB>((sp, builder) => {
+        //var solutions = sp.GetService<Solutions>();
+        //var connection = solutions.Data.MainDB.ConnectionString;
+        //builder.UseSqlServer(connection);
         //if (environment == Environments.Development)
         //    optionsBuilder.Dev();
         //else
         //    optionsBuilder.Prod();
-    });
+        //});
         return services;
     }
 
@@ -28,7 +48,7 @@ public static class Extensions {
         .EnableSensitiveDataLogging()
         //.UseSqlServer(configuration.GetConnectionString("MainDB"), sqlServerOptionsBuilder => sqlServerOptionsBuilder.CommandTimeout(60));
         .UseSqlServer("MainDB", sql => sql.CommandTimeout(60));
-     
+
     public static DbContextOptionsBuilder Prod(this DbContextOptionsBuilder optionsBuilder) => optionsBuilder
         .EnableDetailedErrors()
         //.UseLoggerFactory(LoggerFactory.Create(logBuilder => logBuilder.AddConfiguration(configuration)))

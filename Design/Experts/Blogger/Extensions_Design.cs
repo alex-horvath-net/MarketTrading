@@ -19,8 +19,8 @@ public class Extensions_Design {
         var services = new ServiceCollection(); 
 
         services
-            .AddCore(configuration)
-            .AddCommon(configuration)
+            .AddCore()
+            .AddCommon()
             .AddBlogger();
 
         using var serviceProvider = services.BuildServiceProvider();

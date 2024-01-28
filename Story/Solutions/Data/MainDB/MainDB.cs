@@ -4,8 +4,15 @@ using Microsoft.Extensions.Options;
 
 namespace Common.Solutions.Data.MainDB;
 
-public class MainDB(DbContextOptions<MainDB> options, IOptions<Common> common ) : DbContext(options) {
-    
+public class MainDB :DbContext {
+    private readonly string connectionString;
+
+    public MainDB(DbContextOptions<MainDB> options, IOptions<Common> settings) : base(options) 
+    {
+        this.connectionString = settings.Value.Solutions.Data.MainDB.ConnectionString;
+    }
+    //public MainDB(DbContextOptions<MainDB> options, IOptions<Solutions> settings) : DbContext(options) { }
+
 
     //public MainDB() : this(new DbContextOptionsBuilder().Dev().Options) { } 
 
@@ -20,7 +27,7 @@ public class MainDB(DbContextOptions<MainDB> options, IOptions<Common> common ) 
         optionsBuilder
             .EnableDetailedErrors()
             .EnableSensitiveDataLogging()
-            .UseSqlServer(common.Value.Solutions.Data.MainDB.ConnectionString, sqlOptionsBuilder => {
+            .UseSqlServer(connectionString, sqlOptionsBuilder => {
             //.UseSqlServer($"name = ConnectionStrings:{nameof(MainDB)}", sqlOptionsBuilder => {
                  sqlOptionsBuilder.CommandTimeout(60);
             });

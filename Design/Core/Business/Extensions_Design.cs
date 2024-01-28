@@ -17,7 +17,7 @@ public class Extensions_Design {
             .AddJsonFile(filePath)
             .Build();
 
-        services.AddCore(configuration);
+        services.AddCore();
 
         var sp = services.BuildServiceProvider();
         var userStory = sp.GetRequiredService<IStory<RequestCore, ResponseCore<RequestCore>, TestStory>>();

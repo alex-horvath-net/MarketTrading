@@ -8,24 +8,24 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Core;
 
 public static class Extensions {
-    public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration configuration) => services
+    public static IServiceCollection AddCore(this IServiceCollection services) => services
         .AddCoreBusiness()
-        .AddCoreSolutions(configuration);
+        .AddCoreSolutions()        ;
 
     public static IServiceCollection AddCoreBusiness(this IServiceCollection services) {
         services.AddScoped(typeof(IStory<,,>), typeof(StoryCore<,,>));
         return services;
     }
 
-    public static IServiceCollection AddCoreSolutions(this IServiceCollection services, IConfiguration configuration) {
-        services.AddMicrosoftLogger(configuration);
+    public static IServiceCollection AddCoreSolutions(this IServiceCollection services) {
+        services.AddMicrosoftLogger();
         services.AddFluentValidation();
         return services;
     }
 
-    public static IServiceCollection AddMicrosoftLogger(this IServiceCollection services, IConfiguration configuration) {
+    public static IServiceCollection AddMicrosoftLogger(this IServiceCollection services) {
         services.AddScoped(typeof(Business.ILogger<>), typeof(MicrosoftLogger<>));
-        services.AddLogging(builder => builder.AddConfiguration(configuration));
+        services.AddLogging();
         return services;
     }
 
