@@ -34,5 +34,5 @@ public static class Extensions {
         return services;
     }
 
-    public static bool HasIssue(this IEnumerable<ValidationResult> results) => results.Any(x => x.IsFailed);
+    public static bool HasFailed(this IEnumerable<Result> results) => results.Any(x => x.IsFailed);
 }

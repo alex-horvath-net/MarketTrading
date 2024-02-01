@@ -25,16 +25,16 @@ public static class Extensions {
     public static IValidator<RequestCore> MockPass(this IValidator<RequestCore> solution) {
         solution
             .Validate(default, default)
-            .ReturnsForAnyArgs(new List<ValidationResult>() { });
+            .ReturnsForAnyArgs(new List<Result>() { });
         return solution;
     }
 
     public static IValidator<RequestCore> MockFail(this IValidator<RequestCore> solution) {
         solution
             .Validate(default, default)
-            .ReturnsForAnyArgs(new List<ValidationResult>()
+            .ReturnsForAnyArgs(new List<Result>()
             {
-                ValidationResult.Failed("TestErrorCode", "TestErrorMessage")
+                new Failed("TestErrorCode", "TestErrorMessage")
                 //new ("TestPropertyName", "TestErrorCode", "TestErrorMessage", "TestSeverity")
             });
         return solution;

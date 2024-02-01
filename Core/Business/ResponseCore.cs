@@ -6,5 +6,5 @@ public record ResponseCore<TRequest>()
     public DateTime? CompletedAt { get; set; }
     public bool Enabled { get; set; }
     public TRequest Request { get; set; }
-    public IEnumerable<ValidationResult> Issues { get; set; }
+    public IEnumerable<Result> Issues { get; set; }
 }

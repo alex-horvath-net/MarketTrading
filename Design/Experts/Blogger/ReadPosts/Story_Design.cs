@@ -135,23 +135,23 @@ public class Validation_Design(ITestOutputHelper output) : Design<Validation>(ou
     }
 
     private Request request = new(default, default);
-    private IEnumerable<ValidationResult> issues;
+    private IEnumerable<Result> issues;
 }
 
 public static class Extensions {
     public static IValidator<Request> MockPass(this IValidator<Request> solution) {
         solution
             .Validate(default, default)
-            .ReturnsForAnyArgs(new List<ValidationResult>() { });
+            .ReturnsForAnyArgs(new List<Result>() { });
         return solution;
     }
 
     public static IValidator<Request> MockFail(this IValidator<Request> solution) {
         solution
             .Validate(default, default)
-            .ReturnsForAnyArgs(new List<ValidationResult>()
+            .ReturnsForAnyArgs(new List<Result>()
             {
-                ValidationResult.Failed("TestErrorCode", "TestErrorMessage")
+                new Failed("TestErrorCode", "TestErrorMessage")
                 //new ("TestPropertyName", "TestErrorCode", "TestErrorMessage", "TestSeverity")
             });
         return solution;

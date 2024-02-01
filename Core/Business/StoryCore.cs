@@ -26,14 +26,14 @@ public class StoryCore<TRequest, TResponse, TStory>(
                 return response;
 
             response.Issues = await Validate(request, token);
-            if (response.Issues.HasIssue())
+            if (response.Issues.HasFailed())
                 return response;
 
             await RunCore(response, token);
 
             response.CompletedAt  = Complete();
         } catch (Exception ex) {
-            logger.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", Name, "Exception", DateTime.UtcNow);
+            logger.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", Name, "", DateTime.UtcNow);
             throw;
         }
 
@@ -46,7 +46,7 @@ public class StoryCore<TRequest, TResponse, TStory>(
         return now;
     }
 
-    private Task<IEnumerable<ValidationResult>> Validate(TRequest request, CancellationToken token) => validator.Validate(request, token);
+    private Task<IEnumerable<Result>> Validate(TRequest request, CancellationToken token) => validator.Validate(request, token);
 
     private DateTime Start() {
         var now = DateTime.UtcNow;
