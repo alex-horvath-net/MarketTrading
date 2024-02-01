@@ -13,15 +13,12 @@ public class Story(
     }
 }
 
-
 public record Response() : ResponseCore<Request> {
     public IEnumerable<Post>? Posts { get; set; }
 }
 
-
 public record Request(string Title, string Content) : RequestCore {
 }
-
 
 public interface IRepository {
     Task<IEnumerable<Post>> Read(Request Request, CancellationToken token);

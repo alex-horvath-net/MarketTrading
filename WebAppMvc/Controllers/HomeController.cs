@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAppMvc.Controllers {
     public class HomeController(Experts.Blogger.Expert expert, Core.Business.ILogger<HomeController> logger) : Controller {
         public async Task<IActionResult> Index() {
-            logger.LogInformation("{Action}", nameof(Index));
+            logger.Inform( "{Action}", nameof(Index));
             var resposne = await expert.ReadPosts.Run(new("Title", "Content"), CancellationToken.None);
             return View();
         }

@@ -33,7 +33,7 @@ public class StoryCore<TRequest, TResponse, TStory>(
 
             response.CompletedAt  = Complete();
         } catch (Exception ex) {
-            logger.LogError(ex, "Event {Event}, Story {Story}, Time {Time}", "Failed", Name, DateTime.UtcNow);
+            logger.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", Name, "Exception", DateTime.UtcNow);
             throw;
         }
 
@@ -42,7 +42,7 @@ public class StoryCore<TRequest, TResponse, TStory>(
 
     private DateTime Complete() {
         var now = DateTime.UtcNow;
-        logger.LogInformation("Event {Event}, Story {Story}, Time {Time}", "Completed", Name, now);
+        logger.Inform("Event {Event}, Story {Story}, Time {Time}", "Completed", Name, now);
         return now;
     }
 
@@ -50,7 +50,7 @@ public class StoryCore<TRequest, TResponse, TStory>(
 
     private DateTime Start() {
         var now = DateTime.UtcNow;
-        logger.LogInformation("Event {Event}, Story {Story}, Time {Time}", "Started", Name, now);
+        logger.Inform("Event {Event}, Story {Story}, Time {Time}", "Started", Name, now);
         return now;
     }
 
