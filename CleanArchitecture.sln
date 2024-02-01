@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Design", "Design\Design.csproj", "{DD63E5E4-93ED-4A64-8E11-C0740DEE0E99}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{573DC907-53B8-4FAD-B1F9-AB8F7DE1CEDA}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{1C8ECFB3-40B2-49D0-A1A4-DD20D5F2D974}"
 EndProject
@@ -13,17 +16,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Experts", "Experts\Experts.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Story\Common.csproj", "{D1FC4DAC-2539-4ECE-AAF8-65D2B1A83A38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppRazor", "WebAppRazor\WebAppRazor.csproj", "{6C7FC669-8686-42CC-B810-2ED6D8E2CBAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppRazor", "WebAppRazor\WebAppRazor.csproj", "{6C7FC669-8686-42CC-B810-2ED6D8E2CBAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppBlazor", "WebAppBlazor\WebAppBlazor.csproj", "{D7A48C21-A1A8-47D4-8B8B-90972D6E6E44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppBlazor", "WebAppBlazor\WebAppBlazor.csproj", "{D7A48C21-A1A8-47D4-8B8B-90972D6E6E44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{CAA2583D-7F71-4A67-9F34-4E14DA1ED2D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{CAA2583D-7F71-4A67-9F34-4E14DA1ED2D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppMvc", "WebAppMvc\WebAppMvc.csproj", "{3BD9133E-32C6-4AA1-B4CF-6AD9EA97DF74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppMvc", "WebAppMvc\WebAppMvc.csproj", "{3BD9133E-32C6-4AA1-B4CF-6AD9EA97DF74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppWorkerService", "WebAppWorkerService\WebAppWorkerService.csproj", "{94841F90-5151-4D0B-861D-A34856509634}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppWorkerService", "WebAppWorkerService\WebAppWorkerService.csproj", "{94841F90-5151-4D0B-861D-A34856509634}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebGrpcService", "WebApiGrpc\WebGrpcService.csproj", "{45BABCD7-9C73-45CE-86AD-4324F2A9A697}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebGrpcService", "WebApiGrpc\WebGrpcService.csproj", "{45BABCD7-9C73-45CE-86AD-4324F2A9A697}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{78DF19F5-E4A6-419F-A410-5C66966D129A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +79,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6C7FC669-8686-42CC-B810-2ED6D8E2CBAA} = {78DF19F5-E4A6-419F-A410-5C66966D129A}
+		{D7A48C21-A1A8-47D4-8B8B-90972D6E6E44} = {78DF19F5-E4A6-419F-A410-5C66966D129A}
+		{CAA2583D-7F71-4A67-9F34-4E14DA1ED2D9} = {78DF19F5-E4A6-419F-A410-5C66966D129A}
+		{3BD9133E-32C6-4AA1-B4CF-6AD9EA97DF74} = {78DF19F5-E4A6-419F-A410-5C66966D129A}
+		{94841F90-5151-4D0B-861D-A34856509634} = {78DF19F5-E4A6-419F-A410-5C66966D129A}
+		{45BABCD7-9C73-45CE-86AD-4324F2A9A697} = {78DF19F5-E4A6-419F-A410-5C66966D129A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CC0D47BD-147E-4E6F-A06A-FFDEB8696E0F}
