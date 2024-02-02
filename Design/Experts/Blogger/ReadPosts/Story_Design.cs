@@ -4,8 +4,8 @@ using Core.Business;
 
 namespace Experts.Blogger.ReadPosts;
 
-public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
-    private void Create() => Unit = new Story(repository, validator, logger);
+public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) {
+    private void Create() => Unit = new UserStory(repository, validator, logger);
 
     private async Task Act() => response = await Unit.Run(request, token);
 
@@ -14,7 +14,7 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
         Create();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<StoryCore<Request, Response, Story>>();
+        Unit.Should().BeAssignableTo<StoryCore<Request, Response>>();
     }
 
     [Fact]
@@ -25,9 +25,9 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
 
         await Act();
 
-        response.CompletedAt.Should().NotBeNull();
-        response.Issues.Should().NotContain(x => !x.IsSuccess);
-        response.Issues.Should().BeEmpty();
+        response.MetaData.CompletedAt.Should().NotBeNull();
+        response.MetaData.Results.Should().NotContain(x => !x.IsSuccess);
+        response.MetaData.Results.Should().BeEmpty();
         await validator.ReceivedWithAnyArgs().Validate(default, default);
     }
 
@@ -39,8 +39,8 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
 
         await Act();
 
-        response.CompletedAt.Should().BeNull();
-        response.Issues.Should().Contain(x => !x.IsSuccess);
+        response.MetaData.CompletedAt.Should().BeNull();
+        response.MetaData.Results.Should().Contain(x => !x.IsSuccess);
         await validator.ReceivedWithAnyArgs().Validate(default, default);
     }
 
@@ -55,12 +55,12 @@ public class Story_Design(ITestOutputHelper output) : Design<Story>(output) {
 
         await repository.ReceivedRead();
         response.Posts.Should().NotBeEmpty();
-        response.CompletedAt.Should().NotBeNull();
+        response.MetaData.CompletedAt.Should().NotBeNull();
     }
 
     private readonly IValidator validator = Substitute.For<IValidator>();
     private readonly IRepository repository = Substitute.For<IRepository>();
-    private readonly ILogger<Story> logger = Substitute.For<ILogger<Story>>();
+    private readonly ILogger<UserStory> logger = Substitute.For<ILogger<UserStory>>();
     private readonly Request request = new Request(default, default);
     private Response response = new Response();
 }
@@ -190,15 +190,15 @@ public static class Extensions {
     }
 
     public static Response MockValidRequest(this Response response) {
-        response.Request = new Request(default, default).MockValidRequest();
-        response.Enabled = true;
-        response.Issues = null;
+        response.MetaData.Request = new Request(default, default).MockValidRequest();
+        response.MetaData.Enabled = true;
+        response.MetaData.Results = null;
         return response;
     }
 
     public static Response MockNoValidations(this Response response) {
         response.MockValidRequest();
-        response.Issues = null;
+        response.MetaData.Results = null;
         return response;
     }
 }

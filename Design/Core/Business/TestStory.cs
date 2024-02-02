@@ -2,5 +2,5 @@
 
 public class TestStory(
     IValidator<RequestCore> validator,
-    ILogger<TestStory> logger) : StoryCore<RequestCore, ResponseCore<RequestCore>, TestStory>(validator, logger) {
+    ILogger<TestStory> logger) : StoryCore<RequestCore, ResponseCore<RequestCore>>(validator, logger, nameof(TestStory)) {
 }

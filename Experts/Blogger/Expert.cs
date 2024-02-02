@@ -1,7 +1,5 @@
-﻿
-using Core.Business;
-
-namespace Experts.Blogger;
+﻿namespace Experts.Blogger;
 
 public record Expert(
-  IStory<ReadPosts.Request, ReadPosts.Response, ReadPosts.Story> ReadPosts);
+  ReadPosts.IUserStory ReadPosts);
+

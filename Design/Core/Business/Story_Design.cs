@@ -9,8 +9,8 @@ public class Story_Design {
         var response = await userStory.Run(request, token);
 
         response.Should().NotBeNull();
-        response.Request.Should().Be(request);
-        response.Issues.Should().BeEmpty();
+        response.MetaData.Request.Should().Be(request);
+        response.MetaData.Results.Should().BeEmpty();
     }
 
 
