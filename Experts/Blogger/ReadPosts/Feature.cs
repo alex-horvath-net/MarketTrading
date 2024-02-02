@@ -23,11 +23,8 @@ public interface IRepository {
 
 public interface IValidator : Core.Business.IValidator<Request> { }
 
-public class UserStory(
-  IRepository repository,
-  IValidator validator,
-  ILogger<UserStory> logger) : StoryCore<Request, Response>(validator, logger, nameof(UserStory)), IUserStory {
-
+public class UserStory(ITime time, IRepository repository, IValidator validator, ILogger<UserStory> logger) :
+  StoryCore<Request, Response>(time, validator, logger, nameof(UserStory)), IUserStory {
   public override async Task Run(Response response, CancellationToken token) {
     response.Posts = await repository.Read(response.MetaData.Request, token);
   }

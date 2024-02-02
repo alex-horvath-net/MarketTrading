@@ -1,6 +1,7 @@
 ﻿namespace Core.Business;
 
 public class TestStory(
-    IValidator<RequestCore> validator,
-    ILogger<TestStory> logger) : StoryCore<RequestCore, ResponseCore<RequestCore>>(validator, logger, nameof(TestStory)) {
+  ITime time,
+  IValidator<RequestCore> validator,
+  ILogger<TestStory> logger) : StoryCore<RequestCore, ResponseCore<RequestCore>>(time, validator, logger, nameof(TestStory)) {
 }
