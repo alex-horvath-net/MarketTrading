@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Business;
+using Core.Business.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

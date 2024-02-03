@@ -1,4 +1,4 @@
-using WebApiGrpc.Services;
+using WebGrpcService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

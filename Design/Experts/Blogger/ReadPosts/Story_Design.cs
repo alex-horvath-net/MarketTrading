@@ -1,11 +1,16 @@
 ﻿using Common.Business.Model;
 using Core;
 using Core.Business;
+using Core.Business.Model;
+using Experts.Blogger.ReadPosts.Business;
+using Experts.Blogger.ReadPosts.Business.Model;
+using Experts.Blogger.ReadPosts.Business.SolutionPorts;
+using Experts.Blogger.ReadPosts.Solutions;
 
 namespace Experts.Blogger.ReadPosts;
 
 public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) {
-  private void Create() => Unit = new UserStory(settings, validator, repository, logger, time);
+  private void Create() => Unit = new UserStory(validator, repository, settings, logger, time);
 
   private async Task Act() => response = await Unit.Run(request, token);
 

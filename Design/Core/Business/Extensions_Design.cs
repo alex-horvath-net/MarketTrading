@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Core.Business.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 namespace Core.Business;

@@ -1,4 +1,4 @@
-﻿using Core.Business;
+﻿using Core.Business.Model;
 using FluentValidation;
 
 namespace Core.Solutions.Validation;

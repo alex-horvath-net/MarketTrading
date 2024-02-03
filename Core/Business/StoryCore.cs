@@ -1,4 +1,5 @@
 ﻿using System.Runtime;
+using Core.Business.Model;
 
 namespace Core.Business;
 
@@ -10,8 +11,8 @@ public interface IUserStoryCore<TRequest, TResponse, TSettings>
 }
 
 public class UserStoryCore<TRequest, TResponse, TSettings>(
+  IValidator<TRequest> validator,
   ISettings<TSettings> settings,
-  IValidator<TRequest> validator,  
   ILog log,
   ITime time,
   String Name) : IUserStoryCore<TRequest, TResponse, TSettings>

@@ -1,4 +1,5 @@
-﻿using Experts.Blogger.ReadPosts;
+﻿using Core.Business.Model;
+using Experts.Blogger.ReadPosts;
 
 namespace Core.Business;
 

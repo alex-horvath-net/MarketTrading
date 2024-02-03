@@ -1,9 +1,8 @@
-﻿namespace Core.Business;
+﻿namespace Core.Business.Model;
 
-public abstract record Result(string? ErrorCode, string? ErrorMessage)
-{
-    public bool IsSuccess => ErrorCode == null && ErrorMessage == null;
-    public bool IsFailed => !IsSuccess;
+public abstract record Result(string? ErrorCode, string? ErrorMessage) {
+  public bool IsSuccess => ErrorCode == null && ErrorMessage == null;
+  public bool IsFailed => !IsSuccess;
 }
 
 public record Success() : Result(null, null);

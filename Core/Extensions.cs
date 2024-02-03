@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Core.Solutions.Time;
 using Core.Solutions.Setting;
+using Core.Business.Model;
 
 namespace Core;
 

@@ -1,4 +1,4 @@
-﻿namespace Core.Business;
+﻿namespace Core.Business.Model;
 
 public record ResponseCore<TRequest>()
     where TRequest : RequestCore {

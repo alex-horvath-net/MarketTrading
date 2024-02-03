@@ -1,4 +1,6 @@
-﻿namespace Core.Business;
+﻿using Core.Business.Model;
+
+namespace Core.Business;
 
 public class Request_Design
 {

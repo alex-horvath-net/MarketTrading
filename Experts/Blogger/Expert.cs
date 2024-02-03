@@ -1,5 +1,7 @@
-﻿namespace Experts.Blogger;
+﻿using Experts.Blogger.ReadPosts.Business;
+
+namespace Experts.Blogger;
 
 public record Expert(
-  ReadPosts.IUserStory ReadPosts);
+  IUserStory ReadPosts);
 
