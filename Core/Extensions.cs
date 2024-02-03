@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Core.Solutions.Time;
+using Core.Solutions.Setting;
 
 namespace Core;
 
@@ -14,14 +15,19 @@ public static class Extensions {
       .AddCoreSolutions();
 
   public static IServiceCollection AddCoreBusiness(this IServiceCollection services) {
-    services.AddScoped(typeof(IUserStoryCore<,>), typeof(StoryCore<,>));
+    services.AddScoped(typeof(IUserStoryCore<,,>), typeof(UserStoryCore<,,>));
     return services;
   }
 
-  public static IServiceCollection AddCoreSolutions(this IServiceCollection services) {
-    services.AddMicrosoftTime();
-    services.AddMicrosoftLogger();
-    services.AddFluentValidation();
+  public static IServiceCollection AddCoreSolutions(this IServiceCollection services) => services
+    .AddMicrosoftTime()
+    .AddMicrosoftSettings()
+    .AddMicrosoftLogger()
+    .AddFluentValidation();
+    
+
+  public static IServiceCollection AddMicrosoftSettings(this IServiceCollection services) {
+    services.AddSingleton(typeof(ISettings<>), typeof(MicrosoftSettings<>));
     return services;
   }
 
@@ -31,7 +37,7 @@ public static class Extensions {
   }
 
   public static IServiceCollection AddMicrosoftLogger(this IServiceCollection services) {
-    services.AddScoped(typeof(Business.ILogger<>), typeof(MicrosoftLogger<>));
+    services.AddScoped(typeof(Business.ILog<>), typeof(MicrosoftLog<>));
     services.AddLogging();
     return services;
   }

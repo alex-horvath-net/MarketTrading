@@ -1,48 +1,51 @@
-﻿namespace Core.Business;
+﻿using System.Runtime;
 
-public interface IUserStoryCore<TRequest, TResponse>
+namespace Core.Business;
+
+public interface IUserStoryCore<TRequest, TResponse, TSettings>
   where TRequest : RequestCore
-  where TResponse : ResponseCore<TRequest>, new() {
+  where TResponse : ResponseCore<TRequest>, new()
+  where TSettings : SettingsCore {
   Task<TResponse> Run(TRequest request, CancellationToken token);
 }
 
-public class StoryCore<TRequest, TResponse>(  
-  ITime time, 
+public class UserStoryCore<TRequest, TResponse, TSettings>(
+  ISettings<TSettings> settings,
   IValidator<TRequest> validator,  
-  ILogger logger, 
-  String Name) : IUserStoryCore<TRequest, TResponse>
+  ILog log,
+  ITime time,
+  String Name) : IUserStoryCore<TRequest, TResponse, TSettings>
   where TRequest : RequestCore
-  where TResponse : ResponseCore<TRequest>, new() {
-
+  where TResponse : ResponseCore<TRequest>, new()
+  where TSettings : SettingsCore {
 
   public async Task<TResponse> Run(TRequest request, CancellationToken token) {
     var response = new TResponse();
     try {
-      response.MetaData.StartedAt = Start();
+      response.MetaData.StartedAt = this.Start();
       response.MetaData.Request = request;
-      response.MetaData.Enabled = true;
+      response.MetaData.Enabled = settings.Value.Enabled;
       if (!response.MetaData.Enabled) return response;
 
-      response.MetaData.Results = await Validate(request, token);
+      response.MetaData.Results = await this.Validate(request, token);
       if (response.MetaData.Results.HasFailed()) return response;
 
       await Run(response, token);
 
-      response.MetaData.CompletedAt = Complete();
+      response.MetaData.CompletedAt = this.Complete();
     }
     catch (Exception ex) {
-      
-      logger.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed",Name, "", DateTime.UtcNow);
+
+      log.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", Name, "", DateTime.UtcNow);
       throw;
     }
 
     return response;
   }
 
-
   private DateTime Complete() {
     var now = time.UtcNow;
-    logger.Inform("Event {Event}, Story {Story}, Time {Time}", "Completed", Name, now);
+    log.Inform("Event {Event}, Story {Story}, Time {Time}", "Completed", Name, now);
     return now;
   }
 
@@ -50,7 +53,7 @@ public class StoryCore<TRequest, TResponse>(
 
   private DateTime Start() {
     var now = time.UtcNow;
-    logger.Inform("Event {Event}, Story {Story}, Time {Time}", "Started", Name, now);
+    log.Inform("Event {Event}, Story {Story}, Time {Time}", "Started", Name, now);
     return now;
   }
 

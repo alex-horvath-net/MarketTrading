@@ -2,7 +2,7 @@
 
 namespace Core.Business;
 
-public interface ILogger {
+public interface ILog {
   void Trace(string? template);
   void Trace<P0>(string template, P0 p0);
   void Trace<P0, P1>(string template, P0 p0, P1 p1);
@@ -68,5 +68,5 @@ public interface ILogger {
   void Error<P0, P1, P2, P3, P4, P5, P6, P7, P8, P9>(Exception exception, string template, P0 p0, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7, P8 p8, P9 p9);
 }
 
-public interface ILogger<T> : ILogger where T : class  {
+public interface ILog<T> : ILog where T : class  {
 }

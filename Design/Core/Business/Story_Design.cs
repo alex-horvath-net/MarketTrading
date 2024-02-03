@@ -1,11 +1,14 @@
-﻿namespace Core.Business;
+﻿using Experts.Blogger.ReadPosts;
+
+namespace Core.Business;
 
 public class Story_Design {
   [Fact]
   public async void Provide_Response() {
-    time.Default();
+    settings.Enabled();
+    time.Freeze_2023_01_01();
     validation.MockPass();
-    var userStory = new TestStory(time, validation, logger);
+    var userStory = new TestStory(settings, time, validation, logger);
 
     var response = await userStory.Run(request, token);
 
@@ -15,18 +18,30 @@ public class Story_Design {
   }
 
 
-
+  private readonly ISettings<SettingsCore> settings = Substitute.For<ISettings<SettingsCore>>();
   private readonly ITime time = Substitute.For<ITime>();
+  private readonly ILog<TestStory> logger = Substitute.For<ILog<TestStory>>();
   private readonly IValidator<RequestCore> validation = Substitute.For<IValidator<RequestCore>>();
-  private readonly ILogger<TestStory> logger = Substitute.For<ILogger<TestStory>>();
   private readonly RequestCore request = new();
   private readonly CancellationToken token = CancellationToken.None;
 }
 
 public static class Extensions {
-  public static ITime Default(this ITime time) {
-    var returnThis = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Local);
-    time.Now.Returns(returnThis);
+  public static ISettings<SettingsCore> Enabled(this ISettings<SettingsCore > settings) {
+    var returnThis = new SettingsCore() { Enabled = true };
+    settings.Value.Returns(returnThis);
+    return settings;
+  }
+
+  public static ISettings<SettingsCore> Disabled(this ISettings<SettingsCore> settings) {
+    var returnThis = new SettingsCore() { Enabled = false };
+    settings.Value.Returns(returnThis);
+    return settings;
+  }
+
+  public static ITime Freeze_2023_01_01(this ITime time) {
+    var returnThis = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    time.UtcNow.Returns(returnThis);
     return time;
   }
 

@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 
 namespace Core.Solutions.Logging;
-public class MicrosoftLogger<T>(Microsoft.Extensions.Logging.ILogger<T> logger) : Core.Business.ILogger<T> where T : class
+public class MicrosoftLog<T>(ILogger<T> logger) : Business.ILog<T> where T : class
 {
     public void Trace(string? template)
     {
         if (logger.IsEnabled(LogLevel.Trace))
             logger.LogTrace(template);
-    }
+    } 
     public void Trace<P0>(string template, P0 p0)
     {
         if (logger.IsEnabled(LogLevel.Trace))

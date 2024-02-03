@@ -5,7 +5,7 @@ using Core.Business;
 namespace Experts.Blogger.ReadPosts;
 
 public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) {
-  private void Create() => Unit = new UserStory(time, repository, validator, logger);
+  private void Create() => Unit = new UserStory(settings, validator, repository, logger, time);
 
   private async Task Act() => response = await Unit.Run(request, token);
 
@@ -14,12 +14,13 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
     Create();
 
     Unit.Should().NotBeNull();
-    Unit.Should().BeAssignableTo<StoryCore<Request, Response>>();
+    Unit.Should().BeAssignableTo<UserStoryCore<Request, Response, Settings>>();
   }
 
   [Fact]
   public async void ItCan_ValidateValidRequest() {
-    time.Default();
+    settings.Enabled();
+    time.Freeze_2023_01_01();
     validator.MockPass();
     Create();
     request.MockValidRequest();
@@ -34,7 +35,8 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
 
   [Fact]
   public async void ItCan_ValidateInValidRequest() {
-    time.Default();
+    settings.Enabled(); 
+    time.Freeze_2023_01_01();
     validator.MockFail();
     Create();
     request.MockMissingpProperties();
@@ -49,7 +51,8 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
 
   [Fact]
   public async void ItCan_PopulatePosts() {
-    time.Default();
+    settings.Enabled(); 
+    time.Freeze_2023_01_01();
     request.MockValidRequest();
     repository.CanReceveRead();
     Create();
@@ -62,9 +65,10 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
   }
 
   private readonly ITime time = Substitute.For<ITime>();
+  private readonly ISettings<Settings> settings = Substitute.For<ISettings<Settings>>();
   private readonly IValidator validator = Substitute.For<IValidator>();
   private readonly IRepository repository = Substitute.For<IRepository>();
-  private readonly ILogger<UserStory> logger = Substitute.For<ILogger<UserStory>>();
+  private readonly ILog<UserStory> logger = Substitute.For<ILog<UserStory>>();
   private readonly Request request = new Request(default, default);
   private Response response = new Response();
 }
@@ -143,10 +147,21 @@ public class Validation_Design(ITestOutputHelper output) : Design<Validation>(ou
 }
 
 public static class Extensions {
+  public static ISettings<Settings> Enabled(this ISettings<Settings> settings) {
+    var returnThis = new Settings() { Enabled = true };
+    settings.Value.Returns(returnThis);
+    return settings;
+  }
 
-  public static ITime Default(this ITime time) {
-    var returnThis = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Local);
-    time.Now.Returns(returnThis);
+  public static ISettings<Settings> Disabled(this ISettings<Settings> settings) {
+    var returnThis = new Settings() { Enabled = false };
+    settings.Value.Returns(returnThis);
+    return settings;
+  }
+
+  public static ITime Freeze_2023_01_01(this ITime time) {
+    var returnThis = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    time.UtcNow.Returns(returnThis);
     return time;
   }
 

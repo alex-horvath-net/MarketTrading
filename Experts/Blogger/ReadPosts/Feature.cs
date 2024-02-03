@@ -15,7 +15,10 @@ public record Response() : ResponseCore<Request>() {
   public IEnumerable<Post>? Posts { get; set; }
 }
 
-public interface IUserStory : IUserStoryCore<Request, Response> { }
+public record Settings : SettingsCore {
+}
+
+public interface IUserStory : IUserStoryCore<Request, Response, Settings> { }
 
 public interface IRepository {
   Task<IEnumerable<Post>> Read(Request Request, CancellationToken token);
@@ -23,10 +26,15 @@ public interface IRepository {
 
 public interface IValidator : Core.Business.IValidator<Request> { }
 
-public class UserStory(ITime time, IRepository repository, IValidator validator, ILogger<UserStory> logger) :
-  StoryCore<Request, Response>(time, validator, logger, nameof(UserStory)), IUserStory {
+public class UserStory(
+  ISettings<Settings> settings,
+  IValidator validator,
+  IRepository repository,
+  ILog<UserStory> logger,
+  ITime time) : UserStoryCore<Request, Response, Settings>(settings, validator, logger, time, nameof(UserStory)), IUserStory {
   public override async Task Run(Response response, CancellationToken token) {
     response.Posts = await repository.Read(response.MetaData.Request, token);
+    
   }
 }
 
