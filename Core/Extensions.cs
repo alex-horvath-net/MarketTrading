@@ -9,18 +9,16 @@ namespace Core;
 
 public static class Extensions {
   public static IServiceCollection AddCore(this IServiceCollection services) => services
-      .AddCoreBusiness()
-      .AddCoreSolutions();
+    .AddCoreBusiness()
+    .AddCoreSolutions();
 
-  public static IServiceCollection AddCoreBusiness(this IServiceCollection services) {
-    services.AddScoped(typeof(IUserStoryCore<,,>), typeof(UserStoryCore<,,>));
-    return services;
-  }
+  public static IServiceCollection AddCoreBusiness(this IServiceCollection services) => services
+    .AddScoped(typeof(IUserStoryCore<,,>), typeof(UserStoryCore<,,>));
+
 
   public static IServiceCollection AddCoreSolutions(this IServiceCollection services) => services
     .AddMicrosoftTime()
     .AddMicrosoftSettings()
     .AddMicrosoftLogger()
     .AddFluentValidation();
-
 }
