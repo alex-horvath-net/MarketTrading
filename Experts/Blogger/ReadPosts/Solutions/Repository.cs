@@ -1,7 +1,7 @@
 ﻿using Common.Business.Model;
 using Common.Solutions.Data.MainDB;
+using Experts.Blogger.ReadPosts.Business;
 using Experts.Blogger.ReadPosts.Business.Model;
-using Experts.Blogger.ReadPosts.Business.SolutionPorts;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 

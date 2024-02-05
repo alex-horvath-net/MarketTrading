@@ -4,7 +4,6 @@ using Core.Business;
 using Core.Business.Model;
 using Experts.Blogger.ReadPosts.Business;
 using Experts.Blogger.ReadPosts.Business.Model;
-using Experts.Blogger.ReadPosts.Business.SolutionPorts;
 using Experts.Blogger.ReadPosts.Solutions;
 
 namespace Experts.Blogger.ReadPosts;

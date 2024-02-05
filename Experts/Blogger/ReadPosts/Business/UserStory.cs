@@ -1,10 +1,7 @@
 ﻿using Core.Business;
 using Experts.Blogger.ReadPosts.Business.Model;
-using Experts.Blogger.ReadPosts.Business.SolutionPorts;
 
 namespace Experts.Blogger.ReadPosts.Business;
-
-public interface IUserStory : IUserStoryCore<Request, Response, Settings> { }
 
 public class UserStory(
   IValidator validator,
