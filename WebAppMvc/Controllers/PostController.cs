@@ -3,6 +3,20 @@ using WebAppMvc.Models;
 
 namespace WebAppMvc.Controllers;
 public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<PostController> logger) : Controller {
+
+  [HttpPost]
+  public IActionResult BulkOperation(string action, int? selectedPostId) {
+    switch (action) {
+      case "edit":
+        if (selectedPostId.HasValue) return RedirectToAction(action, new { id = selectedPostId.Value });
+        break;
+      case "delete":
+        if (selectedPostId.HasValue) return RedirectToAction(action, new { id = selectedPostId.Value });
+        break;
+    }
+    return RedirectToAction(nameof(Index));
+  }
+
   // GET: Posts
   public async Task<IActionResult> Index() {
     logger.Inform("{Action}", nameof(Index));

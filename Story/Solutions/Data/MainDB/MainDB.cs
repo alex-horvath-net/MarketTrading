@@ -4,69 +4,66 @@ using Microsoft.Extensions.Options;
 
 namespace Common.Solutions.Data.MainDB;
 
-public class MainDB :DbContext {
-    private readonly string connectionString;
+public class MainDB : DbContext {
+  private readonly string connectionString;
 
-    public MainDB(DbContextOptions<MainDB> options, IOptions<Common> settings) : base(options) 
-    {
-        this.connectionString = settings.Value.Solutions.Data.MainDB.ConnectionString;
-    }
-    //public MainDB(DbContextOptions<MainDB> options, IOptions<Solutions> settings) : DbContext(options) { }
-
-
-    //public MainDB() : this(new DbContextOptionsBuilder().Dev().Options) { } 
-
-    public DbSet<Post> Posts { get; set; }
-    public DbSet<Tag> Tags { get; set; }
-    public DbSet<PostTag> PostTags { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        if (optionsBuilder.IsConfigured)
-            return;
-
-        optionsBuilder
-            .EnableDetailedErrors()
-            .EnableSensitiveDataLogging()
-            .UseSqlServer(connectionString, sqlOptionsBuilder => {
-            //.UseSqlServer($"name = ConnectionStrings:{nameof(MainDB)}", sqlOptionsBuilder => {
-                 sqlOptionsBuilder.CommandTimeout(60);
-            });
+  public MainDB(DbContextOptions<MainDB> options, IOptions<Common> settings) : base(options) {
+    this.connectionString = settings.Value.Solutions.Data.MainDB.ConnectionString;
+  }
+  //public MainDB(DbContextOptions<MainDB> options, IOptions<Solutions> settings) : DbContext(options) { }
 
 
-        base.OnConfiguring(optionsBuilder);
-    }
+  //public MainDB() : this(new DbContextOptionsBuilder().Dev().Options) { } 
 
-    protected override void OnModelCreating(ModelBuilder builder) {
-        base.OnModelCreating(builder);
+  public DbSet<Post> Posts { get; set; }
+  public DbSet<Tag> Tags { get; set; }
+  public DbSet<PostTag> PostTags { get; set; }
 
-        builder.Entity<PostTag>(entity => {
-            entity.HasKey(pt => new { pt.PostId, pt.TagId });
+  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+    if (optionsBuilder.IsConfigured)
+      return;
 
-            entity.HasOne(pt => pt.Post)
-                  .WithMany(p => p.PostTags)
-                  .HasForeignKey(pt => pt.PostId);
-
-            entity.HasOne(pt => pt.Tag)
-                  .WithMany(t => t.PostTags)
-                  .HasForeignKey(pt => pt.TagId);
+    optionsBuilder
+        .EnableDetailedErrors()
+        .EnableSensitiveDataLogging()
+        .UseSqlServer(connectionString, sqlOptionsBuilder => {
+          //.UseSqlServer($"name = ConnectionStrings:{nameof(MainDB)}", sqlOptionsBuilder => {
+          sqlOptionsBuilder.CommandTimeout(60);
         });
 
 
+    base.OnConfiguring(optionsBuilder);
+  }
 
-        builder.Entity<Post>().HasData(
-            new(1, "Title1", "Content1", DateTime.Parse("2023-12-01")),
-            new(2, "Title2", "Content2", DateTime.Parse("2023-12-02")),
-            new(3, "Title3", "Content3", DateTime.Parse("2023-12-03")));
+  protected override void OnModelCreating(ModelBuilder builder) {
+    base.OnModelCreating(builder);
 
-        builder.Entity<Tag>().HasData(
-            new(1, "Tag1"),
-            new(2, "Tag2"));
+    builder.Entity<PostTag>(entity => {
+      entity.HasKey(pt => new { pt.PostId, pt.TagId });
 
-        builder.Entity<PostTag>().HasData(
-            new(1, 1),
-            new(1, 2),
-            new(2, 1));
-    }
+      entity.HasOne(pt => pt.Post)
+            .WithMany(p => p.PostTags)
+            .HasForeignKey(pt => pt.PostId);
+
+      entity.HasOne(pt => pt.Tag)
+            .WithMany(t => t.PostTags)
+            .HasForeignKey(pt => pt.TagId);
+    });
+
+    builder.Entity<Post>().HasData(
+        new(1, "Title1", "Content1", DateTime.Parse("2023-12-01")),
+        new(2, "Title2", "Content2", DateTime.Parse("2023-12-02")),
+        new(3, "Title3", "Content3", DateTime.Parse("2023-12-03")));
+
+    builder.Entity<Tag>().HasData(
+        new(1, "Tag1"),
+        new(2, "Tag2"));
+
+    builder.Entity<PostTag>().HasData(
+        new(1, 1),
+        new(1, 2),
+        new(2, 1));
+  }
 }
 
 /*
@@ -94,7 +91,7 @@ public class MainDB :DbContext {
  *      Update the tools:           Update-Package Microsoft.EntityFrameworkCore.Tools
  *      Verify the installation:    Get-Help about_EntityFrameworkCore
  *      Add-Migration InitialCreate -startupproject WebSite -Project Story -context MainDB -OutputDir Solutions\Data\MainDB\Migrations
- *      Update-Database -startupproject WebSite -Project Story -context MainDB -Args '--environment Development'
+ *      Update-Database -startupproject WebAppMvc -Project Common -context MainDB -Args '--environment Development'
  */
 
 

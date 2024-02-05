@@ -18,8 +18,10 @@ public class Repository(MainDB db) : IRepository {
 
     var businsessModel = solutionModel
       .Select(model => new Post() {
+        Id = model.PostId,
         Title = model.Title,
-        Content = model.Content
+        Content = model.Content,
+        CreatedAt=model.CreatedAt
       });
 
     return businsessModel;

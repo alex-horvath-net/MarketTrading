@@ -6,37 +6,58 @@
 
 <h1>Posts</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="action-links">
+    <a asp-action="Create" class="btn btn-primary" title="Create">
+        <i class="bi bi-plus"></i>
+    </a>
+    <button form="bulkOperationsForm" name="action" value="edit" class="btn btn-warning" title="Edit">
+        <i class="bi bi-pencil"></i>
+    </button>
+    <button form="bulkOperationsForm" name="action" value="delete" class="btn btn-danger" title="Delete">
+        <i class="bi bi-trash"></i>
+    </button>
+</div>
+
+<form id="bulkOperationsForm" asp-action="BulkOperation" method="post">
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
-                </td>
+                <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PostId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Content)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="radio" name="selectedPostId" value="@item.PostId" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>                  
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
