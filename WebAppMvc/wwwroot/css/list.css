@@ -1,0 +1,18 @@
+﻿.header-container {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+}
+
+h1 {
+    margin-right: 16px; /* Space between the title and the action links */
+}
+
+.action-links {
+    display: flex;
+    align-items: center; /* Align the icons vertically in the center */
+    gap: 8px; /* Space between each icon */
+}
+
+.btn-icon {
+    /* Additional styling for buttons if necessary */
+}

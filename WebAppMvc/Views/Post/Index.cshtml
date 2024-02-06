@@ -4,55 +4,103 @@
     ViewData["Title"] = "Posts";
 }
 
-<<div class="header-container">
+<div class="header-container">
     <h1>Posts</h1>
+
     <div class="action-links">
-        <a asp-action="Create" class="btn btn-icon" title="Create"><i class="bi bi-plus"></i></a>
-        <a asp-action="Edit" class="btn btn-icon" title="Edit"><i class="bi bi-pencil"></i></a>
-        <a asp-action="Delete" class="btn btn-icon" title="Delete"><i class="bi bi-trash"></i></a>
+        <a asp-action="Create" asp-route-id="" class="icon-link" title="Create"><i class="bi bi-plus-circle"></i></a>
+        <a asp-action="Edit" asp-route-id="" id="editLink" class="icon-link" title="Edit"><i class="bi bi-pencil-square"></i></a>
+        <a asp-action="Delete" asp-route-id="" id="deleteLink" class="icon-link" title="Delete"><i class="bi bi-trash"></i></a>
     </div>
+
 </div>
 
-<form id="bulkOperationsForm" asp-action="BulkOperation" method="post">
-    <table class="table">
-        <thead>
+<div id="error-message" class="alert alert-danger" style="display: none;"></div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th></th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PostId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Content)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CreatedAt)
-                </th>
+                <td>
+                    <input type="radio" name="selectedPost" value="@item.PostId" class="post-selector" data-post-id="@item.PostId" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <input type="radio" name="selectedPostId" value="@item.PostId" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PostId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Content)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedAt)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</form>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const editLink = document.getElementById('editLink');
+            const deleteLink = document.getElementById('deleteLink');
+            const table = document.querySelector('.table');
+            const errorMessage = document.getElementById('error-message');
+
+            table.addEventListener('change', function (event) {
+                if (event.target.classList.contains('post-selector')) {
+                    const postId = event.target.value;
+                    editLink.href = '/Posts/Edit/' + postId;
+                    deleteLink.href = '/Posts/Dlete/' + postId;
+
+                }
+            });
+
+            editLink.addEventListener('click', function (event) {
+                if (editLink.href.includes('Edit/')) {
+                    errorMessage.style.display = 'none';
+                    errorMessage.textContent = '';
+                }
+                else {
+
+                    event.preventDefault();
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = 'Please select a post.';
+                }
+            });
+
+            deleteLink.addEventListener('click', function (event) {
+                if (deleteLink.href.includes('Delete/')) {
+                    errorMessage.style.display = 'none';
+                    errorMessage.textContent = '';
+                }
+                else {
+
+                    event.preventDefault();
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = 'Please select a post.';
+                }
+            });
+        });
+    </script>
+}
