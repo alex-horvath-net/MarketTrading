@@ -57,9 +57,10 @@ public class MainDB : DbContext {
 
     builder.Entity<Tag>().HasData(
         new(1, "Tag1"),
-        new(2, "Tag2"));
+        new(2, "Tag2"),
+        new(3, "Tag3"));
 
-    builder.Entity<PostTag>().HasData(
+        builder.Entity<PostTag>().HasData(
         new(1, 1),
         new(1, 2),
         new(2, 1));

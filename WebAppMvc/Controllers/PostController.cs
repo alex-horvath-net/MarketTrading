@@ -3,99 +3,105 @@ using WebAppMvc.Models;
 
 namespace WebAppMvc.Controllers;
 public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<PostController> logger) : Controller {
-  // GET: Posts
-  public async Task<IActionResult> Index(string filterText = null) { //}, int? page, CancellationToken token) { 
-    logger.Inform("{Action}", nameof(Index));
-    var storyModel = await blogger.ReadPosts.Run(new(filterText), CancellationToken.None);
-    var viewModel = storyModel.Posts.Select(x => new Post() { PostId = x.Id, Title = x.Title, Content = x.Content, CreatedAt = x.CreatedAt });
-    return View(viewModel);
-  }
-
-  // GET: Posts/Details/5
-  public async Task<IActionResult> DetailsAsync(int? id) {
-    if (id == null) {
-      return NotFound();
+    // GET: Posts
+    public async Task<IActionResult> Index(string filterText = null) { //}, int? page, CancellationToken token) { 
+        logger.Inform("{Action}", nameof(Index));
+        var storyModel = await blogger.ReadPosts.Run(new(filterText), CancellationToken.None);
+        var viewModel = storyModel.Posts.Select(x => new Post() {
+            PostId = x.Id,
+            Title = x.Title,
+            Content = x.Content,
+            CreatedAt = x.CreatedAt,
+            Tags = string.Join(", ", x.Tags.Select(t => t.Name))
+        });
+        return View(viewModel);
     }
 
-    var resposne = await blogger.GetPost.Run(new( $"{id}"), CancellationToken.None);
-    var post = resposne;
-    if (post == null) {
-      return NotFound();
+    // GET: Posts/Details/5
+    public async Task<IActionResult> DetailsAsync(int? id) {
+        if (id == null) {
+            return NotFound();
+        }
+
+        var resposne = await blogger.GetPost.Run(new($"{id}"), CancellationToken.None);
+        var post = resposne;
+        if (post == null) {
+            return NotFound();
+        }
+
+        return View(post);
     }
 
-    return View(post);
-  }
-
-  // GET: Posts/Create
-  public IActionResult Create() {
-    return View();
-  }
-
-  // POST: Posts/Create
-  [HttpPost]
-  [ValidateAntiForgeryToken]
-  public async Task<IActionResult> CreateAsync([Bind("PostId,Title,Content,CreatedAt")] Post post) {
-    if (ModelState.IsValid) {
-      var resposne = await blogger.ReadPosts.Run(new( $"{post}"), CancellationToken.None);
-      var createdPost = resposne;
-      return RedirectToAction(nameof(Index));
-    }
-    return View(post);
-  }
-
-  // GET: Posts/Edit/5
-  public async Task<IActionResult> EditAsync(int? id) {
-    if (id == null) {
-      return NotFound();
+    // GET: Posts/Create
+    public IActionResult Create() {
+        return View();
     }
 
-    var resposne = await blogger.GetPost.Run(new( $"{id}"), CancellationToken.None);
-    var post = resposne;
-    if (post == null) {
-      return NotFound();
-    }
-    return View(post);
-  }
-
-  // POST: Posts/Edit/5
-  [HttpPost]
-  [ValidateAntiForgeryToken]
-  public async Task<IActionResult> EditAsync(int id, [Bind("PostId,Title,Content,CreatedAt")] Post post) {
-    if (id != post.PostId) {
-      return NotFound();
+    // POST: Posts/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateAsync([Bind("PostId,Title,Content,CreatedAt")] Post post) {
+        if (ModelState.IsValid) {
+            var resposne = await blogger.ReadPosts.Run(new($"{post}"), CancellationToken.None);
+            var createdPost = resposne;
+            return RedirectToAction(nameof(Index));
+        }
+        return View(post);
     }
 
-    if (ModelState.IsValid) {
-      var resposne = await blogger.GetPost.Run(new( $"{post}"), CancellationToken.None);
-      var updatedPost = resposne;
+    // GET: Posts/Edit/5
+    public async Task<IActionResult> EditAsync(int? id) {
+        if (id == null) {
+            return NotFound();
+        }
 
-      return RedirectToAction(nameof(Index));
-    }
-    return View(post);
-  }
-
-  // GET: Posts/Delete/5
-  public async Task<IActionResult> DeleteAsync(int? id) {
-    if (id == null) {
-      return NotFound();
-    }
-
-    var resposne = await blogger.GetPost.Run(new($"{id}"), CancellationToken.None);
-    var post = resposne;
-    if (post == null) {
-      return NotFound();
+        var resposne = await blogger.GetPost.Run(new($"{id}"), CancellationToken.None);
+        var post = resposne;
+        if (post == null) {
+            return NotFound();
+        }
+        return View(post);
     }
 
-    return View(post);
-  }
+    // POST: Posts/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EditAsync(int id, [Bind("PostId,Title,Content,CreatedAt")] Post post) {
+        if (id != post.PostId) {
+            return NotFound();
+        }
 
-  // POST: Posts/Delete/5
-  [HttpPost, ActionName("Delete")]
-  [ValidateAntiForgeryToken]
-  public async Task<IActionResult> DeleteConfirmedAsync(int id) {
-    var resposne = await blogger.GetPost.Run(new( $"{id}"), CancellationToken.None);
-    var post = resposne;
-    return RedirectToAction(nameof(Index));
-  }
+        if (ModelState.IsValid) {
+            var resposne = await blogger.GetPost.Run(new($"{post}"), CancellationToken.None);
+            var updatedPost = resposne;
+
+            return RedirectToAction(nameof(Index));
+        }
+        return View(post);
+    }
+
+    // GET: Posts/Delete/5
+    public async Task<IActionResult> DeleteAsync(int? id) {
+        if (id == null) {
+            return NotFound();
+        }
+
+        var resposne = await blogger.GetPost.Run(new($"{id}"), CancellationToken.None);
+        var post = resposne;
+        if (post == null) {
+            return NotFound();
+        }
+
+        return View(post);
+    }
+
+    // POST: Posts/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmedAsync(int id) {
+        var resposne = await blogger.GetPost.Run(new($"{id}"), CancellationToken.None);
+        var post = resposne;
+        return RedirectToAction(nameof(Index));
+    }
 }
 
