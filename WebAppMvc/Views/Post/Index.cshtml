@@ -4,18 +4,13 @@
     ViewData["Title"] = "Posts";
 }
 
-<h1>Posts</h1>
-
-<div class="action-links">
-    <a asp-action="Create" class="btn btn-primary" title="Create">
-        <i class="bi bi-plus"></i>
-    </a>
-    <button form="bulkOperationsForm" name="action" value="edit" class="btn btn-warning" title="Edit">
-        <i class="bi bi-pencil"></i>
-    </button>
-    <button form="bulkOperationsForm" name="action" value="delete" class="btn btn-danger" title="Delete">
-        <i class="bi bi-trash"></i>
-    </button>
+<<div class="header-container">
+    <h1>Posts</h1>
+    <div class="action-links">
+        <a asp-action="Create" class="btn btn-icon" title="Create"><i class="bi bi-plus"></i></a>
+        <a asp-action="Edit" class="btn btn-icon" title="Edit"><i class="bi bi-pencil"></i></a>
+        <a asp-action="Delete" class="btn btn-icon" title="Delete"><i class="bi bi-trash"></i></a>
+    </div>
 </div>
 
 <form id="bulkOperationsForm" asp-action="BulkOperation" method="post">
@@ -55,7 +50,7 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.CreatedAt)
-                    </td>                  
+                    </td>
                 </tr>
             }
         </tbody>

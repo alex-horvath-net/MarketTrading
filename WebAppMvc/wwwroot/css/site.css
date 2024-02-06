@@ -20,3 +20,22 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.header-container {
+    display: flex;
+    align-items: center; /* Vertically center the items */
+}
+
+h1 {
+    margin-right: 8px; /* Adjust the space between the title and the icons */
+}
+
+.action-links {
+    display: flex;
+    gap: 8px; /* Space between each icon */
+}
+
+.btn-icon {
+    /* If you need additional styling for buttons, add it here */
+}
+
