@@ -1,4 +1,4 @@
 ﻿namespace Core.Business.Model;
-public record SettingsCore {
-  public bool Enabled { get; set; }
+public record SettingsCore(string SectionName) {
+    public bool Enabled { get; set; }
 }

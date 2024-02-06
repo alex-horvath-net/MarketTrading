@@ -29,13 +29,13 @@ public class Story_Design {
 
 public static class Extensions {
   public static ISettings<SettingsCore> Enabled(this ISettings<SettingsCore > settings) {
-    var returnThis = new SettingsCore() { Enabled = true };
+    var returnThis = new SettingsCore("") { Enabled = true };
     settings.Value.Returns(returnThis);
     return settings;
   }
 
   public static ISettings<SettingsCore> Disabled(this ISettings<SettingsCore> settings) {
-    var returnThis = new SettingsCore() { Enabled = false };
+    var returnThis = new SettingsCore("") { Enabled = false };
     settings.Value.Returns(returnThis);
     return settings;
   }

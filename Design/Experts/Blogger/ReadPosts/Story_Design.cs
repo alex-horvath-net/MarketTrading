@@ -73,7 +73,7 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
   private readonly IValidator validator = Substitute.For<IValidator>();
   private readonly IRepository repository = Substitute.For<IRepository>();
   private readonly ILog<UserStory> logger = Substitute.For<ILog<UserStory>>();
-  private readonly Request request = new Request(default, default);
+  private readonly Request request = new Request( default);
   private Response response = new Response();
 }
 
@@ -146,7 +146,7 @@ public class Validation_Design(ITestOutputHelper output) : Design<Validation>(ou
         );
   }
 
-  private Request request = new(default, default);
+  private Request request = new( default);
   private IEnumerable<Result> issues;
 }
 
@@ -205,13 +205,13 @@ public static class Extensions {
 
 
   public static Request MockValidRequest(this Request request) =>
-      new Request("Title", "Content");
+      new Request("Content");
 
   public static Request MockMissingpProperties(this Request request) =>
-      request = new Request(null, null);
+      request = new Request( null);
 
   public static Request MockTooShortProperties(this Request request) =>
-      new Request("12", "21");
+      new Request("12");
 
   public static Response MockNoPosts(this Response response) {
     response.MockValidRequest();
@@ -220,7 +220,7 @@ public static class Extensions {
   }
 
   public static Response MockValidRequest(this Response response) {
-    response.MetaData.Request = new Request(default, default).MockValidRequest();
+    response.MetaData.Request = new Request( default).MockValidRequest();
     response.MetaData.Enabled = true;
     response.MetaData.Results = null;
     return response;

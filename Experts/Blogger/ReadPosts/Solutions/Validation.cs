@@ -5,16 +5,11 @@ using FluentValidation;
 namespace Experts.Blogger.ReadPosts.Solutions;
 
 public class Validation : ValidationCore<Request>, Business.IValidator {
-  public Validation() {
-    RuleFor(request => request.Title)
-      .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator)
-      .WithMessage(request => $"'{nameof(request.Title)}' can not be empty if '{nameof(request.Content)}' is empty.")
-      .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Title), ApplyConditionTo.CurrentValidator);
-
-    RuleFor(request => request.Content)
-      .NotEmpty().When(request => string.IsNullOrWhiteSpace(request.Title), ApplyConditionTo.CurrentValidator)
-      .WithMessage(request => $"'{nameof(request.Content)}' can not be empty if '{nameof(request.Title)}' is empty.")
-      .MinimumLength(3).When(request => !string.IsNullOrWhiteSpace(request.Content), ApplyConditionTo.CurrentValidator);
-  }
+    public Validation() {
+        RuleFor(request => request.Filter)
+          .Cascade(CascadeMode.Stop)
+          .Must(x => x == null || x.Length >= 3)
+          .WithMessage("Title must be null or at least 3 characters long.");
+    }
 }
 
