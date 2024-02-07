@@ -2,9 +2,9 @@
 
 namespace Clients.WebAppMvc;
 
-public class Page : IClassFixture<WebAppFactory>, IAsyncLifetime {
+public class Page : IClassFixture<WebAppFactoryMin>, IAsyncLifetime {
 
-    public Page(WebAppFactory appFactory, ITestOutputHelper output) {
+    public Page(WebAppFactoryMin appFactory, ITestOutputHelper output) {
         this.appFactory = appFactory;
         this.output = output;
     }
@@ -22,7 +22,7 @@ public class Page : IClassFixture<WebAppFactory>, IAsyncLifetime {
     protected IPlaywright playwright;
     protected IBrowser browser;
     protected IPage page;
-    protected readonly WebAppFactory appFactory;
+    protected readonly WebAppFactoryMin appFactory;
     protected readonly ITestOutputHelper output;
 }
 
