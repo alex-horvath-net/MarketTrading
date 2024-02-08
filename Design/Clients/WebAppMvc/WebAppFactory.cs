@@ -1,76 +1,58 @@
-﻿using Clients.WebAppMvc;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using WebAppMvc.Controllers;
+﻿//using Azure.Core;
+//using Microsoft.AspNetCore.Hosting;
+//using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace Clients.WebAppMvc {
-    public class WebAppFactory : WebApplicationFactory<PostController> {
-        protected override void ConfigureWebHost(IWebHostBuilder builder) {
-            builder.ConfigureServices(services => {
-                // Here you can set up test services or replace production services with test versions
-                // Example:
-                // var serviceProvider = new ServiceCollection()
-                //     .AddEntityFrameworkInMemoryDatabase()
-                //     .BuildServiceProvider();
+//namespace Clients.WebAppMvc;
 
-                // services.AddDbContext<AppDbContext>(options =>
-                // {
-                //     options.UseInMemoryDatabase("InMemoryDbForTesting");
-                //     options.UseInternalServiceProvider(serviceProvider);
-                // });
+//public class WebAppFactory : WebApplicationFactory<Program> {
+//    public WebAppFactory() {
+//        ClientOptions.AllowAutoRedirect = false;
+//        ClientOptions.BaseAddress = new Uri("https://localhost");
+//    }
 
-                // Remove the app's ApplicationDbContext registration
-                // var descriptor = services.SingleOrDefault(
-                //     d => d.ServiceType ==
-                //         typeof(DbContextOptions<AppDbContext>));
+//    public ITestOutputHelper? OutputHelper { get; set; }
 
-                // if (descriptor != null)
-                // {
-                //     services.Remove(descriptor);
-                // }
+//    protected override void ConfigureWebHost(IWebHostBuilder builder) {
+//        builder.ConfigureAppConfiguration(configBuilder => {
+//            // Configure the test fixture to write the SQLite database
+//            // to a temporary directory, rather than in App_Data.
+//            var dataDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
-                // Add ApplicationDbContext using an in-memory database for testing
-                // services.AddDbContext<AppDbContext>(options =>
-                // {
-                //     options.UseInMemoryDatabase("InMemoryDbForTesting");
-                // });
+//            if (!Directory.Exists(dataDirectory)) {
+//                Directory.CreateDirectory(dataDirectory);
+//            }
 
-                // Build the service provider
-                // var sp = services.BuildServiceProvider();
+//            // Also override the default options for the GitHub OAuth provider
+//            var config = new[]
+//            {
+//                KeyValuePair.Create<string, string?>("DataDirectory", dataDirectory),
+//                KeyValuePair.Create<string, string?>("GitHub:ClientId", "github-id"),
+//                KeyValuePair.Create<string, string?>("GitHub:ClientSecret", "github-secret"),
+//                KeyValuePair.Create<string, string?>("GitHub:EnterpriseDomain", string.Empty)
+//            };
 
-                // Create a scope to obtain a reference to the database context (AppDbContext)
-                // using (var scope = sp.CreateScope())
-                // {
-                //     var scopedServices = scope.ServiceProvider;
-                //     var db = scopedServices.GetRequiredService<AppDbContext>();
-                //     var logger = scopedServices
-                //         .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
+//            configBuilder.AddInMemoryCollection(config);
+//        });
 
-                //     // Ensure the database is created
-                //     db.Database.EnsureCreated();
+//        // Route the application's logs to the xunit output
+//        builder.ConfigureLogging(loggingBuilder => loggingBuilder.ClearProviders().AddXUnit(this));
 
-                //     try
-                //     {
-                //         // Seed the database with test data
-                //         Utilities.InitializeDbForTests(db);
-                //     }
-                //     catch (Exception ex)
-                //     {
-                //         logger.LogError(ex, "An error occurred seeding the " +
-                //                             "database with test messages. Error: {Message}", ex.Message);
-                //     }
-                // }
-            });
+//        // Configure the correct content root for the static content and Razor pages
+//        builder.UseSolutionRelativeContentRoot(Path.Combine("src", "TodoApp"));
 
-            builder.ConfigureAppConfiguration((context, config) => {
-                // config.AddJsonFile("appsettings.Test.json");
-            });
+//        // Configure the application so HTTP requests related to the OAuth flow
+//        // can be intercepted and redirected to not use the real GitHub service.
+//        builder.ConfigureServices(services => {
+//            services.AddHttpClient();
 
-            builder.Configure(app => {
-                // Example: Disable middleware not applicable to tests
-                // app.UseMiddleware<SomeMiddleware>();
-            });
-        }
-    }
-}
+//            services.AddSingleton<IHttpMessageHandlerBuilderFilter, HttpRequestInterceptionFilter>(
+//                _ => new HttpRequestInterceptionFilter(Interceptor));
 
+//            services.AddSingleton<IPostConfigureOptions<GitHubAuthenticationOptions>, RemoteAuthorizationEventsFilter>();
+//            services.AddScoped<LoopbackOAuthEvents>();
+//        });
+
+//        // Configure a bundle of HTTP requests to intercept for the OAuth flow.
+//        Interceptor.RegisterBundle("oauth-http-bundle.json");
+//    }
+//}

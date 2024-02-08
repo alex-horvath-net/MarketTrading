@@ -15,7 +15,7 @@ public class Story_Design {
 
     response.Should().NotBeNull();
     response.MetaData.Request.Should().Be(request);
-    response.MetaData.Results.Should().BeEmpty();
+    response.MetaData.RequestIssues.Should().BeEmpty();
   }
 
 

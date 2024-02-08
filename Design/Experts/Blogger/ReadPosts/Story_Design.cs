@@ -31,9 +31,9 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
 
     await Act();
 
-    response.MetaData.CompletedAt.Should().NotBeNull();
-    response.MetaData.Results.Should().NotContain(x => !x.IsSuccess);
-    response.MetaData.Results.Should().BeEmpty();
+    response.MetaData.Stop.Should().NotBeNull();
+    response.MetaData.RequestIssues.Should().NotContain(x => !x.IsSuccess);
+    response.MetaData.RequestIssues.Should().BeEmpty();
     await validator.ReceivedWithAnyArgs().Validate(default, default);
   }
 
@@ -47,8 +47,8 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
 
     await Act();
 
-    response.MetaData.CompletedAt.Should().BeNull();
-    response.MetaData.Results.Should().Contain(x => !x.IsSuccess);
+    response.MetaData.Stop.Should().BeNull();
+    response.MetaData.RequestIssues.Should().Contain(x => !x.IsSuccess);
     await validator.ReceivedWithAnyArgs().Validate(default, default);
   }
 
@@ -65,7 +65,7 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
 
     await repository.ReceivedRead();
     response.Posts.Should().NotBeEmpty();
-    response.MetaData.CompletedAt.Should().NotBeNull();
+    response.MetaData.Stop.Should().NotBeNull();
   }
 
   private readonly ITime time = Substitute.For<ITime>();
@@ -222,13 +222,13 @@ public static class Extensions {
   public static Response MockValidRequest(this Response response) {
     response.MetaData.Request = new Request( default).MockValidRequest();
     response.MetaData.Enabled = true;
-    response.MetaData.Results = null;
+    response.MetaData.RequestIssues = null;
     return response;
   }
 
   public static Response MockNoValidations(this Response response) {
     response.MockValidRequest();
-    response.MetaData.Results = null;
+    response.MetaData.RequestIssues = null;
     return response;
   }
 }

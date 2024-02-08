@@ -3,9 +3,9 @@ public class Blogger(WebAppFactoryMin appFactory, ITestOutputHelper output) : Pa
     [Fact]
     public async Task ExampleTest() {
         var app = appFactory.CreateClient();
+        var url = $"{app.BaseAddress}/post";
+        await page.GotoAsync(url);
 
-        await page.GotoAsync( $"{app.BaseAddress}post");
-        
         await page.TitleAsync().ContinueWith(x => x.Result.Should().Be("Posts - WebAppMvc"));
     }
 }

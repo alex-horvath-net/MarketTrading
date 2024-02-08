@@ -9,9 +9,9 @@ public record ResponseCore<TRequest>()
 
 public record MetaDataCore<TRequest>()
     where TRequest : RequestCore {
-    public DateTime StartedAt { get; set; }
-    public DateTime? CompletedAt { get; set; }
+    public DateTime Start { get; set; }
+    public DateTime? Stop { get; set; }
     public bool Enabled { get; set; }
     public TRequest Request { get; set; }
-    public IEnumerable<Result> Results { get; set; } = [];
+    public IEnumerable<Result> RequestIssues { get; set; } = [];
 }

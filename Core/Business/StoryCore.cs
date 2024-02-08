@@ -7,7 +7,7 @@ public interface IUserStoryCore<TRequest, TResponse, TSettings>
   where TRequest : RequestCore
   where TResponse : ResponseCore<TRequest>, new()
   where TSettings : SettingsCore {
-  Task<TResponse> Run(TRequest request, CancellationToken token);
+    Task<TResponse> Run(TRequest request, CancellationToken token);
 }
 
 public class UserStoryCore<TRequest, TResponse, TSettings>(
@@ -20,44 +20,50 @@ public class UserStoryCore<TRequest, TResponse, TSettings>(
   where TResponse : ResponseCore<TRequest>, new()
   where TSettings : SettingsCore {
 
-  public async Task<TResponse> Run(TRequest request, CancellationToken token) {
-    var response = new TResponse();
-    try {
-      response.MetaData.StartedAt = this.Start();
-      response.MetaData.Request = request;
-      response.MetaData.Enabled = settings.Value.Enabled;
-      if (!response.MetaData.Enabled) return response;
+    public async Task<TResponse> Run(TRequest request, CancellationToken token) {
+        var response = new TResponse();
+        try {
+            response.MetaData.Start = this.Start();
+            response.MetaData.Request = request;
 
-      response.MetaData.Results = await this.Validate(request, token);
-      if (response.MetaData.Results.HasFailed()) return response;
+            response.MetaData.Enabled = settings.Value.Enabled;
+            if (!response.MetaData.Enabled) {
+                response.MetaData.Stop = this.Stop();
+                return response;
+            }
 
-      await Run(response, token);
+            response.MetaData.RequestIssues = await this.Validate(request, token);
+            if (response.MetaData.RequestIssues.HasFailed()) {
+                response.MetaData.Stop = this.Stop();
+                return response;
+            }
 
-      response.MetaData.CompletedAt = this.Complete();
+            await Run(response, token);
+
+            response.MetaData.Stop = this.Stop();
+        }
+        catch (Exception ex) {
+            log.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", Name, "", DateTime.UtcNow);
+            throw;
+        }
+
+        return response;
     }
-    catch (Exception ex) {
 
-      log.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", Name, "", DateTime.UtcNow);
-      throw;
+    private DateTime Stop() {
+        var now = time.UtcNow;
+        log.Inform("Event: {Event}, Story: {Story}, Time: {Time}", "Stopped", Name, now);
+        return now;
     }
 
-    return response;
-  }
+    private Task<IEnumerable<Result>> Validate(TRequest request, CancellationToken token) => validator.Validate(request, token);
 
-  private DateTime Complete() {
-    var now = time.UtcNow;
-    log.Inform("Event {Event}, Story {Story}, Time {Time}", "Completed", Name, now);
-    return now;
-  }
+    private DateTime Start() {
+        var now = time.UtcNow;
+        log.Inform("Event {Event}, Story {Story}, Time {Time}", "Started", Name, now);
+        return now;
+    }
 
-  private Task<IEnumerable<Result>> Validate(TRequest request, CancellationToken token) => validator.Validate(request, token);
-
-  private DateTime Start() {
-    var now = time.UtcNow;
-    log.Inform("Event {Event}, Story {Story}, Time {Time}", "Started", Name, now);
-    return now;
-  }
-
-  public virtual Task Run(TResponse response, CancellationToken token) => Task.CompletedTask;
+    public virtual Task Run(TResponse response, CancellationToken token) => Task.CompletedTask;
 }
 

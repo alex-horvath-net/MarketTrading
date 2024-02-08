@@ -2,5 +2,6 @@
 
 namespace Experts.Blogger.ReadPosts.Business;
 
-public interface IValidator : Core.Business.IValidator<Request> { }
+public interface IValidator : Core.Business.IValidator<Request> { 
+}
 

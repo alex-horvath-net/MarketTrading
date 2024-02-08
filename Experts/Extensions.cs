@@ -5,7 +5,5 @@ namespace Experts;
 
 public static class Extensions {
     public static IServiceCollection AddExperts(this IServiceCollection services) => services
-        .AddBlogger()
-        ;
-
+        .AddBlogger();
 }
