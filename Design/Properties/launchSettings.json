@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Design": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "PWDEBUG": "1"
+      }
+    }
+  }
+}
