@@ -50,17 +50,20 @@ public class WebAppFactory : WebApplicationFactory<Program> {
 
     private IHost BuildAndStartKestrelServerHost(IHostBuilder hostBuilder) {
         var host = hostBuilder
-            .ConfigureWebHost(webHostBuilder => webHostBuilder.UseUrls("http://127.0.0.1:0").UseKestrel())
+            .ConfigureWebHost(webHostBuilder => webHostBuilder
+                .UseUrls("http://127.0.0.1:0")
+                .UseKestrel())
             .Build();
 
         host.Start();
 
         return host;
     }
+
     private Uri GetKestrelServerAddress() {
-        var baseAddraes = this.kestrelServerHost?
+        var baseAddraes = this.kestrelServerHost!
             .Services.GetRequiredService<IServer>()
-            .Features.Get<IServerAddressesFeature>()?
+            .Features.Get<IServerAddressesFeature>()!
             .Addresses.Last();
 
         return new Uri(baseAddraes);
