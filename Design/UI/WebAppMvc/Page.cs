@@ -1,20 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Core;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Playwright;
-using Microsoft.Playwright.Core;
-using Microsoft.Playwright.Transport;
-using Microsoft.Playwright.Transport.Protocol;
-using Xunit;
-using Xunit.Extensions;
 namespace UI.WebAppMvc;
 
-public class Page2  {
+public class Page2 {
 
 
     public Page2(ITestOutputHelper output) {
         this.output = output;
     }
 
-    
+
     public async Task SetUp() {
         webApp = webAppFactory.CreateClient(new() { BaseAddress = new("http://127.0.0.1") });
         playwright = await Playwright.CreateAsync();
@@ -33,7 +29,7 @@ public class Page2  {
     protected readonly WebApplicationFactory<Program> webAppFactory = new();
     protected HttpClient webApp;
     protected readonly ITestOutputHelper output;
-   
+
 }
 
 
@@ -43,27 +39,30 @@ public class Page : IClassFixture<WebAppFactory>, IAsyncLifetime {
         this.appFactory = appFactory;
         this.output = output;
         this.pageUrl = pageUrl;
+        output.WriteLine($"{DateTime.UtcNow:HH:mm:ss fff} Page Created.");
     }
     public async Task InitializeAsync() {
         playwright = await Playwright.CreateAsync();
         browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
         page = await browser.NewPageAsync();
-        await page.GotoAsync(Url);
+        using var _ = appFactory.CreateDefaultClient();
+        var url = $"{appFactory.ClientOptions.BaseAddress}{pageUrl}";
+        await page.GotoAsync(url);
+        output.WriteLine($"{DateTime.UtcNow:HH:mm:ss fff} Page Initialized. {url}");
     }
 
     public async Task DisposeAsync() {
         await page.CloseAsync();
         await browser.CloseAsync();
+        output.WriteLine($"{DateTime.UtcNow:HH:mm:ss fff} Page Dispozed");
     }
-
-    public string Url => $"{appFactory.ServerAddress}{pageUrl}";
-    protected IPlaywright playwright;
-    protected IBrowser browser;
-    protected IPage page;
+    
+    protected IPlaywright? playwright;
+    protected IBrowser? browser;
+    protected IPage? page;
     protected readonly WebAppFactory appFactory;
     protected readonly ITestOutputHelper output;
     private readonly string pageUrl;
-
 }
 
 
