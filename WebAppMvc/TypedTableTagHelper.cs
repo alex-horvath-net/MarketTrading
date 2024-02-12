@@ -1,7 +1,11 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Drawing;
+using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace WebAppMvc;
 
@@ -36,12 +40,12 @@ public class DataTableTagHelper : TagHelper {
         output.Content.AppendHtml("<tr>");
         
         foreach (var prop in For.Metadata.ElementMetadata.Properties) {
-            if (!string.IsNullOrEmpty(prop.Name)) {
                 output.Content.AppendHtml("<th>");
                 output.Content.AppendHtml(prop.Name);
-                //output.Content.AppendHtml("<th>");
-            }
         }
+
+        output.Content.AppendHtml("<th>");
+        output.Content.AppendHtml("Actions");
 
         output.Content.AppendHtml("</tr>");
         output.Content.AppendHtml("</thead>");
@@ -53,12 +57,18 @@ public class DataTableTagHelper : TagHelper {
             foreach (var prop in For.Metadata.ElementMetadata.Properties) {
                 output.Content.AppendHtml("<td>");
                 output.Content.AppendHtml(prop.PropertyGetter(item).ToString());
-                output.Content.AppendHtml("</td>");
             }
+
+            output.Content.AppendHtml("<td>");
+            output.Content.AppendHtml($"<a asp-action = \"Edit\" asp-route-id = \"{For.Metadata.ElementMetadata.Properties.First().PropertyGetter(item)}\" class=\"icon-link\" title=\"Edit\"><i class=\"bi bi-pencil-square\"></i></a>");
+            output.Content.AppendHtml($"<a asp-action = \"Delete\" asp-route-id = \"{For.Metadata.ElementMetadata.Properties.First().PropertyGetter(item)}\" class=\"icon-link\" title=\"Delete\"><i class=\"bi bi-trash\"></i></a>");
+            output.Content.AppendHtml("</td>");
+
+            output.Content.AppendHtml("</tbody>");
             output.Content.AppendHtml("</tr>");
         }
 
-        output.Content.AppendHtml("</tbody>");
+        
         output.Content.AppendHtml("</table>");
 
         return Task.CompletedTask;
