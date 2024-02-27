@@ -11,6 +11,7 @@ public interface IUserStoryCore<TRequest, TResponse, TSettings>
 }
 
 public class UserStoryCore<TRequest, TResponse, TSettings>(
+  IPresenter<TResponse> presenter,
   IValidator<TRequest> validator,
   ISettings<TSettings> settings,
   ILog log,
@@ -47,7 +48,6 @@ public class UserStoryCore<TRequest, TResponse, TSettings>(
             log.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", Name, "", DateTime.UtcNow);
             throw;
         }
-
         return response;
     }
 

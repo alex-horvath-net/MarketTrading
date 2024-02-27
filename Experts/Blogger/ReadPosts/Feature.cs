@@ -25,7 +25,7 @@ public class Feature(
         presenter.Handle(response);
     }
 
-    private UserStoryCore<Request, Response, Settings> core = new(validator, settings, logger, time, "");
+    private UserStoryCore<Request, Response, Settings> core = new(presenter, validator, settings, logger, time, "");
 }
 
 public record Request(string Filter) : RequestCore() { }
