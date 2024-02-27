@@ -1,11 +1,13 @@
 ﻿using Core.Solutions.Validation;
-using Experts.Blogger.ReadPosts.Business.Model;
 using FluentValidation;
 
-namespace Experts.Blogger.ReadPosts.Solutions;
+namespace Experts.Blogger.ReadPosts;
 
-public class Validation : ValidationCore<Request>, Business.IValidator {
-    public Validation() {
+public interface IValidator : Core.Business.IValidator<Request> {
+}
+
+public class Validator : ValidationCore<Request>, IValidator {
+    public Validator() {
         RuleFor(request => request.Filter)
           .Cascade(CascadeMode.Stop)
           .Must(x => x == null || x.Length >= 3)
