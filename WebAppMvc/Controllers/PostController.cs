@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebAppMvc.Models;
 
 namespace WebAppMvc.Controllers;
+
 public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<PostController> logger) : Controller {
     // GET: Posts
     public async Task<IActionResult> Index(string filterText = null) { //}, int? page, CancellationToken token) { 

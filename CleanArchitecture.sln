@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Story\Common.cspr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{78DF19F5-E4A6-419F-A410-5C66966D129A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppMvc", "WebAppMvc\WebAppMvc.csproj", "{34A69233-50DF-4EBF-A7FA-610C074446B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,9 +42,16 @@ Global
 		{D1FC4DAC-2539-4ECE-AAF8-65D2B1A83A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1FC4DAC-2539-4ECE-AAF8-65D2B1A83A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1FC4DAC-2539-4ECE-AAF8-65D2B1A83A38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34A69233-50DF-4EBF-A7FA-610C074446B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34A69233-50DF-4EBF-A7FA-610C074446B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34A69233-50DF-4EBF-A7FA-610C074446B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34A69233-50DF-4EBF-A7FA-610C074446B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{34A69233-50DF-4EBF-A7FA-610C074446B8} = {78DF19F5-E4A6-419F-A410-5C66966D129A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CC0D47BD-147E-4E6F-A06A-FFDEB8696E0F}

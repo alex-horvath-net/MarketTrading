@@ -41,6 +41,7 @@ public class UserStoryCore<TRequest, TResponse, TSettings>(
             await Run(response, token);
 
             response.MetaData.Stop = this.Stop();
+
         }
         catch (Exception ex) {
             log.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", Name, "", DateTime.UtcNow);
