@@ -15,12 +15,12 @@ public class UserStoryCore<TRequest, TResponse, TSettings>(
   ISettings<TSettings> settings,
   ILog log,
   ITime time,
-  String Name) : IUserStoryCore<TRequest, TResponse, TSettings>
+  String Name) 
   where TRequest : RequestCore
   where TResponse : ResponseCore<TRequest>, new()
   where TSettings : SettingsCore {
 
-    public async Task<TResponse> Run(TRequest request, CancellationToken token) {
+    public async Task<TResponse> Run(TRequest request, Func<TResponse, CancellationToken, Task> Run, CancellationToken token) {
         var response = new TResponse();
         try {
             response.MetaData.Start = this.Start();
@@ -64,7 +64,5 @@ public class UserStoryCore<TRequest, TResponse, TSettings>(
         log.Inform("Event {Event}, Story {Story}, Time {Time}", "Started", Name, now);
         return now;
     }
-
-    public virtual Task Run(TResponse response, CancellationToken token) => Task.CompletedTask;
 }
 
