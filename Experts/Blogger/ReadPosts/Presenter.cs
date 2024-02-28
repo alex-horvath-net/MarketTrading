@@ -1,15 +1,11 @@
 ﻿using Common.Solutions.View.Model;
 
 namespace Experts.Blogger.ReadPosts;
-public interface IPresenter {
-    void Handle(Response response);
-}
-
+public interface IPresenter : Core.Business.IPresenter<Request, Response> { }
 
 public class Presenter : IPresenter {
     public IEnumerable<Post> ViewModel { get; private set; }
     public void Handle(Response response) {
-
         var businessModel = response.Posts;
 
         var solutionModel = businessModel!.Select(p => new Post() {

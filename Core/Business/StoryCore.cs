@@ -4,65 +4,66 @@ using Core.Solutions.Validation;
 namespace Core.Business;
 
 public interface IUserStoryCore<TRequest, TResponse, TSettings>
-  where TRequest : RequestCore
-  where TResponse : ResponseCore<TRequest>, new()
-  where TSettings : SettingsCore {
+    where TRequest : RequestCore
+    where TResponse : ResponseCore<TRequest>, new()
+    where TSettings : SettingsCore {
     Task<TResponse> Run(TRequest request, CancellationToken token);
 }
 
 public class UserStoryCore<TRequest, TResponse, TSettings>(
-  IPresenter<TResponse> presenter,
-  IValidator<TRequest> validator,
-  ISettings<TSettings> settings,
-  ILog log,
-  ITime time,
-  String Name) 
-  where TRequest : RequestCore
-  where TResponse : ResponseCore<TRequest>, new()
-  where TSettings : SettingsCore {
+    IPresenter<TRequest, TResponse> presenter,
+    IValidator<TRequest> validator,
+    ISettings<TSettings> settings,
+    ILog log,
+    ITime time)
+    where TRequest : RequestCore
+    where TResponse : ResponseCore<TRequest>, new()
+    where TSettings : SettingsCore {
 
     public async Task<TResponse> Run(TRequest request, Func<TResponse, CancellationToken, Task> Run, CancellationToken token) {
         var response = new TResponse();
         try {
-            response.MetaData.Start = this.Start();
+            userStoryName = GetType()?.Namespace ?? "";
+            response.MetaData.Start = time.Now;
             response.MetaData.Request = request;
 
             response.MetaData.Enabled = settings.Value.Enabled;
             if (!response.MetaData.Enabled) {
-                response.MetaData.Stop = this.Stop();
+                response.MetaData.Stop = time.Now;
                 return response;
             }
 
-            response.MetaData.RequestIssues = await this.Validate(request, token);
+            response.MetaData.RequestIssues = await validator.Validate(request, token);
             if (response.MetaData.RequestIssues.HasFailed()) {
-                response.MetaData.Stop = this.Stop();
+                response.MetaData.Stop = time.Now;
                 return response;
             }
 
             await Run(response, token);
 
-            response.MetaData.Stop = this.Stop();
-
+            response.MetaData.Stop = time.Now;
+            presenter.Handle(response);
         }
         catch (Exception ex) {
-            log.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", Name, "", DateTime.UtcNow);
+            log.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", userStoryName, "", DateTime.UtcNow);
             throw;
         }
         return response;
     }
 
-    private DateTime Stop() {
+    private DateTime Stop2() {
         var now = time.UtcNow;
-        log.Inform("Event: {Event}, Story: {Story}, Time: {Time}", "Stopped", Name, now);
+        log.Inform("Event: {Event}, Story: {Story}, Time: {Time}", "Stopped", userStoryName, now);
         return now;
     }
 
-    private Task<IEnumerable<Result>> Validate(TRequest request, CancellationToken token) => validator.Validate(request, token);
 
-    private DateTime Start() {
+
+    private DateTime Start2() {
         var now = time.UtcNow;
-        log.Inform("Event {Event}, Story {Story}, Time {Time}", "Started", Name, now);
+        log.Inform("Event {Event}, Story {Story}, Time {Time}", "Started", userStoryName, now);
         return now;
     }
+    private string userStoryName;
 }
 

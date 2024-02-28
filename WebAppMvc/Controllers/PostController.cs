@@ -24,7 +24,7 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
             return NotFound();
         }
 
-        var resposne = await blogger.GetPost.Run(new($"{id}"), CancellationToken.None);
+        var resposne = await blogger.ReadPosts.Run(new($"{id}"), CancellationToken.None);
         var post = resposne;
         if (post == null) {
             return NotFound();
@@ -56,7 +56,7 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
             return NotFound();
         }
 
-        var resposne = await blogger.GetPost.Run(new($"{id}"), CancellationToken.None);
+        var resposne = await blogger.ReadPosts.Run(new($"{id}"), CancellationToken.None);
         var post = resposne;
         if (post == null) {
             return NotFound();
@@ -73,7 +73,7 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
         }
 
         if (ModelState.IsValid) {
-            var resposne = await blogger.GetPost.Run(new($"{post}"), CancellationToken.None);
+            var resposne = await blogger.ReadPosts.Run(new($"{post}"), CancellationToken.None);
             var updatedPost = resposne;
 
             return RedirectToAction(nameof(Index));
@@ -87,7 +87,7 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
             return NotFound();
         }
 
-        var resposne = await blogger.GetPost.Run(new($"{id}"), CancellationToken.None);
+        var resposne = await blogger.ReadPosts.Run(new($"{id}"), CancellationToken.None);
         var post = resposne;
         if (post == null) {
             return NotFound();
@@ -100,7 +100,7 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmedAsync(int id) {
-        var resposne = await blogger.GetPost.Run(new($"{id}"), CancellationToken.None);
+        var resposne = await blogger.ReadPosts.Run(new($"{id}"), CancellationToken.None);
         var post = resposne;
         return RedirectToAction(nameof(Index));
     }

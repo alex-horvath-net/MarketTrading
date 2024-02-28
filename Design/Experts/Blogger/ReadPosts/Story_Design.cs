@@ -2,13 +2,11 @@
 using Core;
 using Core.Business;
 using Core.Business.Model;
-using Experts.Blogger.ReadPosts.Business;
-using Experts.Blogger.ReadPosts.Business.Model;
 
 namespace Experts.Blogger.ReadPosts;
 
-public class Story_Design(ITestOutputHelper output) : Design<Feature>(output) {
-    private void Create() => Unit = new Feature(presenter, validator, repository, settings, logger, time);
+public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) {
+    private void Create() => Unit = new UserStory(presenter, validator, repository, settings, logger, time);
 
     private async Task Act() => response = await Unit.Run(request, token);
 
@@ -72,7 +70,7 @@ public class Story_Design(ITestOutputHelper output) : Design<Feature>(output) {
     private readonly Presenter presenter = Substitute.For<Presenter>();
     private readonly IValidator validator = Substitute.For<IValidator>();
     private readonly IRepository repository = Substitute.For<IRepository>();
-    private readonly ILog<Feature> logger = Substitute.For<ILog<Feature>>();
+    private readonly ILog<UserStory> logger = Substitute.For<ILog<UserStory>>();
     private readonly Request request = new Request(default);
     private Response response = new Response();
 }
