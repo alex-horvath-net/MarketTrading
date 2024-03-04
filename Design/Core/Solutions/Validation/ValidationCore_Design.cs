@@ -28,7 +28,7 @@ public class ValidationCore_Design {
         socketModel.Should().BeEmpty();
     }
 
-    public class TestValidator : ValidationCore<TestRequest> {
+    public class TestValidator : Validator<TestRequest> {
         public TestValidator() => RuleFor(x => x.Name).MinimumLength(5);
     }
     public record TestRequest(string Name) : RequestCore();

@@ -15,7 +15,7 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
         Create();
 
         Unit.Should().NotBeNull();
-        Unit.Should().BeAssignableTo<UserStoryCore<Request, Response, Settings>>();
+        Unit.Should().BeAssignableTo<UserStory<Request, Response, Settings>>();
     }
 
     [Fact]

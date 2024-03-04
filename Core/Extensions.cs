@@ -13,7 +13,7 @@ public static class Extensions {
     .AddCoreSolutions();
 
   public static IServiceCollection AddCoreBusiness(this IServiceCollection services) => services
-    .AddScoped(typeof(IUserStoryCore<,,>), typeof(UserStoryCore<,,>));
+    .AddScoped(typeof(IUserStory<,,>), typeof(UserStory<,,>));
 
 
   public static IServiceCollection AddCoreSolutions(this IServiceCollection services) => services

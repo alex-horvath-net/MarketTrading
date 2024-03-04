@@ -7,5 +7,5 @@ public class TestStory(
   ISettings<SettingsCore> settings,
   ITime time,
   IValidator<RequestCore> validator,
-  ILog<TestStory> logger) : UserStoryCore<RequestCore, ResponseCore<RequestCore>, SettingsCore>(presenter, validator, settings, logger, time) {
+  ILog<TestStory> logger) : UserStory<RequestCore, ResponseCore<RequestCore>, SettingsCore>(presenter, validator, settings, logger, time) {
 }

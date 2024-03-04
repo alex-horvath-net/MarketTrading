@@ -1,4 +1,6 @@
-﻿using Common.Business.Model;
+﻿using Azure.Core;
+using Azure;
+using Common.Business.Model;
 using Core.Business;
 using Core.Business.Model;
 using Core.Solutions.Setting;
@@ -6,24 +8,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPosts;
 
-public interface IUserStory : IUserStoryCore<Request, Response, Settings> {
+public interface IUserStory : IUserStory<Request, Response> {
 }
 
 public class UserStory(
-    IPresenter presenter,
-    IValidator validator,
-    IRepository repository,
-    ISettings<Settings> settings,
-    ILog<UserStory> logger,
-    ITime time) : IUserStory {
-    public Task<Response> Run(Request request, CancellationToken token) => core.Run(request, CoreRun, token);
-
-    private async Task CoreRun(Response response, CancellationToken token) {
-        response.Posts = await repository.Read(response.MetaData.Request, token);
-    }
-
-    private UserStoryCore<Request, Response, Settings> core = new(presenter, validator, settings, logger, time);
-}
+    IEnumerable<IUserWorkStep<Request, Response>> workSteps,
+    IPresenter<Request, Response> presenter, ILog<UserStory> log, ITime time) :
+    UserStory<Request, Response>(workSteps, presenter, log, time), IUserStory; 
 
 public record Request(string Filter) : RequestCore() { }
 

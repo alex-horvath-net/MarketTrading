@@ -3,77 +3,47 @@ using Core.Solutions.Validation;
 
 namespace Core.Business;
 
-public interface IUserStoryCore<TRequest, TResponse, TSettings>
-    where TRequest : RequestCore
-    where TResponse : ResponseCore<TRequest>, new()
-    where TSettings : SettingsCore {
+public interface IUserStory<TRequest, TResponse>
+    where TRequest : RequestCore where TResponse : ResponseCore<TRequest>, new() {
     Task<TResponse> Run(TRequest request, CancellationToken token);
 }
 
-public class UserStoryCore<TRequest, TResponse, TSettings>
-    where TRequest : RequestCore
-    where TResponse : ResponseCore<TRequest>, new()
-    where TSettings : SettingsCore {
+public class UserStory<TRequest, TResponse>(
+    IEnumerable<IUserWorkStep<TRequest, TResponse>> workSteps,
+    IPresenter<TRequest, TResponse> presenter, ILog log, ITime time)
+    where TRequest : RequestCore where TResponse : ResponseCore<TRequest>, new() {
 
-    public UserStoryCore(
-    IPresenter<TRequest, TResponse> presenter,
-    IValidator<TRequest> validator,
-    ISettings<TSettings> settings,
-    ILog log,
-    ITime time) {
-        this.presenter = presenter;
-        this.validator = validator;
-        this.settings = settings;
-        this.log = log;
-        this.time = time;
-
-        workSteps.Add(new StartUserWorkStep<TRequest, TResponse, TSettings>(log, time));
-        workSteps.Add(new FeatureActivationUserWorkStep<TRequest, TResponse, TSettings>(settings, log, time));
-        workSteps.Add(new ValidationUserWorkStep<TRequest, TResponse, TSettings>(validator, log, time));
-        workSteps.Add(new StopUserWorkStep<TRequest, TResponse, TSettings>(log, time));
-    }
-
-    public async Task<TResponse> Run(TRequest request, Func<TResponse, CancellationToken, Task> Run, CancellationToken token) {
+    public async Task<TResponse> Run(TRequest request, CancellationToken token) {
         var response = new TResponse();
         try {
-            var userStoryName = GetType().Namespace ?? "";
-            response.MetaData.Request = request;
+            log.Inform("UserStory: {UserStory}, Event: {Event}, Time: {Time}", Name, "Start", time.UtcNow);
 
-            foreach (var workStep in workSteps) {
-                if (!await workStep.Run(response, token)) break;
-            }
-
-            await Run(response, token);
-
-            response.MetaData.Stoped = time.Now;
+            await RunUserStory(workSteps, request, response, token);
             presenter.Handle(response);
+
+            log.Inform("UserStory: {UserStory}, Event: {Event}, Time: {Time}", Name, "End", time.UtcNow);
         }
         catch (Exception ex) {
-            log.Error(ex, "Event {Event}, Story {Story}, {Task}, Time {Time}", "Failed", userStoryName, "", DateTime.UtcNow);
+            log.Error(ex, "UserStory: {UserStory}, Event: {EventName}, Time: {Time}", Name, "Failed", time.UtcNow);
             throw;
         }
         return response;
     }
 
-    private DateTime Stop2() {
-        var now = time.UtcNow;
-        log.Inform("Event: {Event}, Story: {Story}, Time: {Time}", "Stopped", userStoryName, now);
-        return now;
+    private async Task RunUserStory(IEnumerable<IUserWorkStep<TRequest, TResponse>> workSteps, TRequest request, TResponse response, CancellationToken token) {
+        response.MetaData.Request = request;
+        foreach (var workStep in workSteps.Reverse().Skip(1).Reverse()) {
+            log.Debug("UserStory: {UserStory}, WorkStep: {WorkStep}, Event: {Event}, Time: {Time}", Name, workStep.Name, "Start", time.UtcNow);
+            if (!await workStep.Run(response, token)) {
+                log.Warning("UserStory: {UserStory}, WorkStep: {WorkStep}, Event: {Event}, Time: {Time}", Name, workStep.Name, "Break", time.UtcNow);
+                break;
+            }
+            log.Debug("UserStory: {UserStory}, WorkStep: {WorkStep}, Event: {Event}, Time: {Time}", Name, workStep.Name, "End", time.UtcNow);
+        }
+        await workSteps.Last().Run(response, token);
     }
 
-
-
-    private DateTime Start2() {
-        var now = time.UtcNow;
-        log.Inform("Event {Event}, Story {Story}, Time {Time}", "StartedAt", userStoryName, now);
-        return now;
-    }
-    private string userStoryName;
-    private readonly List<IUserWorkStep<TRequest, TResponse, TSettings>> workSteps = [];
-    private readonly IPresenter<TRequest, TResponse> presenter;
-    private readonly IValidator<TRequest> validator;
-    private readonly ISettings<TSettings> settings;
-    private readonly ILog log;
-    private readonly ITime time;
+    private string name;
+    private string Name => name ??= GetType().Name;
 }
 

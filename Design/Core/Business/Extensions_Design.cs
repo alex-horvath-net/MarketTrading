@@ -21,7 +21,7 @@ public class Extensions_Design {
         services.AddCore();
 
         var sp = services.BuildServiceProvider();
-        var userStory = sp.GetRequiredService<IUserStoryCore<RequestCore, ResponseCore<RequestCore>, SettingsCore>>();
+        var userStory = sp.GetRequiredService<IUserStory<RequestCore, ResponseCore<RequestCore>, SettingsCore>>();
         userStory.Should().NotBeNull();
     }    
 }
