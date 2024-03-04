@@ -10,38 +10,42 @@ public interface IUserStoryCore<TRequest, TResponse, TSettings>
     Task<TResponse> Run(TRequest request, CancellationToken token);
 }
 
-public class UserStoryCore<TRequest, TResponse, TSettings>(
-    IPresenter<TRequest, TResponse> presenter,
-    IValidator<TRequest> validator,
-    ISettings<TSettings> settings,
-    ILog log,
-    ITime time)
+public class UserStoryCore<TRequest, TResponse, TSettings>
     where TRequest : RequestCore
     where TResponse : ResponseCore<TRequest>, new()
     where TSettings : SettingsCore {
 
+    public UserStoryCore(
+    IPresenter<TRequest, TResponse> presenter,
+    IValidator<TRequest> validator,
+    ISettings<TSettings> settings,
+    ILog log,
+    ITime time) {
+        this.presenter = presenter;
+        this.validator = validator;
+        this.settings = settings;
+        this.log = log;
+        this.time = time;
+
+        workSteps.Add(new StartUserWorkStep<TRequest, TResponse, TSettings>(log, time));
+        workSteps.Add(new FeatureActivationUserWorkStep<TRequest, TResponse, TSettings>(settings, log, time));
+        workSteps.Add(new ValidationUserWorkStep<TRequest, TResponse, TSettings>(validator, log, time));
+        workSteps.Add(new StopUserWorkStep<TRequest, TResponse, TSettings>(log, time));
+    }
+
     public async Task<TResponse> Run(TRequest request, Func<TResponse, CancellationToken, Task> Run, CancellationToken token) {
         var response = new TResponse();
         try {
-            userStoryName = GetType()?.Namespace ?? "";
-            response.MetaData.Start = time.Now;
+            var userStoryName = GetType().Namespace ?? "";
             response.MetaData.Request = request;
 
-            response.MetaData.Enabled = settings.Value.Enabled;
-            if (!response.MetaData.Enabled) {
-                response.MetaData.Stop = time.Now;
-                return response;
-            }
-
-            response.MetaData.RequestIssues = await validator.Validate(request, token);
-            if (response.MetaData.RequestIssues.HasFailed()) {
-                response.MetaData.Stop = time.Now;
-                return response;
+            foreach (var workStep in workSteps) {
+                if (!await workStep.Run(response, token)) break;
             }
 
             await Run(response, token);
 
-            response.MetaData.Stop = time.Now;
+            response.MetaData.Stoped = time.Now;
             presenter.Handle(response);
         }
         catch (Exception ex) {
@@ -61,9 +65,15 @@ public class UserStoryCore<TRequest, TResponse, TSettings>(
 
     private DateTime Start2() {
         var now = time.UtcNow;
-        log.Inform("Event {Event}, Story {Story}, Time {Time}", "Started", userStoryName, now);
+        log.Inform("Event {Event}, Story {Story}, Time {Time}", "StartedAt", userStoryName, now);
         return now;
     }
     private string userStoryName;
+    private readonly List<IUserWorkStep<TRequest, TResponse, TSettings>> workSteps = [];
+    private readonly IPresenter<TRequest, TResponse> presenter;
+    private readonly IValidator<TRequest> validator;
+    private readonly ISettings<TSettings> settings;
+    private readonly ILog log;
+    private readonly ITime time;
 }
 

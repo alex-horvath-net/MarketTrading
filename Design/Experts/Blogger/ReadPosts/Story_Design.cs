@@ -28,7 +28,7 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
 
         await Act();
 
-        response.MetaData.Stop.Should().NotBeNull();
+        response.MetaData.Stoped.Should().NotBeNull();
         response.MetaData.RequestIssues.Should().NotContain(x => !x.IsSuccess);
         response.MetaData.RequestIssues.Should().BeEmpty();
         await validator.ReceivedWithAnyArgs().Validate(default, default);
@@ -44,7 +44,7 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
 
         await Act();
 
-        response.MetaData.Stop.Should().BeNull();
+        response.MetaData.Stoped.Should().BeNull();
         response.MetaData.RequestIssues.Should().Contain(x => !x.IsSuccess);
         await validator.ReceivedWithAnyArgs().Validate(default, default);
     }
@@ -62,7 +62,7 @@ public class Story_Design(ITestOutputHelper output) : Design<UserStory>(output) 
 
         await repository.ReceivedRead();
         response.Posts.Should().NotBeEmpty();
-        response.MetaData.Stop.Should().NotBeNull();
+        response.MetaData.Stoped.Should().NotBeNull();
     }
 
     private readonly ITime time = Substitute.For<ITime>();

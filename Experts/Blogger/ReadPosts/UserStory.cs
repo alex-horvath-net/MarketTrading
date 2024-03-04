@@ -20,7 +20,6 @@ public class UserStory(
 
     private async Task CoreRun(Response response, CancellationToken token) {
         response.Posts = await repository.Read(response.MetaData.Request, token);
-        presenter.Handle(response);
     }
 
     private UserStoryCore<Request, Response, Settings> core = new(presenter, validator, settings, logger, time);

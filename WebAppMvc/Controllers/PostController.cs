@@ -3,11 +3,15 @@ using WebAppMvc.Models;
 
 namespace WebAppMvc.Controllers;
 
-public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<PostController> logger) : Controller {
+public class PostController(
+    Experts.Blogger.Expert blogger,
+    Experts.Blogger.ReadPosts.Presenter presenter,
+    Core.Business.ILog<PostController> logger) : Controller {
     // GET: Posts
     public async Task<IActionResult> Index(string filterText = null) { //}, int? page, CancellationToken token) { 
         logger.Inform("{Action}", nameof(Index));
-        var storyModel = await blogger.ReadPosts.Run(new(filterText), CancellationToken.None);
+        var storyModel = await blogger.ReadPosts.Run(new(filterText), tokenSource.Token);
+        
         var viewModel = storyModel.Posts.Select(x => new Post() {
             PostId = x.Id,
             Title = x.Title,
@@ -24,7 +28,7 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
             return NotFound();
         }
 
-        var resposne = await blogger.ReadPosts.Run(new($"{id}"), CancellationToken.None);
+        var resposne = await blogger.ReadPosts.Run(new($"{id}"), tokenSource.Token);
         var post = resposne;
         if (post == null) {
             return NotFound();
@@ -43,7 +47,7 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateAsync([Bind("PostId,Title,Content,CreatedAt")] Post post) {
         if (ModelState.IsValid) {
-            var resposne = await blogger.ReadPosts.Run(new($"{post}"), CancellationToken.None);
+            var resposne = await blogger.ReadPosts.Run(new($"{post}"), tokenSource.Token);
             var createdPost = resposne;
             return RedirectToAction(nameof(Index));
         }
@@ -56,7 +60,7 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
             return NotFound();
         }
 
-        var resposne = await blogger.ReadPosts.Run(new($"{id}"), CancellationToken.None);
+        var resposne = await blogger.ReadPosts.Run(new($"{id}"), tokenSource.Token);
         var post = resposne;
         if (post == null) {
             return NotFound();
@@ -73,7 +77,7 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
         }
 
         if (ModelState.IsValid) {
-            var resposne = await blogger.ReadPosts.Run(new($"{post}"), CancellationToken.None);
+            var resposne = await blogger.ReadPosts.Run(new($"{post}"), tokenSource.Token);
             var updatedPost = resposne;
 
             return RedirectToAction(nameof(Index));
@@ -87,7 +91,7 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
             return NotFound();
         }
 
-        var resposne = await blogger.ReadPosts.Run(new($"{id}"), CancellationToken.None);
+        var resposne = await blogger.ReadPosts.Run(new($"{id}"), tokenSource.Token);
         var post = resposne;
         if (post == null) {
             return NotFound();
@@ -100,9 +104,11 @@ public class PostController(Experts.Blogger.Expert blogger, Core.Business.ILog<P
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmedAsync(int id) {
-        var resposne = await blogger.ReadPosts.Run(new($"{id}"), CancellationToken.None);
+        var resposne = await blogger.ReadPosts.Run(new($"{id}"), tokenSource.Token);
         var post = resposne;
         return RedirectToAction(nameof(Index));
     }
+
+    private CancellationTokenSource tokenSource = new();
 }
 
