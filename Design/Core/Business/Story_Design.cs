@@ -8,15 +8,16 @@ public class Story_Design {
         settings.Enabled();
         time.Freeze_2023_01_01();
         validation.MockPass();
-        var userStory = new TestStory(presenter, settings, time, validation, logger);
+        var userStory = new TestStory(workSteps, presenter,  logger, time);
 
-        var response = await userStory.Run(request, (r, t) => Task.CompletedTask, token);
+        var response = await userStory.Run(request, token);
 
         response.Should().NotBeNull();
         response.MetaData.Request.Should().Be(request);
         response.MetaData.RequestIssues.Should().BeEmpty();
     }
 
+    private readonly IEnumerable<IUserWorkStep<RequestCore, ResponseCore<RequestCore>>> workSteps = Substitute.For<IEnumerable<IUserWorkStep<RequestCore, ResponseCore<RequestCore>>>>();
     private readonly IPresenter<RequestCore, ResponseCore<RequestCore>> presenter = Substitute.For<IPresenter<RequestCore, ResponseCore<RequestCore>>>();
     private readonly ISettings<SettingsCore> settings = Substitute.For<ISettings<SettingsCore>>();
     private readonly ITime time = Substitute.For<ITime>();

@@ -1,8 +1,8 @@
 ﻿using Common.Business.Model;
 using Common.Solutions.Data.MainDB;
 using Core.Business;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPosts;
 
@@ -40,4 +40,10 @@ public class ReadPostsUserWorkStep(ReadPostsUserWorkStep.IRepository repository)
             return businsessModel;
         }
     }
+}
+
+public static class ReadPostsUserWorkStepExtensions {
+    public static IServiceCollection AddReadPostsUserWorkStep(this IServiceCollection services) => services
+        .AddScoped<IUserWorkStep<Request, Response>, ReadPostsUserWorkStep>()
+        .AddScoped<ReadPostsUserWorkStep.IRepository, ReadPostsUserWorkStep.Repository>();
 }

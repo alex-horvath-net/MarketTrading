@@ -3,7 +3,7 @@ using FluentAssertions.Extensions;
 
 namespace Core;
 
-public class Task_Design : Design<Task_Design> {
+public class Task_Design : UnitDesign<Task_Design> {
     public Task_Design(ITestOutputHelper output) : base(output) { }
 
     private string MapToItself(string itself) => itself;

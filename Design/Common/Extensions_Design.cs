@@ -20,7 +20,7 @@ public class Extensions_Design {
         services.AddCoreBusiness();
 
         var sp = services.BuildServiceProvider();
-        var userStory = sp.GetRequiredService<IUserStory<RequestCore, ResponseCore<RequestCore>, SettingsCore>>();
+        var userStory = sp.GetRequiredService<IUserStory<RequestCore, ResponseCore<RequestCore>>>();
         userStory.Should().NotBeNull();
     }
 }

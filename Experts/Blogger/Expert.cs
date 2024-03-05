@@ -1,10 +1,11 @@
-﻿using Experts.Blogger.ReadPosts;
+﻿using Core.Business;
+using Experts.Blogger.ReadPosts;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger;
 
 public record Expert(
-    ReadPosts.IUserStory ReadPosts);
+    IUserStory<ReadPosts.Request, ReadPosts.Response> ReadPosts);
 
 
 public static class Extensions {

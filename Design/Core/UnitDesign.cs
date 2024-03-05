@@ -2,11 +2,11 @@
 
 namespace Core;
 
-public class Design<T> {
-    protected T Unit { get; set; }
+public class UnitDesign<TUnit> {
+    protected TUnit? Unit { get; set; }
     protected readonly ITestOutputHelper Output;
     protected readonly FakeTimeProvider Time = new();
     protected CancellationTokenBuilder token = new();
 
-    protected Design(ITestOutputHelper output) => Output = output;
+    protected UnitDesign(ITestOutputHelper output) => Output = output;
 }

@@ -1,6 +1,7 @@
 ﻿using Core.Business;
 using Core.Solutions.Validation;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPosts;
 
@@ -10,8 +11,7 @@ public class ValidationUserWorkStep(ValidationUserWorkStep.IValidator validator)
         return response.MetaData.RequestIssues.HasFailed();
     }
 
-    public interface IValidator : Core.Business.IValidator<Request> {
-    }
+    public interface IValidator : Core.Business.IValidator<Request>;
 
     public class Validator : Validator<Request>, ValidationUserWorkStep.IValidator {
         public Validator() {
@@ -22,3 +22,11 @@ public class ValidationUserWorkStep(ValidationUserWorkStep.IValidator validator)
         }
     }
 }
+
+public static class ValidationUserWorkStepExtensions {
+    public static IServiceCollection AddValidationUserWorkStep(this IServiceCollection services) => services
+        .AddScoped<IUserWorkStep<Request, Response>, ValidationUserWorkStep>()
+        .AddScoped<ValidationUserWorkStep.IValidator, ValidationUserWorkStep.Validator>();
+}
+
+

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Time.Testing;
 
 namespace Core;
 
-public class CancellationTokenBuilder_Design : Design<CancellationTokenBuilder> {
+public class CancellationTokenBuilder_Design : UnitDesign<CancellationTokenBuilder> {
     private void Create() => Unit = new();
     private void Schedule() => Unit.Schedule(delay);
     private void ScheduleWithTime() => Unit.Schedule(delay, Time);

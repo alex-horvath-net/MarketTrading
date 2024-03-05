@@ -17,41 +17,9 @@ public interface IUserWorkStep<TRequest, TResponse>
 public abstract class UserWorkStep<TRequest, TResponse> : IUserWorkStep<TRequest, TResponse>
     where TRequest : RequestCore where TResponse : ResponseCore<TRequest>, new() {
 
-    public virtual Task<bool> Run(TResponse response, CancellationToken token) {
-        return true.ToTask();
-    }
+    public virtual Task<bool> Run(TResponse response, CancellationToken token) => true.ToTask();
+
     public string Name => name ??= GetType().Name;
-    private string name;
-}
-
-public class StartUserWorkStep<TRequest, TResponse>(ITime time) :
-    UserWorkStep<TRequest, TResponse>
-    where TRequest : RequestCore where TResponse : ResponseCore<TRequest>, new() {
-
-    public Task<bool> Run(TResponse response, CancellationToken token) {
-        response.MetaData.StartedAt = time.Now;
-        return true.ToTask();
-    }
-}
-
-public class FeatureActivationUserWorkStep<TRequest, TResponse, TSettings>(ISettings<TSettings> settings) :
-    UserWorkStep<TRequest, TResponse>
-    where TRequest : RequestCore where TResponse : ResponseCore<TRequest>, new() where TSettings : SettingsCore {
-
-    public Task<bool> Run(TResponse response, CancellationToken token) {
-        response.MetaData.Enabled = settings.Value.Enabled;
-        return response.MetaData.Enabled.ToTask();
-    }
-}
-
-
-public class StopUserWorkStep<TRequest, TResponse, TSettings>(ITime time) :
-    UserWorkStep<TRequest, TResponse>
-    where TRequest : RequestCore where TResponse : ResponseCore<TRequest>, new() {
-
-    public Task<bool> Run(TResponse response, CancellationToken token) {
-        response.MetaData.Stoped = time.Now;
-        return true.ToTask();
-    }
+    private string? name;
 }
 

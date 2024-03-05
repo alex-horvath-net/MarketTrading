@@ -1,5 +1,4 @@
 ﻿using Core.Business.Model;
-using Core.Solutions.Validation;
 
 namespace Core.Business;
 
@@ -10,7 +9,7 @@ public interface IUserStory<TRequest, TResponse>
 
 public class UserStory<TRequest, TResponse>(
     IEnumerable<IUserWorkStep<TRequest, TResponse>> workSteps,
-    IPresenter<TRequest, TResponse> presenter, ILog log, ITime time)
+    IPresenter<TRequest, TResponse> presenter, ILog log, ITime time) : IUserStory<TRequest, TResponse>
     where TRequest : RequestCore where TResponse : ResponseCore<TRequest>, new() {
 
     public async Task<TResponse> Run(TRequest request, CancellationToken token) {

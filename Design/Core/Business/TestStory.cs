@@ -3,9 +3,8 @@
 namespace Core.Business;
 
 public class TestStory(
+  IEnumerable<IUserWorkStep<RequestCore, ResponseCore<RequestCore>>> workSteps,
   IPresenter<RequestCore, ResponseCore<RequestCore>> presenter,
-  ISettings<SettingsCore> settings,
-  ITime time,
-  IValidator<RequestCore> validator,
-  ILog<TestStory> logger) : UserStory<RequestCore, ResponseCore<RequestCore>, SettingsCore>(presenter, validator, settings, logger, time) {
+  ILog<TestStory> logger,
+  ITime time) : UserStory<RequestCore, ResponseCore<RequestCore>>(workSteps, presenter, logger, time) {
 }
