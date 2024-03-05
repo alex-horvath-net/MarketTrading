@@ -32,4 +32,4 @@ public static class Extensions {
         .AddScoped<IPresenter, Presenter>()
         .AddScoped<IValidator, Validator>()
         .AddScoped<IRepository, Repository>();
-}
+} 
