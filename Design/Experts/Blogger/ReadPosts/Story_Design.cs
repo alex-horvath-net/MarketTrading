@@ -5,8 +5,8 @@
 
 //namespace Experts.Blogger.ReadPosts;
 
-//public class Story_Design(ITestOutputHelper output) : UnitDesign<UserStory<Request, Response>>(output) {
-//    private void Create() => Unit = new UserStory<Request, Response>(workSteps, presenter, logger, time);
+//public class Story_Design(ITestOutputHelper output) : UnitDesign<UserStory<UserStoryRequest, Response>>(output) {
+//    private void Create() => Unit = new UserStory<UserStoryRequest, Response>(workSteps, presenter, logger, time);
 
 //    private async Task Use() => response = await Unit.Run(request, token);
 
@@ -15,7 +15,7 @@
 //        Create();
 
 //        Unit.Should().NotBeNull();
-//        Unit.Should().BeAssignableTo<UserStory<Request, Response>>();
+//        Unit.Should().BeAssignableTo<UserStory<UserStoryRequest, Response>>();
 //    }
 
 //    [Fact]
@@ -70,9 +70,9 @@
 //    private readonly Presenter presenter = Substitute.For<Presenter>();
 //    //private readonly IValidator validator = Substitute.For<IValidator>();
 //    //private readonly IRepository repository = Substitute.For<IRepository>();
-//    private readonly ILog<UserStory<Request,Response>> logger = Substitute.For<ILog<UserStory<Request,Response>>>();
-//    private readonly Request request = new Request(default);
-//    private readonly IEnumerable<IUserWorkStep<Request, Response>> workSteps = Substitute.For<IEnumerable<IUserWorkStep<Request, Response>>>();
+//    private readonly ILog<UserStory<UserStoryRequest,Response>> logger = Substitute.For<ILog<UserStory<UserStoryRequest,Response>>>();
+//    private readonly UserStoryRequest request = new UserStoryRequest(default);
+//    private readonly IEnumerable<IUserWorkStep<UserStoryRequest, Response>> workSteps = Substitute.For<IEnumerable<IUserWorkStep<UserStoryRequest, Response>>>();
 //    private Response response = new Response();
 //}
 
@@ -145,7 +145,7 @@
 //            );
 //    }
 
-//    private Request request = new(default);
+//    private UserStoryRequest request = new(default);
 //    private IEnumerable<Result> issues;
 //}
 
@@ -168,14 +168,14 @@
 //        return time;
 //    }
 
-//    public static IValidator<Request> MockPass(this IValidator<Request> solution) {
+//    public static IValidator<UserStoryRequest> MockPass(this IValidator<UserStoryRequest> solution) {
 //        solution
 //            .Validate(default, default)
 //            .ReturnsForAnyArgs(new List<Result>() { });
 //        return solution;
 //    }
 
-//    public static IValidator<Request> MockFail(this IValidator<Request> solution) {
+//    public static IValidator<UserStoryRequest> MockFail(this IValidator<UserStoryRequest> solution) {
 //        solution
 //            .Validate(default, default)
 //            .ReturnsForAnyArgs(new List<Result>()
@@ -203,14 +203,14 @@
 //    }
 
 
-//    public static Request MockValidRequest(this Request request) =>
-//        new Request("Content");
+//    public static UserStoryRequest MockValidRequest(this UserStoryRequest request) =>
+//        new UserStoryRequest("Content");
 
-//    public static Request MockMissingpProperties(this Request request) =>
-//        request = new Request(null);
+//    public static UserStoryRequest MockMissingpProperties(this UserStoryRequest request) =>
+//        request = new UserStoryRequest(null);
 
-//    public static Request MockTooShortProperties(this Request request) =>
-//        new Request("12");
+//    public static UserStoryRequest MockTooShortProperties(this UserStoryRequest request) =>
+//        new UserStoryRequest("12");
 
 //    public static Response MockNoPosts(this Response response) {
 //        response.MockValidRequest();
@@ -219,7 +219,7 @@
 //    }
 
 //    public static Response MockValidRequest(this Response response) {
-//        response.MetaData.Request = new Request(default).MockValidRequest();
+//        response.MetaData.UserStoryRequest = new UserStoryRequest(default).MockValidRequest();
 //        response.MetaData.Enabled = true;
 //        response.MetaData.RequestIssues = null;
 //        return response;

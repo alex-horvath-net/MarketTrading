@@ -5,15 +5,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPosts;
 
-public class ValidationUserWorkStep(ValidationUserWorkStep.IValidator validator) : UserWorkStep<Request, Response> {
-    public async Task<bool> Run(Response response, CancellationToken token) {
+public class ValidationUserWorkStep(ValidationUserWorkStep.IValidator validator) : UserWorkStep<UserStoryRequest, UserStoryResponse> {
+    public async Task<bool> Run(UserStoryResponse response, CancellationToken token) {
         response.MetaData.RequestIssues = await validator.Validate(response.MetaData.Request, token);
         return response.MetaData.RequestIssues.HasFailed();
     }
 
-    public interface IValidator : Core.Business.IValidator<Request>;
+    public interface IValidator : Core.Business.IValidator<UserStoryRequest>;
 
-    public class Validator : Validator<Request>, ValidationUserWorkStep.IValidator {
+    public class Validator : Validator<UserStoryRequest>, ValidationUserWorkStep.IValidator {
         public Validator() {
             RuleFor(request => request.Filter)
               .Cascade(CascadeMode.Stop)
@@ -25,7 +25,7 @@ public class ValidationUserWorkStep(ValidationUserWorkStep.IValidator validator)
 
 public static class ValidationUserWorkStepExtensions {
     public static IServiceCollection AddValidationUserWorkStep(this IServiceCollection services) => services
-        .AddScoped<IUserWorkStep<Request, Response>, ValidationUserWorkStep>()
+        .AddScoped<IUserWorkStep<UserStoryRequest, UserStoryResponse>, ValidationUserWorkStep>()
         .AddScoped<ValidationUserWorkStep.IValidator, ValidationUserWorkStep.Validator>();
 }
 

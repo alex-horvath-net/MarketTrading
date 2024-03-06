@@ -6,18 +6,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPosts;
 
-public class ReadPostsUserWorkStep(ReadPostsUserWorkStep.IRepository repository) : UserWorkStep<Request, Response> {
-    public async Task<bool> Run(Response response, CancellationToken token) {
+public class ReadPostsUserWorkStep(ReadPostsUserWorkStep.IRepository repository) : UserWorkStep<UserStoryRequest, UserStoryResponse> {
+    public async Task<bool> Run(UserStoryResponse response, CancellationToken token) {
         response.Posts = await repository.Read(response.MetaData.Request, token);
         return true;
     }
 
     public interface IRepository {
-        Task<IEnumerable<Post>> Read(Request request, CancellationToken token);
+        Task<IEnumerable<Post>> Read(UserStoryRequest request, CancellationToken token);
     }
 
     public class Repository(MainDB db) : IRepository {
-        public async Task<IEnumerable<Post>> Read(Request request, CancellationToken token) {
+        public async Task<IEnumerable<Post>> Read(UserStoryRequest request, CancellationToken token) {
             var solutionModel = await db.Posts
                 .Include(post => post.PostTags)
                 .ThenInclude(postTag => postTag.Tag)
@@ -44,6 +44,6 @@ public class ReadPostsUserWorkStep(ReadPostsUserWorkStep.IRepository repository)
 
 public static class ReadPostsUserWorkStepExtensions {
     public static IServiceCollection AddReadPostsUserWorkStep(this IServiceCollection services) => services
-        .AddScoped<IUserWorkStep<Request, Response>, ReadPostsUserWorkStep>()
+        .AddScoped<IUserWorkStep<UserStoryRequest, UserStoryResponse>, ReadPostsUserWorkStep>()
         .AddScoped<ReadPostsUserWorkStep.IRepository, ReadPostsUserWorkStep.Repository>();
 }

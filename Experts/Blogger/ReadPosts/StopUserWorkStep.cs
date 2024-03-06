@@ -4,8 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPosts;
 
-public class StopUserWorkStep(ITime time) : UserWorkStep<Request, Response> {
-    public override Task<bool> Run(Response response, CancellationToken token) {
+public class StopUserWorkStep(ITime time) : UserWorkStep<UserStoryRequest, UserStoryResponse> {
+    public override Task<bool> Run(UserStoryResponse response, CancellationToken token) {
         response.MetaData.Stoped = time.Now;
         return true.ToTask();
     }
@@ -13,7 +13,7 @@ public class StopUserWorkStep(ITime time) : UserWorkStep<Request, Response> {
 
 public static class StopUserWorkStepExtensions {
     public static IServiceCollection AddStopUserWorkStep(this IServiceCollection services) => services
-        .AddScoped<IUserWorkStep<Request, Response>, StopUserWorkStep>();
+        .AddScoped<IUserWorkStep<UserStoryRequest, UserStoryResponse>, StopUserWorkStep>();
 }
 
 

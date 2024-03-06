@@ -11,15 +11,7 @@ public class PostController(
     public async Task<IActionResult> Index(string filterText = null) { //}, int? page, CancellationToken token) { 
         logger.Inform("{Action}", nameof(Index));
         var storyModel = await blogger.ReadPosts.Run(new(filterText), tokenSource.Token);
-        
-        var viewModel = storyModel.Posts.Select(x => new Post() {
-            PostId = x.Id,
-            Title = x.Title,
-            Content = x.Content,
-            CreatedAt = x.CreatedAt,
-            Tags = string.Join(", ", x.Tags.Select(t => t.Name))
-        });
-        return View(viewModel);
+        return View(presenter.ViewModel);
     }
 
     // GET: Posts/Details/5
