@@ -1,8 +1,8 @@
-﻿using System.Security.Cryptography.Xml;
-using Common.Business.Model;
+﻿using Common.Business.Model;
 using Core.Business;
 using Core.Business.Model;
 using Core.Solutions.Setting;
+using Experts.Blogger.ReadPosts.WorkSteps;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Blogger.ReadPosts;
@@ -19,10 +19,7 @@ public class Presenter : IPresenter {
             Title = p.Title,
             Content = p.Content,
             CreatedAt = p.CreatedAt,
-            Tags = p.Tags.Select(t => new Tag() {
-                Id = t.Id,
-                Name = t.Name
-            })
+            Tags = p.Tags.Select(t => new Tag(t.Id, t.Name)).ToList()
         });
 
         ViewModel = solutionModel;

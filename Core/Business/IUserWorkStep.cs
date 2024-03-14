@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Azure;
-using Azure.Core;
-using Core.Business.Model;
-using Core.Solutions.Validation;
+﻿using Core.Business.Model;
 
 namespace Core.Business;
 
@@ -18,6 +14,13 @@ public abstract class UserWorkStep<TRequest, TResponse> : IUserWorkStep<TRequest
     where TRequest : RequestCore where TResponse : ResponseCore<TRequest>, new() {
 
     public virtual Task<bool> Run(TResponse response, CancellationToken token) => true.ToTask();
+
+
+    public static UserWorkStep<TRequest, TResponse> operator +(
+        UserWorkStep<TRequest, TResponse> left,
+        UserWorkStep<TRequest, TResponse> right) {
+        return left;
+    }
 
     public string Name => name ??= GetType().Name;
     private string? name;

@@ -4,9 +4,9 @@ using Core.Business;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Blogger.ReadPosts;
+namespace Experts.Blogger.ReadPosts.WorkSteps;
 
-public class ReadPostsUserWorkStep(ReadPostsUserWorkStep.IRepository repository) : UserWorkStep<UserStoryRequest, UserStoryResponse> {
+public class ReadPosts(ReadPosts.IRepository repository) : UserWorkStep<UserStoryRequest, UserStoryResponse> {
     public async Task<bool> Run(UserStoryResponse response, CancellationToken token) {
         response.Posts = await repository.Read(response.MetaData.Request, token);
         return true;
@@ -44,6 +44,6 @@ public class ReadPostsUserWorkStep(ReadPostsUserWorkStep.IRepository repository)
 
 public static class ReadPostsUserWorkStepExtensions {
     public static IServiceCollection AddReadPostsUserWorkStep(this IServiceCollection services) => services
-        .AddScoped<IUserWorkStep<UserStoryRequest, UserStoryResponse>, ReadPostsUserWorkStep>()
-        .AddScoped<ReadPostsUserWorkStep.IRepository, ReadPostsUserWorkStep.Repository>();
+        .AddScoped<IUserWorkStep<UserStoryRequest, UserStoryResponse>, ReadPosts>()
+        .AddScoped<ReadPosts.IRepository, ReadPosts.Repository>();
 }

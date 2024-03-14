@@ -17,4 +17,9 @@
 	  <ProjectReference Include="..\Story\Common.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Blogger\WritePost\" />
+	  <Folder Include="Visitor\" />
+	</ItemGroup>
+
 </Project>
