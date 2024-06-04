@@ -18,7 +18,7 @@ public class UserStory<TRequest, TResponse>(
             log.Inform("UserStory: {UserStory}, Event: {Event}, Time: {Time}", Name, "Start", time.UtcNow);
 
             await RunUserStory(workSteps, request, response, token);
-            presenter.Handle(response);
+            presenter.MapUS2UI(response);
 
             log.Inform("UserStory: {UserStory}, Event: {Event}, Time: {Time}", Name, "End", time.UtcNow);
         }

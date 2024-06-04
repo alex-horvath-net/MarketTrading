@@ -11,7 +11,7 @@ public interface IPresenter : Core.Business.IPresenter<UserStoryRequest, UserSto
 
 public class Presenter : IPresenter {
     public IEnumerable<Post> ViewModel { get; private set; }
-    public void Handle(UserStoryResponse response) {
+    public void MapUS2UI(UserStoryResponse response) {
         var businessModel = response.Posts;
 
         var solutionModel = businessModel!.Select(p => new Post() {

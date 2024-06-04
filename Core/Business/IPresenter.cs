@@ -6,7 +6,7 @@ namespace Core.Business;
 public interface IPresenter<TRequest, TResponse>
   where TRequest : RequestCore
   where TResponse : ResponseCore<TRequest>, new() {
-    void Handle(TResponse response);
+    void MapUS2UI(TResponse response);
 }
 
  
