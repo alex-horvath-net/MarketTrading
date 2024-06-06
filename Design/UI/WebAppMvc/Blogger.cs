@@ -1,4 +1,4 @@
-﻿using Design;
+﻿using Tests;
 using Microsoft.Playwright;
 
 namespace UI.WebAppMvc;
