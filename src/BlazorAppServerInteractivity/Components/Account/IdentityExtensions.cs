@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
+using BlazorAppServerInteractivity.Components.Account;
 using BlazorAppServerInteractivity.Components.Account.Pages;
 using BlazorAppServerInteractivity.Components.Account.Pages.Manage;
 using BlazorAppServerInteractivity.Data;
@@ -8,16 +9,61 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 
 namespace Microsoft.AspNetCore.Routing {
-    internal static class IdentityComponentsEndpointRouteBuilderExtensions {
+    internal static class IdentityExtensions {
+
+        public static IServiceCollection AddIdentityServices(this IServiceCollection services, ConfigurationManager configuration) {
+            services.AddScoped<IdentityUserAccessor>();
+            services.AddScoped<IdentityRedirectManager>();
+            services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+            services
+                .AddAuthentication(options => {
+                    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+                    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+                })
+                .AddIdentityCookies();
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
+
+            services
+                .AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddSignInManager()
+                .AddDefaultTokenProviders();
+
+            services.AddSingleton<IEmailSender<ApplicationUser>, IdentityEmailSender>();
+
+
+            return services;
+        }
+
         // These endpoints are required by the Identity Razor components defined in the /Components/Account/Pages directory of this project.
         public static IEndpointConventionBuilder MapAdditionalIdentityEndpoints(this IEndpointRouteBuilder endpoints) {
             ArgumentNullException.ThrowIfNull(endpoints);
 
-            var accountGroup = endpoints.MapGroup("/Account");
+            var accountGroup = endpoints.MapAccountGropup()
+                .MapPerformExternalLogintEndpoint()
+                .MapLogoutEndpoint();
 
+            var manageGroup = accountGroup.MapManageGropup()
+                .MapLinkExternalLoginEndpoint()
+                .MapDownloadPersonalDataEndpoint(endpoints);
+
+            return accountGroup;
+        }
+
+        private static RouteGroupBuilder MapAccountGropup(this IEndpointRouteBuilder endpoints) {
+            var accountGroup = endpoints.MapGroup("/Account");
+            return accountGroup;
+        }
+
+        private static RouteGroupBuilder MapPerformExternalLogintEndpoint(this RouteGroupBuilder accountGroup) {
             accountGroup.MapPost("/PerformExternalLogin", (
                 HttpContext context,
                 [FromServices] SignInManager<ApplicationUser> signInManager,
@@ -25,7 +71,7 @@ namespace Microsoft.AspNetCore.Routing {
                 [FromForm] string returnUrl) => {
                     IEnumerable<KeyValuePair<string, StringValues>> query = [
                         new("ReturnUrl", returnUrl),
-                    new("Action", ExternalLogin.LoginCallbackAction)];
+                        new("Action", ExternalLogin.LoginCallbackAction)];
 
                     var redirectUrl = UriHelper.BuildRelative(
                         context.Request.PathBase,
@@ -36,6 +82,10 @@ namespace Microsoft.AspNetCore.Routing {
                     return TypedResults.Challenge(properties, [provider]);
                 });
 
+            return accountGroup;
+        }
+
+        private static RouteGroupBuilder MapLogoutEndpoint(this RouteGroupBuilder accountGroup) {
             accountGroup.MapPost("/Logout", async (
                 ClaimsPrincipal user,
                 SignInManager<ApplicationUser> signInManager,
@@ -43,9 +93,15 @@ namespace Microsoft.AspNetCore.Routing {
                     await signInManager.SignOutAsync();
                     return TypedResults.LocalRedirect($"~/{returnUrl}");
                 });
+            return accountGroup;
+        }
 
+        private static RouteGroupBuilder MapManageGropup(this RouteGroupBuilder accountGroup) {
             var manageGroup = accountGroup.MapGroup("/Manage").RequireAuthorization();
+            return manageGroup;
+        }
 
+        private static RouteGroupBuilder MapLinkExternalLoginEndpoint(this RouteGroupBuilder manageGroup) {
             manageGroup.MapPost("/LinkExternalLogin", async (
                 HttpContext context,
                 [FromServices] SignInManager<ApplicationUser> signInManager,
@@ -62,9 +118,10 @@ namespace Microsoft.AspNetCore.Routing {
                     return TypedResults.Challenge(properties, [provider]);
                 });
 
-            var loggerFactory = endpoints.ServiceProvider.GetRequiredService<ILoggerFactory>();
-            var downloadLogger = loggerFactory.CreateLogger("DownloadPersonalData");
+            return manageGroup;
+        }
 
+        private static RouteGroupBuilder MapDownloadPersonalDataEndpoint(this RouteGroupBuilder manageGroup, IEndpointRouteBuilder endpoints) {
             manageGroup.MapPost("/DownloadPersonalData", async (
                 HttpContext context,
                 [FromServices] UserManager<ApplicationUser> userManager,
@@ -75,6 +132,8 @@ namespace Microsoft.AspNetCore.Routing {
                     }
 
                     var userId = await userManager.GetUserIdAsync(user);
+                    var loggerFactory = endpoints.ServiceProvider.GetRequiredService<ILoggerFactory>();
+                    var downloadLogger = loggerFactory.CreateLogger("DownloadPersonalData");
                     downloadLogger.LogInformation("User with ID '{UserId}' asked for their personal data.", userId);
 
                     // Only include personal data for download
@@ -97,7 +156,7 @@ namespace Microsoft.AspNetCore.Routing {
                     return TypedResults.File(fileBytes, contentType: "application/json", fileDownloadName: "PersonalData.json");
                 });
 
-            return accountGroup;
+            return manageGroup;
         }
     }
 }

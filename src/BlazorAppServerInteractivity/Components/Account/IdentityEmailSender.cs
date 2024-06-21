@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace BlazorAppServerInteractivity.Components.Account {
     // Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.
-    internal sealed class IdentityNoOpEmailSender : IEmailSender<ApplicationUser> {
+    internal sealed class IdentityEmailSender : IEmailSender<ApplicationUser> {
         private readonly IEmailSender emailSender = new NoOpEmailSender();
 
         public Task SendConfirmationLinkAsync(ApplicationUser user, string email, string confirmationLink) =>
@@ -17,3 +17,4 @@ namespace BlazorAppServerInteractivity.Components.Account {
             emailSender.SendEmailAsync(email, "Reset your password", $"Please reset your password using the following code: {resetCode}");
     }
 }
+ 
