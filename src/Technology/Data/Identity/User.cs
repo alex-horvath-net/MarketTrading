@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace BlazorAppServerInteractivity.Data.Identity;
+namespace Technology.Data.Identity;
 
 public class User : IdentityUser { }
+ 

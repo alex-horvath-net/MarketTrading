@@ -1,4 +1,4 @@
-using BlazorAppServerInteractivity.Data.Identity;
+using Technology.Data.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace BlazorAppServerInteractivity.Components.Account {
