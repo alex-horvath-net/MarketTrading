@@ -1,11 +1,11 @@
-using BlazorAppServerInteractivity.Data;
+using BlazorAppServerInteractivity.Data.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace BlazorAppServerInteractivity.Components.Account {
     internal sealed class IdentityUserAccessor(
-        UserManager<ApplicationUser> userManager, 
+        UserManager<User> userManager, 
         IdentityRedirectManager redirectManager) {
-        public async Task<ApplicationUser> GetRequiredUserAsync(HttpContext context) {
+        public async Task<User> GetRequiredUserAsync(HttpContext context) {
             var user = await userManager.GetUserAsync(context.User);
 
             if (user is null) {

@@ -3,7 +3,7 @@ using System.Text.Json;
 using BlazorAppServerInteractivity.Components.Account;
 using BlazorAppServerInteractivity.Components.Account.Pages;
 using BlazorAppServerInteractivity.Components.Account.Pages.Manage;
-using BlazorAppServerInteractivity.Data;
+using BlazorAppServerInteractivity.Data.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -26,18 +26,18 @@ namespace Microsoft.AspNetCore.Routing {
                 })
                 .AddIdentityCookies();
 
-            var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+            var connectionString = configuration.GetConnectionString("Identity") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            services.AddDbContext<IdentityDB>(options => options.UseSqlServer(connectionString));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
 
             services
-                .AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<IdentityDB>()
                 .AddSignInManager()
                 .AddDefaultTokenProviders();
 
-            services.AddSingleton<IEmailSender<ApplicationUser>, IdentityEmailSender>();
+            services.AddSingleton<IEmailSender<User>, IdentityEmailSender>();
 
 
             return services;
@@ -66,7 +66,7 @@ namespace Microsoft.AspNetCore.Routing {
         private static RouteGroupBuilder MapPerformExternalLogintEndpoint(this RouteGroupBuilder accountGroup) {
             accountGroup.MapPost("/PerformExternalLogin", (
                 HttpContext context,
-                [FromServices] SignInManager<ApplicationUser> signInManager,
+                [FromServices] SignInManager<User> signInManager,
                 [FromForm] string provider,
                 [FromForm] string returnUrl) => {
                     IEnumerable<KeyValuePair<string, StringValues>> query = [
@@ -88,7 +88,7 @@ namespace Microsoft.AspNetCore.Routing {
         private static RouteGroupBuilder MapLogoutEndpoint(this RouteGroupBuilder accountGroup) {
             accountGroup.MapPost("/Logout", async (
                 ClaimsPrincipal user,
-                SignInManager<ApplicationUser> signInManager,
+                SignInManager<User> signInManager,
                 [FromForm] string returnUrl) => {
                     await signInManager.SignOutAsync();
                     return TypedResults.LocalRedirect($"~/{returnUrl}");
@@ -104,7 +104,7 @@ namespace Microsoft.AspNetCore.Routing {
         private static RouteGroupBuilder MapLinkExternalLoginEndpoint(this RouteGroupBuilder manageGroup) {
             manageGroup.MapPost("/LinkExternalLogin", async (
                 HttpContext context,
-                [FromServices] SignInManager<ApplicationUser> signInManager,
+                [FromServices] SignInManager<User> signInManager,
                 [FromForm] string provider) => {
                     // Clear the existing external cookie to ensure a clean login process
                     await context.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -124,7 +124,7 @@ namespace Microsoft.AspNetCore.Routing {
         private static RouteGroupBuilder MapDownloadPersonalDataEndpoint(this RouteGroupBuilder manageGroup, IEndpointRouteBuilder endpoints) {
             manageGroup.MapPost("/DownloadPersonalData", async (
                 HttpContext context,
-                [FromServices] UserManager<ApplicationUser> userManager,
+                [FromServices] UserManager<User> userManager,
                 [FromServices] AuthenticationStateProvider authenticationStateProvider) => {
                     var user = await userManager.GetUserAsync(context.User);
                     if (user is null) {
@@ -138,7 +138,7 @@ namespace Microsoft.AspNetCore.Routing {
 
                     // Only include personal data for download
                     var personalData = new Dictionary<string, string>();
-                    var personalDataProps = typeof(ApplicationUser).GetProperties().Where(
+                    var personalDataProps = typeof(User).GetProperties().Where(
                         prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
                     foreach (var p in personalDataProps) {
                         personalData.Add(p.Name, p.GetValue(user)?.ToString() ?? "null");
