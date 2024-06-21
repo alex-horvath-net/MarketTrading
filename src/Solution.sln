@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorAppServerInteractivity", "BlazorAppServerInteractivity\BlazorAppServerInteractivity.csproj", "{507FD29D-9D48-4A1C-BDE4-CED0E8245E89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAppServerInteractivity", "BlazorAppServerInteractivity\BlazorAppServerInteractivity.csproj", "{507FD29D-9D48-4A1C-BDE4-CED0E8245E89}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Technology", "Technology", "{B6923501-59EA-49D4-AE7E-E05A66101A5C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{2B56B5BE-5021-468C-B1B2-6064CD4F28D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Technology", "Technology\Technology.csproj", "{B493A5CD-9966-4470-80BD-72B8F9F4AE42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Technology", "Technology\Technology.csproj", "{B493A5CD-9966-4470-80BD-72B8F9F4AE42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
