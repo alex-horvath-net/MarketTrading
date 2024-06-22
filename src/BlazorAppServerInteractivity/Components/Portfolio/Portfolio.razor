@@ -1,13 +1,37 @@
 ﻿@page "/portfolio"
 
-@using Microsoft.AspNetCore.Authorization
-
-@attribute [Authorize]
 
 <PageTitle>Portfolio</PageTitle>
-
 <h3>Prtfolio</h3>
 
+
+<Table Columns="columns" Rows="rows">
+
+</Table>
+
+
+@* <PortfolioSummary></PortfolioSummary> *@
+
+@* <InvestmentList></InvestmentList> *@
+
+
+
 @code {
+
+
+    public record Investment(int Id, string Name) { }
+
+    List<Expression<Func<Investment, object>>> columns = new() {
+        x => x.Id,
+        x => x.Name
+    };
+
+    List<Investment> rows = new() {
+        new(1, "Investment1"),
+        new(2, "Investment2"),
+        new(3, "Investment3"),
+        new(4, "Investment4"),
+        new(5, "Investment5")
+    };
 
 }
