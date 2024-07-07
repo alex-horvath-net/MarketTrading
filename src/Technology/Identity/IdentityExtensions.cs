@@ -1,8 +1,7 @@
 using System.Security.Claims;
 using System.Text.Json;
-using Technology.BlazorWebApp.Components.Account;
-using Technology.BlazorWebApp.Components.Account.Pages;
-using Technology.BlazorWebApp.Components.Account.Pages.Manage;
+//using Technology.BlazorWebApp.Components.Account.Pages;
+//using Technology.BlazorWebApp.Components.Account.Pages.Manage;
 using Technology.Data.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -11,9 +10,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
-namespace Microsoft.AspNetCore.Routing; 
-internal static class IdentityExtensions {
+namespace Technology.Identity;
+public static class IdentityExtensions {
 
     public static IServiceCollection AddIdentityServices(this IServiceCollection services, ConfigurationManager configuration) {
         services.AddScoped<IdentityUserAccessor>();
@@ -45,15 +50,15 @@ internal static class IdentityExtensions {
     }
 
     // These endpoints are required by the Identity Razor components defined in the /Components/Account/Pages directory of this project.
-    public static IEndpointConventionBuilder MapAdditionalIdentityEndpoints(this IEndpointRouteBuilder endpoints) {
+    public static IEndpointConventionBuilder MapAdditionalIdentityEndpoints(this IEndpointRouteBuilder endpoints, string loginCallbackAction, string linkLoginCallbackAction) {
         ArgumentNullException.ThrowIfNull(endpoints);
 
         var accountGroup = endpoints.MapAccountGropup()
-            .MapPerformExternalLogintEndpoint()
+            .MapPerformExternalLogintEndpoint(loginCallbackAction)
             .MapLogoutEndpoint();
 
         var manageGroup = accountGroup.MapManageGropup()
-            .MapLinkExternalLoginEndpoint()
+            .MapLinkExternalLoginEndpoint(linkLoginCallbackAction)
             .MapDownloadPersonalDataEndpoint(endpoints);
 
         return accountGroup;
@@ -64,7 +69,7 @@ internal static class IdentityExtensions {
         return accountGroup;
     }
 
-    private static RouteGroupBuilder MapPerformExternalLogintEndpoint(this RouteGroupBuilder accountGroup) {
+    private static RouteGroupBuilder MapPerformExternalLogintEndpoint(this RouteGroupBuilder accountGroup, string loginCallbackAction) {
         accountGroup.MapPost("/PerformExternalLogin", (
             HttpContext context,
             [FromServices] SignInManager<User> signInManager,
@@ -72,7 +77,8 @@ internal static class IdentityExtensions {
             [FromForm] string returnUrl) => {
                 IEnumerable<KeyValuePair<string, StringValues>> query = [
                     new("ReturnUrl", returnUrl),
-                    new("Action", ExternalLogin.LoginCallbackAction)];
+                    new("Action", loginCallbackAction)];
+                //new("Action", ExternalLogin.LoginCallbackAction)];
 
                 var redirectUrl = UriHelper.BuildRelative(
                     context.Request.PathBase,
@@ -102,7 +108,7 @@ internal static class IdentityExtensions {
         return manageGroup;
     }
 
-    private static RouteGroupBuilder MapLinkExternalLoginEndpoint(this RouteGroupBuilder manageGroup) {
+    private static RouteGroupBuilder MapLinkExternalLoginEndpoint(this RouteGroupBuilder manageGroup, string linkLoginCallbackAction) {
         manageGroup.MapPost("/LinkExternalLogin", async (
             HttpContext context,
             [FromServices] SignInManager<User> signInManager,
@@ -113,7 +119,8 @@ internal static class IdentityExtensions {
                 var redirectUrl = UriHelper.BuildRelative(
                     context.Request.PathBase,
                     "/Account/Manage/ExternalLogins",
-                    QueryString.Create("Action", ExternalLogins.LinkLoginCallbackAction));
+                    QueryString.Create("Action", linkLoginCallbackAction));
+                //QueryString.Create("Action", ExternalLogins.LinkLoginCallbackAction));
 
                 var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, signInManager.UserManager.GetUserId(context.User));
                 return TypedResults.Challenge(properties, [provider]);

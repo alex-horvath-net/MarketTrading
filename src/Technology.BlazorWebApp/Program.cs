@@ -1,4 +1,5 @@
 using Technology.BlazorWebApp.Components;
+using Technology.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,6 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-app.MapAdditionalIdentityEndpoints();
+app.MapAdditionalIdentityEndpoints("linkLoginCallbackAction", "linkLoginCallbackAction");
 
 app.Run();
