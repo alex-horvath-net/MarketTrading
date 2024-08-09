@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{2B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Technology", "Technology\Technology.csproj", "{B493A5CD-9966-4470-80BD-72B8F9F4AE42}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Technology.BlazorWebApp", "Technology.BlazorWebApp\Technology.BlazorWebApp.csproj", "{E52319F9-9BF4-4D91-9161-EFC5436EC9F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Technology.UI.Blazor", "Technology.BlazorWebApp\Technology.UI.Blazor.csproj", "{E52319F9-9BF4-4D91-9161-EFC5436EC9F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
