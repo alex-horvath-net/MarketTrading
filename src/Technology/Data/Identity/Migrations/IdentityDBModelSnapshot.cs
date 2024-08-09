@@ -155,7 +155,7 @@ namespace Technology.Data.Identity.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Technology.Data.Identity.User", b =>
+            modelBuilder.Entity("Technology.Data.Identity.Model.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -231,7 +231,7 @@ namespace Technology.Data.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Technology.Data.Identity.User", null)
+                    b.HasOne("Technology.Data.Identity.Model.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -240,7 +240,7 @@ namespace Technology.Data.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Technology.Data.Identity.User", null)
+                    b.HasOne("Technology.Data.Identity.Model.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -255,7 +255,7 @@ namespace Technology.Data.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Technology.Data.Identity.User", null)
+                    b.HasOne("Technology.Data.Identity.Model.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,7 +264,7 @@ namespace Technology.Data.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Technology.Data.Identity.User", null)
+                    b.HasOne("Technology.Data.Identity.Model.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Technology.Data.Identity.Model;
 
 namespace Technology.Identity;
 public static class IdentityExtensions {

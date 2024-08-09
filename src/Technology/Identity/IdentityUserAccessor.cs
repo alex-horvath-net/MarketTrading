@@ -1,8 +1,8 @@
-using Technology.Data.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using Technology.Data.Identity.Model;
 
-namespace Technology.Identity; 
+namespace Technology.Identity;
 public sealed class IdentityUserAccessor(
     UserManager<User> userManager,
     IdentityRedirectManager redirectManager) {
