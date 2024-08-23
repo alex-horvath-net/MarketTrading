@@ -4,7 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-Technology.BlazorWebApp-c54edc9d-f627-430a-935b-f9beb117e44a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

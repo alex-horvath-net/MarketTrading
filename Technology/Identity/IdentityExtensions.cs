@@ -13,8 +13,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
-//using Technology.BlazorWebApp.Components.Account.Pages;
-//using Technology.BlazorWebApp.Components.Account.Pages.Manage;
 using Technology.Data.Identity;
 using Technology.Data.Identity.Model;
 
