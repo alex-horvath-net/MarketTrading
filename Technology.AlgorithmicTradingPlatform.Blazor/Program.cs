@@ -1,4 +1,4 @@
-using Technology.UI.Blazor.Components;
+using Technology.AlgorithmicTradingPlatform.Blazor.Components;
 using Technology.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
