@@ -6,3 +6,4 @@ public class CreateTradingStrategy {
 //Set parameters(e.g., stop-loss, target profit).
 //Save and activate the strategy.
 }
+

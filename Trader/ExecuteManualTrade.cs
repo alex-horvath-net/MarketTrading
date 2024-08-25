@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Trader {
-    internal class ExecuteManualTrade {
+    public class ExecuteManualTrade {
 //        Select asset and quantity.
 //Choose order type (market, limit).
 //Submit the order and monitor execution.
