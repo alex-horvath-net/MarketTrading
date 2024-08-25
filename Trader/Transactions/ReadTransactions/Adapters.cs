@@ -4,8 +4,8 @@ using Data = Infrastructure.Data.App.Model;
 namespace Trader.Transactions.ReadTransactions;
 public class Adapters {
     public class Repository(Repository.IRepository plugin) : Feature.IRepository {
-        public List<Domain.Transaction> Read(CancellationToken token) {
-            var pluginData = plugin.Read(token);
+        public async Task<List<Domain.Transaction>> Read(CancellationToken token) {
+            var pluginData = await plugin.Read(token);
             var domainData = pluginData.Select(ToDomain).ToList();
             return domainData;
         }
@@ -15,7 +15,7 @@ public class Adapters {
         };
 
         public interface IRepository {
-            public List<Data.Transaction> Read(CancellationToken token);
+            public Task<List<Data.Transaction>> Read(CancellationToken token);
         }
     }
 }
