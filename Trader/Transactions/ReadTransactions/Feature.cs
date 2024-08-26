@@ -6,7 +6,7 @@ public class Feature(Feature.IRepository Repository) {
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
         response.Request = request;
-        response.Transactions = await Repository.Read(token);
+        response.Transactions = await Repository.Read(request, token);
         return response;
     }
 
@@ -19,6 +19,6 @@ public class Feature(Feature.IRepository Repository) {
     }
 
     public interface IRepository {
-        public Task<List<Transaction>> Read(CancellationToken token);
+        public Task<List<Transaction>> Read(Request request, CancellationToken token);
     }
 }
