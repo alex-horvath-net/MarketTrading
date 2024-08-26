@@ -1,4 +1,4 @@
-using Adapters.Plugins.Identity;
+using Technology.Identity;
 using Technology.AlgorithmicTradingPlatform.Blazor.Components;
 
 namespace Technology.AlgorithmicTradingPlatform.Blazor;

@@ -1,5 +1,5 @@
-﻿using Adapters.Plugins.AppData;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Technology.AppData;
 
 public static class DatabaseFactory {
 

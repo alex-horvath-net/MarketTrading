@@ -1,6 +1,6 @@
 ﻿using Adapters.AppDataModel;
-using Adapters.Plugins.AppData;
 using Microsoft.EntityFrameworkCore;
+using Technology.AppData;
 
 namespace Trader.Transactions.ReadTransactions;
 public class Technology {
