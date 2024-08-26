@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Adapters.AppDataModel
+﻿namespace Adapters.AppDataModel
 {
     public class Transaction
     {

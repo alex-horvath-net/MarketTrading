@@ -1,8 +1,8 @@
 ﻿
-using Domain;
+using Businsess;
 
 namespace Trader.Transactions.ReadTransactions;
-public class Feature(Feature.IRepository Repository) {
+public class Business(Business.IRepository Repository) {
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
         response.Request = request;

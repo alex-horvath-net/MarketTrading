@@ -1,11 +1,12 @@
 ﻿@page "/Account/ConfirmEmail"
 
-@using System.Text
-@using Infrastructure.AlgorithmicTradingPlatform.Blazor.Components.Account
-@using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.WebUtilities
-@using Infrastructure.Plugins.Identity;
-@using Infrastructure.Adapters.IdentityDtatModel;
+@    using System.Text
+@    using Infrastructure.AlgorithmicTradingPlatform.Blazor.Components.Account
+@    using Microsoft.AspNetCore.Identity
+@    using Microsoft.AspNetCore.WebUtilities
+@    using Infrastructure.Plugins.Identity;
+@    using Infrastructure.Adapters.IdentityDtatModel;
+    using Adapters.IdentityDtatModel;
 
 @inject UserManager<User> UserManager
 @inject IdentityRedirectManager RedirectManager
