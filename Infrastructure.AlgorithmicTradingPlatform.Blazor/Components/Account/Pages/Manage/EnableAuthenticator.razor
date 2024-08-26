@@ -1,15 +1,15 @@
 ﻿@page "/Account/Manage/EnableAuthenticator"
 
-@    using System.ComponentModel.DataAnnotations
-@    using System.Globalization
-@    using System.Text
-@    using System.Text.Encodings.Web
-@    using Microsoft.AspNetCore.Identity
-@    using Infrastructure.Plugins.Identity;
-@    using Infrastructure.Adapters.IdentityDtatModel;
+@using System.ComponentModel.DataAnnotations
+@using System.Globalization
+@using System.Text
+@using System.Text.Encodings.Web
+@using Microsoft.AspNetCore.Identity
+@using Technology.Identity;
+@using Adapters.IdentityDtatModel;
     using Adapters.IdentityDtatModel;
-    using Infrastructure.Plugins.Identity;
-    using Infrastructure.Adapters.IdentityDtatModel
+    using Technology.Identity;
+    using Adapters.IdentityDtatModel
 
 @inject UserManager<User> UserManager
 @inject IdentityUserAccessor UserAccessor

@@ -1,4 +1,4 @@
-﻿using Infrastructure.Plugins.AppData;
+﻿using Adapters.Plugins.AppData;
 using Microsoft.EntityFrameworkCore;
 
 public static class DatabaseFactory {

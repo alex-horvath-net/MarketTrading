@@ -60,7 +60,7 @@ public class ReadTransactionsTest {
             //repository.Read(default).Returns([]);
             var db = DatabaseFactory.Default();
             var pluginDb = new Trader.Transactions.ReadTransactions.Technology.Repository(db);
-            var repository = new Adapters.Repository(pluginDb);
+            var repository = new Trader.Transactions.ReadTransactions.Adapters.Repository(pluginDb);
             return new Dependencies(repository);
         }
     }

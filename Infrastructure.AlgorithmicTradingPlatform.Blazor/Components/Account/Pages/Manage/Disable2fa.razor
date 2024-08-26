@@ -1,11 +1,11 @@
 ﻿@page "/Account/Manage/Disable2fa"
 
-@    using Microsoft.AspNetCore.Identity
-@    using Infrastructure.Plugins.Identity;
-@    using Infrastructure.Adapters.IdentityDtatModel;
+@using Microsoft.AspNetCore.Identity
+@using Technology.Identity;
+@using Adapters.IdentityDtatModel;
     using Adapters.IdentityDtatModel;
-    using Infrastructure.Plugins.Identity;
-    using Infrastructure.Adapters.IdentityDtatModel
+    using Technology.Identity;
+    using Adapters.IdentityDtatModel
 
 @inject UserManager<User> UserManager
 @inject IdentityUserAccessor UserAccessor

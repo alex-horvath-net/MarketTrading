@@ -1,12 +1,10 @@
 ﻿@page "/Account/ConfirmEmailChange"
 
-@    using System.Text
-@    using Microsoft.AspNetCore.Identity
-@    using Microsoft.AspNetCore.WebUtilities
-@    using Infrastructure.Plugins.Identity;
-@    using Infrastructure.Adapters.IdentityDtatModel;
-@    using Infrastructure.Adapters.IdentityDtatModel;
-    using Adapters.IdentityDtatModel
+@using System.Text
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.WebUtilities
+@using Technology.Identity;
+@using Adapters.IdentityDtatModel
 
 @inject UserManager<User> UserManager
 @inject SignInManager<User> SignInManager

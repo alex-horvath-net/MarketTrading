@@ -1,12 +1,10 @@
 ﻿@page "/Account/LoginWith2fa"
 
-@    using System.ComponentModel.DataAnnotations
-@    using Microsoft.AspNetCore.Identity
-@    using Infrastructure.Plugins.Identity;
-@    using Infrastructure.Adapters.IdentityDtatModel;
-    using Adapters.IdentityDtatModel;
-    using Infrastructure.Plugins.Identity;
-    using Infrastructure.Adapters.IdentityDtatModel
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Identity
+@using Technology.Identity;
+@using Adapters.IdentityDtatModel;
+@using Technology.Identity;
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager

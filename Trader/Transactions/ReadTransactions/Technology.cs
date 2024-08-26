@@ -1,5 +1,5 @@
 ﻿using Adapters.AppDataModel;
-using Infrastructure.Plugins.AppData;
+using Adapters.Plugins.AppData;
 using Microsoft.EntityFrameworkCore;
 
 namespace Trader.Transactions.ReadTransactions;

@@ -1,4 +1,4 @@
-﻿using Data = Infrastructure.Adapters.AppDataModel;
+﻿using Data = Adapters.AppDataModel;
 
 namespace Trader.Transactions.ReadTransactions;
 public class Adapters {
@@ -9,12 +9,12 @@ public class Adapters {
             return domainData;
         }
 
-        private Businsess.Transaction ToDomain(Adapters.AppDataModel.Transaction data) => new() {
+        private Businsess.Transaction ToDomain(Data.Transaction data) => new() {
             Id = data.Id
         };
 
         public interface IRepository {
-            public Task<List<Adapters.AppDataModel.Transaction>> Read(CancellationToken token);
+            public Task<List<Data.Transaction>> Read(CancellationToken token);
         }
     }
 }

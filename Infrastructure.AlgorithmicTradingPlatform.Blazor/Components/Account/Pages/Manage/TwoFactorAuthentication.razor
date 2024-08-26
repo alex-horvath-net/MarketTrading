@@ -1,12 +1,12 @@
 ﻿@page "/Account/Manage/TwoFactorAuthentication"
 
-@    using Microsoft.AspNetCore.Http.Features
-@    using Microsoft.AspNetCore.Identity
-@    using Infrastructure.Plugins.Identity;
-@    using Infrastructure.Adapters.IdentityDtatModel;
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Identity
+@using Technology.Identity;
+@using Adapters.IdentityDtatModel;
     using Adapters.IdentityDtatModel;
-    using Infrastructure.Plugins.Identity;
-    using Infrastructure.Adapters.IdentityDtatModel
+    using Technology.Identity;
+    using Adapters.IdentityDtatModel
 
 @inject UserManager<User> UserManager
 @inject SignInManager<User> SignInManager

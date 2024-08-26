@@ -1,7 +1,7 @@
-using Infrastructure.AlgorithmicTradingPlatform.Blazor.Components;
-using Infrastructure.Plugins.Identity;
+using Adapters.Plugins.Identity;
+using Technology.AlgorithmicTradingPlatform.Blazor.Components;
 
-namespace Infrastructure.AlgorithmicTradingPlatform.Blazor;
+namespace Technology.AlgorithmicTradingPlatform.Blazor;
 
 public class Program {
     public static void Main(string[] args) {

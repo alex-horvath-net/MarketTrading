@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adapters", "Infrastructure\Adapters.csproj", "{8DABF91E-4423-45EA-80F7-267D93FC86C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.AlgorithmicTradingPlatform.Blazor", "Infrastructure.AlgorithmicTradingPlatform.Blazor\Infrastructure.AlgorithmicTradingPlatform.Blazor.csproj", "{CB30F4BE-FEEC-47E6-8F65-D8D5CC5110E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Technology.AlgorithmicTradingPlatform.Blazor", "Infrastructure.AlgorithmicTradingPlatform.Blazor\Technology.AlgorithmicTradingPlatform.Blazor.csproj", "{CB30F4BE-FEEC-47E6-8F65-D8D5CC5110E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Technology", "Technology\Technology.csproj", "{1CB0596A-5E36-47E6-BE5C-BC061F8741CA}"
 EndProject
