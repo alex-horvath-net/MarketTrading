@@ -1,5 +1,5 @@
-﻿using Infrastructure.Data.App;
-using Infrastructure.Data.App.Model;
+﻿using Infrastructure.Adapters.AppDataModel;
+using Infrastructure.Plugins.AppData;
 using Microsoft.EntityFrameworkCore;
 
 namespace Trader.Transactions.ReadTransactions;
@@ -8,3 +8,4 @@ public class Plugins {
         public Task<List<Transaction>> Read(CancellationToken token) =>  db.Transactions.ToListAsync(token);
     }
 }
+ 

@@ -5,9 +5,10 @@
 @using System.Text
 @using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Identity
-@using Infrastructure.Data.Identity;
-@using Infrastructure.Data.Identity.Model;
-    using Infrastructure.Data.Identity.Model
+@using Infrastructure.Plugins.Identity;
+@using Infrastructure.Adapters.IdentityDtatModel;
+    using Infrastructure.Plugins.Identity;
+    using Infrastructure.Adapters.IdentityDtatModel
 
 @inject UserManager<User> UserManager
 @inject IdentityUserAccessor UserAccessor

@@ -1,7 +1,7 @@
-using Infrastructure.Data.Identity.Model;
+using Infrastructure.Adapters.IdentityDtatModel;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Data.Identity;
+namespace Infrastructure.Plugins.Identity;
 
 public class IdentityDB(DbContextOptions<IdentityDB> options) : IdentityDbContext<User>(options) { }

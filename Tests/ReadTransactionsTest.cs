@@ -1,7 +1,5 @@
 using Domain;
 using FluentAssertions;
-using Infrastructure.Data.App;
-using Microsoft.EntityFrameworkCore;
 using Trader.Transactions.ReadTransactions;
 
 namespace Tests;
@@ -60,9 +58,7 @@ public class ReadTransactionsTest {
         public static Dependencies Default() {
             //var repository = Substitute.For<Feature.IRepository>();
             //repository.Read(default).Returns([]);
-            var builder = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase("test");
-            var db = new AppDbContext(builder.Options);
-            db.Database.EnsureCreated();
+            var db = DatabaseFactory.Default();
             var pluginDb = new Plugins.Repository(db);
             var repository = new Adapters.Repository(pluginDb);
             return new Dependencies(repository);

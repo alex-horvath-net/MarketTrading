@@ -1,5 +1,5 @@
-using Infrastructure.Identity;
 using Infrastructure.AlgorithmicTradingPlatform.Blazor.Components;
+using Infrastructure.Plugins.Identity;
 
 namespace Infrastructure.AlgorithmicTradingPlatform.Blazor;
 
