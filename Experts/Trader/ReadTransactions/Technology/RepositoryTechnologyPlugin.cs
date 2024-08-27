@@ -1,9 +1,7 @@
-﻿using DataModel = Common.Adapters.AppDataModel;
-using Common.Technology.AppData;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Experts.Trader.ReadTransactions.Adapters.TechnologyPorts;
 
 namespace Experts.Trader.ReadTransactions.Technology;
-public class RepositoryTechnologyPlugin(AppDbContext db) : IRepositoryTechnologyPort {
-    public Task<List<DataModel.Transaction>> ReadTransaction(CancellationToken token) => db.Transactions.ToListAsync(token);
+public class RepositoryTechnologyPlugin(Common.Technology.AppData.AppDbContext db) : IRepositoryTechnologyPort {
+    public Task<List<Common.Adapters.AppDataModel.Transaction>> ReadTransaction(CancellationToken token) => db.Transactions.ToListAsync(token);
 }
