@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Concerns", "Concerns\Concer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{6048438C-7B2D-4826-B7E6-B0C80FBC14A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "WebApp.Blazor\WebApp.csproj", "{7CA490B4-5149-4001-BFE2-DF1BFC916ED2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Blazor", "WebApp.Blazor\WebApp.Blazor.csproj", "{7CA490B4-5149-4001-BFE2-DF1BFC916ED2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
