@@ -38,7 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\Concerns\Concerns.csproj" />
+    <ProjectReference Include="..\Experts\Experts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

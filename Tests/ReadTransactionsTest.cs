@@ -1,14 +1,11 @@
 using Common.Business;
 using FluentAssertions;
-using Concerns.Trader.Transactions.ReadTransactions.Adapters.Repository.Ports;
-using Concerns.Trader.ReadTransactions.Business;
 
-namespace Tests;
-
+namespace Experts.Trader.ReadTransactions.Business;
 
 public class ReadTransactionsTest {
     Feature CreateUnit() => new(dependencies.Repository);
-    Task<Feature.Response> UseTheUnit(Feature unit) => unit.Execute(arguments.Request, arguments.Token);
+    Task<Response> UseTheUnit(Business.Feature unit) => unit.Execute(arguments.Request, arguments.Token);
     readonly Dependencies dependencies = Dependencies.Default();
     readonly Arguments arguments = Arguments.Default();
 
@@ -55,18 +52,18 @@ public class ReadTransactionsTest {
     //}
 
 
-    public record Dependencies(Feature.IRepository Repository) {
+    public record Dependencies(AdapterPorts.IRepositoryAdapterPort Repository) {
         public static Dependencies Default() {
             //var repository = Substitute.For<Feature.IRepository>();
             //repository.Read(default).Returns([]);
             var db = DatabaseFactory.Default();
-            var pluginDb = new Concerns.Trader.Transactions.ReadTransactions.Technology.Technology.Repository(db);
-            var repository = new Adapters.Repository(pluginDb);
+            var pluginDb = new Technology.RepositoryTechnologyPlugin(db);
+            var repository = new Adapters.RepositoryAdapterPlugin(pluginDb);
             return new Dependencies(repository);
         }
     }
 
-    public record Arguments(Feature.Request Request, CancellationToken Token) {
+    public record Arguments(Request Request, CancellationToken Token) {
         public static Arguments Default() => new(new(), CancellationToken.None);
     }
 }

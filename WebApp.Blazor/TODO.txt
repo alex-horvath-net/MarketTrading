@@ -61,7 +61,7 @@ Conducting stress tests and scenario analysis.
 UI Features and Usage:
 Dashboard Overview:
 
-Usage: The Risk Manager uses this page to quickly assess the overall risk exposure and identify any immediate concerns.
+Usage: The Risk Manager uses this page to quickly assess the overall risk exposure and identify any immediate Experts.
 Elements:
 Risk Alerts Widget: Highlights any risk limit breaches or other critical issues that require attention.
 Portfolio Exposure Summary: Displays a breakdown of risk exposure by asset class, region, or other relevant categories.

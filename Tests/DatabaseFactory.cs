@@ -1,6 +1,7 @@
 ﻿using Common.Technology.AppData;
 using Microsoft.EntityFrameworkCore;
 
+namespace Experts.Trader.ReadTransactions.Business;
 public static class DatabaseFactory {
 
     public static AppDbContext Empty() {
