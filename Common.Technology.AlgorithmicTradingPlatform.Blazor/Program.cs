@@ -1,5 +1,5 @@
+using Common.Technology.AlgorithmicTradingPlatform.Blazor.Components;
 using Common.Technology.Identity;
-using Technology.AlgorithmicTradingPlatform.Blazor.Components;
 
 namespace Common.Technology.AlgorithmicTradingPlatform.Blazor;
 
