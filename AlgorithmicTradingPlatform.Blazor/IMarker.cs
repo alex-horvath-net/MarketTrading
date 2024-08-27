@@ -1,4 +1,4 @@
-﻿namespace AlgorithmicTradingPlatform.Blazor {
+﻿namespace WebApp.Blazor {
     public interface IMarker {
     }
 }

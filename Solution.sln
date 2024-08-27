@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Concerns", "Concerns\Concer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{6048438C-7B2D-4826-B7E6-B0C80FBC14A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlgorithmicTradingPlatform.Blazor", "AlgorithmicTradingPlatform.Blazor\AlgorithmicTradingPlatform.Blazor.csproj", "{4BB407D8-D3EF-4696-993A-77BB3579DD4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Blazor", "AlgorithmicTradingPlatform.Blazor\WebApp.Blazor.csproj", "{4BB407D8-D3EF-4696-993A-77BB3579DD4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
