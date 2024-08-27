@@ -1,6 +1,5 @@
-using WebApp.Blazor.Components;
 using Common.Technology.Identity;
-using WebApp.Components;
+using WebApp.Blazor.Components;
 
 namespace WebApp.Blazor;
 

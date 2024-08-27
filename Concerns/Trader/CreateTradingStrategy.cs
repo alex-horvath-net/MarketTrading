@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Concerns.Trader;
+namespace Experts.Trader;
 public class CreateTradingStrategy {
     //Define trading rules(e.g., entry and exit criteria).
     //Set parameters(e.g., stop-loss, target profit).

@@ -1,7 +1,7 @@
 ﻿using static System.Runtime.InteropServices.JavaScript.JSType;
 using System;
 
-namespace Concerns.TechnicalOperator {
+namespace Experts.TechnicalOperator {
     public class MonitorSystemHealth {
         //        Check system performance metrics.
         //Identify any bottlenecks or errors.

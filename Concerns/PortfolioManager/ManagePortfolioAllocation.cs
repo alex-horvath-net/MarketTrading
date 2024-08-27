@@ -1,4 +1,4 @@
-﻿namespace Concerns.PortfolioManager {
+﻿namespace Experts.PortfolioManager {
     public class ManagePortfolioAllocation {
         //        Define asset allocation targets.
         //Adjust strategy parameters to align with portfolio goals.

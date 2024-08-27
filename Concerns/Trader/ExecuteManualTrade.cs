@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Concerns.Trader {
+namespace Experts.Trader {
     public class ExecuteManualTrade {
         //        Select asset and quantity.
         //Choose order type (market, limit).

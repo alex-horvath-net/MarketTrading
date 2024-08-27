@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Concerns.Trader {
+namespace Experts.Trader {
     internal class AnalyzeHistoricalPerformance {
         //        Retrieve past trade data.
         //Generate performance reports (e.g., profit/loss, drawdown).

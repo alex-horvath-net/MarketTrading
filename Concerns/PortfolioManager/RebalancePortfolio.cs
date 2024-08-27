@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Concerns.PortfolioManager {
+namespace Experts.PortfolioManager {
     internal class RebalancePortfolio {
         //        Analyze current asset allocation.
         //Determine necessary trades to rebalance.

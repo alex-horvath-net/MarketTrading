@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Concerns.Backtester {
+namespace Experts.Backtester {
     internal class OptimizeTradingStrategy {
         //        Test different parameter sets.
         //Compare performance across backtests.
