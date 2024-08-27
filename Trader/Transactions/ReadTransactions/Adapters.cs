@@ -1,16 +1,17 @@
 ﻿
-using Adapters.AppDataModel;
+
+using Common.Business;
 
 namespace Trader.Transactions.ReadTransactions;
 public class Adapters {
     public class Repository(Repository.IRepository plugin) : Business.IRepository {
-        public async Task<List<Businsess.Transaction>> Read(Business.Request request, CancellationToken token) {
+        public async Task<List<Transaction>> Read(Business.Request request, CancellationToken token) {
             var pluginData = await plugin.Read(token);
             var domainData = pluginData.Select(ToDomain).ToList();
             return domainData;
         }
 
-        private Businsess.Transaction ToDomain(Transaction data) => new() {
+        private Transaction ToDomain(Transaction data) => new() {
             Id = data.Id
         };
 

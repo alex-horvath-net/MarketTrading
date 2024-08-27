@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Businsess.csproj" />
+    <ProjectReference Include="..\Domain\Common.csproj" />
     <ProjectReference Include="..\Trader\Trader.csproj" />
   </ItemGroup>
 

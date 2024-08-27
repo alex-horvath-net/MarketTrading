@@ -16,9 +16,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Adapters.csproj" />
-    <ProjectReference Include="..\Technology\Technology.csproj" />
-  </ItemGroup>
-
 </Project>

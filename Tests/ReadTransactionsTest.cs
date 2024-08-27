@@ -1,4 +1,4 @@
-using Businsess;
+using Common.Business;
 using FluentAssertions;
 using Trader.Transactions.ReadTransactions;
 

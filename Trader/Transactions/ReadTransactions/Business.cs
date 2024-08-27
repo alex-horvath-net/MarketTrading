@@ -1,5 +1,4 @@
-﻿
-using Businsess;
+﻿using Common.Business;
 
 namespace Trader.Transactions.ReadTransactions;
 public class Business(Business.IRepository Repository) {

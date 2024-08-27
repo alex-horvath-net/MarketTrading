@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Businsess.csproj" />
-    <ProjectReference Include="..\Infrastructure\Adapters.csproj" />
-    <ProjectReference Include="..\Technology\Technology.csproj" />
+    <ProjectReference Include="..\Domain\Common.csproj" />
   </ItemGroup>
 
 </Project>

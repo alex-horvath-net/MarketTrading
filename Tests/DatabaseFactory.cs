@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Technology.AppData;
+﻿using Common.Technology.AppData;
+using Microsoft.EntityFrameworkCore;
 
 public static class DatabaseFactory {
 
