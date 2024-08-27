@@ -1,6 +1,6 @@
 using Common.Business;
 using FluentAssertions;
-using Trader.Transactions.ReadTransactions;
+using Concerns.Trader.Transactions.ReadTransactions;
 
 namespace Tests;
 
@@ -59,8 +59,8 @@ public class ReadTransactionsTest {
             //var repository = Substitute.For<Feature.IRepository>();
             //repository.Read(default).Returns([]);
             var db = DatabaseFactory.Default();
-            var pluginDb = new Trader.Transactions.ReadTransactions.Technology.Repository(db);
-            var repository = new Trader.Transactions.ReadTransactions.Adapters.Repository(pluginDb);
+            var pluginDb = new Concerns.Trader.Transactions.ReadTransactions.Technology.Repository(db);
+            var repository = new Concerns.Trader.Transactions.ReadTransactions.Adapters.Repository(pluginDb);
             return new Dependencies(repository);
         }
     }
