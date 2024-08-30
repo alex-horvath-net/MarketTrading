@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text.Json;
 using Common.Adapters.IdentityDtatModel;
+using Common.Technology.IdentityData;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
