@@ -1,4 +1,5 @@
 using Common.Technology.Identity;
+using Experts.Trader.ReadTransactions;
 using WebApp.Blazor.Components;
 
 namespace WebApp.Blazor;
@@ -6,6 +7,8 @@ namespace WebApp.Blazor;
 public class Program {
     public static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddReadTransactions();
 
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
         builder.Services.AddCascadingAuthenticationState();

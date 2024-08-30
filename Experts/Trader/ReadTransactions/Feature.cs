@@ -1,4 +1,7 @@
 ﻿using Common.Business;
+using Common.Technology.AppData;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.ReadTransactions;
 
@@ -35,5 +38,21 @@ public class Feature(
 
     public interface IRepositoryAdapterPort {
         public Task<List<Common.Business.Transaction>> ReadTransaction(Request request, CancellationToken token);
+    }
+}
+
+public static class Extensions {
+    public static IServiceCollection AddReadTransactions(this IServiceCollection services) {
+        services
+            .AddScoped<Feature>()
+            
+            .AddScoped<Feature.IValidatorAdapterPort, ValidatorAdapterPlugin>()
+            .AddScoped<ValidatorAdapterPlugin.ValidatorTechnologyPort, ValidatorTechnologyPlugin>()
+            .AddScoped<IValidator<Feature.Request>, ValidatorTechnologyPlugin.RequestValidator>()
+            
+            .AddScoped<Feature.IRepositoryAdapterPort, RepositoryAdapterPlugin>()
+            .AddScoped<RepositoryAdapterPlugin.RepositoryTechnologyPort, RepositoryTechnologyPlugin>()
+            .AddDbContext<AppDbContext>();
+        return services;
     }
 }

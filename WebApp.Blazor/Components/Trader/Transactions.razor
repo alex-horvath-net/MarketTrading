@@ -1,12 +1,18 @@
 ﻿@page "/trader/transactions"
 
+@using Experts.Trader.ReadTransactions;
 
-<PageTitle>trader/transactions</PageTitle>
+@inject Feature ReadTransactions;
 
-Trade Execution Page:
-<br />
-Usage: This page allows Traders to execute manual trades when necessary, providing a more hands-on approach.
-<br />
+<PageTitle>Trade Execution Page</PageTitle>
+
+<p>
+    This page allows Traders to execute manual trades when necessary, providing a more hands-on approach.
+</p>>
+
+<p>
+    <Table Columns="transationColumns" Rows="transations"></Table>
+</p>
 Elements:
 <br />
 Order Entry Form: Traders can select the asset, choose the order type (market, limit, stop), and specify the quantity and price.
@@ -16,9 +22,21 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 <br />
 
 @code {
+    List<Expression<Func<Transation, object>>> transationColumns;
+    List<Transation> transations;
+
+    protected override async Task OnInitializedAsync() {
+        transationColumns = new() {
+            x => x.Id,
+            x => x.Name
+        };
+
+        var request = new Feature.Request() { Name = "" };
+        var businessData = await ReadTransactions.Execute(request, CancellationToken.None);
+        transations = businessData.Transactions.Select(x => new Transation(x.Id, x.Name)).ToList();
+    }
 
 
-  
-
+    public record Transation(long Id, string Name) { }
 
 }
