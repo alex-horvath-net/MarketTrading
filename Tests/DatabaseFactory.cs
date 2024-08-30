@@ -2,24 +2,25 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests;
-public static class DatabaseFactory {
+public  class DatabaseFactory {
 
-    public static AppDbContext Empty() {
-        var builder = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase("test");
+    public  AppDbContext Empty() {
+        var dbNmae = $"test-{Guid.NewGuid()}";
+        var builder = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(dbNmae);
         var db = new AppDbContext(builder.Options);
         db.Database.EnsureCreated();
         return db;
     }
 
-    public static AppDbContext Default() {
+    public  AppDbContext Default() {
 
         var db = Empty();
-        if (db.Transactions.Any())
+        if (db !=null && db.Transactions.Any())
             return db;
 
-        db.Transactions.Add(new() { Id = 1 });
-        db.Transactions.Add(new() { Id = 2 });
-        db.Transactions.Add(new() { Id = 3 });
+        db.Transactions.Add(new() { Id = 1, Name = "USD" });
+        db.Transactions.Add(new() { Id = 2, Name = "EUR" });
+        db.Transactions.Add(new() { Id = 3, Name = "GBD"});
         db.SaveChanges();
 
         return db;

@@ -1,4 +1,6 @@
-﻿namespace Experts.Trader.ReadTransactions;
+﻿using Common.Business;
+
+namespace Experts.Trader.ReadTransactions;
 
 public class Feature(
     Feature.IValidatorAdapterPort Validator,
@@ -15,6 +17,16 @@ public class Feature(
         response.Transactions = await Repository.ReadTransaction(request, token);
 
         return response;
+    }
+
+    public class Request {
+        public string Name { get; set; }
+    }
+   
+    public class Response  {
+        public Request Request { get; set; }
+        public List<string> Errors { get; set; } = [];
+        public List<Transaction> Transactions { get; set; } = [];
     }
 
     public interface IValidatorAdapterPort {
