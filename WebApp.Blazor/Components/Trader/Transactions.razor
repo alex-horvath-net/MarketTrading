@@ -11,7 +11,7 @@
 </p>>
 
 <p>
-    <Table Columns="transationColumns" Rows="transations"></Table>
+    <Table Columns="transationColumns" Rows="transactions"></Table>
 </p>
 Elements:
 <br />
@@ -23,7 +23,7 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 
 @code {
     List<Expression<Func<Transation, object>>> transationColumns;
-    List<Transation> transations;
+    List<Transation> transactions;
 
     protected override async Task OnInitializedAsync() {
         transationColumns = new() {
@@ -32,11 +32,11 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
         };
 
         var request = new Feature.Request() { Name = "" };
-        var businessData = await ReadTransactions.Execute(request, CancellationToken.None);
-        transations = businessData.Transactions.Select(x => new Transation(x.Id, x.Name)).ToList();
+        var response = await ReadTransactions.Execute(request, CancellationToken.None);
+        transactions = response.Transactions.Select(x => new Transation(x.Id, x.Name)).ToList();
     }
 
 
-    public record Transation(long Id, string Name) { }
+    public record Transation(long Id, string Name);
 
 }
