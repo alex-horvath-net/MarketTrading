@@ -29,5 +29,3 @@ public class RepositoryTechnologyPlugin(Common.Technology.AppData.AppDbContext d
     public Task<List<Common.Adapters.AppDataModel.Transaction>> ReadTransaction(string name, CancellationToken token) =>
         db.Transactions.Where(x => x.Name.Contains(name)).ToListAsync(token);
 }
-
-
