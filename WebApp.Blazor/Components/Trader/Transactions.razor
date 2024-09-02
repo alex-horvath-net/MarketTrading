@@ -8,7 +8,7 @@
 
 <p>
     This page allows Traders to execute manual trades when necessary, providing a more hands-on approach.
-</p>>
+</p>
 
 <p>
     <Table Columns="transationColumns" Rows="transactions"></Table>
@@ -31,7 +31,7 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
             x => x.Name
         };
 
-        var request = new Feature.Request() { Name = "" };
+        var request = new Feature.Request() { Name = "USD" };
         var response = await ReadTransactions.Execute(request, CancellationToken.None);
         transactions = response.Transactions.Select(x => new Transation(x.Id, x.Name)).ToList();
     }

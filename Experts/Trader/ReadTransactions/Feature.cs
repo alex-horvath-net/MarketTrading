@@ -1,23 +1,25 @@
 ﻿using Common.Business;
 using Common.Technology.AppData;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.ReadTransactions;
 
 public class Feature(
-    Feature.IValidatorAdapterPort Validator,
-    Feature.IRepositoryAdapterPort Repository) {
+    Feature.IValidatorAdapterPort validator,
+    Feature.IRepositoryAdapterPort repository) {
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
 
         response.Request = request;
 
-        response.Errors = await Validator.Validate(request, token);
+        response.Errors = await validator.Validate(request, token);
         if (response.Errors.Count > 0)
             return response;
 
-        response.Transactions = await Repository.ReadTransaction(request, token);
+        response.Transactions = await repository.ReadTransaction(request, token);
 
         return response;
     }
@@ -25,8 +27,8 @@ public class Feature(
     public class Request {
         public string Name { get; set; }
     }
-   
-    public class Response  {
+
+    public class Response {
         public Request Request { get; set; }
         public List<string> Errors { get; set; } = [];
         public List<Transaction> Transactions { get; set; } = [];
@@ -42,17 +44,25 @@ public class Feature(
 }
 
 public static class Extensions {
-    public static IServiceCollection AddReadTransactions(this IServiceCollection services) {
+    public static IServiceCollection AddReadTransactions(this IServiceCollection services, ConfigurationManager configuration) {
         services
-            .AddScoped<Feature>()
-            
+            .AddScoped<Feature>();
+
+        services
             .AddScoped<Feature.IValidatorAdapterPort, ValidatorAdapterPlugin>()
             .AddScoped<ValidatorAdapterPlugin.ValidatorTechnologyPort, ValidatorTechnologyPlugin>()
-            .AddScoped<IValidator<Feature.Request>, ValidatorTechnologyPlugin.RequestValidator>()
-            
-            .AddScoped<Feature.IRepositoryAdapterPort, RepositoryAdapterPlugin>()
-            .AddScoped<RepositoryAdapterPlugin.RepositoryTechnologyPort, RepositoryTechnologyPlugin>()
-            .AddDbContext<AppDbContext>();
+            .AddScoped<IValidator<Feature.Request>, ValidatorTechnologyPlugin.RequestValidator>();
+
+
+        var connectionString = configuration.GetConnectionString("App") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+        services
+        .AddScoped<Feature.IRepositoryAdapterPort, RepositoryAdapterPlugin>()
+        .AddScoped<RepositoryAdapterPlugin.RepositoryTechnologyPort, RepositoryTechnologyPlugin>()
+        .AddDbContext<AppDbContext>(builder => builder
+            .EnableDetailedErrors()
+            .EnableSensitiveDataLogging()
+            .UseSqlServer(connectionString));
         return services;
     }
 }
