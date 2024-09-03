@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Common.Technology.AppData;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.ReadTransactions;
 
@@ -42,5 +45,15 @@ public class RepositoryTechnologyPlugin(
         } catch (Exception ex) {
             throw;
         }
+    }
+}
+
+public static class ReadExtensions {
+    public static IServiceCollection AddRead(this IServiceCollection services, ConfigurationManager configuration) {
+        services.AddScoped<Feature.IRepositoryAdapterPort, RepositoryAdapterPlugin>()
+            .AddScoped<RepositoryAdapterPlugin.RepositoryTechnologyPort, RepositoryTechnologyPlugin>()
+                .AddDbContext<AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
+
+        return services;
     }
 }

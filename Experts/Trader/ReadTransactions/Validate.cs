@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using Common.Technology.AppData;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.ReadTransactions;
 
@@ -31,3 +33,15 @@ public class ValidatorTechnologyPlugin(IValidator<Feature.Request> validator) : 
         }
     }
 }
+
+public static class ValidateExtensions {
+    public static IServiceCollection AddValidation(this IServiceCollection services) {
+        services
+            .AddScoped<Feature.IValidatorAdapterPort, ValidatorAdapterPlugin>()
+                .AddScoped<ValidatorAdapterPlugin.ValidatorTechnologyPort, ValidatorTechnologyPlugin>()
+                    .AddScoped<IValidator<Feature.Request>, ValidatorTechnologyPlugin.RequestValidator>();
+
+        return services;
+    }
+}
+
