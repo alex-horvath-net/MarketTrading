@@ -27,10 +27,18 @@ public class ValidatorTechnologyPlugin(IValidator<Feature.Request> validator) : 
 
     public class RequestValidator : AbstractValidator<Feature.Request> {
         public RequestValidator() {
+
+            RuleFor(request => request)
+                .NotNull().WithMessage(Mesages.RequestNull);
+
             RuleFor(request => request.Name)
-                .NotNull().WithMessage("Name cannot be null.")
-                .NotEmpty().WithMessage("Name cannot be empty.");
+                .MinimumLength(3).When(request => !string.IsNullOrEmpty(request.Name)).WithMessage(Mesages.NameShort);
         }
+    }
+
+    public static class Mesages {
+        public static string RequestNull => "Request cannot be null.";
+        public static string NameShort => "Name must be at least 3 characters long if provided.";
     }
 }
 

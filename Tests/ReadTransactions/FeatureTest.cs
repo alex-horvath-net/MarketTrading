@@ -78,7 +78,7 @@ public class FeatureTest
             CancellationToken.None);
 
         public static Arguments InValid() => new(
-          new() { Name = null },
+          new() { Name = "US" },
           CancellationToken.None);
     }
 }

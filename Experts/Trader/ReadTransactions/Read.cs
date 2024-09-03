@@ -1,4 +1,4 @@
-﻿using Common.Technology.AppData;
+﻿using Common.Adapters.AppDataModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,49 +10,45 @@ public class RepositoryAdapterPlugin(
     RepositoryAdapterPlugin.RepositoryTechnologyPort repositoryTechnology) :
     Feature.IRepositoryAdapterPort {
     public async Task<List<Common.Business.Transaction>> ReadTransaction(
-        Feature.Request request,
-        CancellationToken token) {
-        var adapterData = await repositoryTechnology.ReadTransaction(request.Name, token);
-        var businessData = adapterData.Select(ToDomain).ToList();
+        Feature.Request request, CancellationToken token) {
+        var adapterData = request.Name == null ?
+            await repositoryTechnology.ReadTransaction(token) :
+            await repositoryTechnology.ReadTransaction(request.Name, token);
+        
+        var businessData = adapterData.Select(ToBusinessData).ToList();
         return businessData;
     }
 
-    private Common.Business.Transaction ToDomain(Common.Adapters.AppDataModel.Transaction data) =>
+    private Common.Business.Transaction ToBusinessData(Common.Adapters.AppDataModel.Transaction data) =>
         new() {
             Id = data.Id,
             Name = data.Name
         };
 
     public interface RepositoryTechnologyPort {
-        public Task<List<Common.Adapters.AppDataModel.Transaction>> ReadTransaction(
-            string name,
-            CancellationToken token);
+        public Task<List<Transaction>> ReadTransaction(CancellationToken token);
+        public Task<List<Common.Adapters.AppDataModel.Transaction>> ReadTransaction(string name, CancellationToken token);
     }
 }
 
-public class RepositoryTechnologyPlugin(
-    Common.Technology.AppData.AppDB db) :
-    RepositoryAdapterPlugin.RepositoryTechnologyPort {
+public class RepositoryTechnologyPlugin(Common.Technology.AppData.AppDB db) : RepositoryAdapterPlugin.RepositoryTechnologyPort {
+
+    public async Task<List<Common.Adapters.AppDataModel.Transaction>> ReadTransaction(
+        CancellationToken token) => await db.Transactions
+                .ToListAsync(token);
+
     public async Task<List<Common.Adapters.AppDataModel.Transaction>> ReadTransaction(
         string name,
-        CancellationToken token) {
-        try {
-            var v = await db
-                .Transactions
+        CancellationToken token) => await db.Transactions
                 .Where(x => x.Name.Contains(name))
                 .ToListAsync(token);
-            return v;
-        } catch (Exception ex) {
-            throw;
-        }
-    }
 }
 
 public static class ReadExtensions {
     public static IServiceCollection AddRead(this IServiceCollection services, ConfigurationManager configuration) {
         services.AddScoped<Feature.IRepositoryAdapterPort, RepositoryAdapterPlugin>()
             .AddScoped<RepositoryAdapterPlugin.RepositoryTechnologyPort, RepositoryTechnologyPlugin>()
-                .AddDbContext<AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
+                .AddDbContext<Common.Technology.AppData.AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
 
         return services;
     }
