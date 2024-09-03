@@ -5,3 +5,4 @@ using Microsoft.EntityFrameworkCore;
 namespace Common.Technology.IdentityData;
 
 public class IdentityDB(DbContextOptions<IdentityDB> options) : IdentityDbContext<User>(options) { }
+// Add-Migration MigrationName -c IdentityDB -o Technology\IdentityData\Migrations
