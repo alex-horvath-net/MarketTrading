@@ -59,7 +59,7 @@ public static class Extensions {
         services
         .AddScoped<Feature.IRepositoryAdapterPort, RepositoryAdapterPlugin>()
         .AddScoped<RepositoryAdapterPlugin.RepositoryTechnologyPort, RepositoryTechnologyPlugin>()
-        .AddDbContext<AppDbContext>(builder => builder
+        .AddDbContext<AppDB>(builder => builder
             .EnableDetailedErrors()
             .EnableSensitiveDataLogging()
             .UseSqlServer(connectionString));

@@ -28,7 +28,7 @@ public class RepositoryAdapterPlugin(
 }
 
 public class RepositoryTechnologyPlugin(
-    Common.Technology.AppData.AppDbContext db) :
+    Common.Technology.AppData.AppDB db) :
     RepositoryAdapterPlugin.RepositoryTechnologyPort {
     public async Task<List<Common.Adapters.AppDataModel.Transaction>> ReadTransaction(
         string name,

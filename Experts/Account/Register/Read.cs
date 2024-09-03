@@ -20,7 +20,7 @@ public class RepositoryAdapterPlugin(RepositoryAdapterPlugin.RepositoryTechnolog
     }
 }
 
-public class RepositoryTechnologyPlugin(Common.Technology.AppData.AppDbContext db) : RepositoryAdapterPlugin.RepositoryTechnologyPort {
+public class RepositoryTechnologyPlugin(Common.Technology.AppData.AppDB db) : RepositoryAdapterPlugin.RepositoryTechnologyPort {
     public Task<List<Common.Adapters.AppDataModel.Transaction>> ReadTransaction(string name, CancellationToken token) =>
         db.Transactions.Where(x => x.Name.Contains(name)).ToListAsync(token);
 }

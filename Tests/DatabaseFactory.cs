@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore;
 namespace Tests;
 public  class DatabaseFactory {
 
-    public  AppDbContext Empty() {
+    public  AppDB Empty() {
         var dbNmae = $"test-{Guid.NewGuid()}";
-        var builder = new DbContextOptionsBuilder<AppDbContext>().UseInMemoryDatabase(dbNmae);
-        var db = new AppDbContext(builder.Options);
+        var builder = new DbContextOptionsBuilder<AppDB>().UseInMemoryDatabase(dbNmae);
+        var db = new AppDB(builder.Options);
         db.Database.EnsureCreated();
         return db;
     }
 
-    public  AppDbContext Default() {
+    public  AppDB Default() {
 
         var db = Empty();
         if (db !=null && db.Transactions.Any())
