@@ -36,7 +36,7 @@
 @code {
     [Parameter]
     public List<Expression<Func<T, object>>> Columns { get; set; } = [];
-    
+
     [Parameter]
     public List<T> Rows { get; set; } = [];
 
@@ -45,6 +45,9 @@
             return memberExpression.Member.Name;
         } else if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression operand) {
             return operand.Member.Name;
+        }
+        else {
+            return expression.Body.ToString();
         }
 
         throw new ArgumentException("Expression is not a member access", nameof(expression));

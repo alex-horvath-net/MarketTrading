@@ -1,5 +1,7 @@
 using Experts.Trader.ReadTransactions;
 using FluentAssertions;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Tests.ReadTransactions;
 
@@ -9,11 +11,11 @@ public class ValidationTest {
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
-   
+
     [Fact]
     public async Task It_Should_Reviel_Errors() {
         var unit = CreateUnit();
-        var errors = await UseTheUnit(unit);  
+        var errors = await UseTheUnit(unit);
         errors.Should().NotBeNull();
     }
 
@@ -32,9 +34,26 @@ public class ValidationTest {
         errors.Should().NotBeEmpty();
     }
 
+    [Fact]
+    public void AddValidation_ShouldRegisterDependencies() {
+        // Arrange
+        var services = new ServiceCollection();
+        // Act
+        services.AddValidation();
+
+        // Assert
+        var serviceProvider = services.BuildServiceProvider();
+        var validatorAdapterPlugun = serviceProvider.GetService<Feature.IValidatorAdapterPort>();
+        var validatorTechnologyPlugin = serviceProvider.GetService<ValidatorAdapterPlugin.IValidatorTechnologyPort>();
+        var fluentValidator = serviceProvider.GetService<IValidator<Feature.Request>> ();
+
+        validatorAdapterPlugun.Should().NotBeNull();
+        validatorTechnologyPlugin.Should().NotBeNull();
+        fluentValidator.Should().NotBeNull();
+    }
 
     public record Dependencies(
-        ValidatorAdapterPlugin.ValidatorTechnologyPort ValidatorTechnology) {
+    ValidatorAdapterPlugin.IValidatorTechnologyPort ValidatorTechnology) {
 
         public static Dependencies Default() {
             var fluentValidator = new ValidatorTechnologyPlugin.RequestValidator();

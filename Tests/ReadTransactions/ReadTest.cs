@@ -8,7 +8,7 @@ namespace Tests.ReadTransactions;
 
 public class ReadTest {
     RepositoryAdapterPlugin CreateUnit() => new(dependencies.RepositoryTechnologyPlugin);
-    Task<List<Transaction>> UseTheUnit(RepositoryAdapterPlugin unit) => unit.ReadTransaction(arguments.Request, arguments.Token);
+    Task<List<TransactionBM>> UseTheUnit(RepositoryAdapterPlugin unit) => unit.ReadTransaction(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Some();
 
@@ -24,7 +24,7 @@ public class ReadTest {
     public async Task It_Should_Find_List_Of_Transaction() {
         var unit = CreateUnit();
         var transactions = await UseTheUnit(unit);
-        transactions.Should().BeOfType<List<Transaction>>();
+        transactions.Should().BeOfType<List<TransactionBM>>();
     }
 
     [Fact]
@@ -73,11 +73,11 @@ public class ReadTest {
         var serviceProvider = services.BuildServiceProvider();
         var repositoryAdapterPort = serviceProvider.GetService<Feature.IRepositoryAdapterPort>();
         var repositoryTechnologyPort = serviceProvider.GetService<RepositoryAdapterPlugin.RepositoryTechnologyPort>();
-        var dbContext = serviceProvider.GetService<Common.Technology.AppData.AppDB>();
+        var ef = serviceProvider.GetService<Common.Technology.AppData.AppDB>();
 
         repositoryAdapterPort.Should().NotBeNull();
         repositoryTechnologyPort.Should().NotBeNull();
-        dbContext.Should().NotBeNull();
+        ef.Should().NotBeNull();
     }
 
 

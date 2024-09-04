@@ -31,7 +31,7 @@ public class Feature(
     public class Response {
         public Request Request { get; set; }
         public List<string> Errors { get; set; } = [];
-        public List<Transaction> Transactions { get; set; } = [];
+        public List<TransactionBM> Transactions { get; set; } = [];
     }
 
     public interface IValidatorAdapterPort {
@@ -39,7 +39,7 @@ public class Feature(
     }
 
     public interface IRepositoryAdapterPort {
-        public Task<List<Common.Business.Transaction>> ReadTransaction(Request request, CancellationToken token);
+        public Task<List<Common.Business.TransactionBM>> ReadTransaction(Request request, CancellationToken token);
     }
 }
 
@@ -51,3 +51,4 @@ public static class Extensions {
         return services;
     }
 }
+  

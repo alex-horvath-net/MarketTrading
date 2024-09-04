@@ -9,7 +9,7 @@ namespace Experts.Trader.ReadTransactions;
 public class RepositoryAdapterPlugin(
     RepositoryAdapterPlugin.RepositoryTechnologyPort repositoryTechnology) :
     Feature.IRepositoryAdapterPort {
-    public async Task<List<Common.Business.Transaction>> ReadTransaction(
+    public async Task<List<Common.Business.TransactionBM>> ReadTransaction(
         Feature.Request request, CancellationToken token) {
         var adapterData = request.Name == null ?
             await repositoryTechnology.ReadTransaction(token) :
@@ -19,7 +19,7 @@ public class RepositoryAdapterPlugin(
         return businessData;
     }
 
-    private Common.Business.Transaction ToBusinessData(Common.Adapters.AppDataModel.Transaction data) =>
+    private Common.Business.TransactionBM ToBusinessData(Common.Adapters.AppDataModel.Transaction data) =>
         new() {
             Id = data.Id,
             Name = data.Name

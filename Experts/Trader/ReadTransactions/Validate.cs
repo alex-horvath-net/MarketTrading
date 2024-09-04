@@ -1,28 +1,26 @@
-﻿using Common.Technology.AppData;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.ReadTransactions;
 
 
-public class ValidatorAdapterPlugin(ValidatorAdapterPlugin.ValidatorTechnologyPort validatorTechnologyPort) : Feature.IValidatorAdapterPort {
+public class ValidatorAdapterPlugin(ValidatorAdapterPlugin.IValidatorTechnologyPort validatorTechnologyPort) : Feature.IValidatorAdapterPort {
     public async Task<List<string>> Validate(Feature.Request request, CancellationToken token) {
         var adapterData = await validatorTechnologyPort.Validate(request, token);
         var businessData = adapterData;
         return businessData;
     }
 
-    public interface ValidatorTechnologyPort {
+    public interface IValidatorTechnologyPort {
         public Task<List<string>> Validate(Feature.Request request, CancellationToken token);
     }
 }
 
 
-public class ValidatorTechnologyPlugin(IValidator<Feature.Request> validator) : ValidatorAdapterPlugin.ValidatorTechnologyPort {
+public class ValidatorTechnologyPlugin(IValidator<Feature.Request> validator) : ValidatorAdapterPlugin.IValidatorTechnologyPort {
     public async Task<List<string>> Validate(Feature.Request request, CancellationToken token) {
         var validationResult = await validator.ValidateAsync(request, token);
         return validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-
     }
 
     public class RequestValidator : AbstractValidator<Feature.Request> {
@@ -46,7 +44,7 @@ public static class ValidateExtensions {
     public static IServiceCollection AddValidation(this IServiceCollection services) {
         services
             .AddScoped<Feature.IValidatorAdapterPort, ValidatorAdapterPlugin>()
-                .AddScoped<ValidatorAdapterPlugin.ValidatorTechnologyPort, ValidatorTechnologyPlugin>()
+                .AddScoped<ValidatorAdapterPlugin.IValidatorTechnologyPort, ValidatorTechnologyPlugin>()
                     .AddScoped<IValidator<Feature.Request>, ValidatorTechnologyPlugin.RequestValidator>();
 
         return services;

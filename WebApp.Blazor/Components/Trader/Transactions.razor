@@ -22,8 +22,8 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 <br />
 
 @code {
-    List<Expression<Func<Transation, object>>> transationColumns = [];
-    List<Transation> transactions = [];
+    List<Expression<Func<TransactionVM, object>>> transationColumns = [];
+    List<TransactionVM> transactions = [];
 
 
     protected override async Task OnInitializedAsync() {
@@ -32,10 +32,12 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 
         var request = new Feature.Request() { Name = null};
         var response = await ReadTransactions.Execute(request, CancellationToken.None);
-        transactions = response.Transactions.Select(x => new Transation(x.Id, x.Name)).ToList();
+        transactions = response.Transactions.Select(TransactionVM.FrormBusiness).ToList();
     }
 
 
-    public record Transation(long Id, string Name);
+    public record TransactionVM(long Id, string Name) {
+        public static TransactionVM FrormBusiness(Common.Business.TransactionBM bm)=> new TransactionVM(bm.Id, bm.Name);
+    }
 
 }

@@ -1,5 +1,7 @@
 using Experts.Trader.ReadTransactions;
 using FluentAssertions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Tests.ReadTransactions;
 
@@ -46,7 +48,23 @@ public class FeatureTest
     }
 
 
-   
+    [Fact]
+    public void AddRead_ShouldRegisterDependencies() {
+        // Arrange
+        var services = new ServiceCollection();
+        var configuration = new ConfigurationManager();
+        configuration.AddInMemoryCollection(new Dictionary<string, string?> {
+            { "ConnectionStrings:App", "Data Source=.\\SQLEXPRESS;Initial Catalog=App;User ID=sa;Password=sa!Password;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" }
+        });
+        // Act
+        services.AddReadTransactions(configuration);
+
+        // Assert
+        var serviceProvider = services.BuildServiceProvider();
+        var feature = serviceProvider.GetService<Feature>();
+
+        feature.Should().NotBeNull();
+    }
 
 
     public record Dependencies(
