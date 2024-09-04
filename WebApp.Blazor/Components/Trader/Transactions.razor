@@ -31,7 +31,7 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
         transationColumns.Add(x => x.Id);
         transationColumns.Add(x => x.Name);
 
-        var request = new Request() { Name = null};
+        var request = new Feature.Request() { Name = null};
         var response = await ReadTransactions.Execute(request, CancellationToken.None);
         transactions = response.Transactions.Select(TransactionVM.FrormBusiness).ToList();
     }
