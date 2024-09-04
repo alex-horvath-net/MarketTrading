@@ -1,4 +1,7 @@
 using Experts.Trader.ReadTransactions;
+using Experts.Trader.ReadTransactions.Business.Logic.Validate;
+using Experts.Trader.ReadTransactions.Logic.Validate;
+using Experts.Trader.ReadTransactions.Validate;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,10 +10,10 @@ namespace Tests.ReadTransactions;
 
 public class FeatureTest
 {
-    Feature CreateUnit() => new(
+    Service CreateUnit() => new(
         dependencies.Validator,
         dependencies.Repository);
-    Task<Feature.Response> UseTheUnit(Feature unit) => unit.Execute(arguments.Request, arguments.Token);
+    Task<Response> UseTheUnit(Service unit) => unit.Execute(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -61,35 +64,35 @@ public class FeatureTest
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var feature = serviceProvider.GetService<Feature>();
+        var feature = serviceProvider.GetService<Service>();
 
         feature.Should().NotBeNull();
     }
 
 
     public record Dependencies(
-        Feature.IValidatorAdapterPort Validator,
-        Feature.IRepositoryAdapterPort Repository)
+        IValidatort Validator,
+        IRepository Repository)
     {
 
         public static Dependencies Default()
         {
             //var repository = Substitute.For<Feature.IRepository>();
             //repository.Read(default).Returns([]);
-            var fluentValidator = new ValidatorTechnologyPlugin.RequestValidator();
-            var validatorTechnologyPlugin = new ValidatorTechnologyPlugin(fluentValidator);
-            var validatorAdapterPlugin = new ValidatorAdapterPlugin(validatorTechnologyPlugin);
+            var fluentValidator = new Validator.RequestValidator();
+            var validatorTechnologyPlugin = new Validator(fluentValidator);
+            var validatorAdapterPlugin = new Adapter(validatorTechnologyPlugin);
 
             var databaseFactory = new DatabaseFactory();
             var entityFramework = databaseFactory.Default();
-            var repositoryTechnologyPlugin = new RepositoryTechnologyPlugin(entityFramework);
-            var repositoryAdapterPlugin = new RepositoryAdapterPlugin(repositoryTechnologyPlugin);
+            var repositoryTechnologyPlugin = new Experts.Trader.ReadTransactions.Read.Technology.TechnologyPlugin(entityFramework);
+            var repositoryAdapterPlugin = new Experts.Trader.ReadTransactions.Read.Business.Repository(repositoryTechnologyPlugin);
 
             return new Dependencies(validatorAdapterPlugin, repositoryAdapterPlugin);
         }
     }
 
-    public record Arguments(Feature.Request Request, CancellationToken Token)
+    public record Arguments(Request Request, CancellationToken Token)
     {
         public static Arguments Valid() => new(
             new() { Name = "USD" },

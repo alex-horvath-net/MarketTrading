@@ -1,5 +1,7 @@
 using Common.Business.Model;
 using Experts.Trader.ReadTransactions;
+using Experts.Trader.ReadTransactions.Business.Logic;
+using Experts.Trader.ReadTransactions.Read;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.ReadTransactions;
 
 public class ReadTest {
-    RepositoryAdapterPlugin CreateUnit() => new(dependencies.RepositoryTechnologyPlugin);
-    Task<List<TransactionBM>> UseTheUnit(RepositoryAdapterPlugin unit) => unit.ReadTransaction(arguments.Request, arguments.Token);
+    Adapter CreateUnit() => new(dependencies.RepositoryTechnologyPlugin);
+    Task<List<Transaction>> UseTheUnit(Adapter unit) => unit.ReadTransaction(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Some();
 
@@ -24,7 +26,7 @@ public class ReadTest {
     public async Task It_Should_Find_List_Of_Transaction() {
         var unit = CreateUnit();
         var transactions = await UseTheUnit(unit);
-        transactions.Should().BeOfType<List<TransactionBM>>();
+        transactions.Should().BeOfType<List<Transaction>>();
     }
 
     [Fact]
@@ -71,8 +73,8 @@ public class ReadTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var repositoryAdapterPort = serviceProvider.GetService<Feature.IRepositoryAdapterPort>();
-        var repositoryTechnologyPort = serviceProvider.GetService<RepositoryAdapterPlugin.RepositoryTechnologyPort>();
+        var repositoryAdapterPort = serviceProvider.GetService<IRepository>();
+        var repositoryTechnologyPort = serviceProvider.GetService<IRepository>();
         var ef = serviceProvider.GetService<Common.Technology.AppData.AppDB>();
 
         repositoryAdapterPort.Should().NotBeNull();
@@ -82,18 +84,18 @@ public class ReadTest {
 
 
     public record Dependencies(
-        RepositoryTechnologyPlugin RepositoryTechnologyPlugin) {
+        Repository RepositoryTechnologyPlugin) {
 
         public static Dependencies Default() {
             var databaseFactory = new DatabaseFactory();
             var entityFramework = databaseFactory.Default();
-            var repositoryTechnologyPlugin = new RepositoryTechnologyPlugin(entityFramework);
+            var repositoryTechnologyPlugin = new Repository(entityFramework);
 
             return new Dependencies(repositoryTechnologyPlugin);
         }
     }
 
-    public record Arguments(Feature.Request Request, CancellationToken Token) {
+    public record Arguments(Request Request, CancellationToken Token) {
         public static Arguments All() => new(
           new() { Name = null },
           CancellationToken.None);

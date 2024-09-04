@@ -1,4 +1,6 @@
 using Experts.Trader.ReadTransactions;
+using Experts.Trader.ReadTransactions.Business.Logic;
+using Experts.Trader.ReadTransactions.Validate;
 using FluentAssertions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.ReadTransactions;
 
 public class ValidationTest {
-    ValidatorAdapterPlugin CreateUnit() => new(dependencies.ValidatorTechnology);
-    Task<List<string>> UseTheUnit(ValidatorAdapterPlugin unit) => unit.Validate(arguments.Request, arguments.Token);
+    Adapter CreateUnit() => new(dependencies.ValidatorTechnology);
+    Task<List<string>> UseTheUnit(Adapter unit) => unit.Validate(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -43,9 +45,9 @@ public class ValidationTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var validatorAdapterPlugun = serviceProvider.GetService<Feature.IValidatorAdapterPort>();
-        var validatorTechnologyPlugin = serviceProvider.GetService<ValidatorAdapterPlugin.IValidatorTechnologyPort>();
-        var fluentValidator = serviceProvider.GetService<IValidator<Feature.Request>> ();
+        var validatorAdapterPlugun = serviceProvider.GetService<IValidatort>();
+        var validatorTechnologyPlugin = serviceProvider.GetService<Adapter.IValidatorTechnologyPort>();
+        var fluentValidator = serviceProvider.GetService<IValidator<Request>> ();
 
         validatorAdapterPlugun.Should().NotBeNull();
         validatorTechnologyPlugin.Should().NotBeNull();
@@ -53,16 +55,16 @@ public class ValidationTest {
     }
 
     public record Dependencies(
-    ValidatorAdapterPlugin.IValidatorTechnologyPort ValidatorTechnology) {
+    Adapter.IValidatorTechnologyPort ValidatorTechnology) {
 
         public static Dependencies Default() {
-            var fluentValidator = new ValidatorTechnologyPlugin.RequestValidator();
-            var validatorTechnologyPlugin = new ValidatorTechnologyPlugin(fluentValidator);
+            var fluentValidator = new Validator.RequestValidator();
+            var validatorTechnologyPlugin = new Validator(fluentValidator);
             return new Dependencies(validatorTechnologyPlugin);
         }
     }
 
-    public record Arguments(Feature.Request Request, CancellationToken Token) {
+    public record Arguments(Request Request, CancellationToken Token) {
         public static Arguments Valid() => new(
             new() { Name = "USD" },
             CancellationToken.None);
