@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.ReadTransactions.Business;
+namespace Experts.Trader.ReadTransactions;
 
 public class Feature(
     Feature.IValidatorAdapterPort validator,

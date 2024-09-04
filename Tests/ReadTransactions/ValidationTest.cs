@@ -1,5 +1,4 @@
 using Experts.Trader.ReadTransactions;
-using Experts.Trader.ReadTransactions.Business;
 using FluentAssertions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

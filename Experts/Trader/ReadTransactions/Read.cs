@@ -1,6 +1,5 @@
 ﻿using Common.Adapters.AppDataModel;
 using Common.Business.Model;
-using Experts.Trader.ReadTransactions.Business;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
