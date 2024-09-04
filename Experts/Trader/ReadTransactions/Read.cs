@@ -1,5 +1,6 @@
 ﻿using Common.Adapters.AppDataModel;
 using Common.Business.Model;
+using Experts.Trader.ReadTransactions.Business;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,13 +9,14 @@ namespace Experts.Trader.ReadTransactions;
 
 
 public class RepositoryAdapterPlugin(
-    RepositoryAdapterPlugin.RepositoryTechnologyPort repositoryTechnology) :Business.IRepositoryAdapterPort {
+    RepositoryAdapterPlugin.RepositoryTechnologyPort repositoryTechnology) :
+    Feature.IRepositoryAdapterPort {
     public async Task<List<TransactionBM>> ReadTransaction(
-        Business.Request request, CancellationToken token) {
+        Feature.Request request, CancellationToken token) {
         var adapterData = request.Name == null ?
             await repositoryTechnology.ReadTransaction(token) :
             await repositoryTechnology.ReadTransaction(request.Name, token);
-
+        
         var businessData = adapterData.Select(ToBusinessData).ToList();
         return businessData;
     }
@@ -46,7 +48,7 @@ public class RepositoryTechnologyPlugin(Common.Technology.AppData.AppDB db) : Re
 
 public static class ReadExtensions {
     public static IServiceCollection AddRead(this IServiceCollection services, ConfigurationManager configuration) {
-        services.AddScoped<Business.IRepositoryAdapterPort, RepositoryAdapterPlugin>()
+        services.AddScoped<Feature.IRepositoryAdapterPort, RepositoryAdapterPlugin>()
             .AddScoped<RepositoryAdapterPlugin.RepositoryTechnologyPort, RepositoryTechnologyPlugin>()
                 .AddDbContext<Common.Technology.AppData.AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
 

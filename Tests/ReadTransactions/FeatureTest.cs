@@ -11,7 +11,7 @@ public class FeatureTest
     Feature CreateUnit() => new(
         dependencies.Validator,
         dependencies.Repository);
-    Task<Response> UseTheUnit(Feature unit) => unit.Execute(arguments.Request, arguments.Token);
+    Task<Feature.Response> UseTheUnit(Feature unit) => unit.Execute(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -69,8 +69,8 @@ public class FeatureTest
 
 
     public record Dependencies(
-        IValidatorAdapterPort Validator,
-        IRepositoryAdapterPort Repository)
+        Feature.IValidatorAdapterPort Validator,
+        Feature.IRepositoryAdapterPort Repository)
     {
 
         public static Dependencies Default()
@@ -90,7 +90,7 @@ public class FeatureTest
         }
     }
 
-    public record Arguments(Request Request, CancellationToken Token)
+    public record Arguments(Feature.Request Request, CancellationToken Token)
     {
         public static Arguments Valid() => new(
             new() { Name = "USD" },

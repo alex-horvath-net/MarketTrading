@@ -72,7 +72,7 @@ public class ReadTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var repositoryAdapterPort = serviceProvider.GetService<IRepositoryAdapterPort>();
+        var repositoryAdapterPort = serviceProvider.GetService<Feature.IRepositoryAdapterPort>();
         var repositoryTechnologyPort = serviceProvider.GetService<RepositoryAdapterPlugin.RepositoryTechnologyPort>();
         var ef = serviceProvider.GetService<Common.Technology.AppData.AppDB>();
 
@@ -94,7 +94,7 @@ public class ReadTest {
         }
     }
 
-    public record Arguments(Request Request, CancellationToken Token) {
+    public record Arguments(Feature.Request Request, CancellationToken Token) {
         public static Arguments All() => new(
           new() { Name = null },
           CancellationToken.None);

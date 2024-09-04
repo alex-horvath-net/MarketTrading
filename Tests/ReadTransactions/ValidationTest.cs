@@ -44,9 +44,9 @@ public class ValidationTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var validatorAdapterPlugun = serviceProvider.GetService<IValidatorAdapterPort>();
+        var validatorAdapterPlugun = serviceProvider.GetService<Feature.IValidatorAdapterPort>();
         var validatorTechnologyPlugin = serviceProvider.GetService<ValidatorAdapterPlugin.IValidatorTechnologyPort>();
-        var fluentValidator = serviceProvider.GetService<IValidator<Request>> ();
+        var fluentValidator = serviceProvider.GetService<IValidator<Feature.Request>> ();
 
         validatorAdapterPlugun.Should().NotBeNull();
         validatorTechnologyPlugin.Should().NotBeNull();
@@ -63,7 +63,7 @@ public class ValidationTest {
         }
     }
 
-    public record Arguments(Request Request, CancellationToken Token) {
+    public record Arguments(Feature.Request Request, CancellationToken Token) {
         public static Arguments Valid() => new(
             new() { Name = "USD" },
             CancellationToken.None);
