@@ -1,5 +1,5 @@
 using Common.Technology.Identity;
-using Experts.Trader.ReadTransactions;
+using Experts.Trader.ReadTransactions.Business;
 using WebApp.Blazor.Components;
 
 namespace WebApp.Blazor;

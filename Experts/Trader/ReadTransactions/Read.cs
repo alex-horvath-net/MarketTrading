@@ -1,4 +1,6 @@
 ﻿using Common.Adapters.AppDataModel;
+using Common.Business.Model;
+using Experts.Trader.ReadTransactions.Business;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +11,7 @@ namespace Experts.Trader.ReadTransactions;
 public class RepositoryAdapterPlugin(
     RepositoryAdapterPlugin.RepositoryTechnologyPort repositoryTechnology) :
     Feature.IRepositoryAdapterPort {
-    public async Task<List<Common.Business.TransactionBM>> ReadTransaction(
+    public async Task<List<TransactionBM>> ReadTransaction(
         Feature.Request request, CancellationToken token) {
         var adapterData = request.Name == null ?
             await repositoryTechnology.ReadTransaction(token) :
@@ -19,7 +21,7 @@ public class RepositoryAdapterPlugin(
         return businessData;
     }
 
-    private Common.Business.TransactionBM ToBusinessData(Common.Adapters.AppDataModel.Transaction data) =>
+    private TransactionBM ToBusinessData(Common.Adapters.AppDataModel.Transaction data) =>
         new() {
             Id = data.Id,
             Name = data.Name

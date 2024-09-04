@@ -1,4 +1,4 @@
-﻿namespace Common.Business
+﻿namespace Common.Business.Model
 {
     public class TransactionBM
     {
