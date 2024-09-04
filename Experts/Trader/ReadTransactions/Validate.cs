@@ -5,26 +5,26 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Experts.Trader.ReadTransactions;
 
 
-public class ValidatorAdapterPlugin(ValidatorAdapterPlugin.IValidatorTechnologyPort validatorTechnologyPort) : Feature.IValidatorAdapterPort {
-    public async Task<List<string>> Validate(Feature.Request request, CancellationToken token) {
+public class ValidatorAdapterPlugin(ValidatorAdapterPlugin.IValidatorTechnologyPort validatorTechnologyPort) : IValidatorAdapterPort {
+    public async Task<List<string>> Validate(Request request, CancellationToken token) {
         var adapterData = await validatorTechnologyPort.Validate(request, token);
         var businessData = adapterData;
         return businessData;
     }
 
     public interface IValidatorTechnologyPort {
-        public Task<List<string>> Validate(Feature.Request request, CancellationToken token);
+        public Task<List<string>> Validate(Request request, CancellationToken token);
     }
 }
 
 
-public class ValidatorTechnologyPlugin(IValidator<Feature.Request> validator) : ValidatorAdapterPlugin.IValidatorTechnologyPort {
-    public async Task<List<string>> Validate(Feature.Request request, CancellationToken token) {
+public class ValidatorTechnologyPlugin(IValidator<Request> validator) : ValidatorAdapterPlugin.IValidatorTechnologyPort {
+    public async Task<List<string>> Validate(Request request, CancellationToken token) {
         var validationResult = await validator.ValidateAsync(request, token);
         return validationResult.Errors.Select(e => e.ErrorMessage).ToList();
     }
 
-    public class RequestValidator : AbstractValidator<Feature.Request> {
+    public class RequestValidator : AbstractValidator<Request> {
         public RequestValidator() {
 
             RuleFor(request => request)
@@ -44,9 +44,9 @@ public class ValidatorTechnologyPlugin(IValidator<Feature.Request> validator) : 
 public static class ValidateExtensions {
     public static IServiceCollection AddValidation(this IServiceCollection services) {
         services
-            .AddScoped<Feature.IValidatorAdapterPort, ValidatorAdapterPlugin>()
+            .AddScoped<IValidatorAdapterPort, ValidatorAdapterPlugin>()
                 .AddScoped<ValidatorAdapterPlugin.IValidatorTechnologyPort, ValidatorTechnologyPlugin>()
-                    .AddScoped<IValidator<Feature.Request>, ValidatorTechnologyPlugin.RequestValidator>();
+                    .AddScoped<IValidator<Request>, ValidatorTechnologyPlugin.RequestValidator>();
 
         return services;
     }

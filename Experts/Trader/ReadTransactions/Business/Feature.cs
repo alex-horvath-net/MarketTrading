@@ -1,12 +1,8 @@
-﻿using Common.Business.Model;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Experts.Trader.ReadTransactions.Business;
+﻿namespace Experts.Trader.ReadTransactions.Business;
 
 public class Feature(
-    Feature.IValidatorAdapterPort validator,
-    Feature.IRepositoryAdapterPort repository)
+    IValidatorAdapterPort validator,
+    IRepositoryAdapterPort repository)
 {
     public async Task<Response> Execute(Request request, CancellationToken token)
     {
@@ -21,38 +17,5 @@ public class Feature(
         response.Transactions = await repository.ReadTransaction(request, token);
 
         return response;
-    }
-
-    public class Request
-    {
-        public string Name { get; set; }
-    }
-
-    public class Response
-    {
-        public Request Request { get; set; }
-        public List<string> Errors { get; set; } = [];
-        public List<TransactionBM> Transactions { get; set; } = [];
-    }
-
-    public interface IValidatorAdapterPort
-    {
-        public Task<List<string>> Validate(Request request, CancellationToken token);
-    }
-
-    public interface IRepositoryAdapterPort
-    {
-        public Task<List<TransactionBM>> ReadTransaction(Request request, CancellationToken token);
-    }
-}
-
-public static class Extensions
-{
-    public static IServiceCollection AddReadTransactions(this IServiceCollection services, ConfigurationManager configuration)
-    {
-        services.AddScoped<Feature>();
-        services.AddValidation();
-        services.AddRead(configuration);
-        return services;
     }
 }
