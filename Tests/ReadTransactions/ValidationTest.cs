@@ -1,5 +1,5 @@
+using Common.Business.Model;
 using Experts.Trader.ReadTransactions;
-using Experts.Trader.ReadTransactions.Business.Logic;
 using Experts.Trader.ReadTransactions.Validate;
 using FluentAssertions;
 using FluentValidation;
@@ -9,7 +9,7 @@ namespace Tests.ReadTransactions;
 
 public class ValidationTest {
     Adapter CreateUnit() => new(dependencies.ValidatorTechnology);
-    Task<List<string>> UseTheUnit(Adapter unit) => unit.Validate(arguments.Request, arguments.Token);
+    Task<List<Error>> UseTheUnit(Adapter unit) => unit.Validate(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -45,7 +45,7 @@ public class ValidationTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var validatorAdapterPlugun = serviceProvider.GetService<IValidatort>();
+        var validatorAdapterPlugun = serviceProvider.GetService<Validatort>();
         var validatorTechnologyPlugin = serviceProvider.GetService<Adapter.IValidatorTechnologyPort>();
         var fluentValidator = serviceProvider.GetService<IValidator<Request>> ();
 

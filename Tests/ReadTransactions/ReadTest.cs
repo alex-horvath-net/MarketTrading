@@ -1,6 +1,5 @@
 using Common.Business.Model;
 using Experts.Trader.ReadTransactions;
-using Experts.Trader.ReadTransactions.Business.Logic;
 using Experts.Trader.ReadTransactions.Read;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;

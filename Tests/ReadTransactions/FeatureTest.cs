@@ -1,6 +1,5 @@
 using Experts.Trader.ReadTransactions;
-using Experts.Trader.ReadTransactions.Business.Logic.Validate;
-using Experts.Trader.ReadTransactions.Logic.Validate;
+using Experts.Trader.ReadTransactions.Read;
 using Experts.Trader.ReadTransactions.Validate;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
@@ -71,8 +70,8 @@ public class FeatureTest
 
 
     public record Dependencies(
-        IValidatort Validator,
-        IRepository Repository)
+        Validator Validator,
+        Repository Repository)
     {
 
         public static Dependencies Default()
@@ -81,12 +80,12 @@ public class FeatureTest
             //repository.Read(default).Returns([]);
             var fluentValidator = new Validator.RequestValidator();
             var validatorTechnologyPlugin = new Validator(fluentValidator);
-            var validatorAdapterPlugin = new Adapter(validatorTechnologyPlugin);
+            var validatorAdapterPlugin = new  Experts.Trader.ReadTransactions.Validate.Adapter(validatorTechnologyPlugin);
 
             var databaseFactory = new DatabaseFactory();
             var entityFramework = databaseFactory.Default();
-            var repositoryTechnologyPlugin = new Experts.Trader.ReadTransactions.Read.Technology.TechnologyPlugin(entityFramework);
-            var repositoryAdapterPlugin = new Experts.Trader.ReadTransactions.Read.Business.Repository(repositoryTechnologyPlugin);
+            var repositoryTechnologyPlugin = new Experts.Trader.ReadTransactions.Read.Repository(entityFramework);
+            var repositoryAdapterPlugin = new Experts.Trader.ReadTransactions.Read.Adapter(repositoryTechnologyPlugin);
 
             return new Dependencies(validatorAdapterPlugin, repositoryAdapterPlugin);
         }
