@@ -1,6 +1,6 @@
 using Common.Business.Model;
-using Experts.Trader.ReadTransactions;
-using Experts.Trader.ReadTransactions.Read;
+using Experts.Trader.FindTransactions;
+using Experts.Trader.FindTransactions.Read;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.ReadTransactions;
 
 public class ReadTest {
-    Adapter CreateUnit() => new(dependencies.RepositoryTechnologyPlugin);
-    Task<List<Transaction>> UseTheUnit(Adapter unit) => unit.ReadTransaction(arguments.Request, arguments.Token);
+    Business CreateUnit() => new(dependencies.RepositoryTechnologyPlugin);
+    Task<List<Transaction>> UseTheUnit(Business unit) => unit.ReadTransaction(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Some();
 
@@ -83,12 +83,12 @@ public class ReadTest {
 
 
     public record Dependencies(
-        Repository RepositoryTechnologyPlugin) {
+        EntityFrameworkClient RepositoryTechnologyPlugin) {
 
         public static Dependencies Default() {
             var databaseFactory = new DatabaseFactory();
             var entityFramework = databaseFactory.Default();
-            var repositoryTechnologyPlugin = new Repository(entityFramework);
+            var repositoryTechnologyPlugin = new EntityFrameworkClient(entityFramework);
 
             return new Dependencies(repositoryTechnologyPlugin);
         }

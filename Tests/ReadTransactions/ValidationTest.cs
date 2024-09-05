@@ -1,6 +1,7 @@
+using Common.Adapters.Validation;
 using Common.Business.Model;
-using Experts.Trader.ReadTransactions;
-using Experts.Trader.ReadTransactions.Validate;
+using Experts.Trader.FindTransactions;
+using Experts.Trader.FindTransactions.Validation;
 using FluentAssertions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.ReadTransactions;
 
 public class ValidationTest {
-    Adapter CreateUnit() => new(dependencies.ValidatorTechnology);
-    Task<List<Error>> UseTheUnit(Adapter unit) => unit.Validate(arguments.Request, arguments.Token);
+    Business CreateUnit() => new(dependencies.ValidatorTechnology);
+    Task<List<Error>> UseTheUnit(Business unit) => unit.Validate(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -46,7 +47,7 @@ public class ValidationTest {
         // Assert
         var serviceProvider = services.BuildServiceProvider();
         var validatorAdapterPlugun = serviceProvider.GetService<Validatort>();
-        var validatorTechnologyPlugin = serviceProvider.GetService<Adapter.IValidatorTechnologyPort>();
+        var validatorTechnologyPlugin = serviceProvider.GetService<Business.IValidatorTechnologyPort>();
         var fluentValidator = serviceProvider.GetService<IValidator<Request>> ();
 
         validatorAdapterPlugun.Should().NotBeNull();
@@ -55,10 +56,10 @@ public class ValidationTest {
     }
 
     public record Dependencies(
-    Adapter.IValidatorTechnologyPort ValidatorTechnology) {
+    Business.IValidatorTechnologyPort ValidatorTechnology) {
 
         public static Dependencies Default() {
-            var fluentValidator = new Validator.RequestValidator();
+            var fluentValidator = new FluentValidatiorClient.RequestValidator();
             var validatorTechnologyPlugin = new Validator(fluentValidator);
             return new Dependencies(validatorTechnologyPlugin);
         }

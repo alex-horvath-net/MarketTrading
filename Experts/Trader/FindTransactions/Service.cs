@@ -1,22 +1,20 @@
 ﻿using Common.Business.Model;
-using Experts.Trader.ReadTransactions.Read;
-using Experts.Trader.ReadTransactions.Validate;
+using Experts.Trader.FindTransactions.Read;
+using Experts.Trader.FindTransactions.Validation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.ReadTransactions;
+namespace Experts.Trader.FindTransactions;
 
-public class Service(Validate.Adapter validate, Read.Adapter read)
-{
-    public async Task<Response> Execute(Request request, CancellationToken token)
-    {
+public class Service(Validation.Business validate, Read.Business read) {
+    public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
-        
+
         response.Request = request;
 
         response.Errors = await validate.Validate(request, token);
         if (response.Errors.Count > 0)
-            return response; 
+            return response;
 
         response.Transactions = await read.ReadTransaction(request, token);
 

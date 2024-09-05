@@ -1,8 +1,8 @@
 using Common.Technology.Identity;
-using Experts.Trader.ReadTransactions;
+using Experts.Trader.FindTransactions;
 using WebApp.Blazor.Components;
 
-namespace WebApp.Blazor;
+namespace AlgoritmicTrading;
 
 public class Program {
     public static void Main(string[] args) {

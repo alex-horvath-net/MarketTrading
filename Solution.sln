@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{6048438C-7B2D-4826-B7E6-B0C80FBC14A9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Blazor", "WebApp.Blazor\WebApp.Blazor.csproj", "{94202DB0-C21C-4C30-8382-7B2B7FB9B614}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlgoritmicTrading", "WebApp.Blazor\AlgoritmicTrading.csproj", "{94202DB0-C21C-4C30-8382-7B2B7FB9B614}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Experts", "Experts\Experts.csproj", "{2A0BAA8D-4FB2-47AC-AD2F-9EE6036E260B}"
 EndProject

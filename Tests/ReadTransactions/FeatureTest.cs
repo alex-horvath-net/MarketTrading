@@ -1,6 +1,6 @@
-using Experts.Trader.ReadTransactions;
-using Experts.Trader.ReadTransactions.Read;
-using Experts.Trader.ReadTransactions.Validate;
+using Experts.Trader.FindTransactions;
+using Experts.Trader.FindTransactions.Read;
+using Experts.Trader.FindTransactions.Validation;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -70,15 +70,15 @@ public class FeatureTest
 
 
     public record Dependencies(
-        Validator Validator,
-        Repository Repository)
+        FluentValidatiorClient Validator,
+        EntityFrameworkClient Repository)
     {
 
         public static Dependencies Default()
         {
             //var repository = Substitute.For<Feature.IRepository>();
             //repository.Read(default).Returns([]);
-            var fluentValidator = new Validator.RequestValidator();
+            var fluentValidator = new FluentValidatiorClient.RequestValidator();
             var validatorTechnologyPlugin = new Validator(fluentValidator);
             var validatorAdapterPlugin = new  Experts.Trader.ReadTransactions.Validate.Adapter(validatorTechnologyPlugin);
 
