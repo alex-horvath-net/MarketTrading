@@ -1,6 +1,4 @@
-﻿using Common.Data.Business.Model;
-using Common.Valdation.Business;
-using Common.Valdation.Business.Model;
+﻿using Common.Valdation.Business;
 using Experts.Trader.FindTransactions.Read.Business;
 
 namespace Experts.Trader.FindTransactions;
@@ -19,16 +17,4 @@ public class Service(IValidatorAdapter<Request> validator, IRepositoryAdapter re
 
         return response; 
     }
-}
-
-
-public class Request {
-    public string? Name { get; set; }
-}
-
-
-public class Response {
-    public Request? Request { get; set; }
-    public List<Error> Errors { get; set; } = [];
-    public List<Transaction> Transactions { get; set; } = [];
 }
