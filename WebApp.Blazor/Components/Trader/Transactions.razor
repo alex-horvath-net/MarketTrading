@@ -1,6 +1,7 @@
 ﻿@page "/trader/transactions"
 @using Common.Data.Business.Model
 @using Experts.Trader.FindTransactions
+@using System.ComponentModel
 
 @inject Service service;
 
@@ -36,8 +37,13 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
     }
 
 
-    public record TransactionVM(long Id, string Name) {
-        public static TransactionVM FrormBusiness(Transaction bm) => new TransactionVM(bm.Id, bm.Name);
+    public record TransactionVM {
+        [DisplayName(displayName: "ID")] 
+        public long Id { get; set; }
+        
+        public string Name { get; set; }
+
+        public static TransactionVM FrormBusiness(Transaction bm) => new TransactionVM() { Id = bm.Id, Name = bm.Name };
     }
 
 }

@@ -1,55 +1,53 @@
-﻿@typeparam T
+﻿@using System.ComponentModel
+@typeparam T
 <h3>Table</h3>
 <table class="table align-middle table-striped caption-top table-hover">
     <thead class="table-primary">
         <tr>
-            @foreach (var coulumn in Columns)
-            {
-                <th scope="col">@(GetPropertyName(coulumn))</th>
-            }            
+            @foreach (var coulumn in Columns) {
+                <th scope="col">@(GetName(coulumn))</th>
+            }
         </tr>
     </thead>
     <tbody>
         @foreach (var row in Rows) {
             <tr>
                 @foreach (var column in Columns) {
-                    if(Columns.IndexOf(column) == 0)
-                    {
-                        <th scope="row">@column.Compile().Invoke(row)</th>                        
+                    if (Columns.IndexOf(column) == 0) {
+                        <th scope="row">@GetValue(column, row)</th>
+                    } else {
+                        <td>@GetValue(column, row)</td>
                     }
-                    else
-                    {
-                        <td>@column.Compile().Invoke(row)</td>
-                    }
-                }                
+                }
             </tr>
-        }       
+        }
     </tbody>
     <tfoot>
         @* <tr>
-            <th scope="col"></th>
-            <th scope="col" colspan="3">asdf</th>
+        <th scope="col"></th>
+        <th scope="col" colspan="3">asdf</th>
         </tr> *@
     </tfoot>
 </table>
 
 @code {
-    [Parameter]
-    public List<Expression<Func<T, object>>> Columns { get; set; } = [];
+    [Parameter] public List<Expression<Func<T, object>>> Columns { get; set; } = [];
 
-    [Parameter]
-    public List<T> Rows { get; set; } = [];
+    [Parameter] public List<T> Rows { get; set; } = [];
 
-    private string GetPropertyName(Expression<Func<T, object>> expression) {
-        if (expression.Body is MemberExpression memberExpression) {
-            return memberExpression.Member.Name;
-        } else if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression operand) {
-            return operand.Member.Name;
-        }
-        else {
-            return expression.Body.ToString();
-        }
+    private string? GetName(Expression<Func<T, object>> expression) {
+        var member =
+            expression.Body is MemberExpression body ? body.Member :
+            expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression operand ? operand.Member : null;
+
+
+        var displayNameAttribute = member?.CustomAttributes?.FirstOrDefault(x => x.AttributeType.Name == "DisplayNameAttribute");
+        var constructorArgument = displayNameAttribute?.ConstructorArguments?.FirstOrDefault();
+        return constructorArgument?.Value?.ToString() ?? member?.Name;
+
 
         throw new ArgumentException("Expression is not a member access", nameof(expression));
     }
+
+    private object GetValue(Expression<Func<T, object>> column, T row) => column.Compile().Invoke(row);
 }

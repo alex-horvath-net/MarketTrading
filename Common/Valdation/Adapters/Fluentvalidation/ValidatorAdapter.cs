@@ -1,4 +1,5 @@
-﻿using Common.Valdation.Business;
+﻿using Common.Valdation.Adapters.Fluentvalidation.Model;
+using Common.Valdation.Business;
 using Common.Valdation.Business.Model;
 
 namespace Common.Valdation.Adapters.Fluentvalidation;
@@ -12,7 +13,7 @@ public class ValidatorAdapter<TRequest>(IValidatorClient<TRequest> validatorClie
         return businessModel;
     }
 
-    private static Error ToBusiness(FluentvalidationErrorModel model) => new()
+    private static Error ToBusiness(ErrorModel model) => new()
     {
         Name = model.Name,
         Message = model.Message
