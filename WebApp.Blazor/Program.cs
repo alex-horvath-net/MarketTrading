@@ -1,6 +1,6 @@
-using Common.Technology.Identity;
 using Experts.Trader.FindTransactions;
-using WebApp.Blazor.Components;
+using AlgoritmicTrading.Components;
+using Common.Identity.Technology;
 
 namespace AlgoritmicTrading;
 
@@ -8,7 +8,7 @@ public class Program {
     public static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddReadTransactions(builder.Configuration);
+        builder.Services.AddFindTransactions(builder.Configuration);
 
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
         builder.Services.AddCascadingAuthenticationState();

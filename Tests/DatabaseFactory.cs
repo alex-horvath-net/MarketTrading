@@ -1,4 +1,4 @@
-﻿using Common.Technology.AppData;
+﻿using Common.Data.Technology;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests;

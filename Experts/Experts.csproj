@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <Folder Include="Account\Register\" />
+    <Folder Include="Trader\FindTransactions\Validation\Adapters\" />
+    <Folder Include="Trader\FindTransactions\Validation\Business\" />
   </ItemGroup>
 
 </Project>

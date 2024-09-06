@@ -1,11 +1,8 @@
 ﻿@page "/trader/transactions"
+@using Common.Data.Business.Model
+@using Experts.Trader.FindTransactions
 
-@    using Common.Business.Model;
-@    using Experts.Trader.ReadTransactions.Business.Model;
-@    using Experts.Trader.ReadTransactions.Business.Logic;
-    using Experts.Trader.ReadTransactions.Logic;
-
-@inject Service ReadTransactions;
+@inject Service service;
 
 <PageTitle>Trade Execution Page</PageTitle>
 
@@ -34,13 +31,13 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
         transationColumns.Add(x => x.Name);
 
         var request = new Request() { Name = null };
-        var response = await ReadTransactions.Execute(request, CancellationToken.None);
+        var response = await service.Execute(request, CancellationToken.None);
         transactions = response.Transactions.Select(TransactionVM.FrormBusiness).ToList();
     }
 
 
     public record TransactionVM(long Id, string Name) {
-        public static TransactionVM FrormBusiness(TransactionBM bm) => new TransactionVM(bm.Id, bm.Name);
+        public static TransactionVM FrormBusiness(Transaction bm) => new TransactionVM(bm.Id, bm.Name);
     }
 
 }
