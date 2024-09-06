@@ -1,4 +1,5 @@
 ﻿@using System.ComponentModel
+@using System.Reflection
 @typeparam T
 <h3>Table</h3>
 <table class="table align-middle table-striped caption-top table-hover">
@@ -38,15 +39,10 @@
     private string? GetName(Expression<Func<T, object>> expression) {
         var member =
             expression.Body is MemberExpression body ? body.Member :
-            expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression operand ? operand.Member : null;
+            expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression operand ? operand.Member :
+            throw new ArgumentException("Expression is not a member access", nameof(expression));
 
-
-        var displayNameAttribute = member?.CustomAttributes?.FirstOrDefault(x => x.AttributeType.Name == "DisplayNameAttribute");
-        var constructorArgument = displayNameAttribute?.ConstructorArguments?.FirstOrDefault();
-        return constructorArgument?.Value?.ToString() ?? member?.Name;
-
-
-        throw new ArgumentException("Expression is not a member access", nameof(expression));
+        return member?.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? member?.Name;
     }
 
     private object GetValue(Expression<Func<T, object>> column, T row) => column.Compile().Invoke(row);
