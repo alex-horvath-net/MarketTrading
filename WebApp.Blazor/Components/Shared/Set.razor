@@ -1,12 +1,15 @@
 ﻿@using System.ComponentModel
 @using System.Reflection
+@using Common
+
 @typeparam T
+
 <h3>Table</h3>
 <table class="table align-middle table-striped caption-top table-hover">
     <thead class="table-primary">
         <tr>
             @foreach (var coulumn in Columns) {
-                <th scope="col">@(GetName(coulumn))</th>
+                <th scope="col">@(coulumn.GetName())</th>
             }
         </tr>
     </thead>
@@ -15,9 +18,9 @@
             <tr>
                 @foreach (var column in Columns) {
                     if (Columns.IndexOf(column) == 0) {
-                        <th scope="row">@GetValue(column, row)</th>
+                        <th scope="row">@column.GetValue(row)</th>
                     } else {
-                        <td>@GetValue(column, row)</td>
+                        <td>@column.GetValue(row)</td>
                     }
                 }
             </tr>
@@ -35,15 +38,4 @@
     [Parameter] public List<Expression<Func<T, object>>> Columns { get; set; } = [];
 
     [Parameter] public List<T> Rows { get; set; } = [];
-
-    private string? GetName(Expression<Func<T, object>> expression) {
-        var member =
-            expression.Body is MemberExpression body ? body.Member :
-            expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression operand ? operand.Member :
-            throw new ArgumentException("Expression is not a member access", nameof(expression));
-
-        return member?.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? member?.Name;
-    }
-
-    private object GetValue(Expression<Func<T, object>> column, T row) => column.Compile().Invoke(row);
 }
