@@ -13,8 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.FindTransactions;
 
 public class FeatureTest {
-    Service CreateUnit() => new(dependencies.Validator, dependencies.Repository);
-    Task<Response> UseTheUnit(Service unit) => unit.Execute(arguments.Request, arguments.Token);
+    WorkFlow CreateUnit() => new(dependencies.Validator, dependencies.Repository);
+    Task<Response> UseTheUnit(WorkFlow unit) => unit.Execute(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -62,7 +62,7 @@ public class FeatureTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var feature = serviceProvider.GetService<Service>();
+        var feature = serviceProvider.GetService<WorkFlow>();
 
         feature.Should().NotBeNull();
     }
