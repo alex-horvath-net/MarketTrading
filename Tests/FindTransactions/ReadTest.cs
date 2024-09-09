@@ -12,7 +12,7 @@ namespace Tests.FindTransactions;
 
 public class ReadTest {
     RepositoryAdapter CreateUnit() => new(dependencies.RepositoryClient);
-    Task<List<Transaction>> UseTheUnit(RepositoryAdapter unit) => unit.ReadTransaction(arguments.Request, arguments.Token);
+    Task<List<Transaction>> UseTheUnit(RepositoryAdapter unit) => unit.FindTransactions(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Some();
 

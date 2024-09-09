@@ -9,12 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Experts.Trader.FindTransactions.Read;
 
 public static class Extensions {
-    public static IServiceCollection AddRead(this IServiceCollection services, ConfigurationManager configuration) {
-        services
-            .AddScoped<IRepositoryAdapter,RepositoryAdapter>()
-            .AddScoped<IRepositoryClient, RepositoryClient>()
-            .AddDbContext<AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
-
-        return services;
-    }
+    public static IServiceCollection AddRead(this IServiceCollection services, ConfigurationManager configuration) => services
+        .AddScoped<IRepositoryAdapter, RepositoryAdapter>()
+        .AddScoped<IRepositoryClient, RepositoryClient>()
+        .AddDbContext<AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
 }

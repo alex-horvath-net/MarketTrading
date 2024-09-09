@@ -3,5 +3,5 @@
 namespace Experts.Trader.FindTransactions.Read.Business;
 
 public interface IRepositoryAdapter {
-    Task<List<Transaction>> ReadTransaction(Request request, CancellationToken token);
+    Task<List<Transaction>> FindTransactions(Request request, CancellationToken token);
 }
