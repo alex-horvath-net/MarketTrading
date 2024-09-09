@@ -16,6 +16,10 @@
 
   <ItemGroup>
     <Folder Include="Account\Register\" />
+    <Folder Include="Trader\EditTransaction\Edit\Technology\" />
+    <Folder Include="Trader\EditTransaction\Validation\Adapters\" />
+    <Folder Include="Trader\EditTransaction\Validation\Business\" />
+    <Folder Include="Trader\FindTransactions\Read\Technology\" />
     <Folder Include="Trader\FindTransactions\Validation\Adapters\" />
     <Folder Include="Trader\FindTransactions\Validation\Business\" />
   </ItemGroup>
