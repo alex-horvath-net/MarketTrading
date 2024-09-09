@@ -11,7 +11,7 @@ namespace Experts.Trader.EditTransaction.Edit;
 public static class Extensions {
     public static IServiceCollection AddRead(this IServiceCollection services, ConfigurationManager configuration) {
         services
-            .AddScoped<IRepositoryAdapter, RepositoryAdapter>()
+            .AddScoped<IDatabaseAdapter, DatabaseAdapter>()
             .AddScoped(typeof(IDataClient<>), typeof(DataClient<>))
             .AddDbContext<AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
 

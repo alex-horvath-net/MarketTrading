@@ -11,8 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.EditTransaction;
 
 public class EditTest {
-    RepositoryAdapter CreateUnit() => new(dependencies.RepositoryClient);
-    Task<Transaction?> UseTheUnit(RepositoryAdapter unit) => unit.EditTransaction(arguments.Request, arguments.Token);
+    DatabaseAdapter CreateUnit() => new(dependencies.RepositoryClient);
+    Task<Transaction?> UseTheUnit(DatabaseAdapter unit) => unit.EditTransaction(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Exists();
 

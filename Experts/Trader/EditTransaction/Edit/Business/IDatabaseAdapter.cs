@@ -2,6 +2,6 @@
 
 namespace Experts.Trader.EditTransaction.Edit.Business;
 
-public interface IRepositoryAdapter {
+public interface IDatabaseAdapter {
     Task<Transaction?> EditTransaction(Request request, CancellationToken token);
 }

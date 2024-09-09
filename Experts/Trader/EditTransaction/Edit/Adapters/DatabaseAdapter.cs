@@ -4,7 +4,8 @@ using Experts.Trader.EditTransaction.Edit.Business;
 
 namespace Experts.Trader.EditTransaction.Edit.Adapters;
 
-public class RepositoryAdapter(IDataClient<TransactionDM> client) : IRepositoryAdapter {
+public class DatabaseAdapter(IDataClient<TransactionDM> client) :
+    IDatabaseAdapter {
 
     public async Task<Transaction?> EditTransaction(Request request, CancellationToken token) {
         var dm = await client.Find(request.Id, token);
@@ -27,3 +28,4 @@ public class RepositoryAdapter(IDataClient<TransactionDM> client) : IRepositoryA
         Name = technologyModel.Name
     };
 }
+ 

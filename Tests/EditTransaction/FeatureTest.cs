@@ -6,7 +6,7 @@ using Common.Valdation.Technology.FluentValidation;
 using Experts.Trader.EditTransaction;
 using Experts.Trader.EditTransaction.Edit.Adapters;
 using Experts.Trader.EditTransaction.Edit.Business;
-using Experts.Trader.EditTransaction.Validation.Technology;
+using Experts.Trader.EditTransaction.Validate.Technology;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -71,7 +71,7 @@ public class FeatureTest {
 
     public record Dependencies(
         IValidatorAdapter<Request> Validator,
-        IRepositoryAdapter Repository) {
+        IDatabaseAdapter Repository) {
 
         public static Dependencies Default() {
             var validator = new Validator();
@@ -81,7 +81,7 @@ public class FeatureTest {
             var dbFactory = new DatabaseFactory();
             var db = dbFactory.Default();
             var repositoryClient = new DataClient<TransactionDM>(db);
-            var repositoryAdapter = new RepositoryAdapter(repositoryClient);
+            var repositoryAdapter = new DatabaseAdapter(repositoryClient);
 
             return new Dependencies(validatorAdapter, repositoryAdapter);
         }

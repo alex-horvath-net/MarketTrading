@@ -1,5 +1,5 @@
 ﻿using Experts.Trader.FindTransactions.Read;
-using Experts.Trader.FindTransactions.Validation;
+using Experts.Trader.FindTransactions.Validate;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

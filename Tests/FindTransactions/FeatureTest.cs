@@ -5,7 +5,7 @@ using Experts.Trader.FindTransactions;
 using Experts.Trader.FindTransactions.Read.Adapters;
 using Experts.Trader.FindTransactions.Read.Business;
 using Experts.Trader.FindTransactions.Read.Technology;
-using Experts.Trader.FindTransactions.Validation.Technology;
+using Experts.Trader.FindTransactions.Validate.Technology;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

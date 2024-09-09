@@ -3,7 +3,7 @@ using Experts.Trader.EditTransaction.Edit.Business;
 
 namespace Experts.Trader.EditTransaction;
 
-public class Service(IValidatorAdapter<Request> validator, IRepositoryAdapter repository) {
+public class Service(IValidatorAdapter<Request> validator, IDatabaseAdapter repository) {
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
 

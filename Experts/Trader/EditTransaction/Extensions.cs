@@ -1,5 +1,5 @@
 ﻿using Experts.Trader.EditTransaction.Edit;
-using Experts.Trader.EditTransaction.Validation;
+using Experts.Trader.EditTransaction.Validate;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
