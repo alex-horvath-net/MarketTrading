@@ -3,7 +3,7 @@ using Common.Adapters.App.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Common.Technology.EF;
-public class CommonClient<TDatabase,TDataModel>(TDatabase db) : ICommonEFClient<TDataModel> where TDatabase: DbContext where TDataModel : class
+public class CommonEFClient<TDatabase,TDataModel>(TDatabase db) : ICommonEFClient<TDataModel> where TDatabase: DbContext where TDataModel : class
 {
     protected TDatabase DB => db;
 

@@ -5,7 +5,7 @@ using Experts.Trader.FindTransactions.Clock.Microsoft.Adapter;
 using Experts.Trader.FindTransactions.EntityFramework.Adapters;
 using Experts.Trader.FindTransactions.Read;
 using Experts.Trader.FindTransactions.Read.Technology;
-using Experts.Trader.FindTransactions.Repository;
+using Experts.Trader.FindTransactions.Repository.EntityFramework;
 using Experts.Trader.FindTransactions.Repository.EntityFramework.Technology;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
@@ -14,8 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.FindTransactions;
 
 public class ReadTest {
-    Database CreateUnit() => new(dependencies.RepositoryClient);
-    Task<List<Transaction>> UseTheUnit(Database unit) => unit.FindTransactions(arguments.Request, arguments.Token);
+    Technology CreateUnit() => new(dependencies.RepositoryClient);
+    Task<List<Transaction>> UseTheUnit(Technology unit) => unit.FindTransactions(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Some();
 

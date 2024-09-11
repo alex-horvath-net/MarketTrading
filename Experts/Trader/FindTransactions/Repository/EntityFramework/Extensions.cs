@@ -2,12 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.FindTransactions.Repository;
+namespace Experts.Trader.FindTransactions.Repository.EntityFramework;
 
 public static class Extensions {
-
     public static IServiceCollection AddRepository(this IServiceCollection services, ConfigurationManager configuration) => services
-        .AddScoped<IRepository, EFAdapter>()
-        .AddScoped<EFAdapter.IEFClient, EFClient>()
+        .AddScoped<Service.IRepository, Adapter>()
+        .AddScoped<Adapter.IClient, Client>()
         .AddDbContext<Common.Technology.EF.App.AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
 }

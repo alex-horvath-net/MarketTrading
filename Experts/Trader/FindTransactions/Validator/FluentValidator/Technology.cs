@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
-namespace Experts.Trader.FindTransactions.Validator.FluentValidator.Technology;
+namespace Experts.Trader.FindTransactions.Validator.FluentValidator;
 
-public class Validator : AbstractValidator<Request> {
-    public Validator() {
+public class Technology : AbstractValidator<Service.Request> {
+    public Technology() {
         RuleFor(x => x).NotNull().WithMessage(RequestIsNull);
         RuleFor(x => x.UserId).NotNull().WithMessage(UserIdIsNull);
         RuleFor(x => x.Name).MinimumLength(3).When(x => !string.IsNullOrEmpty(x.Name)).WithMessage(NameIsShort);
