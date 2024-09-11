@@ -66,8 +66,8 @@ public class RepositoryTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var repositoryAdapterPort = serviceProvider.GetService<ICommonEFClient<TransactionDM>>();
-        var repositoryTechnologyPort = serviceProvider.GetService<ICommonEFClient<TransactionDM>>();
+        var repositoryAdapterPort = serviceProvider.GetService<Service.IRepository>();
+        var repositoryTechnologyPort = serviceProvider.GetService<Adapter.IClient>();
         var ef = serviceProvider.GetService<AppDB>();
 
         repositoryAdapterPort.Should().NotBeNull();
@@ -89,7 +89,7 @@ public class RepositoryTest {
     public record Arguments(Service.Request Request, CancellationToken Token) {
 
         public static Arguments Exists() => new(
-            new() { TransactionId = 2, Name = "EUR2" },
+            new() { UserId = "aladar", TransactionId = 2, Name = "EUR2" },
             CancellationToken.None);
 
         public static Arguments DosentExist() => new(

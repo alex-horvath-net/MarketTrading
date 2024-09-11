@@ -69,7 +69,7 @@ public class ValidatorTest {
 
     public record Arguments(Service.Request Request, CancellationToken Token) {
         public static Arguments Valid() => new(
-            new() { TransactionId = 2, Name = "EUR2" },
+            new() { UserId= "aladar", TransactionId = 2, Name = "EUR2" },
             CancellationToken.None);
 
         public static Arguments InValid() => new(
