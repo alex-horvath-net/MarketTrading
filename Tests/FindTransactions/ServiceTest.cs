@@ -1,21 +1,25 @@
-using Common.Valdation.Adapters.Fluentvalidation;
-using Common.Valdation.Technology.FluentValidation;
-using Common.Validation.Business;
 using Experts.Trader.FindTransactions;
-using Experts.Trader.FindTransactions.Read.Adapters;
-using Experts.Trader.FindTransactions.Read.Technology;
-using Experts.Trader.FindTransactions.Repository;
-using Experts.Trader.FindTransactions.Technology;
-using Experts.Trader.FindTransactions.Validate.Technology;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using EntityFramework = Experts.Trader.FindTransactions.Repository.EntityFramework;
+using FluentValidator = Experts.Trader.FindTransactions.Validator.FluentValidator;
+using Flag = Experts.Trader.FindTransactions.Flag.Microsoft;
+using Clock = Experts.Trader.FindTransactions.Clock.Microsoft;
 
 namespace Tests.FindTransactions;
 
-public class FeatureTest {
-    Service CreateUnit() => new(dependencies.Validator, dependencies.Repository);
-    Task<Response> UseTheUnit(Service unit) => unit.Execute(arguments.Request, arguments.Token);
+public class ServiceTest {
+    Service CreateUnit() => new(
+        dependencies.Validator, 
+        dependencies.Flag,
+        dependencies.Repository,
+        dependencies.Clock);
+
+    Task<Service.Response> UseTheUnit(Service unit) => unit.Execute(
+        arguments.Request, 
+        arguments.Token);
+
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -70,24 +74,36 @@ public class FeatureTest {
 
 
     public record Dependencies(
-        IValidator<Request> Validator,
-        IRepository Repository) {
+        Service.IValidator Validator,
+        Service.IFlag Flag,
+        Service.IRepository Repository,
+        Service.IClock Clock) {
 
         public static Dependencies Default() {
-            var validator = new FluentValidator();
-            var validatorClient = new Client<Request>(validator);
-            var validatorAdapter = new ValidatorAdapter<Request>(validatorClient);
+            var validatorTechnology = new FluentValidator.Technology();
+            var validatorClient = new FluentValidator.Client(validatorTechnology);
+            var validatorAdapter = new FluentValidator.Adapter(validatorClient);
+
+            var flagClient = new Flag.Client();
+            var flagAdapter = new Flag.Adapter(flagClient);
 
             var dbFactory = new DatabaseFactory();
-            var db = dbFactory.Default();
-            var repositoryClient = new DtatbaseClient(db);
-            var repositoryAdapter = new RepositoryAdapter(repositoryClient);
+            var entityFramework = dbFactory.Default();
+            var repositoryClient = new EntityFramework.Client(entityFramework);
+            var repositoryAdapter = new EntityFramework.Adapter(repositoryClient);
 
-            return new Dependencies(validatorAdapter, repositoryAdapter);
+            var clockClient = new Clock.Client();
+            var clockAdapter = new Clock.Adapter(clockClient);
+
+            return new Dependencies(
+                validatorAdapter,
+                flagAdapter,
+                repositoryAdapter,
+                clockAdapter);
         }
     }
 
-    public record Arguments(Request Request, CancellationToken Token) {
+    public record Arguments(Service.Request Request, CancellationToken Token) {
         public static Arguments Valid() => new(
             new() { Name = "USD" },
             CancellationToken.None);

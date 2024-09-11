@@ -1,21 +1,16 @@
 using Common.Business.Model;
 using Common.Technology.EF.App;
 using Experts.Trader.FindTransactions;
-using Experts.Trader.FindTransactions.Clock.Microsoft.Adapter;
-using Experts.Trader.FindTransactions.EntityFramework.Adapters;
-using Experts.Trader.FindTransactions.Read;
-using Experts.Trader.FindTransactions.Read.Technology;
 using Experts.Trader.FindTransactions.Repository.EntityFramework;
-using Experts.Trader.FindTransactions.Repository.EntityFramework.Technology;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Tests.FindTransactions;
 
-public class ReadTest {
-    Technology CreateUnit() => new(dependencies.RepositoryClient);
-    Task<List<Transaction>> UseTheUnit(Technology unit) => unit.FindTransactions(arguments.Request, arguments.Token);
+public class RepositoryTest {
+    Adapter CreateUnit() => new(dependencies.Client);
+    Task<List<Transaction>> UseTheUnit(Adapter unit) => unit.FindTransactions(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Some();
 
@@ -77,28 +72,28 @@ public class ReadTest {
         services.AddRepository(configuration);
 
         // Assert
-        var serviceProvider = services.BuildServiceProvider();
-        var repositoryAdapterPort = serviceProvider.GetService<IClient>();
-        var repositoryTechnologyPort = serviceProvider.GetService<IClient>();
-        var ef = serviceProvider.GetService<AppDB>();
+        var sp = services.BuildServiceProvider();
+        var adapter = sp.GetService<Service.IRepository>();
+        var client = sp.GetService<Adapter.IClient>();
+        var technology = sp.GetService<AppDB>();
 
-        repositoryAdapterPort.Should().NotBeNull();
-        repositoryTechnologyPort.Should().NotBeNull();
-        ef.Should().NotBeNull();
+        adapter.Should().NotBeNull();
+        client.Should().NotBeNull();
+        technology.Should().NotBeNull();
     }
 
 
-    public record Dependencies(IClient RepositoryClient) {
+    public record Dependencies(Adapter.IClient Client) {
 
         public static Dependencies Default() {
             var dbFactory = new DatabaseFactory();
-            var db = dbFactory.Default();
-            var repositoryClient = new DtatbaseClient(db);
-            return new Dependencies(repositoryClient);
+            var technology = dbFactory.Default();
+            var client = new Client(technology); 
+            return new Dependencies(client);
         }
     }
 
-    public record Arguments(Request Request, CancellationToken Token) {
+    public record Arguments(Service.Request Request, CancellationToken Token) {
         public static Arguments All() => new(
           new() { Name = null },
           CancellationToken.None);

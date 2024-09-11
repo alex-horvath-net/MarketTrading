@@ -1,18 +1,19 @@
-using Common.Valdation.Technology.FluentValidation;
 using Common.Validation.Business.Model;
-using Common.Validation.FluentValidator.Adapters;
 using Experts.Trader.EditTransaction;
-using Experts.Trader.EditTransaction.Validate;
-using Experts.Trader.EditTransaction.Validate.Technology;
+using Experts.Trader.EditTransaction.Validator.FluentValidator;
 using FluentAssertions;
-using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Tests.EditTransaction;
 
-public class ValidationTest {
-    CommonAdapter<Request> CreateUnit() => new(dependencies.ValidatorClient);
-    Task<List<Error>> UseTheUnit(CommonAdapter<Request> unit) => unit.Validate(arguments.Request, arguments.Token);
+public class ValidatorTest {
+    Adapter CreateUnit() => new(
+        dependencies.Client);
+
+    Task<List<Error>> UseTheUnit(Adapter unit) => unit.Validate(
+        arguments.Request,
+        arguments.Token);
+
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -44,35 +45,35 @@ public class ValidationTest {
         // Arrange
         var services = new ServiceCollection();
         // Act
-        services.AddValidation();
+        services.AddValidator();
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var validatorAdapter = serviceProvider.GetService<Common.Validation.Business.IValidator<Request>>();
-        var validatorClient = serviceProvider.GetService<ICommonClient<Request>>();
-        var validator = serviceProvider.GetService<FluentValidation.IValidator<Request>>();
+        var validatorAdapter = serviceProvider.GetService<Service.IValidator>();
+        var validatorClient = serviceProvider.GetService<Adapter.IClient>();
+        var validator = serviceProvider.GetService<FluentValidation.IValidator<Service.Request>>();
 
         validatorAdapter.Should().NotBeNull();
         validatorClient.Should().NotBeNull();
         validator.Should().NotBeNull();
     }
 
-    public record Dependencies(ICommonClient<Request> ValidatorClient) {
+    public record Dependencies(Adapter.IClient Client) {
 
         public static Dependencies Default() {
-            var validator = new Validator();
-            var validatiorClient = new ValidatorClient<Request>(validator);
-            return new Dependencies(validatiorClient);
+            var technology = new Technology();
+            var client = new Client(technology);
+            return new Dependencies(client);
         }
     }
 
-    public record Arguments(Request Request, CancellationToken Token) {
+    public record Arguments(Service.Request Request, CancellationToken Token) {
         public static Arguments Valid() => new(
-            new() { Id = 2, Name = "EUR2" },
+            new() { TransactionId = 2, Name = "EUR2" },
             CancellationToken.None);
 
         public static Arguments InValid() => new(
-           new() { Id = -2, Name = "EUR2" },
+           new() { TransactionId = -2, Name = "EUR2" },
           CancellationToken.None);
     }
 }

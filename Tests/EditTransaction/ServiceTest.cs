@@ -1,21 +1,21 @@
-using Common.Adapters.App.Data.Model;
-using Common.Data.Technology;
-using Common.Valdation.Adapters.Fluentvalidation;
-using Common.Valdation.Technology.FluentValidation;
-using Common.Validation.Business;
 using Experts.Trader.EditTransaction;
-using Experts.Trader.EditTransaction.Edit.Adapters;
-using Experts.Trader.EditTransaction.Edit.Business;
-using Experts.Trader.EditTransaction.Validate.Technology;
+using EntityFramework = Experts.Trader.EditTransaction.Repository.EntityFramework;
+using FluentValidator = Experts.Trader.EditTransaction.Validator.FluentValidator;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Tests.EditTransaction;
 
-public class FeatureTest {
-    Service CreateUnit() => new(dependencies.Validator, dependencies.Repository);
-    Task<Response> UseTheUnit(Service unit) => unit.Execute(arguments.Request, arguments.Token);
+public class ServiceTest {
+    Service CreateUnit() => new(
+        dependencies.Validator,
+        dependencies.Repository);
+
+    Task<Service.Response> UseTheUnit(Service unit) => unit.Execute(
+        arguments.Request,
+        arguments.Token);
+
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -63,31 +63,34 @@ public class FeatureTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var feature = serviceProvider.GetService<Service>(); 
+        var feature = serviceProvider.GetService<Service>();
 
         feature.Should().NotBeNull();
     }
 
 
     public record Dependencies(
-        IValidator<Request> Validator,
-        IDatabaseAdapter Repository) {
+        Service.IValidator Validator,
+        Service.IRepository Repository) {
 
         public static Dependencies Default() {
-            var validator = new Validator();
-            var validatorClient = new ValidatorClient<Request>(validator);
-            var validatorAdapter = new ValidatorAdapter<Request>(validatorClient);
+            var validatorTechnology = new FluentValidator.Technology();
+            var validatorClient = new FluentValidator.Client(validatorTechnology);
+            var validatorAdapter = new FluentValidator.Adapter(validatorClient);
+
 
             var dbFactory = new DatabaseFactory();
-            var db = dbFactory.Default();
-            var repositoryClient = new DataClient<TransactionDM>(db);
-            var repositoryAdapter = new DatabaseAdapter(repositoryClient);
+            var entityFramework = dbFactory.Default();
+            var repositoryClient = new EntityFramework.Client(entityFramework);
+            var repositoryAdapter = new EntityFramework.Adapter(repositoryClient);
 
-            return new Dependencies(validatorAdapter, repositoryAdapter);
+            return new Dependencies(
+                validatorAdapter,
+                repositoryAdapter);
         }
     }
 
-    public record Arguments(Request Request, CancellationToken Token) {
+    public record Arguments(Service.Request Request, CancellationToken Token) {
         public static Arguments Valid() => new(
             new() { Name = "USD" },
             CancellationToken.None);
