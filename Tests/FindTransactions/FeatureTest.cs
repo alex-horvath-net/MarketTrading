@@ -1,10 +1,11 @@
 using Common.Valdation.Adapters.Fluentvalidation;
-using Common.Valdation.Business;
 using Common.Valdation.Technology.FluentValidation;
+using Common.Validation.Business;
 using Experts.Trader.FindTransactions;
 using Experts.Trader.FindTransactions.Read.Adapters;
-using Experts.Trader.FindTransactions.Read.Business;
 using Experts.Trader.FindTransactions.Read.Technology;
+using Experts.Trader.FindTransactions.Repository;
+using Experts.Trader.FindTransactions.Technology;
 using Experts.Trader.FindTransactions.Validate.Technology;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
@@ -13,8 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.FindTransactions;
 
 public class FeatureTest {
-    WorkFlow CreateUnit() => new(dependencies.Validator, dependencies.Repository);
-    Task<Response> UseTheUnit(WorkFlow unit) => unit.Execute(arguments.Request, arguments.Token);
+    Service CreateUnit() => new(dependencies.Validator, dependencies.Repository);
+    Task<Response> UseTheUnit(Service unit) => unit.Execute(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -62,24 +63,24 @@ public class FeatureTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var feature = serviceProvider.GetService<WorkFlow>();
+        var feature = serviceProvider.GetService<Service>();
 
         feature.Should().NotBeNull();
     }
 
 
     public record Dependencies(
-        IValidatorAdapter<Request> Validator,
-        IRepositoryAdapter Repository) {
+        IValidator<Request> Validator,
+        IRepository Repository) {
 
         public static Dependencies Default() {
-            var validator = new Validator();
-            var validatorClient = new ValidatorClient<Request>(validator);
+            var validator = new FluentValidator();
+            var validatorClient = new Client<Request>(validator);
             var validatorAdapter = new ValidatorAdapter<Request>(validatorClient);
 
             var dbFactory = new DatabaseFactory();
             var db = dbFactory.Default();
-            var repositoryClient = new RepositoryClient(db);
+            var repositoryClient = new DtatbaseClient(db);
             var repositoryAdapter = new RepositoryAdapter(repositoryClient);
 
             return new Dependencies(validatorAdapter, repositoryAdapter);

@@ -1,9 +1,12 @@
-using Common.Data.Business.Model;
-using Common.Data.Technology;
+using Common.Business.Model;
+using Common.Technology.EF.App;
 using Experts.Trader.FindTransactions;
+using Experts.Trader.FindTransactions.Clock.Microsoft.Adapter;
+using Experts.Trader.FindTransactions.EntityFramework.Adapters;
 using Experts.Trader.FindTransactions.Read;
-using Experts.Trader.FindTransactions.Read.Adapters;
 using Experts.Trader.FindTransactions.Read.Technology;
+using Experts.Trader.FindTransactions.Repository;
+using Experts.Trader.FindTransactions.Repository.EntityFramework.Technology;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,8 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.FindTransactions;
 
 public class ReadTest {
-    RepositoryAdapter CreateUnit() => new(dependencies.RepositoryClient);
-    Task<List<Transaction>> UseTheUnit(RepositoryAdapter unit) => unit.FindTransactions(arguments.Request, arguments.Token);
+    Database CreateUnit() => new(dependencies.RepositoryClient);
+    Task<List<Transaction>> UseTheUnit(Database unit) => unit.FindTransactions(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Some();
 
@@ -71,12 +74,12 @@ public class ReadTest {
             { "ConnectionStrings:App", "Data Source=.\\SQLEXPRESS;Initial Catalog=App;User ID=sa;Password=sa!Password;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" }
         });
         // Act
-        services.AddRead(configuration);
+        services.AddRepository(configuration);
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var repositoryAdapterPort = serviceProvider.GetService<IRepositoryClient>();
-        var repositoryTechnologyPort = serviceProvider.GetService<IRepositoryClient>();
+        var repositoryAdapterPort = serviceProvider.GetService<IClient>();
+        var repositoryTechnologyPort = serviceProvider.GetService<IClient>();
         var ef = serviceProvider.GetService<AppDB>();
 
         repositoryAdapterPort.Should().NotBeNull();
@@ -85,12 +88,12 @@ public class ReadTest {
     }
 
 
-    public record Dependencies(IRepositoryClient RepositoryClient) {
+    public record Dependencies(IClient RepositoryClient) {
 
         public static Dependencies Default() {
             var dbFactory = new DatabaseFactory();
             var db = dbFactory.Default();
-            var repositoryClient = new RepositoryClient(db);
+            var repositoryClient = new DtatbaseClient(db);
             return new Dependencies(repositoryClient);
         }
     }

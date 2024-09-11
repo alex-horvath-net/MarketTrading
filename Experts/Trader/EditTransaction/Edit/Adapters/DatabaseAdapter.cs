@@ -1,10 +1,11 @@
-﻿using Common.Data.Adapters;
-using Common.Data.Business.Model;
+﻿using Common.Adapters.App.Data;
+using Common.Adapters.App.Data.Model;
+using Common.Business.Model;
 using Experts.Trader.EditTransaction.Edit.Business;
 
 namespace Experts.Trader.EditTransaction.Edit.Adapters;
 
-public class DatabaseAdapter(IDataClient<TransactionDM> client) :
+public class DatabaseAdapter(ICommonEFClient<TransactionDM> client) :
     IDatabaseAdapter {
 
     public async Task<Transaction?> EditTransaction(Request request, CancellationToken token) {

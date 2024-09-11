@@ -1,7 +1,6 @@
-using Common.Valdation.Adapters.Fluentvalidation;
-using Common.Valdation.Business;
-using Common.Valdation.Business.Model;
 using Common.Valdation.Technology.FluentValidation;
+using Common.Validation.Business.Model;
+using Common.Validation.FluentValidator.Adapters;
 using Experts.Trader.FindTransactions;
 using Experts.Trader.FindTransactions.Validate;
 using Experts.Trader.FindTransactions.Validate.Technology;
@@ -12,8 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.FindTransactions;
 
 public class ValidationTest {
-    ValidatorAdapter<Request> CreateUnit() => new(dependencies.ValidatorClient);
-    Task<List<Error>> UseTheUnit(ValidatorAdapter<Request> unit) => unit.Validate(arguments.Request, arguments.Token);
+    CommonAdapter<Request> CreateUnit() => new(dependencies.ValidatorClient);
+    Task<List<Error>> UseTheUnit(CommonAdapter<Request> unit) => unit.Validate(arguments.Request, arguments.Token);
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Valid();
 
@@ -49,16 +48,16 @@ public class ValidationTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var validatorAdapter = serviceProvider.GetService<IValidatorAdapter<Request>>();
-        var validatorClient = serviceProvider.GetService<IValidatorClient<Request>>();
-        var validator = serviceProvider.GetService<IValidator<Request>>();
+        var validatorAdapter = serviceProvider.GetService<Common.Validation.Business.IValidator<Request>>();
+        var validatorClient = serviceProvider.GetService<ICommonClient<Request>>();
+        var validator = serviceProvider.GetService<FluentValidation.IValidator<Request>>();
 
         validatorAdapter.Should().NotBeNull();
         validatorClient.Should().NotBeNull();
         validator.Should().NotBeNull();
     }
 
-    public record Dependencies(IValidatorClient<Request> ValidatorClient) {
+    public record Dependencies(ICommonClient<Request> ValidatorClient) {
 
         public static Dependencies Default() {
             var validator = new Validator();

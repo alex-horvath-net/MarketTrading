@@ -1,9 +1,9 @@
-﻿using Common.Valdation.Business;
+﻿using Common.Validation.Business;
 using Experts.Trader.EditTransaction.Edit.Business;
 
 namespace Experts.Trader.EditTransaction;
 
-public class Service(IValidatorAdapter<Request> validator, IDatabaseAdapter repository) {
+public class Service(IValidator<Request> validator, IDatabaseAdapter repository) {
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
 

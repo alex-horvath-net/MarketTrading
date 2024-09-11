@@ -1,4 +1,4 @@
-﻿using Common.Data.Business.Model;
+﻿using Common.Business.Model;
 
 namespace Experts.Trader.EditTransaction.Edit.Business;
 

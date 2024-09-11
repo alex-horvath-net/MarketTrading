@@ -1,9 +1,11 @@
 ﻿@page "/trader/transactions"
-@using Common.Data.Business.Model
-@using Experts.Trader.FindTransactions
-@using System.ComponentModel
+@    using Experts.Trader.FindTransactions.Adapters
+@    using Common.Data.Business.Model
+@    using Experts.Trader.FindTransactions
+@    using System.ComponentModel
+@inject NavigationManager NavigationManager
 
-@inject WorkFlow service;
+@inject BlazorView view;
 
 <PageTitle>Trade Execution Page</PageTitle>
 
@@ -25,25 +27,12 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 @code {
     List<Expression<Func<TransactionVM, object>>> transationColumns = [];
     List<TransactionVM> transactions = [];
-
+    string Name;
 
     protected override async Task OnInitializedAsync() {
         transationColumns.Add(x => x.Id);
         transationColumns.Add(x => x.Name);
-
-        var request = new Request() { Name = null };
-        var response = await service.Execute(request, CancellationToken.None);
-        transactions = response.Transactions.Select(TransactionVM.FrormBusiness).ToList();
+        var userId = context.User.Identity?.Name;
+        transactions = await view.Execute(Name, userId, CancellationToken.None);
     }
-
-
-    public record TransactionVM {
-        [DisplayName("ID")] 
-        public long Id { get; set; }
-        
-        public string Name { get; set; }
-
-        public static TransactionVM FrormBusiness(Transaction bm) => new TransactionVM() { Id = bm.Id, Name = bm.Name };
-    }
-
 }

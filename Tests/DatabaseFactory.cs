@@ -1,4 +1,4 @@
-﻿using Common.Data.Technology;
+﻿using Common.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests;

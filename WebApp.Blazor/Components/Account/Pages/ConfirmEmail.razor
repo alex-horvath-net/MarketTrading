@@ -1,11 +1,13 @@
 ﻿@page "/Account/ConfirmEmail"
 
-@using System.Text
-@using AlgoritmicTrading.Components.Account
-@using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.WebUtilities
-@using Common.Identity.Technology;
-@using Common.Identity.Adapters.Model;
+@    using System.Text
+@    using AlgoritmicTrading.Components.Account
+@    using Microsoft.AspNetCore.Identity
+@    using Microsoft.AspNetCore.WebUtilities
+@    using Common.Identity.Technology;
+@    using Common.Identity.Adapters.Model;
+    using Common.Adapters.Identity.Technology;
+    using Common.Adapters.Identity.Adapters.Model;
 
 @inject UserManager<User> UserManager
 @inject IdentityRedirectManager RedirectManager

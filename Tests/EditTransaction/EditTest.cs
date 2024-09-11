@@ -1,6 +1,11 @@
-using Common.Data.Adapters;
-using Common.Data.Business.Model;
+using Common.Adapters.App.Data;
+using Common.Adapters.App.Data.Model;
+using Common.Business.Model;
 using Common.Data.Technology;
+using Common.Technology;
+using Common.Technology.App.Data;
+using Common.Technology.Data;
+using Common.Technology.EF.App;
 using Experts.Trader.EditTransaction;
 using Experts.Trader.EditTransaction.Edit;
 using Experts.Trader.EditTransaction.Edit.Adapters;
@@ -61,8 +66,8 @@ public class EditTest {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var repositoryAdapterPort = serviceProvider.GetService<IDataClient<TransactionDM>>();
-        var repositoryTechnologyPort = serviceProvider.GetService<IDataClient<TransactionDM>>();
+        var repositoryAdapterPort = serviceProvider.GetService<ICommonEFClient<TransactionDM>>();
+        var repositoryTechnologyPort = serviceProvider.GetService<ICommonEFClient<TransactionDM>>();
         var ef = serviceProvider.GetService<AppDB>();
 
         repositoryAdapterPort.Should().NotBeNull();
@@ -71,12 +76,12 @@ public class EditTest {
     }
 
 
-    public record Dependencies(IDataClient<TransactionDM> RepositoryClient) {
+    public record Dependencies(ICommonEFClient<TransactionDM> RepositoryClient) {
 
         public static Dependencies Default() {
             var dbFactory = new DatabaseFactory();
             var db = dbFactory.Default();
-            var repositoryClient = new DataClient<TransactionDM>(db);
+            var repositoryClient = new DatabaseClient<TransactionDM>(db);
             return new Dependencies(repositoryClient);
         }
     }

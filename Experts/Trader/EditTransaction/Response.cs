@@ -1,5 +1,5 @@
-﻿using Common.Data.Business.Model;
-using Common.Valdation.Business.Model;
+﻿using Common.Business.Model;
+using Common.Validation.Business.Model;
 
 namespace Experts.Trader.EditTransaction;
 

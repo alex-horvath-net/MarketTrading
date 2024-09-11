@@ -1,8 +1,8 @@
-using Common.Data.Adapters;
+using Common.Adapters.App.Data.Model;
 using Common.Data.Technology;
 using Common.Valdation.Adapters.Fluentvalidation;
-using Common.Valdation.Business;
 using Common.Valdation.Technology.FluentValidation;
+using Common.Validation.Business;
 using Experts.Trader.EditTransaction;
 using Experts.Trader.EditTransaction.Edit.Adapters;
 using Experts.Trader.EditTransaction.Edit.Business;
@@ -70,7 +70,7 @@ public class FeatureTest {
 
 
     public record Dependencies(
-        IValidatorAdapter<Request> Validator,
+        IValidator<Request> Validator,
         IDatabaseAdapter Repository) {
 
         public static Dependencies Default() {

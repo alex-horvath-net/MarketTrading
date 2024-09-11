@@ -1,9 +1,16 @@
 ﻿using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
+using Common.Validation.FluentValidator.Adapters;
+using Common.Validation.FluentValidator.Technology;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Common;
 public static class Extensions {
+
+    public static IServiceCollection AddValidatorClient<TRequest>(this IServiceCollection services) => services
+        .AddScoped<ICommonClient<TRequest>, CommonClient<TRequest>>();
+
     public static string? GetName<T>(this Expression<Func<T, object>> expression) {
         var member =
             expression.Body is MemberExpression body ? body.Member :

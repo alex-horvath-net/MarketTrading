@@ -19,9 +19,6 @@
     <Folder Include="Trader\EditTransaction\Edit\Technology\" />
     <Folder Include="Trader\EditTransaction\Validate\Adapters\" />
     <Folder Include="Trader\EditTransaction\Validate\Business\" />
-    <Folder Include="Trader\FindTransactions\Read\Technology\" />
-    <Folder Include="Trader\FindTransactions\Validate\Adapters\" />
-    <Folder Include="Trader\FindTransactions\Validate\Business\" />
   </ItemGroup>
 
 </Project>
