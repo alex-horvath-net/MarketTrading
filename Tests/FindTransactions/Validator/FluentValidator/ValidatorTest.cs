@@ -4,33 +4,33 @@ using Experts.Trader.FindTransactions.Validator.FluentValidator;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests.FindTransactions;
+namespace Tests.FindTransactions.Validator.FluentValidator;
 
-public class ValidatorTest {
-    Adapter CreateUnit() => new(dependencies.Client);
-    Task<List<Error>> UseTheUnit(Adapter unit) => unit.Validate(arguments.Request, arguments.Token);
-    Dependencies dependencies = Dependencies.Default();
-    Arguments arguments = Arguments.Valid();
-
+public class ValidatorTest : Driver {
 
     [Fact]
     public async Task It_Should_Reviel_Errors() {
+        DefaultDependencies();
         var unit = CreateUnit();
+        ValidArguments();
         var errors = await UseTheUnit(unit);
         errors.Should().NotBeNull();
     }
 
     [Fact]
     public async Task It_Should_Reviel_No_Errors_Of_Valid_Request() {
+        DefaultDependencies();
         var unit = CreateUnit();
+        ValidArguments();
         var errors = await UseTheUnit(unit);
         errors.Should().BeEmpty();
     }
 
     [Fact]
     public async Task It_Should_Reviel_Errors_Of_Non_Valid_Request() {
+        DefaultDependencies();
         var unit = CreateUnit();
-        arguments = Arguments.InValid();
+        InValidArguments();
         var errors = await UseTheUnit(unit);
         errors.Should().NotBeEmpty();
     }
@@ -52,23 +52,31 @@ public class ValidatorTest {
         client.Should().NotBeNull();
         technology.Should().NotBeNull();
     }
+}
 
-    public record Dependencies(Adapter.IClient Client) {
+public class Driver {
 
-        public static Dependencies Default() {
-            var technology = new Technology();
-            var client = new Client(technology);
-            return new Dependencies(client);
-        }
+    public Adapter CreateUnit() => new(Client);
+
+    public Task<List<Error>> UseTheUnit(Adapter unit) => unit.Validate(Request, Token);
+
+    public Adapter.IClient Client;
+
+    public Service.Request Request;
+    public CancellationToken Token;
+
+    public void DefaultDependencies() {
+        var technology = new Technology();
+        Client = new Client(technology);
     }
 
-    public record Arguments(Service.Request Request, CancellationToken Token) {
-        public static Arguments Valid() => new(
-            new() { UserId = "aladar",  Name = "USD" },
-            CancellationToken.None);
+    public void ValidArguments() {
+        Request = new() { UserId = "aladar", Name = "USD" };
+        Token = CancellationToken.None;
+    }
 
-        public static Arguments InValid() => new(
-          new() { Name = "US" },
-          CancellationToken.None);
+    public void InValidArguments() {
+        Request = new() { UserId = "aladar", Name = "US" };
+        Token = CancellationToken.None;
     }
 }

@@ -1,3 +1,4 @@
+using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
 using Common.Technology.EF.App;
 using Experts.Trader.FindTransactions;
@@ -6,59 +7,62 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests.FindTransactions;
+namespace Tests.FindTransactions.Repository.EntityFramework;
 
-public class RepositoryTest {
-    Adapter CreateUnit() => new(dependencies.Client);
-    Task<List<Transaction>> UseTheUnit(Adapter unit) => unit.FindTransactions(arguments.Request, arguments.Token);
-    Dependencies dependencies = Dependencies.Default();
-    Arguments arguments = Arguments.Some();
-
-
+public class RepositoryTest : Driver {
     [Fact]
     public async Task It_Should_Find_Somthing() {
+        DefaultDependencies();
         var unit = CreateUnit();
+        AllArguments();
         var transactions = await UseTheUnit(unit);
         transactions.Should().NotBeNull();
     }
 
     [Fact]
     public async Task It_Should_Find_List_Of_Transaction() {
+        DefaultDependencies();
         var unit = CreateUnit();
+        AllArguments();
         var transactions = await UseTheUnit(unit);
         transactions.Should().BeOfType<List<Transaction>>();
     }
 
     [Fact]
     public async Task It_Should_Find_All_Transaction() {
+        DefaultDependencies();
         var unit = CreateUnit();
-        arguments = Arguments.All();
+        AllArguments();
         var transactions = await UseTheUnit(unit);
         transactions.Should().NotBeEmpty();
     }
 
     [Fact]
     public async Task It_Should_Find_Some_Transaction() {
+        DefaultDependencies();
         var unit = CreateUnit();
+        SomeArguments();
         var transactions = await UseTheUnit(unit);
         transactions.Should().NotBeEmpty();
     }
 
     [Fact]
     public async Task It_Should_Find_Some_Matching_Transaction() {
+        DefaultDependencies();
         var unit = CreateUnit();
+        SomeArguments();
         var transactions = await UseTheUnit(unit);
-        transactions.Should().AllSatisfy(x => x.Name.Contains(arguments.Request.Name));
+        transactions.Should().AllSatisfy(x => x.Name.Contains(Request.Name));
     }
 
     [Fact]
     public async Task It_Should_Not_Find_Non_Matching_Transactions() {
+        DefaultDependencies();
         var unit = CreateUnit();
-        arguments = Arguments.Nothing();
+        NothingArguments();
         var transactions = await UseTheUnit(unit);
         transactions.Should().BeEmpty();
     }
-
 
     [Fact]
     public void AddRead_ShouldRegisterDependencies() {
@@ -69,7 +73,7 @@ public class RepositoryTest {
             { "ConnectionStrings:App", "Data Source=.\\SQLEXPRESS;Initial Catalog=App;User ID=sa;Password=sa!Password;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" }
         });
         // Act
-        services.AddRepository(configuration);
+        services.AddRepositoryAdapter(configuration);
 
         // Assert
         var sp = services.BuildServiceProvider();
@@ -81,29 +85,49 @@ public class RepositoryTest {
         client.Should().NotBeNull();
         technology.Should().NotBeNull();
     }
+}
 
+public class Driver {
+    public Adapter CreateUnit() => new(Client);
 
-    public record Dependencies(Adapter.IClient Client) {
+    public Task<List<Transaction>> UseTheUnit(Adapter unit) => unit.FindTransactions(Request, Token);
 
-        public static Dependencies Default() {
-            var dbFactory = new DatabaseFactory();
-            var technology = dbFactory.Default();
-            var client = new Client(technology); 
-            return new Dependencies(client);
-        }
+    public Adapter.IClient Client;
+
+    public Service.Request Request;
+    public CancellationToken Token;
+
+    public void DefaultDependencies() {
+        var technology = DatabaseFactory.Default();
+        Client = new Client(technology);
     }
 
-    public record Arguments(Service.Request Request, CancellationToken Token) {
-        public static Arguments All() => new(
-          new() { Name = null },
-          CancellationToken.None);
-
-        public static Arguments Some() => new(
-            new() { Name = "USD" },
-            CancellationToken.None);
-
-        public static Arguments Nothing() => new(
-          new() { Name = "USD_Typo" },
-          CancellationToken.None);
+    public void LightDependencies() {
+        var technology = new List<TransactionDM>() {
+            new() { Id = 1, Name = "USD" },
+            new() { Id = 2, Name = "EUR" },
+            new() { Id = 3, Name = "GBD"}
+        };
+        Client = new FakeRepositoryClient(technology);
     }
+
+    public void AllArguments() {
+        Request = new() { UserId = "aladar", Name = null };
+        Token = CancellationToken.None;
+    }
+
+    public void SomeArguments() {
+        Request = new() { UserId = "aladar", Name = "USD" };
+        Token = CancellationToken.None;
+    }
+
+    public void NothingArguments() {
+        Request = new() { UserId = "aladar", Name = "USD_Typo" };
+        Token = CancellationToken.None;
+    }
+}
+
+public class FakeRepositoryClient(List<TransactionDM> fakeDB) :Adapter.IClient {
+    public Task<List<TransactionDM>> Find(string? name, CancellationToken token) => Task.FromResult(
+        fakeDB.Where(x => x.Name == name).ToList());
 }

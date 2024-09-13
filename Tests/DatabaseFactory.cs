@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Tests;
 public  class DatabaseFactory {
 
-    public  AppDB Empty() {
+    public static AppDB Empty() {
         var dbNmae = $"test-{Guid.NewGuid()}";
         var builder = new DbContextOptionsBuilder<AppDB>().UseInMemoryDatabase(dbNmae);
         var db = new AppDB(builder.Options);
@@ -12,7 +12,7 @@ public  class DatabaseFactory {
         return db;
     }
 
-    public  AppDB Default() {
+    public static  AppDB Default() {
 
         var db = Empty();
         if (db !=null && db.Transactions.Any())

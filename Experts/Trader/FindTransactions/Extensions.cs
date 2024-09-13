@@ -14,6 +14,6 @@ public static class Extensions {
         .AddFlag()
         .AddClock()
         .AddValidator()
-        .AddRepository(configuration);
+        .AddRepositoryAdapter(configuration);
 }
 

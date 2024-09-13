@@ -1,58 +1,52 @@
+using Common.Adapters.App.Data.Model;
 using Experts.Trader.FindTransactions;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using EntityFramework = Experts.Trader.FindTransactions.Repository.EntityFramework;
-using FluentValidator = Experts.Trader.FindTransactions.Validator.FluentValidator;
-using Flag = Experts.Trader.FindTransactions.Flag.Microsoft;
 using Clock = Experts.Trader.FindTransactions.Clock.Microsoft;
+using EntityFramework = Experts.Trader.FindTransactions.Repository.EntityFramework;
+using Flag = Experts.Trader.FindTransactions.Flag.Microsoft;
+using FluentValidator = Experts.Trader.FindTransactions.Validator.FluentValidator;
 
 namespace Tests.FindTransactions;
 
-public class ServiceTest {
-    Service CreateUnit() => new(
-        dependencies.Validator, 
-        dependencies.Flag,
-        dependencies.Repository,
-        dependencies.Clock);
-
-    Task<Service.Response> UseTheUnit(Service unit) => unit.Execute(
-        arguments.Request, 
-        arguments.Token);
-
-    Dependencies dependencies = Dependencies.Default();
-    Arguments arguments = Arguments.Valid();
+public class ServiceTest : Driver {
 
     [Fact]
     public async Task Response_Should_NotBeNull() {
-        var unit = CreateUnit();
+        DefaultDependencies();
+        var unit = CreateTheUnit();
+        ValidArguments();
         var response = await UseTheUnit(unit);
         response.Should().NotBeNull();
     }
 
     [Fact]
     public async Task Response_Request_Should_NotBeNull() {
-        var unit = CreateUnit();
+        DefaultDependencies();
+        var unit = CreateTheUnit();
+        ValidArguments();
         var response = await UseTheUnit(unit);
         response.Request.Should().NotBeNull();
     }
 
     [Fact]
     public async Task Response_Errors_Should_Reflect_Validation_Issues() {
-        var unit = CreateUnit();
-        arguments = Arguments.InValid();
+        DefaultDependencies();
+        var unit = CreateTheUnit();
+        InValidArguments();
         var response = await UseTheUnit(unit);
         response.Errors.Should().NotBeEmpty();
     }
 
     [Fact]
     public async Task Response_Transactions_Should_BeEmpty_If_There_Is_Validation_Issues() {
-        var unit = CreateUnit();
-        arguments = Arguments.InValid();
+        DefaultDependencies();
+        var unit = CreateTheUnit();
+        InValidArguments();
         var response = await UseTheUnit(unit);
         response.Transactions.Should().BeEmpty();
     }
-
 
     [Fact]
     public void AddRead_ShouldRegisterDependencies() {
@@ -71,45 +65,46 @@ public class ServiceTest {
 
         feature.Should().NotBeNull();
     }
+}
 
+public class Driver {
+    public Service CreateTheUnit() => new(Validator, Flag, Repository, Clock);
 
-    public record Dependencies(
-        Service.IValidator Validator,
-        Service.IFlag Flag,
-        Service.IRepository Repository,
-        Service.IClock Clock) {
+    public Task<Service.Response> UseTheUnit(Service unit) => unit.Execute(Request, Token);
 
-        public static Dependencies Default() {
-            var validatorTechnology = new FluentValidator.Technology();
-            var validatorClient = new FluentValidator.Client(validatorTechnology);
-            var validatorAdapter = new FluentValidator.Adapter(validatorClient);
+    public Service.IValidator Validator;
+    public Service.IFlag Flag;
+    public Service.IRepository Repository;
+    public Service.IClock Clock;
 
-            var flagClient = new Flag.Client();
-            var flagAdapter = new Flag.Adapter(flagClient);
+    public Service.Request Request;
+    public CancellationToken Token;
 
-            var dbFactory = new DatabaseFactory();
-            var entityFramework = dbFactory.Default();
-            var repositoryClient = new EntityFramework.Client(entityFramework);
-            var repositoryAdapter = new EntityFramework.Adapter(repositoryClient);
+    public void DefaultDependencies() {
+        var validatorDriver = new Validator.FluentValidator.Driver();
+        var validatorClient = validatorDriver.Client;
+        Validator = new FluentValidator.Adapter(validatorClient);
 
-            var clockClient = new Clock.Client();
-            var clockAdapter = new Clock.Adapter(clockClient);
+        var flagClient = new Flag.Client();
+        Flag = new Flag.Adapter(flagClient);
 
-            return new Dependencies(
-                validatorAdapter,
-                flagAdapter,
-                repositoryAdapter,
-                clockAdapter);
-        }
+        var repositoryDriver = new Repository.EntityFramework.Driver();
+        repositoryDriver.DefaultDependencies();
+        var repositoryClient = repositoryDriver.Client; // CreateFakeRepositoryClient();
+        Repository = new EntityFramework.Adapter(repositoryClient);
+
+        var clockClient = new Clock.Client();
+        Clock = new Clock.Adapter(clockClient);
     }
 
-    public record Arguments(Service.Request Request, CancellationToken Token) {
-        public static Arguments Valid() => new(
-            new() { UserId = "alad", Name = "USD" },
-            CancellationToken.None);
+    public void ValidArguments() {
+        Request = new Service.Request { UserId = "alad", Name = "USD" };
+        Token = CancellationToken.None;
+    }
 
-        public static Arguments InValid() => new(
-          new() { Name = "US" },
-          CancellationToken.None);
+    public void InValidArguments() {
+        Request = new Service.Request() { Name = "US" };
+        Token = CancellationToken.None;
     }
 }
+

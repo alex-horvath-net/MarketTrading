@@ -79,8 +79,7 @@ public class ServiceTest {
             var validatorAdapter = new FluentValidator.Adapter(validatorClient);
 
 
-            var dbFactory = new DatabaseFactory();
-            var entityFramework = dbFactory.Default();
+            var entityFramework = DatabaseFactory.Default();
             var repositoryClient = new EntityFramework.Client(entityFramework);
             var repositoryAdapter = new EntityFramework.Adapter(repositoryClient);
 

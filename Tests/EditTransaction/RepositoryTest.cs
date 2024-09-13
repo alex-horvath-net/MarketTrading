@@ -79,8 +79,7 @@ public class RepositoryTest {
     public record Dependencies(Adapter.IClient Client) {
 
         public static Dependencies Default() {
-            var dbFactory = new DatabaseFactory();
-            var db = dbFactory.Default();
+            var db = DatabaseFactory.Default();
             var repositoryClient = new Client(db);
             return new Dependencies(repositoryClient);
         }
