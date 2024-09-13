@@ -1,4 +1,6 @@
-﻿using Common.Validation.Business.Model;
+﻿using Common;
+using Common.Validation.Business.Model;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.FindTransactions.Validator.FluentValidator;
 
@@ -19,3 +21,11 @@ public class Adapter(Adapter.IClient client) : Service.IValidator
         Task<List<ClientModel>> Validate(Service.Request request, CancellationToken token);
     }
 }
+
+public static class AdapterExtensions {
+
+    public static IServiceCollection AddValidatorAdapter(this IServiceCollection services) => services
+        .AddScoped<Service.IValidator, Adapter>()
+        .AddValidatorClient();
+}
+

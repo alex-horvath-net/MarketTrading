@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Experts.Trader.FindTransactions.Flag.Microsoft;
 
 public class Adapter(Adapter.IClient client) : Service. IFlag
@@ -9,3 +11,10 @@ public class Adapter(Adapter.IClient client) : Service. IFlag
         bool IsEnabled();
     }
 }
+
+public static class AdapterExtensions {
+
+    public static IServiceCollection AddFlagAdapter(this IServiceCollection services) => services
+        .AddScoped<Service.IFlag, Adapter>()
+        .AddFlagClient();
+} 

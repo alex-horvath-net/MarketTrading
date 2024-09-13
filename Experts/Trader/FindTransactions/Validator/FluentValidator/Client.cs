@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.FindTransactions.Validator.FluentValidator;
 
@@ -12,4 +13,11 @@ public class Client(IValidator<Service.Request> core) : Adapter.IClient
     }
 
     private static Adapter.ClientModel ToModel(FluentValidation.Results.ValidationFailure tech) => new(tech.PropertyName, tech.ErrorMessage);
+}
+
+public static class ClientExtensions {
+
+    public static IServiceCollection AddValidatorClient(this IServiceCollection services) => services
+        .AddScoped<Adapter.IClient, Client>()
+        .AddValidatorTechnology();
 }

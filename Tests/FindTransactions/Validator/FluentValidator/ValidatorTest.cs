@@ -42,7 +42,7 @@ public class ValidatorTest : Driver {
         // Arrange
         var services = new ServiceCollection();
         // Act
-        services.AddValidator();
+        services.AddValidatorAdapter();
 
         // Assert
         var sp = services.BuildServiceProvider();

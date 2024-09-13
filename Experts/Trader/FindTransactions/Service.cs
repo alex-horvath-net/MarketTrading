@@ -1,5 +1,11 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
+using Experts.Trader.FindTransactions.Clock.Microsoft;
+using Experts.Trader.FindTransactions.Flag.Microsoft;
+using Experts.Trader.FindTransactions.Repository.EntityFramework;
+using Experts.Trader.FindTransactions.Validator.FluentValidator;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.FindTransactions;
 
@@ -53,4 +59,14 @@ public class Service(
     public interface IFlag { bool IsPublic(Service.Request request, CancellationToken token); }
 
     public interface IClock { DateTime GetTime(); }
+}
+
+public static class ServiceExtensions {
+
+    public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager configuration) => services
+        .AddScoped<Service>()
+        .AddFlagAdapter()
+        .AddClockAdapter()
+        .AddValidatorAdapter()
+        .AddRepositoryAdapter(configuration);
 }

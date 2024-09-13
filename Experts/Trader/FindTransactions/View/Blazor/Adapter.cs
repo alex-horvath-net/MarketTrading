@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using Common.Business.Model;
 using Common.Validation.Business.Model;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.FindTransactions.View.Blazor;
 
@@ -71,7 +73,11 @@ public class Adapter(Service service) : IBlazorView
         public long Id { get; set; }
         public string Name { get; set; }
     }
-
-
 }
 
+public static class AdapterExtensions {
+
+    public static IServiceCollection AddViewAdapter(this IServiceCollection services, ConfigurationManager configuration) => services
+        .AddScoped<IBlazorView, Adapter>()
+        .AddFindTransactions(configuration);
+}
