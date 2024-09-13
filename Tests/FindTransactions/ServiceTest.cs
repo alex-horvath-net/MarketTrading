@@ -11,6 +11,8 @@ using FluentValidator = Experts.Trader.FindTransactions.Validator.FluentValidato
 namespace Tests.FindTransactions;
 
 public class ServiceTest : Driver {
+    Service CreateTheUnit() => new(Validator, Flag, Repository, Clock);
+    Task<Service.Response> UseTheUnit(Service unit) => unit.Execute(Request, Token);
 
     [Fact]
     public async Task Response_Should_NotBeNull() {
@@ -53,9 +55,9 @@ public class ServiceTest : Driver {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
-        configuration.AddInMemoryCollection(new Dictionary<string, string?> {
-            { "ConnectionStrings:App", "Data Source=.\\SQLEXPRESS;Initial Catalog=App;User ID=sa;Password=sa!Password;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" }
-        });
+        //configuration.AddInMemoryCollection(new Dictionary<string, string?> {
+        //    { "ConnectionStrings:App", "Data Source=.\\SQLEXPRESS;Initial Catalog=App;User ID=sa;Password=sa!Password;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" }
+        //});
         // Act
         services.AddFindTransactions(configuration);
 
@@ -68,10 +70,6 @@ public class ServiceTest : Driver {
 }
 
 public class Driver {
-    public Service CreateTheUnit() => new(Validator, Flag, Repository, Clock);
-
-    public Task<Service.Response> UseTheUnit(Service unit) => unit.Execute(Request, Token);
-
     public Service.IValidator Validator;
     public Service.IFlag Flag;
     public Service.IRepository Repository;
@@ -108,8 +106,8 @@ public class Driver {
         Token = validatorDriver.Token;
     }
 
-    Validator.FluentValidator.Driver validatorDriver = new ();
-    Repository.EntityFramework.Driver repositoryDriver = new();
+    private readonly Validator.FluentValidator.Driver validatorDriver = new();
+    private readonly Repository.EntityFramework.Driver repositoryDriver = new();
 
 }
 

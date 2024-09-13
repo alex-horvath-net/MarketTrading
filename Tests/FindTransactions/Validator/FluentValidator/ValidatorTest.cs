@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Tests.FindTransactions.Validator.FluentValidator;
 
 public class ValidatorTest : Driver {
+    Adapter CreateUnit() => new(Client);
+    Task<List<Error>> UseTheUnit(Adapter unit) => unit.Validate(Request, Token);
 
     [Fact]
     public async Task It_Should_Reviel_Errors() {
@@ -51,32 +53,5 @@ public class ValidatorTest : Driver {
         adapter.Should().NotBeNull();
         client.Should().NotBeNull();
         technology.Should().NotBeNull();
-    }
-}
-
-public class Driver {
-
-    public Adapter CreateUnit() => new(Client);
-
-    public Task<List<Error>> UseTheUnit(Adapter unit) => unit.Validate(Request, Token);
-
-    public Adapter.IClient Client;
-
-    public Service.Request Request;
-    public CancellationToken Token;
-
-    public void DefaultDependencies() {
-        var technology = new Technology();
-        Client = new Client(technology);
-    }
-
-    public void ValidArguments() {
-        Request = new() { UserId = "aladar", Name = "USD" };
-        Token = CancellationToken.None;
-    }
-
-    public void InValidArguments() {
-        Request = new() { UserId = "aladar", Name = "US" };
-        Token = CancellationToken.None;
     }
 }
