@@ -12,7 +12,7 @@ namespace Tests.FindTransactions.Repository.EntityFramework;
 public class RepositoryTest : Driver {
     [Fact]
     public async Task It_Should_Find_Somthing() {
-        DefaultDependencies();
+        LightDependencies();
         var unit = CreateUnit();
         AllArguments();
         var transactions = await UseTheUnit(unit);
@@ -21,7 +21,7 @@ public class RepositoryTest : Driver {
 
     [Fact]
     public async Task It_Should_Find_List_Of_Transaction() {
-        DefaultDependencies();
+        LightDependencies();
         var unit = CreateUnit();
         AllArguments();
         var transactions = await UseTheUnit(unit);
@@ -30,7 +30,7 @@ public class RepositoryTest : Driver {
 
     [Fact]
     public async Task It_Should_Find_All_Transaction() {
-        DefaultDependencies();
+        LightDependencies();
         var unit = CreateUnit();
         AllArguments();
         var transactions = await UseTheUnit(unit);
@@ -39,7 +39,7 @@ public class RepositoryTest : Driver {
 
     [Fact]
     public async Task It_Should_Find_Some_Transaction() {
-        DefaultDependencies();
+        LightDependencies();
         var unit = CreateUnit();
         SomeArguments();
         var transactions = await UseTheUnit(unit);
@@ -48,7 +48,7 @@ public class RepositoryTest : Driver {
 
     [Fact]
     public async Task It_Should_Find_Some_Matching_Transaction() {
-        DefaultDependencies();
+        LightDependencies();
         var unit = CreateUnit();
         SomeArguments();
         var transactions = await UseTheUnit(unit);
@@ -57,7 +57,7 @@ public class RepositoryTest : Driver {
 
     [Fact]
     public async Task It_Should_Not_Find_Non_Matching_Transactions() {
-        DefaultDependencies();
+        LightDependencies();
         var unit = CreateUnit();
         NothingArguments();
         var transactions = await UseTheUnit(unit);
@@ -97,7 +97,7 @@ public class Driver {
     public Service.Request Request;
     public CancellationToken Token;
 
-    public void DefaultDependencies() {
+    public void DefaultDependencies() { 
         var technology = DatabaseFactory.Default();
         Client = new Client(technology);
     }

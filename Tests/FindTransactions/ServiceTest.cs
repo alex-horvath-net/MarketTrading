@@ -81,15 +81,14 @@ public class Driver {
     public CancellationToken Token;
 
     public void DefaultDependencies() {
-        var validatorDriver = new Validator.FluentValidator.Driver();
+        validatorDriver.DefaultDependencies();
         var validatorClient = validatorDriver.Client;
         Validator = new FluentValidator.Adapter(validatorClient);
 
         var flagClient = new Flag.Client();
         Flag = new Flag.Adapter(flagClient);
 
-        var repositoryDriver = new Repository.EntityFramework.Driver();
-        repositoryDriver.DefaultDependencies();
+        repositoryDriver.LightDependencies();
         var repositoryClient = repositoryDriver.Client; // CreateFakeRepositoryClient();
         Repository = new EntityFramework.Adapter(repositoryClient);
 
@@ -98,13 +97,19 @@ public class Driver {
     }
 
     public void ValidArguments() {
-        Request = new Service.Request { UserId = "alad", Name = "USD" };
-        Token = CancellationToken.None;
+        validatorDriver.ValidArguments();
+        Request = validatorDriver.Request;
+        Token = validatorDriver.Token;
     }
 
     public void InValidArguments() {
-        Request = new Service.Request() { Name = "US" };
-        Token = CancellationToken.None;
+        validatorDriver.InValidArguments();
+        Request = validatorDriver.Request;
+        Token = validatorDriver.Token;
     }
+
+    Validator.FluentValidator.Driver validatorDriver = new ();
+    Repository.EntityFramework.Driver repositoryDriver = new();
+
 }
 
