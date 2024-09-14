@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Experts.Trader.FindTransactions.Repository.EntityFramework;
 
 public class Client(AppDB db) : Adapter.IClient {
+    
     public Task<List<TransactionDM>> Find(string? name, CancellationToken token) =>
         name == null ?
         db.Transactions.ToListAsync(token) :
@@ -16,6 +17,6 @@ public class Client(AppDB db) : Adapter.IClient {
 public static class ClientExtensions {
     public static IServiceCollection AddRepositoryClient(this IServiceCollection services, ConfigurationManager configuration) => services
         .AddScoped<Adapter.IClient, Client>()
-        .AddDbContext<Common.Technology.EF.App.AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
+        .AddRepositoryTechnology(configuration);
 }
   

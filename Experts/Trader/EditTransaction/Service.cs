@@ -1,5 +1,9 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
+using Experts.Trader.EditTransaction.Repository.EntityFramework;
+using Experts.Trader.EditTransaction.Validator.FluentValidator;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.EditTransaction;
 
@@ -43,3 +47,9 @@ public class Service(
     public interface IRepository { Task<Transaction> EditTransaction(Service.Request request, CancellationToken token); }
 }
 
+public static class Extensions {
+    public static IServiceCollection AddEditTransaction(this IServiceCollection services, ConfigurationManager config) => services
+        .AddScoped<Service>()
+        .AddValidatorAdapter()
+        .AddRepositoryAdapter(config);
+}

@@ -1,5 +1,7 @@
 ﻿using Common.Adapters.App.Data.Model;
 using Common.Technology.EF.App;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.EditTransaction.Repository.EntityFramework;
 
@@ -15,3 +17,8 @@ public class Client(AppDB db) : Adapter.IClient {
     }
 }
 
+public static class ClientExtensions {
+    public static IServiceCollection AddRepositoryClient(this IServiceCollection services, ConfigurationManager configuration) => services
+        .AddScoped<Adapter.IClient, Client>()
+        .AddRepositoryTechnology(configuration);
+}

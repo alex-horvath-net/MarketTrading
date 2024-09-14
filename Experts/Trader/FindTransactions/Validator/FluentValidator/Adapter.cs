@@ -1,5 +1,4 @@
-﻿using Common;
-using Common.Validation.Business.Model;
+﻿using Common.Validation.Business.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.FindTransactions.Validator.FluentValidator;

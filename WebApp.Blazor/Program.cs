@@ -1,5 +1,6 @@
 using AlgoritmicTrading.Components;
 using Common.Technology.Identity;
+using Experts.Trader.EditTransaction;
 using Experts.Trader.FindTransactions;
 
 namespace AlgoritmicTrading;
@@ -9,6 +10,7 @@ public class Program {
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddFindTransactions(builder.Configuration);
+        builder.Services.AddEditTransaction(builder.Configuration);
 
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
         builder.Services.AddCascadingAuthenticationState();

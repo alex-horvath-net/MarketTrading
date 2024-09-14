@@ -90,9 +90,3 @@ public class RepositoryTest : Driver {
     }
 }
 
-public class FakeRepositoryClient(List<TransactionDM> db) :Adapter.IClient {
-    public Task<List<TransactionDM>> Find(string? name, CancellationToken token) => Task.FromResult(
-         name == null ?
-        db.ToList() :
-        db.Where(x => x.Name == name).ToList());
-}

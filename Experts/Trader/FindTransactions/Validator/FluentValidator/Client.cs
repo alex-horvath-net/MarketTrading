@@ -3,11 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.FindTransactions.Validator.FluentValidator;
 
-public class Client(IValidator<Service.Request> core) : Adapter.IClient
+public class Client(IValidator<Service.Request> technology) : Adapter.IClient
 {
     public async Task<List<Adapter.ClientModel>> Validate(Service.Request request, CancellationToken token)
     {
-        var techModel = await core.ValidateAsync(request, token);
+        var techModel = await technology.ValidateAsync(request, token);
         var clientModel = techModel.Errors.Select(ToModel).ToList();
         return clientModel;
     }

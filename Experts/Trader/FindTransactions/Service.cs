@@ -9,11 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.FindTransactions;
 
-public class Service(
-    Service.IValidator validator,
-    Service.IFlag flag,
-    Service.IRepository repository,
-    Service.IClock clock) {
+public class Service(Service.IValidator validator, Service.IFlag flag, Service.IRepository repository, Service.IClock clock) {
+  
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
         try {

@@ -1,5 +1,7 @@
 ﻿using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.EditTransaction.Repository.EntityFramework;
 
@@ -31,4 +33,11 @@ public class Adapter(Adapter.IClient client) : Service.IRepository {
         ValueTask<TransactionDM?> Find(long id, CancellationToken token);
         Task<TransactionDM> Update(TransactionDM model, CancellationToken token);
     }
+}
+
+
+public static class AdapterExtensions {
+    public static IServiceCollection AddRepositoryAdapter(this IServiceCollection services, ConfigurationManager configuration) => services
+        .AddScoped<Service.IRepository, Adapter>()
+        .AddRepositoryClient(configuration);
 }
