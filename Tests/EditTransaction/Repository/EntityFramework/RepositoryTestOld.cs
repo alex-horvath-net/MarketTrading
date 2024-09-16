@@ -8,37 +8,41 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests.EditTransaction;
+namespace Tests.EditTransaction.Repository.EntityFramework;
 
-public class RepositoryTest {
+public class RepositoryTestOld
+{
     Adapter CreateUnit() => new(
         dependencies.Client);
-    
+
     Task<Transaction?> UseTheUnit(Adapter unit) => unit.EditTransaction(
-        arguments.Request, 
+        arguments.Request,
         arguments.Token);
-    
+
     Dependencies dependencies = Dependencies.Default();
     Arguments arguments = Arguments.Exists();
 
     [Fact]
-    public async Task It_Should_Provide_Null_If_It_Dosnnt_Exists() {
+    public async Task It_Should_Provide_Null_If_It_Dosnnt_Exists()
+    {
         var unit = CreateUnit();
         arguments = Arguments.DosentExist();
         var transaction = await UseTheUnit(unit);
         transaction.Should().BeNull();
     }
-    
+
     [Fact]
-    public async Task It_Should_Provide_Transaction() {
-        var unit = CreateUnit(); 
+    public async Task It_Should_Provide_Transaction()
+    {
+        var unit = CreateUnit();
         var transaction = await UseTheUnit(unit);
         transaction.Should().BeOfType<Transaction>();
     }
 
-    
+
     [Fact]
-    public async Task It_Should_Provide_The_Matching_Transaction_If_It_Exists() {
+    public async Task It_Should_Provide_The_Matching_Transaction_If_It_Exists()
+    {
         var unit = CreateUnit();
         var transaction = await UseTheUnit(unit);
         transaction.Id.Should().Be(arguments.Request.TransactionId);
@@ -46,7 +50,8 @@ public class RepositoryTest {
 
 
     [Fact]
-    public async Task It_Should_Update_The_Name_Of_Transaction() {
+    public async Task It_Should_Update_The_Name_Of_Transaction()
+    {
         var unit = CreateUnit();
         var transaction = await UseTheUnit(unit);
         transaction.Name.Should().Be(arguments.Request.Name);
@@ -54,7 +59,8 @@ public class RepositoryTest {
 
 
     [Fact]
-    public void AddRead_ShouldRegisterDependencies() {
+    public void AddRead_ShouldRegisterDependencies()
+    {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
@@ -76,16 +82,19 @@ public class RepositoryTest {
     }
 
 
-    public record Dependencies(Adapter.IClient Client) {
+    public record Dependencies(Adapter.IClient Client)
+    {
 
-        public static Dependencies Default() {
+        public static Dependencies Default()
+        {
             var db = DatabaseFactory.Default();
             var repositoryClient = new Client(db);
             return new Dependencies(repositoryClient);
         }
     }
 
-    public record Arguments(Service.Request Request, CancellationToken Token) {
+    public record Arguments(Service.Request Request, CancellationToken Token)
+    {
 
         public static Arguments Exists() => new(
             new() { UserId = "aladar", TransactionId = 2, Name = "EUR2" },

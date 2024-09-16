@@ -4,9 +4,10 @@ using Experts.Trader.EditTransaction.Validator.FluentValidator;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests.EditTransaction;
+namespace Tests.EditTransaction.Validator.FluentValidator;
 
-public class ValidatorTest {
+public class ValidatorTest_Old
+{
     Adapter CreateUnit() => new(
         dependencies.Client);
 
@@ -19,21 +20,24 @@ public class ValidatorTest {
 
 
     [Fact]
-    public async Task It_Should_Reviel_Errors() {
+    public async Task It_Should_Reviel_Errors()
+    {
         var unit = CreateUnit();
         var errors = await UseTheUnit(unit);
         errors.Should().NotBeNull();
     }
 
     [Fact]
-    public async Task It_Should_Reviel_No_Errors_Of_Valid_Request() {
+    public async Task It_Should_Reviel_No_Errors_Of_Valid_Request()
+    {
         var unit = CreateUnit();
         var errors = await UseTheUnit(unit);
         errors.Should().BeEmpty();
     }
 
     [Fact]
-    public async Task It_Should_Reviel_Errors_Of_Non_Valid_Request() {
+    public async Task It_Should_Reviel_Errors_Of_Non_Valid_Request()
+    {
         var unit = CreateUnit();
         arguments = Arguments.InValid();
         var errors = await UseTheUnit(unit);
@@ -41,7 +45,8 @@ public class ValidatorTest {
     }
 
     [Fact]
-    public void AddValidation_ShouldRegisterDependencies() {
+    public void AddValidation_ShouldRegisterDependencies()
+    {
         // Arrange
         var services = new ServiceCollection();
         // Act
@@ -58,18 +63,21 @@ public class ValidatorTest {
         validator.Should().NotBeNull();
     }
 
-    public record Dependencies(Adapter.IClient Client) {
+    public record Dependencies(Adapter.IClient Client)
+    {
 
-        public static Dependencies Default() {
+        public static Dependencies Default()
+        {
             var technology = new Technology();
             var client = new Client(technology);
             return new Dependencies(client);
         }
     }
 
-    public record Arguments(Service.Request Request, CancellationToken Token) {
+    public record Arguments(Service.Request Request, CancellationToken Token)
+    {
         public static Arguments Valid() => new(
-            new() { UserId= "aladar", TransactionId = 2, Name = "EUR2" },
+            new() { UserId = "aladar", TransactionId = 2, Name = "EUR2" },
             CancellationToken.None);
 
         public static Arguments InValid() => new(
