@@ -16,7 +16,7 @@ public class Driver {
     public CancellationToken Token;
 
     public void DefaultDependencies() {
-        validatorDriver.DefaultDependencies();
+        validatorDriver.SetDefaultDependencies();
         var validatorClient = validatorDriver.Client;
         Validator = new FluentValidator.Adapter(validatorClient);
 
@@ -32,13 +32,13 @@ public class Driver {
     }
 
     public void ValidArguments() {
-        validatorDriver.ValidArguments();
+        validatorDriver.SetValidArguments();
         Request = validatorDriver.Request;
         Token = validatorDriver.Token;
     }
 
     public void InValidArguments() {
-        validatorDriver.InValidArguments();
+        validatorDriver.SetInValidArguments();
         Request = validatorDriver.Request;
         Token = validatorDriver.Token;
     }

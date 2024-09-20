@@ -27,7 +27,7 @@ public class Service(
     public class Request {
         public Guid Id { get; set; } = Guid.NewGuid();
         public long TransactionId { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public string UserId { get; set; }
     }
 

@@ -3,18 +3,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.EditTransaction.Validator.FluentValidator;
 
-public class Adapter(Adapter.IClient client) : Service.IValidator {
+public class Adapter(Adapter.IClient validator) : Service.IValidator {
     public async Task<List<Error>> Validate(Service.Request request, CancellationToken token) {
-        var clientModel = await client.Validate(request, token);
-        var businessModel = clientModel.Select(ToBusiness).ToList();
-        return businessModel;
-        static Error ToBusiness(ClientModel model) => new(model.Name, model.Message);
+        var adapterIssues = await validator.Validate(request, token);
+        var businessIssues = adapterIssues.Select(ToBusiness).ToList();
+        return businessIssues;
+        static Error ToBusiness(AdapterIssue model) => new(model.Name, model.Message);
     }
 
-    public record ClientModel(string Name, string Message);
+    public record AdapterIssue(string Name, string Message);
 
     public interface IClient {
-        Task<List<ClientModel>> Validate(Service.Request request, CancellationToken token);
+        Task<List<AdapterIssue>> Validate(Service.Request request, CancellationToken token);
     }
 }
 
