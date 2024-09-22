@@ -14,8 +14,8 @@ public class Client(AppDB db) : Adapter.IClient {
     public Task<bool> ExistsById(long id, CancellationToken token) =>
        db.Transactions.AnyAsync(x => x.Id == id, token);
 
-    public Task<bool> ExistsByName(string name, CancellationToken token) =>
-        db.Transactions.AnyAsync(x => x.Name == name, token);
+    public Task<bool> NameIsUnique(string name, CancellationToken token) =>
+        db.Transactions.AllAsync(x => x.Name != name, token);
 
     public async Task<TransactionDM> Update(TransactionDM model, CancellationToken token) {
         db.Update<TransactionDM>(model);

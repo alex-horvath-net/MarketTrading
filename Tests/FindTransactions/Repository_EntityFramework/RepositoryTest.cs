@@ -1,70 +1,78 @@
-using AngleSharp.Io;
 using Common;
 using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
 using Common.Technology.EF.App;
-using Experts.Trader.EditTransaction;
-using Experts.Trader.EditTransaction.Repository.EntityFramework;
+using Experts.Trader.FindTransactions;
+using Experts.Trader.FindTransactions.Repository.EntityFramework;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests.EditTransaction.Repository.EntityFramework;
+namespace Tests.FindTransactions.Repository_EntityFramework;
 
 public class RepositoryTest {
-    public Service.IRepository CreateUnit() => new Adapter(Client);
-    public Task<Transaction> Run(Service.IRepository unit) => unit.EditTransaction(Request, Token);
+
+    public Adapter.IClient? Client;
+    public Service.IRepository? Unit;
+    public void Create_The_Unit() => Unit = new Adapter(Client);
+
+    public Service.Request? Request;
+    public CancellationToken Token;
+    public List<Transaction>? Response;
+    public async Task Use_The_Unit() => Response = await Unit.FindTransactions(Request, Token);
 
     [Fact]
-    public async Task Response_Should_Be_Presented() {
-        var dependecies = CreateFastDependencies();
-        var unit = CreateUnit();
-        var arguments = SetChageRequest();
-        var response = await Run(unit);
-        response.Should().NotBeNull();
+    public async Task Find_Transactions() {
+        Create_Fast_Dependencies();
+        Create_The_Unit();
+        Create_Find_All_Arguments();
+        await Use_The_Unit();
+        Response.Should().BeOfType<List<Transaction>>();
     }
 
     [Fact]
-    public async Task Response_Should_Be_A_Transaction() {
-        var dependecies = CreateFastDependencies();
-        var unit = CreateUnit();
-        var arguments = SetChageRequest();
-        var response = await Run(unit);
-        response.Should().BeOfType<Transaction>();
+    public async Task Find_All_Transactions() {
+        Create_Fast_Dependencies();
+        Create_The_Unit();
+        Create_Find_All_Arguments();
+        await Use_The_Unit();
+        Response.Count.Should().Be(countOfTransactions);
+    } 
+
+    [Fact]
+    public async Task Find_USD_Transactions() {
+        Create_Fast_Dependencies();
+        Create_The_Unit();
+        Create_Find_USD_Arguments();
+        await Use_The_Unit(); 
+        Response.Count.Should().Be(1);
+        Response[0].Name.Should().Be("USD");
     }
 
     [Fact]
-    public async Task Response_Should_Match_With_Request_Id() {
-        var dependecies = CreateFastDependencies();
-        var unit = CreateUnit();
-        var arguments = SetChageRequest();
-        var response = await Run(unit);
-        response.Id.Should().Be(eurTansactionId);
+    public async Task Find_Typo_Transactions() {
+        Create_Fast_Dependencies();
+        Create_The_Unit();
+        Create_Find_Typo_Arguments();
+        await Use_The_Unit(); 
+        Response.Count.Should().Be(0);
     }
 
-    [Fact]
-    public async Task Response_Should_Match_With_Request_Name() {
-        var dependecies = CreateFastDependencies();
-        var unit = CreateUnit();
-        var arguments = SetChageRequest();
-        var response = await Run(unit);
-        response.Name.Should().Be(eurNewName);
-    }
 
     [Fact]
-    public void DI_ShouldRegisterDependencies() {
+    public void Register_Dependencies() { 
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
-        //configuration.AddInMemoryCollection(new Dictionary<string, string?> {
-        //    { "ConnectionStrings:App", "Data Source=.\\SQLEXPRESS;Initial Catalog=App;User ID=sa;Password=sa!Password;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" }
-        //});
-        // Act
+       
+        //Act    
         services.AddRepositoryAdapter(configuration);
+
 
         // Assert
         var sp = services.BuildServiceProvider();
+       
         var adapter = sp.GetService<Service.IRepository>();
         var client = sp.GetService<Adapter.IClient>();
         var technology = sp.GetService<AppDB>();
@@ -75,29 +83,33 @@ public class RepositoryTest {
     }
 
 
-    public Adapter.IClient Client;
-    public RepositoryTest CreateDefaultDependencies() {
+    public RepositoryTest Create_Default_Dependencies() {
         var technology = CreateEfDB();
         Client = new Client(technology);
         return this;
     }
-    public (Adapter.IClient Client, Adapter.IClient _) CreateFastDependencies() {
+    public RepositoryTest Create_Fast_Dependencies() {
         var technology = FakeDB.Create();
+        countOfTransactions = technology.Transactions.Count;
         Client = new FakeClient(technology);
-        return (Client, Client);
+        return this;
     }
+    private int countOfTransactions;
 
 
-    public Service.Request Request;
-    public CancellationToken Token;
-    public (Service.Request, CancellationToken) SetChageRequest() {
-        Request = new() { TransactionId = eurTansactionId, Name = eurNewName };
+  
+    public void Create_Find_All_Arguments() {
+        Request = new() { UserId = "aladar", Name = null };
         Token = CancellationToken.None;
-        return (Request, Token);
     }
-    private long eurTansactionId = 2;
-    private string eurNewName = "EUR2";
-
+    public void Create_Find_USD_Arguments() {
+        Request = new() { UserId = "aladar", Name = "USD" };
+        Token = CancellationToken.None;
+    }
+    public void Create_Find_Typo_Arguments() {
+        Request = new() { UserId = "aladar", Name = "Typo" };
+        Token = CancellationToken.None;
+    }
 
     private AppDB CreateEfDB() {
         var dbNmae = $"test-{Guid.NewGuid()}";

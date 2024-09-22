@@ -19,6 +19,7 @@ public class Client(IValidator<Service.Request> validator) : Adapter.IClient {
 public static class ClientExtensions {
     public static IServiceCollection AddValidatorClient(this IServiceCollection services) => services
         .AddScoped<Adapter.IClient, Client>()
+        .AddScoped<Repository.EntityFramework.Adapter.IClient, Repository.EntityFramework.Client>()
         .AddValidatorTechnology();
 
 

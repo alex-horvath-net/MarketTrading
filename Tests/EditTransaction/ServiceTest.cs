@@ -4,48 +4,56 @@ using FluentValidator = Experts.Trader.EditTransaction.Validator.FluentValidator
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Tests.EditTransaction.Repository_EntityFramework;
 
 namespace Tests.EditTransaction;
 
 public class ServiceTest {
-    Service CreateUnit() => new(Validator, Repository);
-    Task<Service.Response> Run(Service unit) => unit.Execute(Request, Token);
+    public Service.IValidator Validator;
+    public Service.IRepository Repository;
+    public Service Unit;
+    public void Crea_The_Unit() => Unit = new(Validator, Repository);
+
+    public Service.Response Response;
+    public Service.Request Request;
+    public CancellationToken Token;
+    public async Task Use_The_Unit() => Response = await Unit.Execute(Request, Token);
 
 
     [Fact]
     public async Task Response_Should_NotBeNull() {
-        var dependecies = CreateFastDependencies();
-        var unit = CreateUnit();
-        var arguments = CreateValidRequest();
-        var response = await Run(unit);
-        response.Should().NotBeNull();
+        Create_Fast_Dependencies();
+        Crea_The_Unit();
+        Create_Valid_Arguments();
+        await Use_The_Unit();
+        Response.Should().NotBeNull();
     }
 
     [Fact]
     public async Task Response_Request_Should_NotBeNull() {
-        var dependecies = CreateFastDependencies();
-        var unit = CreateUnit();
-        var arguments = CreateValidRequest();
-        var response = await Run(unit);
-        response.Request.Should().NotBeNull();
+        Create_Fast_Dependencies();
+        Crea_The_Unit();
+        Create_Valid_Arguments();
+        await Use_The_Unit();
+        Response.Request.Should().NotBeNull();
     }
 
     [Fact]
     public async Task Response_Errors_Should_Reflect_Validation_Issues() {
-        var dependecies = CreateFastDependencies();
-        var unit = CreateUnit();
-        var arguments = CreateInValidRequest();
-        var response = await Run(unit);
-        response.Errors.Should().NotBeEmpty();
+        Create_Fast_Dependencies();
+        Crea_The_Unit();
+        Create_Non_Valid_Arguments();
+        await Use_The_Unit();
+        Response.Errors.Should().NotBeEmpty();
     }
 
     [Fact]
     public async Task Response_Transactions_Should_BeNull_If_There_Is_Validation_Issues() {
-        var dependecies = CreateFastDependencies();
-        var unit = CreateUnit();
-        var arguments = CreateInValidRequest();
-        var response = await Run(unit);
-        response.Transaction.Should().BeNull();
+        Create_Fast_Dependencies();
+        Crea_The_Unit();
+        Create_Non_Valid_Arguments();
+        await Use_The_Unit();
+        Response.Transaction.Should().BeNull();
     }
 
 
@@ -67,31 +75,27 @@ public class ServiceTest {
         feature.Should().NotBeNull();
     }
 
-    public Service.IValidator Validator;
-    public Service.IRepository Repository;
+    public void Create_Fast_Dependencies() {
+        RepositoryTest.Create_Fast_Dependencies();
+        Repository = RepositoryTest.Create_The_Unit();
 
-    public Service.Request Request;
-    public CancellationToken Token;
-
-    public (Service.IValidator Validator, Service.IRepository Repository) CreateFastDependencies() {
-        RepositoryTest.CreateFastDependencies();
-        Repository = RepositoryTest.CreateUnit();
-
-        ValidatorTest = new Validator.FluentValidator.ValidatorTest();
         ValidatorTest.RepositoryTest = RepositoryTest;
-        ValidatorTest.CreateFastDependencies();
-        Validator = ValidatorTest.CreateUnit();
-
-        return (Validator, Repository);
+        ValidatorTest.Create_Fast_Dependencies().Crea_The_Unit();
+        Validator = ValidatorTest.Unit;
     }
 
-    public (Service.Request, CancellationToken) CreateValidRequest() =>
-        ValidatorTest.CreateValidRequest();
-
-    public (Service.Request, CancellationToken) CreateInValidRequest() =>
-        ValidatorTest.CreateInValidRequest();
+    public void Create_Valid_Arguments() {
+        ValidatorTest.Create_Valid_Arguments();
+        Request = ValidatorTest.Request;
+        Token = ValidatorTest.Token;
+    }
+    public void Create_Non_Valid_Arguments() {
+        ValidatorTest.Create_Non_Valid_Arguments();
+        Request = ValidatorTest.Request;
+        Token = ValidatorTest.Token;
+    }
 
 
     public Validator.FluentValidator.ValidatorTest ValidatorTest = new();
-    public Repository.EntityFramework.RepositoryTest RepositoryTest = new();
+    public RepositoryTest RepositoryTest = new();
 }

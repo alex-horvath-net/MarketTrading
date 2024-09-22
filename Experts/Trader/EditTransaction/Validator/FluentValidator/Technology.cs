@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.EditTransaction.Validator.FluentValidator;
@@ -13,8 +14,9 @@ public class Technology : AbstractValidator<Service.Request> {
         RuleFor(x => x.UserId).NotNull().WithMessage(UserIdIsNull);
 
         RuleFor(x => x.Name).MinimumLength(3).WithMessage(NameIsShort);
-        RuleFor(x => x.Name).MustAsync(repository.ExistsByName).WithMessage(NameMustBeUniqe);
+        RuleFor(x => x.Name).MustAsync(repository.NameIsUnique).WithMessage(NameMustBeUniqe);
     }
+
 
     public static string RequestIsNull => "Request must be provided.";
     public static string TransactionIdNull => "TransactionId must be provided.";

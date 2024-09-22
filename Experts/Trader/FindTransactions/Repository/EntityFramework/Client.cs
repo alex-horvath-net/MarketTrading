@@ -11,7 +11,7 @@ public class Client(AppDB db) : Adapter.IClient {
     public Task<List<TransactionDM>> Find(string? name, CancellationToken token) =>
         name == null ?
         db.Transactions.ToListAsync(token) :
-        db.Transactions.Where(x => x.Name == name).ToListAsync(token);
+        db.Transactions.Where(x => x.Name.Contains(name)).ToListAsync(token);
 }
 
 public static class ClientExtensions {

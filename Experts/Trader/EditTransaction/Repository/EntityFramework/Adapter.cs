@@ -27,7 +27,7 @@ public class Adapter(Adapter.IClient client) : Service.IRepository {
     public interface IClient {
         Task<TransactionDM> FindById(long id, CancellationToken token);
         Task<bool> ExistsById(long id, CancellationToken token);
-        Task<bool> ExistsByName(string name, CancellationToken token);
+        Task<bool> NameIsUnique(string name, CancellationToken token);
         Task<TransactionDM> Update(TransactionDM model, CancellationToken token);
     }
 }
