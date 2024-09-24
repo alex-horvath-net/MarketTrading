@@ -78,11 +78,11 @@ public class Service_Test {
         ValidatorTest.Create_Default_Dependencies().Create_The_Unit();
         Validator = ValidatorTest.Unit;
 
-        var flagClient = new Experts.Trader.FindTransactions.Flag.Microsoft.Client();
-        Flag = new Experts.Trader.FindTransactions.Flag.Microsoft.Adapter(flagClient);
+        var flagClient = new Flag.Client();
+        Flag = new Flag(flagClient);
 
-        var clockClient = new Experts.Trader.FindTransactions.Clock.Microsoft.Client();
-        Clock = new Experts.Trader.FindTransactions.Clock.Microsoft.Adapter(clockClient);
+        var clockClient = new Clock.Client();
+        Clock = new Clock(clockClient);
     }
 
 

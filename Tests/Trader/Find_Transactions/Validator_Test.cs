@@ -1,14 +1,13 @@
 using Common.Validation.Business.Model;
 using Experts.Trader.FindTransactions;
-using Experts.Trader.FindTransactions.Validator.FluentValidator;
 
 namespace Tests.Trader.Find_Transactions;
 
 public class Validator_Test {
 
-    public Adapter.IClient? Client;
+    public Validator.IClient? Client;
     public Service.IValidator? Unit;
-    public void Create_The_Unit() => Unit = new Adapter(Client);
+    public void Create_The_Unit() => Unit = new Validator(Client);
 
     public Service.Request? Request;
     public CancellationToken Token;
@@ -54,7 +53,7 @@ public class Validator_Test {
         // Assert
         var sp = services.BuildServiceProvider();
         var adapter = sp.GetService<Service.IValidator>();
-        var client = sp.GetService<Adapter.IClient>();
+        var client = sp.GetService<Validator.IClient>();
         var technology = sp.GetService<FluentValidation.IValidator<Service.Request>>();
 
         adapter.Should().NotBeNull();
@@ -63,8 +62,8 @@ public class Validator_Test {
     }
 
     public Validator_Test Create_Default_Dependencies() {
-        var technology = new Technology();
-        Client = new Client(technology);
+        var technology = new Validator.Client.Technology();
+        Client = new Validator.Client(technology);
         return this;
     }
 

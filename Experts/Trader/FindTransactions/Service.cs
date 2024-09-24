@@ -1,9 +1,5 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
-using Experts.Trader.FindTransactions.Clock.Microsoft;
-using Experts.Trader.FindTransactions.Flag.Microsoft;
-using Experts.Trader.FindTransactions.Repository.EntityFramework;
-using Experts.Trader.FindTransactions.Validator.FluentValidator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.FindTransactions.Repository.EntityFramework;
+namespace Experts.Trader.FindTransactions;
 
-public class Adapter(Adapter.IClient client) : Service.IRepository
+public class Repository(Repository.IClient client) : Service.IRepository
 {
     public async Task<List<Transaction>> FindTransactions(Service.Request request, CancellationToken token)
     {
@@ -28,10 +28,10 @@ public class Adapter(Adapter.IClient client) : Service.IRepository
     {
         public Task<List<TransactionDM>> Find(string? name, CancellationToken token);
     }
-
-    public class Client(AppDB db) : Adapter.IClient {
-
-        public Task<List<TransactionDM>> Find(string? name, CancellationToken token) {
+    public class Client(AppDB db) : IClient
+    {
+        public Task<List<TransactionDM>> Find(string? name, CancellationToken token)
+        {
             token.ThrowIfCancellationRequested();
 
             var transactions = name == null ?
@@ -42,10 +42,21 @@ public class Adapter(Adapter.IClient client) : Service.IRepository
             return transactions;
         }
     }
+
 }
 
-public static class AdapterExtensions {
+public static class RepositoryExtensions
+{
     public static IServiceCollection AddRepositoryAdapter(this IServiceCollection services, ConfigurationManager configuration) => services
-        .AddScoped<Service.IRepository, Adapter>()
+        .AddScoped<Service.IRepository, Repository>()
         .AddRepositoryClient(configuration);
+
+    public static IServiceCollection AddRepositoryClient(this IServiceCollection services, ConfigurationManager configuration) => services
+        .AddScoped<Repository.IClient, Repository.Client>()
+        .AddRepositoryTechnology(configuration);
+
+    public static IServiceCollection AddRepositoryTechnology(this IServiceCollection services, ConfigurationManager configuration) => services
+       .AddDbContext<AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
+
+
 }
