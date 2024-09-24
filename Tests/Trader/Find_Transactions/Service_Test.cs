@@ -62,7 +62,7 @@ public class Service_Test {
         //    { "ConnectionStrings:App", "Data Source=.\\SQLEXPRESS;Initial Catalog=App;User ID=sa;Password=sa!Password;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" }
         //});
         // Act
-        services.AddFindTransactions(configuration);
+        services.AddService(configuration);
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();

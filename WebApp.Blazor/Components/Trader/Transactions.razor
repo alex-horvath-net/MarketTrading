@@ -12,7 +12,7 @@
 </p>
 
 <p>
-    <Set Columns="transationColumns" Rows="transactions"></Set>
+    <Set Columns="transationColumns" Rows="viewModel.Transactions"></Set>
 </p>
 Elements:
 <br />
@@ -23,15 +23,18 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 <br />
 
 @code {
-    List<Expression<Func<View.TransactionVM, object>>> transationColumns = [];
-    List<View.TransactionVM> transactions = [];
+    List<Expression<Func<ViewModel.TransactionVM, object>>> transationColumns = [];
+    ViewModel viewModel;
     string Name;
+    CancellationTokenSource tcs = new();
 
     protected override async Task OnInitializedAsync() {
         transationColumns.Add(x => x.Id);
         transationColumns.Add(x => x.Name);
+        
         var userId =  "123"; //context.User.Identity?.Name;
-        var vm = await view.Execute(Name, userId, CancellationToken.None);
-        transactions = vm.Transactions;
+        var rm = new RequestModel(Name, userId); 
+        viewModel = await view.Execute(rm, tcs.Token);
+       
     }
 }

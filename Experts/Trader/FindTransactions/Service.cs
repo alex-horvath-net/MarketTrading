@@ -60,7 +60,7 @@ public class Service(Service.IValidator validator, Service.IFlag flag, Service.I
 
 public static class ServiceExtensions {
 
-    public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager configuration) => services
+    public static IServiceCollection AddService(this IServiceCollection services, ConfigurationManager configuration) => services
         .AddScoped<IService, Service>()
         .AddClock()
         .AddFlag()
