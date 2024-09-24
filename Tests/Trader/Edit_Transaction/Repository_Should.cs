@@ -4,15 +4,11 @@ using Common.Business.Model;
 using Common.Technology.EF.App;
 using Experts.Trader.EditTransaction;
 using Experts.Trader.EditTransaction.Repository.EntityFramework;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests.EditTransaction.Repository_EntityFramework;
+namespace Tests.Trader.Edit_Transaction;
 
-public class RepositoryTest
-{
+public class Repository_Should {
 
     public Adapter.IClient Client;
     public Service.IRepository Unit;
@@ -24,29 +20,19 @@ public class RepositoryTest
     public CancellationToken Token;
     public async Task Use_The_Unit() => Response = await Unit.EditTransaction(Request, Token);
 
+
     [Fact]
-    public async Task Response_Should_Be_Presented()
-    {
+    public async Task Present_Transaction() {
         Create_Fast_Dependencies();
         Create_The_Unit();
         Create_Name_Chager_Arguments();
         await Use_The_Unit();
         Response.Should().NotBeNull();
-    }
-
-    [Fact]
-    public async Task Response_Should_Be_A_Transaction()
-    {
-        Create_Fast_Dependencies();
-        Create_The_Unit();
-        Create_Name_Chager_Arguments();
-        await Use_The_Unit();
         Response.Should().BeOfType<Transaction>();
     }
 
     [Fact]
-    public async Task Response_Should_Match_With_Request_Id()
-    {
+    public async Task Present_The_Rright_Transaction() {
         Create_Fast_Dependencies();
         Create_The_Unit();
         Create_Name_Chager_Arguments();
@@ -55,8 +41,7 @@ public class RepositoryTest
     }
 
     [Fact]
-    public async Task Response_Should_Match_With_Request_Name()
-    {
+    public async Task Present_The_Transaction_With_Updated_Name() {
         Create_Fast_Dependencies();
         Create_The_Unit();
         Create_Name_Chager_Arguments();
@@ -64,9 +49,8 @@ public class RepositoryTest
         Response.Name.Should().Be(eurNewName);
     }
 
-    [Fact]
-    public void DI_ShouldRegisterDependencies()
-    {
+    [IntegrationFact]
+    public void Use_DI() {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
@@ -88,21 +72,18 @@ public class RepositoryTest
     }
 
 
-    public RepositoryTest Create_Default_Dependencies()
-    {
+    public Repository_Should Create_Default_Dependencies() {
         var technology = CreateEfDB();
         Client = new Client(technology);
         return this;
     }
-    public void Create_Fast_Dependencies()
-    {
+    public void Create_Fast_Dependencies() {
         var technology = FakeDB.Create();
         Client = new FakeClient(technology);
     }
 
 
-    public (Service.Request, CancellationToken) Create_Name_Chager_Arguments()
-    {
+    public (Service.Request, CancellationToken) Create_Name_Chager_Arguments() {
         Request = new() { TransactionId = eurTansactionId, Name = eurNewName };
         Token = CancellationToken.None;
         return (Request, Token);
@@ -111,14 +92,12 @@ public class RepositoryTest
     private string eurNewName = "EUR2";
 
 
-    private AppDB CreateEfDB()
-    {
+    private AppDB CreateEfDB() {
         var dbNmae = $"test-{Guid.NewGuid()}";
         var builder = new DbContextOptionsBuilder<AppDB>().UseInMemoryDatabase(dbNmae);
         var db = new AppDB(builder.Options);
         db.Database.EnsureCreated();
-        if (!db.Transactions.Any())
-        {
+        if (!db.Transactions.Any()) {
             var fakeDB = FakeDB.Create();
             db.Transactions.AddRange(fakeDB.Transactions);
             db.SaveChanges();
@@ -126,8 +105,7 @@ public class RepositoryTest
         return db;
     }
 
-    public class FakeClient(FakeDB db) : Adapter.IClient
-    {
+    public class FakeClient(FakeDB db) : Adapter.IClient {
         public Task<bool> NameIsUnique(string name, CancellationToken token) => db.Transactions.All(x => x.Name != name).ToTask();
 
         public Task<bool> ExistsById(long id, CancellationToken token) => db.Transactions.Any(x => x.Id == id).ToTask();
@@ -136,20 +114,17 @@ public class RepositoryTest
 
         public Task<TransactionDM> FindById(long id, CancellationToken token) => db.Transactions.FirstOrDefault(x => x.Id == id).ToTask();
 
-        public async Task<TransactionDM> Update(TransactionDM model, CancellationToken token)
-        {
+        public async Task<TransactionDM> Update(TransactionDM model, CancellationToken token) {
             TransactionDM transaction = await FindById(model.Id, token);
             transaction.Name = model.Name;
             return transaction;
         }
     }
 
-    public class FakeDB
-    {
+    public class FakeDB {
         public List<TransactionDM> Transactions { get; set; } = [];
 
-        public static FakeDB Create()
-        {
+        public static FakeDB Create() {
             var db = new FakeDB();
 
             db.Transactions.Add(new() { Id = 1, Name = "USD" });

@@ -1,18 +1,12 @@
 using Experts.Trader.EditTransaction;
-using EntityFramework = Experts.Trader.EditTransaction.Repository.EntityFramework;
-using FluentValidator = Experts.Trader.EditTransaction.Validator.FluentValidator;
-using FluentAssertions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Tests.EditTransaction.Repository_EntityFramework;
 
-namespace Tests.EditTransaction;
+namespace Tests.Trader.Edit_Transaction;
 
-public class ServiceTest {
+public class Service_Should {
     public Service.IValidator Validator;
     public Service.IRepository Repository;
     public Service Unit;
-    public void Crea_The_Unit() => Unit = new(Validator, Repository);
+    public void Crea_The_Unit() => Unit = new Service(Validator, Repository);
 
     public Service.Response Response;
     public Service.Request Request;
@@ -21,16 +15,16 @@ public class ServiceTest {
 
 
     [Fact]
-    public async Task Response_Should_NotBeNull() {
+    public async Task Present_Response() {
         Create_Fast_Dependencies();
         Crea_The_Unit();
         Create_Valid_Arguments();
         await Use_The_Unit();
-        Response.Should().NotBeNull();
+        Response.Should().NotBeNull(); 
     }
 
     [Fact]
-    public async Task Response_Request_Should_NotBeNull() {
+    public async Task Present_Request() {
         Create_Fast_Dependencies();
         Crea_The_Unit();
         Create_Valid_Arguments();
@@ -39,8 +33,26 @@ public class ServiceTest {
     }
 
     [Fact]
-    public async Task Response_Errors_Should_Reflect_Validation_Issues() {
+    public async Task Present_No_Errors_For_Valid_Request() {
         Create_Fast_Dependencies();
+        Crea_The_Unit();
+        Create_Valid_Arguments();
+        await Use_The_Unit();
+        Response.Errors.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task Present_Transactions_For_Valid_Request() {
+        Create_Fast_Dependencies();
+        Crea_The_Unit();
+        Create_Valid_Arguments();
+        await Use_The_Unit();
+        Response.Transaction.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task Present_Errors_For_Non_Valid_Request() {
+        Create_Fast_Dependencies(); 
         Crea_The_Unit();
         Create_Non_Valid_Arguments();
         await Use_The_Unit();
@@ -48,17 +60,17 @@ public class ServiceTest {
     }
 
     [Fact]
-    public async Task Response_Transactions_Should_BeNull_If_There_Is_Validation_Issues() {
+    public async Task Present_No_Transactions_For_Non_Valid_Request() {
         Create_Fast_Dependencies();
-        Crea_The_Unit();
+        Crea_The_Unit(); 
         Create_Non_Valid_Arguments();
         await Use_The_Unit();
         Response.Transaction.Should().BeNull();
     }
 
 
-    [Fact]
-    public void AddEditTransaction_ShouldRegisterDependencies() {
+    [IntegrationFact]
+    public void Use_DI() {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
@@ -96,6 +108,6 @@ public class ServiceTest {
     }
 
 
-    public Validator.FluentValidator.ValidatorTest ValidatorTest = new();
-    public RepositoryTest RepositoryTest = new();
+    public Validation_Should ValidatorTest = new();
+    public Repository_Should RepositoryTest = new();
 }

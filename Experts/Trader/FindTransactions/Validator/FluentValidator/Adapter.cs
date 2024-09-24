@@ -9,6 +9,7 @@ public class Adapter(Adapter.IClient client) : Service.IValidator
     {
         var clientModel = await client.Validate(request, token);
         var businessModel = clientModel.Select(ToBusiness).ToList();
+        token.ThrowIfCancellationRequested();
         return businessModel;
         static Error ToBusiness(ClientModel model) => new(model.Name, model.Message);
     }

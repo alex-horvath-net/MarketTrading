@@ -9,6 +9,7 @@ public class Client(IValidator<Service.Request> technology) : Adapter.IClient
     {
         var techModel = await technology.ValidateAsync(request, token);
         var clientModel = techModel.Errors.Select(ToModel).ToList();
+        token.ThrowIfCancellationRequested();
         return clientModel;
     }
 

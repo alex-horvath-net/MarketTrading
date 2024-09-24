@@ -1,13 +1,8 @@
 using Experts.Trader.FindTransactions;
-using FluentAssertions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Tests.FindTransactions.Repository_EntityFramework;
-using Tests.FindTransactions.Validator_FluentValidator;
 
-namespace Tests.FindTransactions;
+namespace Tests.Trader.Find_Transactions;
 
-public class ServiceTest {
+public class Service_Test {
 
     public Service.IValidator Validator;
     public Service.IFlag Flag;
@@ -20,7 +15,7 @@ public class ServiceTest {
     public Service.Response Response;
     public Service.Request Request;
     public CancellationToken Token;
-    public async Task Use_The_Unit() =>  Response = await Unit.Execute(Request, Token);
+    public async Task Use_The_Unit() => Response = await Unit.Execute(Request, Token);
 
     [Fact]
     public async Task Response_Should_NotBeNull() {
@@ -58,8 +53,8 @@ public class ServiceTest {
         Response.Transactions.Should().BeEmpty();
     }
 
-    [Fact]
-    public void AddRead_ShouldRegisterDependencies() {
+    [IntegrationFact]
+    public void Use_DI() {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
@@ -78,15 +73,14 @@ public class ServiceTest {
 
 
     public void Create_Fast_Dependencies() {
-        RepositoryTest.Create_Fast_Dependencies().Create_The_Unit();
-        Repository = RepositoryTest.Unit;
+        Repository = RepositoryTest.Use_Fast_Dependencies().Create_Unit();
 
         ValidatorTest.Create_Default_Dependencies().Create_The_Unit();
         Validator = ValidatorTest.Unit;
 
         var flagClient = new Experts.Trader.FindTransactions.Flag.Microsoft.Client();
         Flag = new Experts.Trader.FindTransactions.Flag.Microsoft.Adapter(flagClient);
-        
+
         var clockClient = new Experts.Trader.FindTransactions.Clock.Microsoft.Client();
         Clock = new Experts.Trader.FindTransactions.Clock.Microsoft.Adapter(clockClient);
     }
@@ -105,7 +99,7 @@ public class ServiceTest {
     }
 
 
-    public ValidatorTest ValidatorTest = new();
-    public RepositoryTest RepositoryTest = new();
+    public Validator_Test ValidatorTest = new();
+    public Repository_Should RepositoryTest = new();
 }
 

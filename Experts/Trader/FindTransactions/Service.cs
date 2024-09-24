@@ -24,6 +24,7 @@ public class Service(Service.IValidator validator, Service.IFlag flag, Service.I
 
             response.Transactions = await repository.FindTransactions(request, token);
 
+            token.ThrowIfCancellationRequested();
         } catch (Exception ex) {
             response.Exception = ex;
         } finally {

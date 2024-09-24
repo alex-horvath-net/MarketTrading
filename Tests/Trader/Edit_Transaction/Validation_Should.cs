@@ -2,14 +2,10 @@ using Common.Validation.Business.Model;
 using Experts.Trader.EditTransaction;
 using Experts.Trader.EditTransaction.Repository.EntityFramework;
 using Experts.Trader.EditTransaction.Validator.FluentValidator;
-using FluentAssertions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Tests.EditTransaction.Repository_EntityFramework;
 
-namespace Tests.EditTransaction.Validator.FluentValidator;
+namespace Tests.Trader.Edit_Transaction;
 
-public class ValidatorTest {
+public class Validation_Should {
     public Experts.Trader.EditTransaction.Validator.FluentValidator.Adapter.IClient Client;
     public Experts.Trader.EditTransaction.Repository.EntityFramework.Adapter.IClient RepositoryClient;
     public Service.IValidator Unit;
@@ -21,7 +17,7 @@ public class ValidatorTest {
     public async Task Use_The_Unit() => Response = await Unit.Validate(Request, Token);
 
     [Fact]
-    public async Task Valid_Request_Should_Cause_No_Errors() {
+    public async Task Provide_No_Errors_For_Valid_Request() {
         Create_Fast_Dependencies();
         Crea_The_Unit();
         Create_Valid_Arguments();
@@ -30,7 +26,7 @@ public class ValidatorTest {
     }
 
     [Fact]
-    public async Task It_Should_Reviel_Errors_Of_Non_Valid_Request() {
+    public async Task Provide_Errors_For_Non_Valid_Request() {
         Create_Fast_Dependencies();
         Crea_The_Unit();
         Create_Non_Valid_Arguments();
@@ -38,8 +34,8 @@ public class ValidatorTest {
         Response.Should().NotBeEmpty();
     }
 
-    [Fact]
-    public void It_Is_DI_Ready() {
+    [IntegrationFact]
+    public void Use_DI() {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
@@ -58,10 +54,10 @@ public class ValidatorTest {
         technology.Should().NotBeNull();
     }
 
-    public ValidatorTest Create_Fast_Dependencies() {
+    public Validation_Should Create_Fast_Dependencies() {
 
         if (RepositoryTest == null) {
-            RepositoryTest = new RepositoryTest();
+            RepositoryTest = new Repository_Should();
             RepositoryTest.Create_Fast_Dependencies();
         }
 
@@ -82,5 +78,5 @@ public class ValidatorTest {
         Token = CancellationToken.None;
     }
 
-    public RepositoryTest RepositoryTest;
+    public Repository_Should RepositoryTest;
 }

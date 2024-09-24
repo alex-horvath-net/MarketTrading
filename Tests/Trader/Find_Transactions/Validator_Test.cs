@@ -1,12 +1,10 @@
 using Common.Validation.Business.Model;
 using Experts.Trader.FindTransactions;
 using Experts.Trader.FindTransactions.Validator.FluentValidator;
-using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests.FindTransactions.Validator_FluentValidator;
+namespace Tests.Trader.Find_Transactions;
 
-public class ValidatorTest {
+public class Validator_Test {
 
     public Adapter.IClient? Client;
     public Service.IValidator? Unit;
@@ -46,8 +44,8 @@ public class ValidatorTest {
         Response.Should().NotBeEmpty();
     }
 
-    [Fact]
-    public void AddValidation_ShouldRegisterDependencies() {
+    [IntegrationFact]
+    public void Use_DI() {
         // Arrange
         var services = new ServiceCollection();
         // Act
@@ -63,8 +61,8 @@ public class ValidatorTest {
         client.Should().NotBeNull();
         technology.Should().NotBeNull();
     }
-    
-    public ValidatorTest Create_Default_Dependencies() {
+
+    public Validator_Test Create_Default_Dependencies() {
         var technology = new Technology();
         Client = new Client(technology);
         return this;

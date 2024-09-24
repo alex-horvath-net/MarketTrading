@@ -1,5 +1,7 @@
 ﻿using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
+using Common.Technology.EF.App;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,7 @@ public class Adapter(Adapter.IClient client) : Service.IRepository
     {
         var dataModelList = await client.Find(request.Name, token);
         var businessModelList = dataModelList.Select(ToBusinessModel).ToList();
+        token.ThrowIfCancellationRequested();
         return businessModelList;
     }
 
@@ -24,6 +27,20 @@ public class Adapter(Adapter.IClient client) : Service.IRepository
     public interface IClient
     {
         public Task<List<TransactionDM>> Find(string? name, CancellationToken token);
+    }
+
+    public class Client(AppDB db) : Adapter.IClient {
+
+        public Task<List<TransactionDM>> Find(string? name, CancellationToken token) {
+            token.ThrowIfCancellationRequested();
+
+            var transactions = name == null ?
+                db.Transactions.ToListAsync(token) :
+                db.Transactions.Where(x => x.Name.Contains(name)).ToListAsync(token);
+
+            token.ThrowIfCancellationRequested();
+            return transactions;
+        }
     }
 }
 

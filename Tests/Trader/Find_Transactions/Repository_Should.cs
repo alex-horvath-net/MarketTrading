@@ -4,78 +4,67 @@ using Common.Business.Model;
 using Common.Technology.EF.App;
 using Experts.Trader.FindTransactions;
 using Experts.Trader.FindTransactions.Repository.EntityFramework;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests.FindTransactions.Repository_EntityFramework;
+namespace Tests.Trader.Find_Transactions;
 
-public class RepositoryTest {
+public class Repository_Should {
 
-    public Adapter.IClient? Client;
-    public Service.IRepository? Unit;
-    public void Create_The_Unit() => Unit = new Adapter(Client);
+    private Task<List<Transaction>> TalkTo(Service.IRepository unit) => unit.FindTransactions(Request, Token);
+    public Service.IRepository Create_Unit() => new Adapter(Client);
 
-    public Service.Request? Request;
+    public Adapter.IClient Client;
+    public Service.Request Request;
     public CancellationToken Token;
-    public List<Transaction>? Response;
-    public async Task Use_The_Unit() => Response = await Unit.FindTransactions(Request, Token);
+
+   
 
     [Fact]
     public async Task Find_Transactions() {
-        Create_Fast_Dependencies();
-        Create_The_Unit();
-        Create_Find_All_Arguments();
-        await Use_The_Unit();
-        Response.Should().BeOfType<List<Transaction>>();
+        Service.IRepository unit = Use_Fast_Dependencies().Create_Unit();
+        List<Transaction> response = await Use_Find_All_Arguments().TalkTo(unit);
+        response.Should().BeOfType<List<Transaction>>();
     }
 
     [Fact]
     public async Task Find_All_Transactions() {
-        Create_Fast_Dependencies();
-        Create_The_Unit();
-        Create_Find_All_Arguments();
-        await Use_The_Unit();
-        Response.Count.Should().Be(countOfTransactions);
-    } 
+        Service.IRepository unit = Use_Fast_Dependencies().Create_Unit();
+        List<Transaction> response = await Use_Find_All_Arguments().TalkTo(unit);
+        response.Should().HaveCount(totalNumberOfTransactions);
+    }
 
     [Fact]
     public async Task Find_USD_Transactions() {
-        Create_Fast_Dependencies();
-        Create_The_Unit();
-        Create_Find_USD_Arguments();
-        await Use_The_Unit(); 
-        Response.Count.Should().Be(1);
-        Response[0].Name.Should().Be("USD");
+        Service.IRepository unit = Use_Fast_Dependencies().Create_Unit();
+        List<Transaction> response = await Use_Find_USD_Arguments().TalkTo(unit);
+        response.Count.Should().Be(1);
+        response[0].Name.Should().Be("USD");
     }
 
     [Fact]
-    public async Task Find_Typo_Transactions() {
-        Create_Fast_Dependencies();
-        Create_The_Unit();
-        Create_Find_Typo_Arguments();
-        await Use_The_Unit(); 
-        Response.Count.Should().Be(0);
+    public async Task Find_No_Typo_Transactions() {
+        Service.IRepository unit = Use_Fast_Dependencies().Create_Unit();
+        List<Transaction> response = await Use_Find_Typo_Arguments().TalkTo(unit);
+        response.Should().BeEmpty();
     }
 
 
-    [Fact]
-    public void Register_Dependencies() { 
+    [IntegrationFact]
+    public void Use_DI() {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
-       
+
         //Act    
         services.AddRepositoryAdapter(configuration);
 
 
         // Assert
         var sp = services.BuildServiceProvider();
-       
-        var adapter = sp.GetService<Service.IRepository>();
-        var client = sp.GetService<Adapter.IClient>();
-        var technology = sp.GetService<AppDB>();
+
+        var adapter = sp.GetRequiredService<Service.IRepository>();
+        var client = sp.GetRequiredService<Adapter.IClient>();
+        var technology = sp.GetRequiredService<AppDB>();
 
         adapter.Should().NotBeNull();
         client.Should().NotBeNull();
@@ -83,32 +72,34 @@ public class RepositoryTest {
     }
 
 
-    public RepositoryTest Create_Default_Dependencies() {
+    public Repository_Should Create_Default_Dependencies() {
         var technology = CreateEfDB();
         Client = new Client(technology);
         return this;
     }
-    public RepositoryTest Create_Fast_Dependencies() {
+    public Repository_Should Use_Fast_Dependencies() {
         var technology = FakeDB.Create();
-        countOfTransactions = technology.Transactions.Count;
+        totalNumberOfTransactions = technology.Transactions.Count;
         Client = new FakeClient(technology);
         return this;
     }
-    private int countOfTransactions;
+    private int totalNumberOfTransactions;
 
 
-  
-    public void Create_Find_All_Arguments() {
+    public Repository_Should Use_Find_All_Arguments() {
         Request = new() { UserId = "aladar", Name = null };
         Token = CancellationToken.None;
+        return this;
     }
-    public void Create_Find_USD_Arguments() {
+    public Repository_Should Use_Find_USD_Arguments() {
         Request = new() { UserId = "aladar", Name = "USD" };
         Token = CancellationToken.None;
+        return this;
     }
-    public void Create_Find_Typo_Arguments() {
+    public Repository_Should Use_Find_Typo_Arguments() {
         Request = new() { UserId = "aladar", Name = "Typo" };
         Token = CancellationToken.None;
+        return this;
     }
 
     private AppDB CreateEfDB() {
