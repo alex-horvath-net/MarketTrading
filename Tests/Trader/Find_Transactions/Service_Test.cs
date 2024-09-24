@@ -12,8 +12,8 @@ public class Service_Test {
     public void Create_Unit() => Unit = new Service(Validator, Flag, Repository, Clock);
 
 
-    public Service.Response Response;
-    public Service.Request Request;
+    public Response Response;
+    public Request Request;
     public CancellationToken Token;
     public async Task Use_The_Unit() => Response = await Unit.Execute(Request, Token);
 

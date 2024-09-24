@@ -9,7 +9,7 @@ namespace Experts.Trader.FindTransactions;
 
 public class Repository(Repository.IClient client) : Service.IRepository
 {
-    public async Task<List<Transaction>> FindTransactions(Service.Request request, CancellationToken token)
+    public async Task<List<Transaction>> FindTransactions(Request request, CancellationToken token)
     {
         var dataModelList = await client.Find(request.Name, token);
         var businessModelList = dataModelList.Select(ToBusinessModel).ToList();
@@ -47,7 +47,7 @@ public class Repository(Repository.IClient client) : Service.IRepository
 
 public static class RepositoryExtensions
 {
-    public static IServiceCollection AddRepositoryAdapter(this IServiceCollection services, ConfigurationManager configuration) => services
+    public static IServiceCollection AddRepository(this IServiceCollection services, ConfigurationManager configuration) => services
         .AddScoped<Service.IRepository, Repository>()
         .AddRepositoryClient(configuration);
 

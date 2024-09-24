@@ -13,7 +13,7 @@ public class Repository_Should {
     public Service.IRepository Create_Unit() => new Repository(Client);
 
     public Repository.IClient Client;
-    public Service.Request Request;
+    public Request Request;
     public CancellationToken Token;
 
    
@@ -55,7 +55,7 @@ public class Repository_Should {
         var configuration = new ConfigurationManager();
 
         //Act    
-        services.AddRepositoryAdapter(configuration);
+        services.AddRepository(configuration);
 
 
         // Assert

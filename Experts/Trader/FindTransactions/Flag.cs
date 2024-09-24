@@ -4,7 +4,7 @@ namespace Experts.Trader.FindTransactions;
 
 public class Flag(Flag.IClient client) : Service.IFlag
 {
-    public bool IsPublic(Service.Request request, CancellationToken token)
+    public bool IsPublic(Request request, CancellationToken token)
     {
 
         var isPublic = client.IsEnabled();
@@ -25,7 +25,7 @@ public class Flag(Flag.IClient client) : Service.IFlag
 public static class FlagExtensions
 {
 
-    public static IServiceCollection AddFlagAdapter(this IServiceCollection services) => services
+    public static IServiceCollection AddFlag(this IServiceCollection services) => services
         .AddScoped<Service.IFlag, Flag>()
         .AddFlagClient();
 

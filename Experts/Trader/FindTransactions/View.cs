@@ -4,19 +4,19 @@ using Common.Validation.Business.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.FindTransactions.View.Blazor;
+namespace Experts.Trader.FindTransactions;
 
-public interface IBlazorView
+public interface IView
 {
-    Task<Adapter.ViewModel> Execute(string name, string? userId, CancellationToken token);
+    Task<View.ViewModel> Execute(string name, string? userId, CancellationToken token);
 }
 
-public class Adapter(Service service) : IBlazorView
+public class View(Service service) : IView
 {
 
     public async Task<ViewModel> Execute(string name, string? userId, CancellationToken token)
     {
-        var request = new Service.Request
+        var request = new Request
         {
             Name = name,
             UserId = userId
@@ -30,7 +30,7 @@ public class Adapter(Service service) : IBlazorView
         };
         return viewModel;
 
-        static MetaVM ToMetaViewModel(Service.Request businessModel) => new()
+        static MetaVM ToMetaViewModel(Request businessModel) => new()
         {
             Id = businessModel.Id,
         };
@@ -75,9 +75,9 @@ public class Adapter(Service service) : IBlazorView
     }
 }
 
-public static class AdapterExtensions {
-
+public static class ViewExtensions
+{
     public static IServiceCollection AddViewAdapter(this IServiceCollection services, ConfigurationManager configuration) => services
-        .AddScoped<IBlazorView, Adapter>()
+        .AddScoped<IView, View>()
         .AddFindTransactions(configuration);
 }

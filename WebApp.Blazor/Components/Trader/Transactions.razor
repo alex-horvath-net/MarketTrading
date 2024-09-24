@@ -1,10 +1,9 @@
 ﻿@page "/trader/transactions"
-@using Experts.Trader.FindTransactions.View.Blazor
 @using Experts.Trader.FindTransactions
 @using System.ComponentModel
 @inject NavigationManager NavigationManager
 
-@inject IBlazorView view;
+@inject IView view;
 
 <PageTitle>Trade Execution Page</PageTitle>
 
@@ -24,8 +23,8 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 <br />
 
 @code {
-    List<Expression<Func<Adapter.TransactionVM, object>>> transationColumns = [];
-    List<Adapter.TransactionVM> transactions = [];
+    List<Expression<Func<View.TransactionVM, object>>> transationColumns = [];
+    List<View.TransactionVM> transactions = [];
     string Name;
 
     protected override async Task OnInitializedAsync() {

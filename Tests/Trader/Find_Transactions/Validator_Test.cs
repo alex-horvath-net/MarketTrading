@@ -9,7 +9,7 @@ public class Validator_Test {
     public Service.IValidator? Unit;
     public void Create_The_Unit() => Unit = new Validator(Client);
 
-    public Service.Request? Request;
+    public Request? Request;
     public CancellationToken Token;
     public List<Error>? Response;
     public async Task Use_The_Unit() => Response = await Unit.Validate(Request, Token);
@@ -48,13 +48,13 @@ public class Validator_Test {
         // Arrange
         var services = new ServiceCollection();
         // Act
-        services.AddValidatorAdapter();
+        services.AddValidator();
 
         // Assert
         var sp = services.BuildServiceProvider();
         var adapter = sp.GetService<Service.IValidator>();
         var client = sp.GetService<Validator.IClient>();
-        var technology = sp.GetService<FluentValidation.IValidator<Service.Request>>();
+        var technology = sp.GetService<FluentValidation.IValidator<Request>>();
 
         adapter.Should().NotBeNull();
         client.Should().NotBeNull();

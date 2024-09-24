@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Experts.Trader.FindTransactions;
 
 public class Validator(Validator.IClient client) : Service.IValidator {
-    public async Task<List<Error>> Validate(Service.Request request, CancellationToken token) {
+    public async Task<List<Error>> Validate(Request request, CancellationToken token) {
         var clientModel = await client.Validate(request, token);
         var businessModel = clientModel.Select(ToBusiness).ToList();
         token.ThrowIfCancellationRequested();
@@ -16,11 +16,11 @@ public class Validator(Validator.IClient client) : Service.IValidator {
     public record ClientModel(string Name, string Message);
 
     public interface IClient {
-        Task<List<ClientModel>> Validate(Service.Request request, CancellationToken token);
+        Task<List<ClientModel>> Validate(Request request, CancellationToken token);
     }
 
-    public class Client(IValidator<Service.Request> technology) : IClient {
-        public async Task<List<ClientModel>> Validate(Service.Request request, CancellationToken token) {
+    public class Client(IValidator<Request> technology) : IClient {
+        public async Task<List<ClientModel>> Validate(Request request, CancellationToken token) {
             var techModel = await technology.ValidateAsync(request, token);
             var clientModel = techModel.Errors.Select(ToModel).ToList();
             token.ThrowIfCancellationRequested();
@@ -29,7 +29,7 @@ public class Validator(Validator.IClient client) : Service.IValidator {
 
         private static ClientModel ToModel(FluentValidation.Results.ValidationFailure tech) => new(tech.PropertyName, tech.ErrorMessage);
 
-        public class Technology : AbstractValidator<Service.Request> {
+        public class Technology : AbstractValidator<Request> {
             public Technology() {
                 RuleFor(x => x).NotNull().WithMessage(RequestIsNull);
                 RuleFor(x => x.UserId).NotNull().WithMessage(UserIdIsNull);
@@ -46,7 +46,7 @@ public class Validator(Validator.IClient client) : Service.IValidator {
 
 public static class AdapterExtensions {
 
-    public static IServiceCollection AddValidatorAdapter(this IServiceCollection services) => services
+    public static IServiceCollection AddValidator(this IServiceCollection services) => services
         .AddScoped<Service.IValidator, Validator>()
         .AddValidatorClient();
 
@@ -55,6 +55,6 @@ public static class AdapterExtensions {
        .AddValidatorTechnology();
 
     public static IServiceCollection AddValidatorTechnology(this IServiceCollection services) => services
-       .AddScoped<IValidator<Service.Request>, Validator.Client.Technology>();
+       .AddScoped<IValidator<Request>, Validator.Client.Technology>();
 }
 

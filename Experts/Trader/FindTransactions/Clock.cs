@@ -16,8 +16,7 @@ public class Clock(Clock.IClient client) : Service.IClock
 
 public static class ClockExtensions
 {
-
-    public static IServiceCollection AddClockAdapter(this IServiceCollection services) => services
+    public static IServiceCollection AddClock(this IServiceCollection services) => services
         .AddScoped<Service.IClock, Clock>()
         .AddClockClient();
 

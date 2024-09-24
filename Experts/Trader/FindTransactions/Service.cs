@@ -5,8 +5,28 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.FindTransactions;
 
-public class Service(Service.IValidator validator, Service.IFlag flag, Service.IRepository repository, Service.IClock clock) {
-  
+public interface IService {
+    Task<Response> Execute(Request request, CancellationToken token);
+}
+public class Request {
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public string? Name { get; set; }
+    public string UserId { get; set; }
+}
+
+public class Response {
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public bool IsPublic { get; set; } = false;
+    public DateTime? StopedAt { get; set; }
+    public DateTime? FailedAt { get; internal set; }
+    public Exception? Exception { get; set; }
+    public Request? Request { get; set; }
+    public List<Error> Errors { get; set; } = [];
+    public List<Transaction> Transactions { get; set; } = [];
+}
+
+public class Service(Service.IValidator validator, Service.IFlag flag, Service.IRepository repository, Service.IClock clock) : IService {
+
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
         try {
@@ -29,38 +49,21 @@ public class Service(Service.IValidator validator, Service.IFlag flag, Service.I
         return response;
     }
 
-    public class Request {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string? Name { get; set; }
-        public string UserId { get; set; }
-    }
+    public interface IFlag { bool IsPublic(Request request, CancellationToken token); }
 
-    public class Response {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public bool IsPublic { get; set; } = false;
-        public DateTime? StopedAt { get; set; }
-        public DateTime? FailedAt { get; internal set; }
-        public Exception? Exception { get; set; }
-        public Request? Request { get; set; }
-        public List<Error> Errors { get; set; } = [];
-        public List<Transaction> Transactions { get; set; } = [];
-    }
+    public interface IClock { DateTime GetTime(); }
 
     public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }
 
-    public interface IRepository { Task<List<Transaction>> FindTransactions(Service.Request request, CancellationToken token); }
-
-    public interface IFlag { bool IsPublic(Service.Request request, CancellationToken token); }
-
-    public interface IClock { DateTime GetTime(); }
+    public interface IRepository { Task<List<Transaction>> FindTransactions(Request request, CancellationToken token); }
 }
 
 public static class ServiceExtensions {
 
     public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager configuration) => services
-        .AddScoped<Service>()
-        .AddFlagAdapter()
-        .AddClockAdapter()
-        .AddValidatorAdapter()
-        .AddRepositoryAdapter(configuration);
+        .AddScoped<IService, Service>()
+        .AddClock()
+        .AddFlag()
+        .AddValidator()
+        .AddRepository(configuration);
 }
