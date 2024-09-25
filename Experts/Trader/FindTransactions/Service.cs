@@ -30,13 +30,12 @@ public class Service(Service.IValidator validator, Service.IFlag flag, Service.I
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
         try {
+            response.Request = request;
             response.Errors = await validator.Validate(request, token);
             if (response.Errors.Count > 0)
                 return response;
 
             response.IsPublic = flag.IsPublic(request, token);
-
-            response.Request = request;
 
             response.Transactions = await repository.FindTransactions(request, token);
 

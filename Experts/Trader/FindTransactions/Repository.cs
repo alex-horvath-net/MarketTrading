@@ -30,13 +30,13 @@ public class Repository(Repository.IClient client) : Service.IRepository
     }
     public class Client(AppDB db) : IClient
     {
-        public Task<List<TransactionDM>> Find(string? name, CancellationToken token)
+        public async Task<List<TransactionDM>> Find(string? name, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
 
             var transactions = name == null ?
-                db.Transactions.ToListAsync(token) :
-                db.Transactions.Where(x => x.Name.Contains(name)).ToListAsync(token);
+               await db.Transactions.ToListAsync(token) :
+               await db.Transactions.Where(x => x.Name.Contains(name)).ToListAsync(token);
 
             token.ThrowIfCancellationRequested();
             return transactions;

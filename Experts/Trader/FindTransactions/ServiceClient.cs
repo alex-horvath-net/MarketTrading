@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Linq.Expressions;
 using Common.Business.Model;
 using Common.Validation.Business.Model;
 using Microsoft.Extensions.Configuration;
@@ -6,8 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.FindTransactions;
 
-public interface IView
-{
+public interface IServiceClient {
     Task<ViewModel> Execute(RequestModel requestModel, CancellationToken token);
 }
 
@@ -16,6 +16,7 @@ public record ViewModel {
     public MetaVM Meta { get; set; }
     public List<ErrorVM> Errors { get; set; } = [];
     public List<TransactionVM> Transactions { get; set; } = [];
+    public List<Expression<Func<ViewModel.TransactionVM, object>>> TransationColumns { get; set; } = [];
 
     public class MetaVM {
         public Guid Id { get; internal set; }
@@ -33,49 +34,42 @@ public record ViewModel {
     }
 }
 
-public class View(IService service) : IView
-{
-
-    public async Task<ViewModel> Execute(RequestModel requestModel, CancellationToken token)
-    {
-        var request = new Request
-        {
+public class ServiceClient(IService service) : IServiceClient {
+    public async Task<ViewModel> Execute(RequestModel requestModel, CancellationToken token) {
+        var request = new Request {
             Name = requestModel.name,
             UserId = requestModel.userId
         };
         var response = await service.Execute(request, token);
-        var viewModel = new ViewModel()
-        {
-            Meta = ToMetaViewModel(response.Request),
-            Errors = response.Errors.Select(ToErrorViewModel).ToList(),
-            Transactions = response.Transactions.Select(ToTranaztionViewModel).ToList()
-        };
+        
+        var viewModel = new ViewModel();
+       
+        viewModel.Meta = ToMetaViewModel(response.Request);
+        viewModel.Errors = response.Errors.Select(ToErrorViewModel).ToList();
+        viewModel.Transactions = response.Transactions.Select(ToTranaztionViewModel).ToList();
+        viewModel.TransationColumns.Add(x => x.Id);
+        viewModel.TransationColumns.Add(x => x.Name);
+
         return viewModel;
 
-        static ViewModel.MetaVM ToMetaViewModel(Request businessModel) => new()
-        {
+        static ViewModel.MetaVM ToMetaViewModel(Request businessModel) => new() {
             Id = businessModel.Id,
         };
 
-        static ViewModel.TransactionVM ToTranaztionViewModel(Transaction businessModel) => new()
-        {
+        static ViewModel.TransactionVM ToTranaztionViewModel(Transaction businessModel) => new() {
             Id = businessModel.Id,
             Name = businessModel.Name
         };
 
-        static ViewModel.ErrorVM ToErrorViewModel(Error businessModel) => new()
-        {
+        static ViewModel.ErrorVM ToErrorViewModel(Error businessModel) => new() {
             Name = businessModel.Name,
-            Message = businessModel.Message,
-
+            Message = businessModel.Message
         };
     }
-
 }
 
-public static class ViewExtensions
-{
+public static class ViewExtensions {
     public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager configuration) => services
-        .AddScoped<IView, View>() 
+        .AddScoped<IServiceClient, ServiceClient>()
         .AddService(configuration);
 }

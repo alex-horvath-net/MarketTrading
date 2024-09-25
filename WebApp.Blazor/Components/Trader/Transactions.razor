@@ -1,9 +1,10 @@
 ﻿@page "/trader/transactions"
+
 @using Experts.Trader.FindTransactions
 @using System.ComponentModel
-@inject NavigationManager NavigationManager
 
-@inject IView view;
+@inject NavigationManager NavigationManager
+@inject IServiceClient serviceClient;
 
 <PageTitle>Trade Execution Page</PageTitle>
 
@@ -12,7 +13,7 @@
 </p>
 
 <p>
-    <Set Columns="transationColumns" Rows="viewModel.Transactions"></Set>
+    <Set Columns="viewModel.TransationColumns" Rows="viewModel.Transactions"></Set>
 </p>
 Elements:
 <br />
@@ -23,18 +24,18 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 <br />
 
 @code {
-    List<Expression<Func<ViewModel.TransactionVM, object>>> transationColumns = [];
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
     ViewModel viewModel;
     string Name;
     CancellationTokenSource tcs = new();
 
     protected override async Task OnInitializedAsync() {
-        transationColumns.Add(x => x.Id);
-        transationColumns.Add(x => x.Name);
-        
-        var userId =  "123"; //context.User.Identity?.Name;
-        var rm = new RequestModel(Name, userId); 
-        viewModel = await view.Execute(rm, tcs.Token);
-       
+        var requestModel = new RequestModel(
+            Name,
+            userId: HttpContext.User.Identity?.Name ?? "123");
+        viewModel = await serviceClient.Execute(requestModel, tcs.Token);
     }
 }
+
