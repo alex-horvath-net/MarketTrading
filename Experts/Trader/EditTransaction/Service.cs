@@ -1,7 +1,5 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
-using Experts.Trader.EditTransaction.Repository.EntityFramework;
-using Experts.Trader.EditTransaction.Validator.FluentValidator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

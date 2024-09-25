@@ -1,15 +1,13 @@
 using Common.Validation.Business.Model;
 using Experts.Trader.EditTransaction;
-using Experts.Trader.EditTransaction.Repository.EntityFramework;
-using Experts.Trader.EditTransaction.Validator.FluentValidator;
 
 namespace Tests.Trader.Edit_Transaction;
 
 public class Validation_Should {
-    public Experts.Trader.EditTransaction.Validator.FluentValidator.Adapter.IClient Client;
-    public Experts.Trader.EditTransaction.Repository.EntityFramework.Adapter.IClient RepositoryClient;
+    public Validator.IClient Client;
+    public Repository.IClient RepositoryClient;
     public Service.IValidator Unit;
-    public void Crea_The_Unit() => Unit = new Experts.Trader.EditTransaction.Validator.FluentValidator.Adapter(Client);
+    public void Crea_The_Unit() => Unit = new Validator(Client);
 
     public List<Error> Response;
     public Service.Request Request;
@@ -46,7 +44,7 @@ public class Validation_Should {
         // Assert
         var sp = services.BuildServiceProvider();
         var adapter = sp.GetService<Service.IValidator>();
-        var client = sp.GetService<Experts.Trader.EditTransaction.Validator.FluentValidator.Adapter.IClient>();
+        var client = sp.GetService<Validator.IClient>();
         var technology = sp.GetService<FluentValidation.IValidator<Service.Request>>();
 
         adapter.Should().NotBeNull();
@@ -63,8 +61,8 @@ public class Validation_Should {
 
         RepositoryClient = RepositoryTest.Client;
 
-        var technology = new Technology(RepositoryClient);
-        Client = new Experts.Trader.EditTransaction.Validator.FluentValidator.Client(technology);
+        var technology = new Validator.Client.Technology(RepositoryClient);
+        Client = new Validator.Client(technology);
         return this;
     }
 

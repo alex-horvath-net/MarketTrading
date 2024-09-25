@@ -3,16 +3,15 @@ using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
 using Common.Technology.EF.App;
 using Experts.Trader.EditTransaction;
-using Experts.Trader.EditTransaction.Repository.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests.Trader.Edit_Transaction;
 
 public class Repository_Should {
 
-    public Adapter.IClient Client;
+    public Repository.IClient Client;
     public Service.IRepository Unit;
-    public Service.IRepository Create_The_Unit() => Unit = new Adapter(Client);
+    public Service.IRepository Create_The_Unit() => Unit = new Repository(Client);
 
 
     public Transaction Response;
@@ -63,7 +62,7 @@ public class Repository_Should {
         // Assert
         var sp = services.BuildServiceProvider();
         var adapter = sp.GetService<Service.IRepository>();
-        var client = sp.GetService<Adapter.IClient>();
+        var client = sp.GetService<Repository.IClient>();
         var technology = sp.GetService<AppDB>();
 
         adapter.Should().NotBeNull();
@@ -74,7 +73,7 @@ public class Repository_Should {
 
     public Repository_Should Create_Default_Dependencies() {
         var technology = CreateEfDB();
-        Client = new Client(technology);
+        Client = new Repository.Client(technology);
         return this;
     }
     public void Create_Fast_Dependencies() {
@@ -105,7 +104,7 @@ public class Repository_Should {
         return db;
     }
 
-    public class FakeClient(FakeDB db) : Adapter.IClient {
+    public class FakeClient(FakeDB db) : Repository.IClient {
         public Task<bool> NameIsUnique(string name, CancellationToken token) => db.Transactions.All(x => x.Name != name).ToTask();
 
         public Task<bool> ExistsById(long id, CancellationToken token) => db.Transactions.Any(x => x.Id == id).ToTask();

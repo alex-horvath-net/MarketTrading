@@ -34,10 +34,13 @@ public class Repository(Repository.IClient client) : Service.IRepository
         {
             token.ThrowIfCancellationRequested();
 
-            var transactions = name == null ?
-               await db.Transactions.ToListAsync(token) :
-               await db.Transactions.Where(x => x.Name.Contains(name)).ToListAsync(token);
-
+            List<TransactionDM> transactions = default;
+            try {
+                transactions = name == null ?
+                   await db.Transactions.ToListAsync(token) :
+                   await db.Transactions.Where(x => x.Name.Contains(name)).ToListAsync(token);
+            }
+            catch(Exception e) { }
             token.ThrowIfCancellationRequested();
             return transactions;
         }
