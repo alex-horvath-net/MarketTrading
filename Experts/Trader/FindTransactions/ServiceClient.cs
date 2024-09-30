@@ -16,7 +16,7 @@ public record ViewModel {
     public MetaVM Meta { get; set; }
     public List<ErrorVM> Errors { get; set; } = [];
     public List<TransactionVM> Transactions { get; set; } = [];
-    public List<Expression<Func<ViewModel.TransactionVM, object>>> TransationColumns { get; set; } = [];
+    public List<Expression<Func<TransactionVM, object>>> TransationColumns { get; set; } = [];
 
     public class MetaVM {
         public Guid Id { get; internal set; }

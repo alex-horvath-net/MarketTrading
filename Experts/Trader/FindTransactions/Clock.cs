@@ -18,8 +18,5 @@ public static class ClockExtensions
 {
     public static IServiceCollection AddClock(this IServiceCollection services) => services
         .AddScoped<Service.IClock, Clock>()
-        .AddClockClient();
-
-    public static IServiceCollection AddClockClient(this IServiceCollection services) => services
-       .AddScoped<Clock.IClient, Clock.Client>();
+        .AddScoped<Clock.IClient, Clock.Client>();
 }

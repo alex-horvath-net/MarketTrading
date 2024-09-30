@@ -48,13 +48,7 @@ public static class AdapterExtensions {
 
     public static IServiceCollection AddValidator(this IServiceCollection services) => services
         .AddScoped<Service.IValidator, Validator>()
-        .AddValidatorClient();
-
-    public static IServiceCollection AddValidatorClient(this IServiceCollection services) => services
-       .AddScoped<Validator.IClient, Validator.Client>()
-       .AddValidatorTechnology();
-
-    public static IServiceCollection AddValidatorTechnology(this IServiceCollection services) => services
-       .AddScoped<IValidator<Request>, Validator.Client.Technology>();
+        .AddScoped<Validator.IClient, Validator.Client>()
+        .AddScoped<IValidator<Request>, Validator.Client.Technology>();
 }
 

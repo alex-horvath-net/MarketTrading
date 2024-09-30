@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Experts.RiskManager {
     internal class MonitorRiskExposure {
-        //        Review real-time risk metrics(e.g., exposure, VaR).
+        //Review real-time risk metrics(e.g., exposure, VaR).
         //Compare current exposure to predefined limits.
         //Trigger alerts if limits are breached.
     }

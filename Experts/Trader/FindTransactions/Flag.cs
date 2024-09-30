@@ -27,8 +27,5 @@ public static class FlagExtensions
 
     public static IServiceCollection AddFlag(this IServiceCollection services) => services
         .AddScoped<Service.IFlag, Flag>()
-        .AddFlagClient();
-
-    public static IServiceCollection AddFlagClient(this IServiceCollection services) => services
-       .AddScoped<Flag.IClient, Flag.Client>();
+        .AddScoped<Flag.IClient, Flag.Client>();
 }

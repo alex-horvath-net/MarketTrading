@@ -8,7 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Experts.ComplianceOfficer {
     internal class Maintain_Audit_Trail {
-        //        Log all trade and strategy decisions.
+        //Log all trade and strategy decisions.
         //Store records securely for audit purposes.
         //Provide access to auditors when required.
     }

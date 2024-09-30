@@ -13,7 +13,7 @@
 </p>
 
 <p>
-    <Set Columns="viewModel.TransationColumns" Rows="viewModel.Transactions"></Set>
+    <DataList Columns="viewModel?.TransationColumns" Rows="viewModel?.Transactions"></DataList>
 </p>
 Elements:
 <br />
@@ -24,17 +24,18 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 <br />
 
 @code {
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    //[CascadingParameter]
+    //private HttpContext HttpContext { get; set; } = default!;
 
-    ViewModel viewModel;
+    ViewModel? viewModel;
     string Name;
     CancellationTokenSource tcs = new();
 
     protected override async Task OnInitializedAsync() {
         var requestModel = new RequestModel(
             Name,
-            userId: HttpContext.User.Identity?.Name ?? "123");
+            userId: "123");
+        //userId: HttpContext?.User?.Identity?.Name ?? "123");
         viewModel = await serviceClient.Execute(requestModel, tcs.Token);
     }
 }

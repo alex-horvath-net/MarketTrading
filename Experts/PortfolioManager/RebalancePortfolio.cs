@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Experts.PortfolioManager {
     internal class RebalancePortfolio {
-        //        Analyze current asset allocation.
+        //Analyze current asset allocation.
         //Determine necessary trades to rebalance.
         //Execute trades and update portfolio records.
     }

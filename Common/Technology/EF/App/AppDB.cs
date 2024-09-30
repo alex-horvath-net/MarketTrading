@@ -31,4 +31,12 @@ public class AppDB : DbContext
             new() { Id = 2, Name = "EUR" },
             new() { Id = 3, Name = "GBD" });
     }
+
+    public override void Dispose() {
+        base.Dispose();
+    }
+
+    public override ValueTask DisposeAsync() {
+        return base.DisposeAsync();
+    }
 }

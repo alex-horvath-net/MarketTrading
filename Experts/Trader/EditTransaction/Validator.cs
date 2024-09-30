@@ -56,13 +56,7 @@ public class Validator(Validator.IClient validator) : Service.IValidator {
 public static class ValidatorExtensions {
     public static IServiceCollection AddValidatorAdapter(this IServiceCollection services) => services
         .AddScoped<Service.IValidator, Validator>()
-        .AddValidatorClient();
-
-    public static IServiceCollection AddValidatorClient(this IServiceCollection services) => services
         .AddScoped<Validator.IClient, Validator.Client>()
         .AddScoped<Repository.IClient, Repository.Client>()
-        .AddValidatorTechnology();
-
-    public static IServiceCollection AddValidatorTechnology(this IServiceCollection services) => services
         .AddScoped<IValidator<Service.Request>, Validator.Client.Technology>();
 }

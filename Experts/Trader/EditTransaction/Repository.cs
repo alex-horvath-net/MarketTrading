@@ -54,14 +54,13 @@ public class Repository(Repository.IClient client) : Service.IRepository {
 
 
 public static class AdapterExtensions {
-    public static IServiceCollection AddRepositoryAdapter(this IServiceCollection services, ConfigurationManager configuration) => services
-        .AddScoped<Service.IRepository, Repository>()
-        .AddRepositoryClient(configuration);
+    public static IServiceCollection AddRepositoryAdapter(this IServiceCollection services, ConfigurationManager configuration) {
 
-    public static IServiceCollection AddRepositoryClient(this IServiceCollection services, ConfigurationManager configuration) => services
-       .AddScoped<Repository.IClient, Repository.Client>()
-       .AddRepositoryTechnology(configuration);
+        var connectionString = configuration.GetConnectionString("App") ?? throw new InvalidOperationException("App Connection string 'DefaultConnection' not found.");
 
-    public static IServiceCollection AddRepositoryTechnology(this IServiceCollection services, ConfigurationManager configuration) => services
-     .AddDbContext<AppDB>(builder => builder.UseSqlServer(configuration.GetConnectionString("App")));
+        return services
+            .AddScoped<Service.IRepository, Repository>()
+            .AddScoped<Repository.IClient, Repository.Client>()
+            .AddDbContext<AppDB>((sp, options) => options.UseSqlServer(connectionString));
+    }
 }
