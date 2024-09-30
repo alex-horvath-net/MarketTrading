@@ -22,7 +22,8 @@ public static class ReflectionExtensions {
             expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression operand ? operand.Member :
             throw new ArgumentException("Expression is not a member access", nameof(expression));
 
-        return member?.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? member?.Name;
+        var name=  member?.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? member?.Name;
+        return name;
     }
 
     public static object GetValue<T>(this Expression<Func<T, object>> column, T row) => column.Compile().Invoke(row);

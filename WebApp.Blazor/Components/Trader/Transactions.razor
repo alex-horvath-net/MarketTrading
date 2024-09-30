@@ -2,6 +2,7 @@
 
 @using Experts.Trader.FindTransactions
 @using System.ComponentModel
+@using Common;
 
 @inject NavigationManager NavigationManager
 @inject IServiceClient serviceClient;
@@ -27,14 +28,16 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
     //[CascadingParameter]
     //private HttpContext HttpContext { get; set; } = default!;
 
-    ViewModel? viewModel;
+    ViewModel viewModel;
     string Name;
     CancellationTokenSource tcs = new();
 
+
     protected override async Task OnInitializedAsync() {
+        //return base.OnInitializedAsync();
         var requestModel = new RequestModel(
-            Name,
-            userId: "123");
+        Name,
+        userId: "123");
         //userId: HttpContext?.User?.Identity?.Name ?? "123");
         viewModel = await serviceClient.Execute(requestModel, tcs.Token);
     }

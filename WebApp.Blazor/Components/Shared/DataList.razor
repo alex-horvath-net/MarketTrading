@@ -5,36 +5,36 @@
 @typeparam T
 
 <h3>Table</h3>
-
-<table class="table align-middle table-striped caption-top table-hover">
-    <thead class="table-primary">
-        <tr>
-            @foreach (var coulumn in Columns) {
-                <th scope="col">@(coulumn.GetName())</th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var row in Rows) {
+ @if (Columns != null) {
+    <table class="table align-middle table-striped caption-top table-hover">
+        <thead class="table-primary">
             <tr>
-                @foreach (var column in Columns) {
-                    if (Columns.IndexOf(column) == 0) {
-                        <th scope="row">@column.GetValue(row)</th>
-                    } else {
-                        <td>@column.GetValue(row)</td>
-                    }
+                @foreach (var coulumn in Columns) {
+                    <th scope="col">@(coulumn.GetName())</th>
                 }
             </tr>
-        }
-    </tbody>
-    <tfoot>
-        @* <tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Rows) {
+                <tr>
+                    @foreach (var column in Columns) {
+                        if (Columns.IndexOf(column) == 0) {
+                            <th scope="row">@column.GetValue(row)</th>
+                        } else {
+                            <td>@column.GetValue(row)</td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            @* <tr>
         <th scope="col"></th>
         <th scope="col" colspan="3">asdf</th>
         </tr> *@
-    </tfoot>
-</table>
-
+        </tfoot>
+    </table>
+}
 @code {
     [Parameter] public List<Expression<Func<T, object>>> Columns { get; set; } = [];
 
