@@ -20,7 +20,7 @@ public class Repository_Should {
     public async Task Use_The_Unit() => Response = await Unit.EditTransaction(Request, Token);
 
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Present_Transaction() {
         Create_Fast_Dependencies();
         Create_The_Unit();
@@ -30,7 +30,7 @@ public class Repository_Should {
         Response.Should().BeOfType<Transaction>();
     }
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Present_The_Rright_Transaction() {
         Create_Fast_Dependencies();
         Create_The_Unit();
@@ -39,7 +39,7 @@ public class Repository_Should {
         Response.Id.Should().Be(eurTansactionId);
     }
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Present_The_Transaction_With_Updated_Name() {
         Create_Fast_Dependencies();
         Create_The_Unit();
@@ -48,14 +48,12 @@ public class Repository_Should {
         Response.Name.Should().Be(eurNewName);
     }
 
-    [IntegrationFact]
+    [IntegrationFactAttribute]
     public void Use_DI() {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
-        //configuration.AddInMemoryCollection(new Dictionary<string, string?> {
-        //    { "ConnectionStrings:App", "Data Source=.\\SQLEXPRESS;Initial Catalog=App;User ID=sa;Password=sa!Password;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" }
-        //});
+        configuration.AddInMemoryCollection(new Dictionary<string, string?> { { "ConnectionStrings:App", "" } });
         // Act
         services.AddRepositoryAdapter(configuration);
 

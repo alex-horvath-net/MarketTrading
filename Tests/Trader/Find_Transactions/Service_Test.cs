@@ -58,15 +58,13 @@ public class Service_Test {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
-        //configuration.AddInMemoryCollection(new Dictionary<string, string?> {
-        //    { "ConnectionStrings:App", "Data Source=.\\SQLEXPRESS;Initial Catalog=App;User ID=sa;Password=sa!Password;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" }
-        //});
+        configuration.AddInMemoryCollection(new Dictionary<string, string?> { { "ConnectionStrings:App", "" } });
         // Act
         services.AddService(configuration);
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var feature = serviceProvider.GetService<Service>();
+        var feature = serviceProvider.GetService<IService>();
 
         feature.Should().NotBeNull();
     }

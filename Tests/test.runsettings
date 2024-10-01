@@ -2,7 +2,7 @@
 <RunSettings>
   <RunConfiguration>
     <EnvironmentVariables>
-      <SkipIntegrationTests>true</SkipIntegrationTests>
+      <MaxTestLevel>unit</MaxTestLevel>
     </EnvironmentVariables>
   </RunConfiguration>
 </RunSettings>

@@ -14,7 +14,7 @@ public class Validator_Test {
     public List<Error>? Response;
     public async Task Use_The_Unit() => Response = await Unit.Validate(Request, Token);
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Detect_Errors() {
         Create_Default_Dependencies();
         Create_The_Unit();
@@ -23,7 +23,7 @@ public class Validator_Test {
         Response.Should().BeOfType<List<Error>>();
     }
 
-    [Fact]
+    [Xunit.Fact]
     public async Task It_Can_Not_Find_Errors_In_Valid_Request() {
         Create_Default_Dependencies();
         Create_The_Unit();
@@ -34,7 +34,7 @@ public class Validator_Test {
 
 
 
-    [Fact]
+    [Xunit.Fact]
     public async Task It_Should_Reviel_Errors_Of_Non_Valid_Request() {
         Create_Default_Dependencies();
         Create_The_Unit();
@@ -43,7 +43,7 @@ public class Validator_Test {
         Response.Should().NotBeEmpty();
     }
 
-    [IntegrationFact]
+    [IntegrationFactAttribute]
     public void Use_DI() {
         // Arrange
         var services = new ServiceCollection();

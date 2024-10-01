@@ -28,15 +28,12 @@ public class Repository(Repository.IClient client) : Service.IRepository {
         public async Task<List<TransactionDM>> Find(string? name, CancellationToken token) {
             token.ThrowIfCancellationRequested();
 
-            List<TransactionDM> transactions = default;
-            try {
-                transactions = name == null ?
-                   await db.Transactions.ToListAsync(token) :
-                   await db.Transactions.Where(x => x.Name.Contains(name)).ToListAsync(token);
-            } catch (Exception e) {
-                throw;
-            }
+            var transactions = name == null ?
+               await db.Transactions.AsNoTracking().ToListAsync(token) :
+               await db.Transactions.AsNoTracking().Where(x => x.Name.Contains(name)).ToListAsync(token);
+            
             token.ThrowIfCancellationRequested();
+            
             return transactions;
         }
     }

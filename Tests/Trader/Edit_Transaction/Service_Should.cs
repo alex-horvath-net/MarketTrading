@@ -14,7 +14,7 @@ public class Service_Should {
     public async Task Use_The_Unit() => Response = await Unit.Execute(Request, Token);
 
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Present_Response() {
         Create_Fast_Dependencies();
         Crea_The_Unit();
@@ -23,7 +23,7 @@ public class Service_Should {
         Response.Should().NotBeNull(); 
     }
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Present_Request() {
         Create_Fast_Dependencies();
         Crea_The_Unit();
@@ -32,7 +32,7 @@ public class Service_Should {
         Response.Request.Should().NotBeNull();
     }
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Present_No_Errors_For_Valid_Request() {
         Create_Fast_Dependencies();
         Crea_The_Unit();
@@ -41,7 +41,7 @@ public class Service_Should {
         Response.Errors.Should().BeEmpty();
     }
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Present_Transactions_For_Valid_Request() {
         Create_Fast_Dependencies();
         Crea_The_Unit();
@@ -50,7 +50,7 @@ public class Service_Should {
         Response.Transaction.Should().NotBeNull();
     }
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Present_Errors_For_Non_Valid_Request() {
         Create_Fast_Dependencies(); 
         Crea_The_Unit();
@@ -59,7 +59,7 @@ public class Service_Should {
         Response.Errors.Should().NotBeEmpty();
     }
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Present_No_Transactions_For_Non_Valid_Request() {
         Create_Fast_Dependencies();
         Crea_The_Unit(); 
@@ -69,7 +69,7 @@ public class Service_Should {
     }
 
 
-    [IntegrationFact]
+    [IntegrationFactAttribute]
     public void Use_DI() {
         // Arrange
         var services = new ServiceCollection();

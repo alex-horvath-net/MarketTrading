@@ -18,21 +18,21 @@ public class Repository_Should {
 
    
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Find_Transactions() {
         Service.IRepository unit = Use_Fast_Dependencies().Create_Unit();
         List<Transaction> response = await Use_Find_All_Arguments().TalkTo(unit);
         response.Should().BeOfType<List<Transaction>>();
     }
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Find_All_Transactions() {
         Service.IRepository unit = Use_Fast_Dependencies().Create_Unit();
         List<Transaction> response = await Use_Find_All_Arguments().TalkTo(unit);
         response.Should().HaveCount(totalNumberOfTransactions);
     }
 
-    [Fact]
+    [Xunit.Fact]
     public async Task Find_USD_Transactions() {
         Service.IRepository unit = Use_Fast_Dependencies().Create_Unit();
         List<Transaction> response = await Use_Find_USD_Arguments().TalkTo(unit);
@@ -53,6 +53,7 @@ public class Repository_Should {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
+        configuration.AddInMemoryCollection(new Dictionary<string, string?> { { "ConnectionStrings:App", "" } });
 
         //Act    
         services.AddRepository(configuration);
