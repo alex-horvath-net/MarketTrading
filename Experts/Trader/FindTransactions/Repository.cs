@@ -1,4 +1,5 @@
-﻿using Common.Adapters.App.Data.Model;
+﻿using Common;
+using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
 using Common.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
@@ -9,12 +10,15 @@ namespace Experts.Trader.FindTransactions;
 
 public class Repository(Repository.IClient client) : Service.IRepository {
     public async Task<List<Transaction>> FindTransactions(Request request, CancellationToken token) {
-        var dataModelList = await client.Find(request.Name, token);
-        var businessModelList = dataModelList.Select(ToBusinessModel).ToList();
+        var dataModel = await client.Find(request.Name, token);
+        var businessModel = dataModel.Select(ToBusinessModel).ToList();
+
+        
         token.ThrowIfCancellationRequested();
-        return businessModelList;
+        return businessModel;
     }
 
+    private static List<Transaction> ToBusinessModelList(List<TransactionDM> dataModelList) => dataModelList.Select(ToBusinessModel).ToList();
     private static Transaction ToBusinessModel(TransactionDM dataModel) => new() {
         Id = dataModel.Id,
         Name = dataModel.Name

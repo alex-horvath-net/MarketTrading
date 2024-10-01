@@ -71,7 +71,7 @@ public class Service_Test {
 
 
     public void Create_Fast_Dependencies() {
-        Repository = RepositoryTest.Use_Fast_Dependencies().Create_Unit();
+        Repository = RepositoryTest.With_Fast_Dependencies().Create_Unit();
 
         ValidatorTest.Create_Default_Dependencies().Create_The_Unit();
         Validator = ValidatorTest.Unit;
@@ -98,6 +98,6 @@ public class Service_Test {
 
 
     public Validator_Test ValidatorTest = new();
-    public Repository_Should RepositoryTest = new();
+    public Repository_Client_Want_To RepositoryTest = new();
 }
 
