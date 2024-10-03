@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.FindTransactions;
+namespace Experts.Trader.FindTransactions.WorkSteps;
 
 public class Clock(Clock.IClient client) : Service.IClock
 {

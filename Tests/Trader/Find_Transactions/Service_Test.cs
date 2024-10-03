@@ -1,4 +1,5 @@
 using Experts.Trader.FindTransactions;
+using Experts.Trader.FindTransactions.WorkSteps;
 
 namespace Tests.Trader.Find_Transactions;
 

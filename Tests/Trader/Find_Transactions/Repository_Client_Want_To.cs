@@ -3,6 +3,7 @@ using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
 using Common.Technology.EF.App;
 using Experts.Trader.FindTransactions;
+using Experts.Trader.FindTransactions.WorkSteps;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests.Trader.Find_Transactions;

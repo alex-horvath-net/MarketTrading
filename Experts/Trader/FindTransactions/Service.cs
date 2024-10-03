@@ -1,5 +1,6 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
+using Experts.Trader.FindTransactions.WorkSteps;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,7 +17,7 @@ public class Request {
 
 public class Response {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public bool IsPublic { get; set; } = false;
+    public bool IsUnderConstruction { get; set; } = false;
     public DateTime? StopedAt { get; set; }
     public DateTime? FailedAt { get; internal set; }
     public Exception? Exception { get; set; }
@@ -25,17 +26,18 @@ public class Response {
     public List<Transaction> Transactions { get; set; } = [];
 }
 
+
 public class Service(Service.IValidator validator, Service.IFlag flag, Service.IRepository repository, Service.IClock clock) : IService {
 
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
         try {
+            response.IsUnderConstruction = flag.IsPublic(request, token);
             response.Request = request;
             response.Errors = await validator.Validate(request, token);
             if (response.Errors.Count > 0)
                 return response;
 
-            response.IsPublic = flag.IsPublic(request, token);
 
             response.Transactions = await repository.FindTransactions(request, token);
 

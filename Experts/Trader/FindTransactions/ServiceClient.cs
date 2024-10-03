@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Linq.Expressions;
+using Common.Adapters.Blazor;
 using Common.Business.Model;
 using Common.Validation.Business.Model;
 using Microsoft.Extensions.Configuration;
@@ -8,16 +8,14 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Experts.Trader.FindTransactions;
 
 public interface IServiceClient {
-    Task<ViewModel> Execute(RequestModel requestModel, CancellationToken token);
+    Task<ViewModel> Execute(string name, string userId, CancellationToken token);
 }
 
-public record RequestModel(string name, string? userId);
+
 public record ViewModel {
     public MetaVM Meta { get; set; }
     public List<ErrorVM> Errors { get; set; } = [];
-    public List<TransactionVM> Transactions { get; set; } = [];
-    public List<Expression<Func<TransactionVM, object>>> TransationColumns { get; set; } = [];
-
+    public DataListModel<TransactionVM> Transactions { get; set; }
     public class MetaVM {
         public Guid Id { get; internal set; }
     }
@@ -35,20 +33,26 @@ public record ViewModel {
 }
 
 public class ServiceClient(IService service) : IServiceClient {
-    public async Task<ViewModel> Execute(RequestModel requestModel, CancellationToken token) {
+    public async Task<ViewModel> Execute(string name, string userId, CancellationToken token) {
         var request = new Request {
-            Name = requestModel.name,
-            UserId = requestModel.userId
+            Name = name,
+            UserId = userId
         };
+
+        token.ThrowIfCancellationRequested();
+
         var response = await service.Execute(request, token);
-        
+
         var viewModel = new ViewModel();
-       
+
         viewModel.Meta = ToMetaViewModel(response.Request);
         viewModel.Errors = response.Errors.Select(ToErrorViewModel).ToList();
-        viewModel.Transactions = response.Transactions.Select(ToTranaztionViewModel).ToList();
-        viewModel.TransationColumns.Add(x => x.Id);
-        viewModel.TransationColumns.Add(x => x.Name);
+        viewModel.Transactions = new();
+        viewModel.Transactions.Rows = response.Transactions.Select(ToTranaztionViewModel).ToList();
+        viewModel.Transactions.Columns.Add(x => x.Id);
+        viewModel.Transactions.Columns.Add(x => x.Name);
+
+        token.ThrowIfCancellationRequested();
 
         return viewModel;
 

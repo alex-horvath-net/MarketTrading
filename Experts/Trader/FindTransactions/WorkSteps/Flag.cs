@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.FindTransactions;
+namespace Experts.Trader.FindTransactions.WorkSteps;
 
 public class Flag(Flag.IClient client) : Service.IFlag
 {
     public bool IsPublic(Request request, CancellationToken token)
     {
-
         var isPublic = client.IsEnabled();
         token.ThrowIfCancellationRequested();
         return isPublic;

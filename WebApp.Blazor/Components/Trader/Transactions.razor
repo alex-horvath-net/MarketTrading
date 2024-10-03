@@ -1,7 +1,7 @@
 ﻿@page "/trader/transactions"
 
-@using Experts.Trader.FindTransactions
-@using System.ComponentModel
+@using Experts.Trader.FindTransactions;
+@using System.ComponentModel;
 @using Common;
 
 @inject NavigationManager NavigationManager
@@ -14,7 +14,7 @@
 </p>
 
 <p>
-    <DataList Columns="viewModel?.TransationColumns" Rows="viewModel?.Transactions"></DataList>
+    <DataList Model="viewModel?.Transactions"></DataList>
 </p>
 Elements:
 <br />
@@ -25,21 +25,16 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 <br />
 
 @code {
-    //[CascadingParameter]
-    //private HttpContext HttpContext { get; set; } = default!;
+    protected override async Task OnInitializedAsync() => viewModel = await serviceClient.Execute(Name, UserId, Token);
+
+    CancellationTokenSource tcs = new();
+    CancellationToken Token => tcs.Token;
+
+    [CascadingParameter]
+    public HttpContext HttpContext { get; set; }
+    private string UserId => HttpContext?.User?.Identity?.Name ?? "123";
 
     ViewModel viewModel;
     string Name;
-    CancellationTokenSource tcs = new();
-
-
-    protected override async Task OnInitializedAsync() {
-        //return base.OnInitializedAsync();
-        var requestModel = new RequestModel(
-        Name,
-        userId: "123");
-        //userId: HttpContext?.User?.Identity?.Name ?? "123");
-        viewModel = await serviceClient.Execute(requestModel, tcs.Token);
-    }
 }
 

@@ -1,24 +1,23 @@
-﻿@using System.ComponentModel
-@using System.Reflection
-@using Common
+﻿@using Common
+@using Common.Adapters.Blazor
 
-@typeparam T
+@typeparam TEntity
 
 <h3>Table</h3>
- @if (Columns != null) {
+ @if (Model != null) {
     <table class="table align-middle table-striped caption-top table-hover">
         <thead class="table-primary">
             <tr>
-                @foreach (var coulumn in Columns) {
+                @foreach (var coulumn in Model.Columns) {
                     <th scope="col">@(coulumn.GetName())</th>
                 }
             </tr>
         </thead>
         <tbody>
-            @foreach (var row in Rows) {
+            @foreach (var row in Model.Rows) {
                 <tr>
-                    @foreach (var column in Columns) {
-                        if (Columns.IndexOf(column) == 0) {
+                    @foreach (var column in Model.Columns) {
+                        if (Model.Columns.IndexOf(column) == 0) {
                             <th scope="row">@column.GetValue(row)</th>
                         } else {
                             <td>@column.GetValue(row)</td>
@@ -32,11 +31,9 @@
         <th scope="col"></th>
         <th scope="col" colspan="3">asdf</th>
         </tr> *@
-        </tfoot>
+        </tfoot> 
     </table>
 }
 @code {
-    [Parameter] public List<Expression<Func<T, object>>> Columns { get; set; } = [];
-
-    [Parameter] public List<T> Rows { get; set; } = [];
+    [Parameter] public DataListModel<TEntity> Model { get; set; }
 }
