@@ -7,7 +7,7 @@ namespace Tests.Trader.Find_Transactions;
 public class Validator_Test {
 
     public Validator.IClient? Client;
-    public Service.IValidator? Unit;
+    public BusinessNeed.IValidator? Unit;
     public void Create_The_Unit() => Unit = new Validator(Client);
 
     public Request? Request;
@@ -53,7 +53,7 @@ public class Validator_Test {
 
         // Assert
         var sp = services.BuildServiceProvider();
-        var adapter = sp.GetService<Service.IValidator>();
+        var adapter = sp.GetService<BusinessNeed.IValidator>();
         var client = sp.GetService<Validator.IClient>();
         var technology = sp.GetService<FluentValidation.IValidator<Request>>();
 

@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
 using Common.Adapters.App.Data;
+using Common.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Common.Technology.EF;
 public class CommonEFClient<TDatabase,TDataModel>(TDatabase db) : ICommonEFClient<TDataModel> where TDatabase: DbContext where TDataModel : class
@@ -44,3 +46,5 @@ public class CommonEFClient<TDatabase,TDataModel>(TDatabase db) : ICommonEFClien
         return await DB.Set<TDataModel>().ToListAsync(token);
     }
 }
+
+ 

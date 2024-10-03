@@ -1,13 +1,14 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
+using Experts.Trader.EditTransaction.WorkSteps;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.EditTransaction;
 
-public class Service(
-    Service.IValidator validator,
-    Service.IRepository repository) {
+public class BusinessNeed(
+    BusinessNeed.IValidator validator,
+    BusinessNeed.IRepository repository) {
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
 
@@ -42,12 +43,12 @@ public class Service(
 
     public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }
 
-    public interface IRepository { Task<Transaction> EditTransaction(Service.Request request, CancellationToken token); }
+    public interface IRepository { Task<Transaction> EditTransaction(BusinessNeed.Request request, CancellationToken token); }
 }
 
 public static class Extensions {
     public static IServiceCollection AddEditTransaction(this IServiceCollection services, ConfigurationManager config) => services
-        .AddScoped<Service>()
+        .AddScoped<BusinessNeed>()
         .AddValidatorAdapter()
-        .AddRepositoryAdapter(config);
+        .AddRepositoryAdapter();
 }

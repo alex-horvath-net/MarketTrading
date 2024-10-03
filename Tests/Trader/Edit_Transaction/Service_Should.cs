@@ -1,15 +1,16 @@
+using Common.Technology;
 using Experts.Trader.EditTransaction;
 
 namespace Tests.Trader.Edit_Transaction;
 
 public class Service_Should {
-    public Service.IValidator Validator;
-    public Service.IRepository Repository;
-    public Service Unit;
-    public void Crea_The_Unit() => Unit = new Service(Validator, Repository);
+    public BusinessNeed.IValidator Validator;
+    public BusinessNeed.IRepository Repository;
+    public BusinessNeed Unit;
+    public void Crea_The_Unit() => Unit = new BusinessNeed(Validator, Repository);
 
-    public Service.Response Response;
-    public Service.Request Request;
+    public BusinessNeed.Response Response;
+    public BusinessNeed.Request Request;
     public CancellationToken Token;
     public async Task Use_The_Unit() => Response = await Unit.Execute(Request, Token);
 
@@ -75,14 +76,16 @@ public class Service_Should {
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
         configuration.AddInMemoryCollection(new Dictionary<string, string?> {
-            { "ConnectionStrings:App", "Data Source=.\\SQLEXPRESS;Initial Catalog=App;User ID=sa;Password=sa!Password;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False" }
+            { "ConnectionStrings:App", "" },
+            { "ConnectionStrings:Identity", "" }
         });
         // Act
+        services.AddCommonTechnology(configuration);
         services.AddEditTransaction(configuration);
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var feature = serviceProvider.GetService<Service>();
+        var feature = serviceProvider.GetService<BusinessNeed>();
 
         feature.Should().NotBeNull();
     }

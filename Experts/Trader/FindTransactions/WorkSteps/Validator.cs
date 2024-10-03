@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.FindTransactions.WorkSteps;
 
-public class Validator(Validator.IClient client) : Service.IValidator
+public class Validator(Validator.IClient client) : BusinessNeed.IValidator
 {
     public async Task<List<Error>> Validate(Request request, CancellationToken token)
     {
@@ -55,7 +55,7 @@ public static class AdapterExtensions
 {
 
     public static IServiceCollection AddValidator(this IServiceCollection services) => services
-        .AddScoped<Service.IValidator, Validator>()
+        .AddScoped<BusinessNeed.IValidator, Validator>()
         .AddScoped<Validator.IClient, Validator.Client>()
         .AddScoped<IValidator<Request>, Validator.Client.Technology>();
 }

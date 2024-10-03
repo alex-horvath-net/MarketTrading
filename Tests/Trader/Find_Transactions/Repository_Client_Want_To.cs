@@ -1,6 +1,7 @@
 using Common;
 using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
+using Common.Technology;
 using Common.Technology.EF.App;
 using Experts.Trader.FindTransactions;
 using Experts.Trader.FindTransactions.WorkSteps;
@@ -10,8 +11,8 @@ namespace Tests.Trader.Find_Transactions;
 
 public class Repository_Client_Want_To {
 
-    private Task<List<Transaction>> Talk_To_Unit(Service.IRepository unit) => unit.FindTransactions(Request, Token);
-    public Service.IRepository Create_Unit() => new Repository(Client);
+    private Task<List<Transaction>> Talk_To_Unit(BusinessNeed.IRepository unit) => unit.FindTransactions(Request, Token);
+    public BusinessNeed.IRepository Create_Unit() => new Repository(Client);
 
     public Repository.IClient Client;
     public Request Request;
@@ -34,7 +35,7 @@ public class Repository_Client_Want_To {
 
     [Fact]
     public async Task Find_USD_Transactions() {
-        Service.IRepository unit = With_Fast_Dependencies().Create_Unit();
+        BusinessNeed.IRepository unit = With_Fast_Dependencies().Create_Unit();
         List<Transaction> response = await Use_Find_USD_Arguments().Talk_To_Unit(unit);
         response.Count.Should().Be(1);
         response[0].Name.Should().Be("USD");
@@ -42,14 +43,14 @@ public class Repository_Client_Want_To {
 
     [Fact]
     public async Task Find_No_Typo_Transactions() {
-        Service.IRepository unit = With_Fast_Dependencies().Create_Unit();
+        BusinessNeed.IRepository unit = With_Fast_Dependencies().Create_Unit();
         List<Transaction> response = await Use_Find_Typo_Arguments().Talk_To_Unit(unit);
         response.Should().BeEmpty();
     }
 
     [IntegrationFact]
     public async Task Find_USD_Transactions2() {
-        Service.IRepository unit = Create_Default_Dependencies().Create_Unit();
+        BusinessNeed.IRepository unit = Create_Default_Dependencies().Create_Unit();
         List<Transaction> response = await Use_Find_USD_Arguments().Talk_To_Unit(unit);
         response.Count.Should().Be(1);
         response[0].Name.Should().Be("USD");
@@ -61,15 +62,19 @@ public class Repository_Client_Want_To {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
-        configuration.AddInMemoryCollection(new Dictionary<string, string?> { { "ConnectionStrings:App", "" } });
+        configuration.AddInMemoryCollection(new Dictionary<string, string?> {
+            { "ConnectionStrings:App", "" },
+            { "ConnectionStrings:Identity", "" }
+        });
 
         //Act    
-        services.AddRepository(configuration);
+        services.AddCommonTechnology(configuration);
+        services.AddRepository();
 
 
         // Assert
         var sp = services.BuildServiceProvider();
-        sp.GetRequiredService<Service.IRepository>().Should().NotBeNull();
+        sp.GetRequiredService<BusinessNeed.IRepository>().Should().NotBeNull();
         sp.GetRequiredService<Repository.IClient>().Should().NotBeNull();
         sp.GetRequiredService<AppDB>().Should().NotBeNull();
     }

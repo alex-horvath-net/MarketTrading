@@ -1,3 +1,4 @@
+using Common.Technology;
 using Experts.Trader.FindTransactions;
 using Experts.Trader.FindTransactions.WorkSteps;
 
@@ -5,12 +6,12 @@ namespace Tests.Trader.Find_Transactions;
 
 public class Service_Test {
 
-    public Service.IValidator Validator;
-    public Service.IFlag Flag;
-    public Service.IRepository Repository;
-    public Service.IClock Clock;
-    public Service Unit;
-    public void Create_Unit() => Unit = new Service(Validator, Flag, Repository, Clock);
+    public BusinessNeed.IValidator Validator;
+    public BusinessNeed.IFlag Flag;
+    public BusinessNeed.IRepository Repository;
+    public BusinessNeed.IClock Clock;
+    public BusinessNeed Unit;
+    public void Create_Unit() => Unit = new BusinessNeed(Validator, Flag, Repository, Clock);
 
 
     public Response Response;
@@ -59,15 +60,17 @@ public class Service_Test {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
-        configuration.AddInMemoryCollection(new Dictionary<string, string?> { { "ConnectionStrings:App", "" } });
+        configuration.AddInMemoryCollection(new Dictionary<string, string?> {
+            { "ConnectionStrings:App", "" },
+            { "ConnectionStrings:Identity", "" }
+        });
         // Act
+        services.AddCommonTechnology(configuration);
         services.AddService(configuration);
+        var sp = services.BuildServiceProvider();
 
         // Assert
-        var serviceProvider = services.BuildServiceProvider();
-        var feature = serviceProvider.GetService<IService>();
-
-        feature.Should().NotBeNull();
+        var feature = sp.GetService<IService>().Should().NotBeNull();
     }
 
 

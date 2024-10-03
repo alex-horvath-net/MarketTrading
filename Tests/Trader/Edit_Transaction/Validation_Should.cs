@@ -1,16 +1,18 @@
+using Common.Technology;
 using Common.Validation.Business.Model;
 using Experts.Trader.EditTransaction;
+using Experts.Trader.EditTransaction.WorkSteps;
 
 namespace Tests.Trader.Edit_Transaction;
 
 public class Validation_Should {
-    public Validator.IClient Client;
-    public Repository.IClient RepositoryClient;
-    public Service.IValidator Unit;
-    public void Crea_The_Unit() => Unit = new Validator(Client);
+    public Valiadator.BusinessAdapter.ITechnologyAdapter TechnologyAdapter;
+    public Repository.BusinessAdapter.ITechnologyAdapter RepositoryTechnologyAdapter;
+    public BusinessNeed.IValidator Unit;
+    public void Crea_The_Unit() => Unit = new Valiadator.BusinessAdapter(TechnologyAdapter);
 
     public List<Error> Response;
-    public Service.Request Request;
+    public BusinessNeed.Request Request;
     public CancellationToken Token;
     public async Task Use_The_Unit() => Response = await Unit.Validate(Request, Token);
 
@@ -37,20 +39,20 @@ public class Validation_Should {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
-        configuration.AddInMemoryCollection(new Dictionary<string, string?> { { "ConnectionStrings:App", "" } });
+        configuration.AddInMemoryCollection(new Dictionary<string, string?> {
+            { "ConnectionStrings:App", "" },
+            { "ConnectionStrings:Identity", "" }
+        });
         // Act
-        services.AddRepositoryAdapter(configuration);
+        services.AddCommonTechnology(configuration);
+        services.AddRepositoryAdapter();
         services.AddValidatorAdapter();
 
         // Assert
         var sp = services.BuildServiceProvider();
-        var adapter = sp.GetService<Service.IValidator>();
-        var client = sp.GetService<Validator.IClient>();
-        var technology = sp.GetService<FluentValidation.IValidator<Service.Request>>();
-
-        adapter.Should().NotBeNull();
-        client.Should().NotBeNull();
-        technology.Should().NotBeNull();
+        sp.GetRequiredService<BusinessNeed.IValidator>().Should().NotBeNull();
+        sp.GetRequiredService<Valiadator.BusinessAdapter.ITechnologyAdapter>().Should().NotBeNull();
+        sp.GetRequiredService<FluentValidation.IValidator<BusinessNeed.Request>>().Should().NotBeNull();
     }
 
     public Validation_Should Create_Fast_Dependencies() {
@@ -60,10 +62,10 @@ public class Validation_Should {
             RepositoryTest.Create_Fast_Dependencies();
         }
 
-        RepositoryClient = RepositoryTest.Client;
+        RepositoryTechnologyAdapter = RepositoryTest.TechnologyAdapter;
 
-        var technology = new Validator.Client.Technology(RepositoryClient);
-        Client = new Validator.Client(technology);
+        var technology = new  Valiadator.Technology(RepositoryTechnologyAdapter);
+        TechnologyAdapter = new Valiadator.TechnologyAdapter(technology);
         return this;
     }
 

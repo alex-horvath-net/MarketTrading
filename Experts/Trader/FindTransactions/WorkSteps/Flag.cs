@@ -2,7 +2,7 @@
 
 namespace Experts.Trader.FindTransactions.WorkSteps;
 
-public class Flag(Flag.IClient client) : Service.IFlag
+public class Flag(Flag.IClient client) : BusinessNeed.IFlag
 {
     public bool IsPublic(Request request, CancellationToken token)
     {
@@ -25,6 +25,6 @@ public static class FlagExtensions
 {
 
     public static IServiceCollection AddFlag(this IServiceCollection services) => services
-        .AddScoped<Service.IFlag, Flag>()
+        .AddScoped<BusinessNeed.IFlag, Flag>()
         .AddScoped<Flag.IClient, Flag.Client>();
 }

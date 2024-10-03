@@ -1,21 +1,22 @@
 using Common;
 using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
+using Common.Technology;
 using Common.Technology.EF.App;
 using Experts.Trader.EditTransaction;
+using Experts.Trader.EditTransaction.WorkSteps;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests.Trader.Edit_Transaction;
 
 public class Repository_Should {
 
-    public Repository.IClient Client;
-    public Service.IRepository Unit;
-    public Service.IRepository Create_The_Unit() => Unit = new Repository(Client);
-
+    public Repository.BusinessAdapter.ITechnologyAdapter TechnologyAdapter;
+    public BusinessNeed.IRepository Unit;
+    public BusinessNeed.IRepository Create_The_Unit() => Unit = new Repository.BusinessAdapter(TechnologyAdapter);
 
     public Transaction Response;
-    public Service.Request Request;
+    public BusinessNeed.Request Request;
     public CancellationToken Token;
     public async Task Use_The_Unit() => Response = await Unit.EditTransaction(Request, Token);
 
@@ -53,34 +54,34 @@ public class Repository_Should {
         // Arrange
         var services = new ServiceCollection();
         var configuration = new ConfigurationManager();
-        configuration.AddInMemoryCollection(new Dictionary<string, string?> { { "ConnectionStrings:App", "" } });
+        configuration.AddInMemoryCollection(new Dictionary<string, string?> {
+            { "ConnectionStrings:App", "" },
+            { "ConnectionStrings:Identity", "" }
+        });
         // Act
-        services.AddRepositoryAdapter(configuration);
+        services.AddCommonTechnology(configuration);
+        services.AddRepositoryAdapter();
+        var sp = services.BuildServiceProvider();
 
         // Assert
-        var sp = services.BuildServiceProvider();
-        var adapter = sp.GetService<Service.IRepository>();
-        var client = sp.GetService<Repository.IClient>();
-        var technology = sp.GetService<AppDB>();
-
-        adapter.Should().NotBeNull();
-        client.Should().NotBeNull();
-        technology.Should().NotBeNull();
+        sp.GetRequiredService<BusinessNeed.IRepository>().Should().NotBeNull();
+        sp.GetRequiredService<Repository.BusinessAdapter.ITechnologyAdapter>().Should().NotBeNull();
+        sp.GetRequiredService<AppDB>().Should().NotBeNull();
     }
 
 
     public Repository_Should Create_Default_Dependencies() {
         var technology = CreateEfDB();
-        Client = new Repository.Client(technology);
+        TechnologyAdapter = new Repository.TechnologyAdapter(technology);
         return this;
     }
     public void Create_Fast_Dependencies() {
         var technology = FakeDB.Create();
-        Client = new FakeClient(technology);
+        TechnologyAdapter = new FakeTechnologyAdapter(technology);
     }
 
 
-    public (Service.Request, CancellationToken) Create_Name_Chager_Arguments() {
+    public (BusinessNeed.Request, CancellationToken) Create_Name_Chager_Arguments() {
         Request = new() { TransactionId = eurTansactionId, Name = eurNewName };
         Token = CancellationToken.None;
         return (Request, Token);
@@ -102,7 +103,7 @@ public class Repository_Should {
         return db;
     }
 
-    public class FakeClient(FakeDB db) : Repository.IClient {
+    public class FakeTechnologyAdapter(FakeDB db) : Repository.BusinessAdapter.ITechnologyAdapter {
         public Task<bool> NameIsUnique(string name, CancellationToken token) => db.Transactions.All(x => x.Name != name).ToTask();
 
         public Task<bool> ExistsById(long id, CancellationToken token) => db.Transactions.Any(x => x.Id == id).ToTask();

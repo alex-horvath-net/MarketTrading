@@ -27,7 +27,7 @@ public class Response {
 }
 
 
-public class Service(Service.IValidator validator, Service.IFlag flag, Service.IRepository repository, Service.IClock clock) : IService {
+public class BusinessNeed(BusinessNeed.IValidator validator, BusinessNeed.IFlag flag, BusinessNeed.IRepository repository, BusinessNeed.IClock clock) : IService {
 
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
@@ -62,9 +62,9 @@ public class Service(Service.IValidator validator, Service.IFlag flag, Service.I
 public static class ServiceExtensions {
 
     public static IServiceCollection AddService(this IServiceCollection services, ConfigurationManager configuration) => services
-        .AddScoped<IService, Service>()
+        .AddScoped<IService, BusinessNeed>()
         .AddClock()
         .AddFlag()
         .AddValidator()
-        .AddRepository(configuration);
-}
+        .AddRepository();
+} 

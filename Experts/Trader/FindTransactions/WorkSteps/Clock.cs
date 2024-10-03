@@ -2,7 +2,7 @@
 
 namespace Experts.Trader.FindTransactions.WorkSteps;
 
-public class Clock(Clock.IClient client) : Service.IClock
+public class Clock(Clock.IClient client) : BusinessNeed.IClock
 {
     public DateTime GetTime() => client.Now;
 
@@ -17,6 +17,6 @@ public class Clock(Clock.IClient client) : Service.IClock
 public static class ClockExtensions
 {
     public static IServiceCollection AddClock(this IServiceCollection services) => services
-        .AddScoped<Service.IClock, Clock>()
+        .AddScoped<BusinessNeed.IClock, Clock>()
         .AddScoped<Clock.IClient, Clock.Client>();
 }
