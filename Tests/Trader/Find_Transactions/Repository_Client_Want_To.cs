@@ -3,19 +3,19 @@ using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
 using Common.Technology;
 using Common.Technology.EF.App;
-using Experts.Trader.FindTransactions;
-using Experts.Trader.FindTransactions.WorkSteps;
+using Experts.Trader;
 using Microsoft.EntityFrameworkCore;
+using static Experts.Trader.FindTransactions;
 
 namespace Tests.Trader.Find_Transactions;
 
 public class Repository_Client_Want_To {
 
-    private Task<List<Transaction>> Talk_To_Unit(BusinessNeed.IRepository unit) => unit.FindTransactions(Request, Token);
-    public BusinessNeed.IRepository Create_Unit() => new Repository(Client);
+    private Task<List<Transaction>> Talk_To_Unit(UserStory.WorkFlow.IRepository unit) => unit.FindTransactions(Request, Token);
+    public UserStory.WorkFlow.IRepository Create_Unit() => new  WorkSteps.Repository(Client);
 
-    public Repository.IClient Client;
-    public Request Request;
+    public WorkSteps.Repository.IClient Client;
+    public UserStory.Request Request;
     public CancellationToken Token;
 
 
@@ -35,7 +35,7 @@ public class Repository_Client_Want_To {
 
     [Fact]
     public async Task Find_USD_Transactions() {
-        BusinessNeed.IRepository unit = With_Fast_Dependencies().Create_Unit();
+        UserStory.WorkFlow.IRepository unit = With_Fast_Dependencies().Create_Unit();
         List<Transaction> response = await Use_Find_USD_Arguments().Talk_To_Unit(unit);
         response.Count.Should().Be(1);
         response[0].Name.Should().Be("USD");
@@ -43,14 +43,14 @@ public class Repository_Client_Want_To {
 
     [Fact]
     public async Task Find_No_Typo_Transactions() {
-        BusinessNeed.IRepository unit = With_Fast_Dependencies().Create_Unit();
+        UserStory.WorkFlow.IRepository unit = With_Fast_Dependencies().Create_Unit();
         List<Transaction> response = await Use_Find_Typo_Arguments().Talk_To_Unit(unit);
         response.Should().BeEmpty();
     }
 
     [IntegrationFact]
     public async Task Find_USD_Transactions2() {
-        BusinessNeed.IRepository unit = Create_Default_Dependencies().Create_Unit();
+        UserStory.WorkFlow.IRepository unit = Create_Default_Dependencies().Create_Unit();
         List<Transaction> response = await Use_Find_USD_Arguments().Talk_To_Unit(unit);
         response.Count.Should().Be(1);
         response[0].Name.Should().Be("USD");
@@ -74,15 +74,15 @@ public class Repository_Client_Want_To {
 
         // Assert
         var sp = services.BuildServiceProvider();
-        sp.GetRequiredService<BusinessNeed.IRepository>().Should().NotBeNull();
-        sp.GetRequiredService<Repository.IClient>().Should().NotBeNull();
+        sp.GetRequiredService<UserStory.WorkFlow.IRepository>().Should().NotBeNull();
+        sp.GetRequiredService<WorkSteps.Repository.IClient>().Should().NotBeNull();
         sp.GetRequiredService<AppDB>().Should().NotBeNull();
     }
 
 
     public Repository_Client_Want_To Create_Default_Dependencies() {
         var technology = CreateEfDB();
-        Client = new Repository.Client(technology);
+        Client = new WorkSteps.Repository.Client(technology);
         return this;
     }
     public Repository_Client_Want_To With_Fast_Dependencies() {
@@ -118,7 +118,7 @@ public class Repository_Client_Want_To {
         return db;
     }
 
-    public class FakeDBClient(FakeDB db) : Repository.IClient {
+    public class FakeDBClient(FakeDB db) : WorkSteps.Repository.IClient {
         public Task<bool> ExistsByName(string name, CancellationToken token) => db.Transactions.Any(x => x.Name == name).ToTask();
 
         public Task<bool> ExistsById(long id, CancellationToken token) => db.Transactions.Any(x => x.Id == id).ToTask();

@@ -1,21 +1,21 @@
 using Common.Technology;
-using Experts.Trader.FindTransactions;
-using Experts.Trader.FindTransactions.WorkSteps;
+using Experts.Trader;
+using static Experts.Trader.FindTransactions;
 
 namespace Tests.Trader.Find_Transactions;
 
 public class Service_Test {
 
-    public BusinessNeed.IValidator Validator;
-    public BusinessNeed.IFlag Flag;
-    public BusinessNeed.IRepository Repository;
-    public BusinessNeed.IClock Clock;
-    public BusinessNeed Unit;
-    public void Create_Unit() => Unit = new BusinessNeed(Validator, Flag, Repository, Clock);
+    public UserStory.WorkFlow.IValidator Validator;
+    public UserStory.WorkFlow.IFlag Flag;
+    public UserStory.WorkFlow.IRepository Repository;
+    public UserStory.WorkFlow.IClock Clock;
+    public UserStory.WorkFlow Unit;
+    public void Create_Unit() => Unit = new UserStory.WorkFlow(Validator, Flag, Repository, Clock);
 
 
-    public Response Response;
-    public Request Request;
+    public UserStory.Response Response;
+    public UserStory. Request Request;
     public CancellationToken Token;
     public async Task Use_The_Unit() => Response = await Unit.Execute(Request, Token);
 
@@ -70,7 +70,7 @@ public class Service_Test {
         var sp = services.BuildServiceProvider();
 
         // Assert
-        var feature = sp.GetService<IService>().Should().NotBeNull();
+        var feature = sp.GetService<UserStory.IUserStory>().Should().NotBeNull();
     }
 
 
@@ -80,11 +80,11 @@ public class Service_Test {
         ValidatorTest.Create_Default_Dependencies().Create_The_Unit();
         Validator = ValidatorTest.Unit;
 
-        var flagClient = new Flag.Client();
-        Flag = new Flag(flagClient);
+        var flagClient = new WorkSteps.Flag.Client();
+        Flag = new WorkSteps.Flag(flagClient);
 
-        var clockClient = new Clock.Client();
-        Clock = new Clock(clockClient);
+        var clockClient = new WorkSteps.Clock.Client();
+        Clock = new WorkSteps.Clock(clockClient);
     }
 
 

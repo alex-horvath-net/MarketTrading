@@ -1,11 +1,11 @@
 ﻿@page "/trader/transactions"
 
-@using Experts.Trader.FindTransactions;
 @using System.ComponentModel;
 @using Common;
+@using Experts.Trader;
 
 @inject NavigationManager NavigationManager
-@inject IServiceClient serviceClient;
+@inject FindTransactions.Triggers.Blazor.ITrigger findTransactions;
 
 <PageTitle>Trade Execution Page</PageTitle>
 
@@ -25,7 +25,7 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 <br />
 
 @code {
-    protected override async Task OnInitializedAsync() => viewModel = await serviceClient.Execute(Name, UserId, Token);
+    protected override async Task OnInitializedAsync() => viewModel = await findTransactions.Execute(Name, UserId, Token);
 
     CancellationTokenSource tcs = new();
     CancellationToken Token => tcs.Token;
@@ -34,7 +34,7 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
     public HttpContext HttpContext { get; set; }
     private string UserId => HttpContext?.User?.Identity?.Name ?? "123";
 
-    ViewModel viewModel;
+    FindTransactions.Triggers.Blazor.ViewModel viewModel;
     string Name;
 }
 
