@@ -2,7 +2,7 @@
 
 @using System.ComponentModel;
 @using Common;
-@using static Experts.Trader.FindTransactions.Triggers.Blazor;
+@using Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
 
 @inject NavigationManager NavigationManager
 @inject ITrigger findTransactions;
@@ -14,7 +14,7 @@
 </p>
 
 <p>
-    <DataList Model="viewModel?.Transactions"></DataList>
+    <DataList Model="viewModel.Transactions"></DataList>
 </p>
 Elements:
 <br />
@@ -27,14 +27,12 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 @code {
     protected override async Task OnInitializedAsync() => viewModel = await findTransactions.Execute(Name, UserId, Token);
 
-    CancellationTokenSource tcs = new();
-    CancellationToken Token => tcs.Token;
-
+    ViewModel? viewModel;
+    string Name; 
+    string UserId => HttpContext?.User?.Identity?.Name ?? "123";
     [CascadingParameter]
     public HttpContext HttpContext { get; set; }
-    private string UserId => HttpContext?.User?.Identity?.Name ?? "123";
-
-    ViewModel  viewModel;
-    string Name;
+    CancellationTokenSource tcs = new();
+    CancellationToken Token => tcs.Token;    
 }
 

@@ -1,20 +1,24 @@
 using Common.Technology;
 using Experts.Trader.FindTransactions;
+using Experts.Trader.FindTransactions.UserStory;
+using Experts.Trader.FindTransactions.UserStory.InputPort;
+using Experts.Trader.FindTransactions.UserStory.OutputPort;
+using Experts.Trader.FindTransactions.WorkSteps;
 
 namespace Tests.Trader.Find_Transactions;
 
 public class Service_Test {
 
-    public UserStory.WorkFlow.IValidator Validator;
-    public UserStory.WorkFlow.IFlag Flag;
-    public UserStory.WorkFlow.IRepository Repository;
-    public UserStory.WorkFlow.IClock Clock;
-    public UserStory.WorkFlow Unit;
-    public void Create_Unit() => Unit = new UserStory.WorkFlow(Validator, Flag, Repository, Clock);
+    public IValidator Validator;
+    public IFlag Flag;
+    public IRepository Repository;
+    public IClock Clock;
+    public WorkFlow Unit;
+    public void Create_Unit() => Unit = new WorkFlow(Validator, Flag, Repository, Clock);
 
 
-    public UserStory.Response Response;
-    public UserStory. Request Request;
+    public Response Response;
+    public  Request Request;
     public CancellationToken Token;
     public async Task Use_The_Unit() => Response = await Unit.Execute(Request, Token);
 
@@ -69,7 +73,7 @@ public class Service_Test {
         var sp = services.BuildServiceProvider();
 
         // Assert
-        var feature = sp.GetService<UserStory.IUserStory>().Should().NotBeNull();
+        var feature = sp.GetService<IUserStory>().Should().NotBeNull();
     }
 
 
@@ -79,11 +83,11 @@ public class Service_Test {
         ValidatorTest.Create_Default_Dependencies().Create_The_Unit();
         Validator = ValidatorTest.Unit;
 
-        var flagClient = new WorkSteps.Flag.Client();
-        Flag = new WorkSteps.Flag(flagClient);
+        var flagClient = new Flag.Client();
+        Flag = new Flag(flagClient);
 
-        var clockClient = new WorkSteps.Clock.Client();
-        Clock = new WorkSteps.Clock(clockClient);
+        var clockClient = new Clock.Client();
+        Clock = new Clock(clockClient);
     }
 
 

@@ -1,15 +1,18 @@
 using Common.Validation.Business.Model;
 using Experts.Trader.FindTransactions;
+using Experts.Trader.FindTransactions.UserStory.InputPort;
+using Experts.Trader.FindTransactions.UserStory.OutputPort;
+using Experts.Trader.FindTransactions.WorkSteps;
 
 namespace Tests.Trader.Find_Transactions;
 
 public class Validator_Test {
 
-    public WorkSteps.Validator.IClient? Client;
-    public UserStory.WorkFlow.IValidator? Unit;
-    public void Create_The_Unit() => Unit = new WorkSteps.Validator(Client);
+    public Validator.IClient? Client;
+    public IValidator? Unit;
+    public void Create_The_Unit() => Unit = new Validator(Client);
 
-    public UserStory.Request? Request;
+    public Request? Request;
     public CancellationToken Token;
     public List<Error>? Response;
     public async Task Use_The_Unit() => Response = await Unit.Validate(Request, Token);
@@ -52,9 +55,9 @@ public class Validator_Test {
 
         // Assert
         var sp = services.BuildServiceProvider();
-        var adapter = sp.GetService<UserStory.WorkFlow.IValidator>();
-        var client = sp.GetService<WorkSteps.Validator.IClient>();
-        var technology = sp.GetService<FluentValidation.IValidator<UserStory.Request>>();
+        var adapter = sp.GetService<IValidator>();
+        var client = sp.GetService<Validator.IClient>();
+        var technology = sp.GetService<FluentValidation.IValidator<Request>>();
 
         adapter.Should().NotBeNull();
         client.Should().NotBeNull();
@@ -62,8 +65,8 @@ public class Validator_Test {
     }
 
     public Validator_Test Create_Default_Dependencies() {
-        var technology = new WorkSteps.Validator.Client.Technology();
-        Client = new WorkSteps.Validator.Client(technology);
+        var technology = new Validator.Client.Technology();
+        Client = new Validator.Client(technology);
         return this;
     }
 
