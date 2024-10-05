@@ -2,10 +2,10 @@
 
 @using System.ComponentModel;
 @using Common;
-@using Experts.Trader;
+@using static Experts.Trader.FindTransactions.Triggers.Blazor;
 
 @inject NavigationManager NavigationManager
-@inject FindTransactions.Triggers.Blazor.ITrigger findTransactions;
+@inject ITrigger findTransactions;
 
 <PageTitle>Trade Execution Page</PageTitle>
 
@@ -34,7 +34,7 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
     public HttpContext HttpContext { get; set; }
     private string UserId => HttpContext?.User?.Identity?.Name ?? "123";
 
-    FindTransactions.Triggers.Blazor.ViewModel viewModel;
+    ViewModel  viewModel;
     string Name;
 }
 

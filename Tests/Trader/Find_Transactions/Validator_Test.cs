@@ -1,6 +1,5 @@
 using Common.Validation.Business.Model;
-using Experts.Trader;
-using static Experts.Trader.FindTransactions;
+using Experts.Trader.FindTransactions;
 
 namespace Tests.Trader.Find_Transactions;
 

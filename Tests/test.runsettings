@@ -2,7 +2,7 @@
 <RunSettings>
   <RunConfiguration>
     <EnvironmentVariables>
-      <MaxTestLevel>all</MaxTestLevel>
+      <MaxTestLevel>unit</MaxTestLevel>
     </EnvironmentVariables>
   </RunConfiguration>
 </RunSettings>

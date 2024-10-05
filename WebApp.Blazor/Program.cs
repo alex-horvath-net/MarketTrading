@@ -1,8 +1,8 @@
 using AlgoritmicTrading.Components;
 using Common.Technology;
 using Common.Technology.Identity;
-using Experts.Trader;
 using Experts.Trader.EditTransaction;
+using Experts.Trader.FindTransactions;
 
 namespace AlgoritmicTrading;
 
