@@ -1,22 +1,21 @@
-using Common;
 using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
+using Common.Extensions;
 using Common.Technology;
 using Common.Technology.EF.App;
 using DomainExperts.Trader.EditTransaction;
-using DomainExperts.Trader.EditTransaction.WorkSteps;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests.Trader.Edit_Transaction;
 
 public class Repository_Should {
 
-    public Repository.BusinessAdapter.ITechnologyAdapter TechnologyAdapter;
-    public BusinessNeed.IRepository Unit;
-    public BusinessNeed.IRepository Create_The_Unit() => Unit = new Repository.BusinessAdapter(TechnologyAdapter);
+    public Repository.Adapter.IInfrastructure TechnologyAdapter;
+    public Feature.IRepository Unit;
+    public Feature.IRepository Create_The_Unit() => Unit = new Repository.Adapter(TechnologyAdapter);
 
     public Transaction Response;
-    public BusinessNeed.Request Request;
+    public Feature.Request Request;
     public CancellationToken Token;
     public async Task Use_The_Unit() => Response = await Unit.EditTransaction(Request, Token);
 
@@ -60,19 +59,19 @@ public class Repository_Should {
         });
         // Act
         services.AddCommonTechnology(configuration);
-        services.AddRepositoryAdapter();
+        services.AddRepository();
         var sp = services.BuildServiceProvider();
 
         // Assert
-        sp.GetRequiredService<BusinessNeed.IRepository>().Should().NotBeNull();
-        sp.GetRequiredService<Repository.BusinessAdapter.ITechnologyAdapter>().Should().NotBeNull();
+        sp.GetRequiredService<Feature.IRepository>().Should().NotBeNull();
+        sp.GetRequiredService<Repository.Adapter.IInfrastructure>().Should().NotBeNull();
         sp.GetRequiredService<AppDB>().Should().NotBeNull();
     }
 
 
     public Repository_Should Create_Default_Dependencies() {
         var technology = CreateEfDB();
-        TechnologyAdapter = new Repository.TechnologyAdapter(technology);
+        TechnologyAdapter = new Repository.Infrastructure(technology);
         return this;
     }
     public void Create_Fast_Dependencies() {
@@ -81,7 +80,7 @@ public class Repository_Should {
     }
 
 
-    public (BusinessNeed.Request, CancellationToken) Create_Name_Chager_Arguments() {
+    public (Feature.Request, CancellationToken) Create_Name_Chager_Arguments() {
         Request = new() { TransactionId = eurTansactionId, Name = eurNewName };
         Token = CancellationToken.None;
         return (Request, Token);
@@ -103,7 +102,7 @@ public class Repository_Should {
         return db;
     }
 
-    public class FakeTechnologyAdapter(FakeDB db) : Repository.BusinessAdapter.ITechnologyAdapter {
+    public class FakeTechnologyAdapter(FakeDB db) : Repository.Adapter.IInfrastructure {
         public Task<bool> NameIsUnique(string name, CancellationToken token) => db.Transactions.All(x => x.Name != name).ToTask();
 
         public Task<bool> ExistsById(long id, CancellationToken token) => db.Transactions.Any(x => x.Id == id).ToTask();

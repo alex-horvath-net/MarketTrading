@@ -1,14 +1,12 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
-using DomainExperts.Trader.EditTransaction.WorkSteps;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using static DomainExperts.Trader.EditTransaction.Feature;
 
 namespace DomainExperts.Trader.EditTransaction;
 
-public class BusinessNeed(
-    BusinessNeed.IValidator validator,
-    BusinessNeed.IRepository repository) {
+public class Feature(IValidator validator, IRepository repository) {
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
 
@@ -48,7 +46,7 @@ public class BusinessNeed(
 
 public static class Extensions {
     public static IServiceCollection AddEditTransaction(this IServiceCollection services, ConfigurationManager config) => services
-        .AddScoped<BusinessNeed>()
+        .AddScoped<Feature>()
         .AddValidatorAdapter()
-        .AddRepositoryAdapter();
+        .AddRepository();
 }

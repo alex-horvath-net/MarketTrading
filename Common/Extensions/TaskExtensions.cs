@@ -1,10 +1,7 @@
-﻿namespace Common;
+﻿namespace Common.Extensions;
 
 public static class TaskExtensions {
     public static Task<TInput> ToTask<TInput>(this TInput input) => Task.FromResult(input);
-
-
-
 
     public static async Task<TOutput> Select<TInput, TOutput>(this Task<TInput> inputTask,
         Func<TInput, TOutput> toOutput) {

@@ -4,13 +4,13 @@ using DomainExperts.Trader.EditTransaction;
 namespace Tests.Trader.Edit_Transaction;
 
 public class Service_Should {
-    public BusinessNeed.IValidator Validator;
-    public BusinessNeed.IRepository Repository;
-    public BusinessNeed Unit;
-    public void Crea_The_Unit() => Unit = new BusinessNeed(Validator, Repository);
+    public Feature.IValidator Validator;
+    public Feature.IRepository Repository;
+    public Feature Unit;
+    public void Crea_The_Unit() => Unit = new Feature(Validator, Repository);
 
-    public BusinessNeed.Response Response;
-    public BusinessNeed.Request Request;
+    public Feature.Response Response;
+    public Feature.Request Request;
     public CancellationToken Token;
     public async Task Use_The_Unit() => Response = await Unit.Execute(Request, Token);
 
@@ -85,7 +85,7 @@ public class Service_Should {
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
-        var feature = serviceProvider.GetService<BusinessNeed>();
+        var feature = serviceProvider.GetService<Feature>();
 
         feature.Should().NotBeNull();
     }

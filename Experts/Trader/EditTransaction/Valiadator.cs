@@ -1,14 +1,13 @@
 ﻿using Common.Validation.Business.Model;
-using DomainExperts.Trader.EditTransaction;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainExperts.Trader.EditTransaction.WorkSteps;
+namespace DomainExperts.Trader.EditTransaction;
 
 
 public class Valiadator {
-    public class BusinessAdapter(BusinessAdapter.ITechnologyAdapter technologyAdapter) : BusinessNeed.IValidator {
-        public async Task<List<Error>> Validate(BusinessNeed.Request request, CancellationToken token) {
+    public class BusinessAdapter(BusinessAdapter.ITechnologyAdapter technologyAdapter) : Feature.IValidator {
+        public async Task<List<Error>> Validate(Feature.Request request, CancellationToken token) {
             var techModel = await technologyAdapter.Validate(request, token);
             var businessModel = techModel.Select(model => new Error(model.Name, model.Message)).ToList();
             return businessModel;
@@ -17,12 +16,12 @@ public class Valiadator {
         public record TechModel(string Name, string Message);
 
         public interface ITechnologyAdapter {
-            Task<List<TechModel>> Validate(BusinessNeed.Request request, CancellationToken token);
+            Task<List<TechModel>> Validate(Feature.Request request, CancellationToken token);
         }
     }
 
-    public class TechnologyAdapter(IValidator<BusinessNeed.Request> technology) : BusinessAdapter.ITechnologyAdapter {
-        public async Task<List<BusinessAdapter.TechModel>> Validate(BusinessNeed.Request request, CancellationToken token) {
+    public class TechnologyAdapter(IValidator<Feature.Request> technology) : BusinessAdapter.ITechnologyAdapter {
+        public async Task<List<BusinessAdapter.TechModel>> Validate(Feature.Request request, CancellationToken token) {
             var techData = await technology.ValidateAsync(request, token);
             var techModel = techData.Errors.Select(ToTechModel).ToList();
             return techModel;
@@ -31,8 +30,8 @@ public class Valiadator {
         private BusinessAdapter.TechModel ToTechModel(FluentValidation.Results.ValidationFailure tech) => new(tech.PropertyName, tech.ErrorMessage);
     }
 
-    public class Technology : AbstractValidator<BusinessNeed.Request> {
-        public Technology(Repository.BusinessAdapter.ITechnologyAdapter repository) {
+    public class Technology : AbstractValidator<Feature.Request> {
+        public Technology(Repository.Adapter.IInfrastructure repository) {
             RuleFor(x => x).NotNull().WithMessage("Request must be provided.");
 
             RuleFor(x => x.TransactionId).NotNull().WithMessage("TransactionId must be provided.");
@@ -48,9 +47,9 @@ public class Valiadator {
 
 public static class ValidatorExtensions {
     public static IServiceCollection AddValidatorAdapter(this IServiceCollection services) => services
-        .AddScoped<BusinessNeed.IValidator, Valiadator.BusinessAdapter>()
+        .AddScoped<Feature.IValidator, Valiadator.BusinessAdapter>()
         .AddScoped<Valiadator.BusinessAdapter.ITechnologyAdapter, Valiadator.TechnologyAdapter>()
         //.AddScoped<Repository.IClient, Repository.Client>()
-        .AddScoped<IValidator<BusinessNeed.Request>, Valiadator.Technology>();
+        .AddScoped<IValidator<Feature.Request>, Valiadator.Technology>();
 }
 

@@ -1,4 +1,4 @@
-using AlgoritmicTrading.Components;
+using TradingWebSite.Components;
 using Common.Technology;
 using Common.Technology.Identity;
 using DomainExperts.Trader.EditTransaction;

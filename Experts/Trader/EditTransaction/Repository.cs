@@ -4,11 +4,11 @@ using Common.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainExperts.Trader.EditTransaction.WorkSteps;
+namespace DomainExperts.Trader.EditTransaction;
 
 public class Repository {
-    public class BusinessAdapter(BusinessAdapter.ITechnologyAdapter client) : BusinessNeed.IRepository {
-        public async Task<Transaction> EditTransaction(BusinessNeed.Request request, CancellationToken token) {
+    public class Adapter(Adapter.IInfrastructure client) : Feature.IRepository {
+        public async Task<Transaction> EditTransaction(Feature.Request request, CancellationToken token) {
             var dataModelToUpdate = await client.FindById(request.TransactionId, token);
             SetDtaModel(dataModelToUpdate, request);
             var updatedDataModel = await client.Update(dataModelToUpdate, token);
@@ -16,7 +16,7 @@ public class Repository {
             return businessModel;
         }
 
-        private void SetDtaModel(TransactionDM dm, BusinessNeed.Request request) {
+        private void SetDtaModel(TransactionDM dm, Feature.Request request) {
             dm.Name = request.Name;
         }
 
@@ -26,7 +26,7 @@ public class Repository {
         };
 
 
-        public interface ITechnologyAdapter {
+        public interface IInfrastructure {
             Task<TransactionDM> FindById(long id, CancellationToken token);
             Task<bool> ExistsById(long id, CancellationToken token);
             Task<bool> NameIsUnique(string name, CancellationToken token);
@@ -34,7 +34,7 @@ public class Repository {
         }
     }
 
-    public class TechnologyAdapter(AppDB db) : BusinessAdapter.ITechnologyAdapter {
+    public class Infrastructure(AppDB db) : Adapter.IInfrastructure {
 
         public async Task<TransactionDM> FindById(long id, CancellationToken token) => await db.FindAsync<TransactionDM>(id, token) ??
             throw new ArgumentException("Transaction not found");
@@ -53,7 +53,7 @@ public class Repository {
     }
 }
 public static class AdapterExtensions {
-    public static IServiceCollection AddRepositoryAdapter(this IServiceCollection services) => services
-        .AddScoped<BusinessNeed.IRepository, Repository.BusinessAdapter>()
-        .AddScoped<Repository.BusinessAdapter.ITechnologyAdapter, Repository.TechnologyAdapter>();
+    public static IServiceCollection AddRepository(this IServiceCollection services) => services
+        .AddScoped<Feature.IRepository, Repository.Adapter>()
+        .AddScoped<Repository.Adapter.IInfrastructure, Repository.Infrastructure>();
 }

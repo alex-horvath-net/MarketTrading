@@ -1,6 +1,6 @@
-using Common;
 using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
+using Common.Extensions;
 using Common.Technology;
 using Common.Technology.EF.App;
 using DomainExperts.Trader.FindTransactions;

@@ -1,18 +1,17 @@
 using Common.Technology;
 using Common.Validation.Business.Model;
 using DomainExperts.Trader.EditTransaction;
-using DomainExperts.Trader.EditTransaction.WorkSteps;
 
 namespace Tests.Trader.Edit_Transaction;
 
 public class Validation_Should {
     public Valiadator.BusinessAdapter.ITechnologyAdapter TechnologyAdapter;
-    public Repository.BusinessAdapter.ITechnologyAdapter RepositoryTechnologyAdapter;
-    public BusinessNeed.IValidator Unit;
+    public Repository.Adapter.IInfrastructure RepositoryTechnologyAdapter;
+    public Feature.IValidator Unit;
     public void Crea_The_Unit() => Unit = new Valiadator.BusinessAdapter(TechnologyAdapter);
 
     public List<Error> Response;
-    public BusinessNeed.Request Request;
+    public Feature.Request Request;
     public CancellationToken Token;
     public async Task Use_The_Unit() => Response = await Unit.Validate(Request, Token);
 
@@ -45,14 +44,14 @@ public class Validation_Should {
         });
         // Act
         services.AddCommonTechnology(configuration);
-        services.AddRepositoryAdapter();
+        services.AddRepository();
         services.AddValidatorAdapter();
 
         // Assert
         var sp = services.BuildServiceProvider();
-        sp.GetRequiredService<BusinessNeed.IValidator>().Should().NotBeNull();
+        sp.GetRequiredService<Feature.IValidator>().Should().NotBeNull();
         sp.GetRequiredService<Valiadator.BusinessAdapter.ITechnologyAdapter>().Should().NotBeNull();
-        sp.GetRequiredService<FluentValidation.IValidator<BusinessNeed.Request>>().Should().NotBeNull();
+        sp.GetRequiredService<FluentValidation.IValidator<Feature.Request>>().Should().NotBeNull();
     }
 
     public Validation_Should Create_Fast_Dependencies() {
