@@ -1,10 +1,10 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
-using Experts.Trader.EditTransaction.WorkSteps;
+using DomainExperts.Trader.EditTransaction.WorkSteps;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.EditTransaction;
+namespace DomainExperts.Trader.EditTransaction;
 
 public class BusinessNeed(
     BusinessNeed.IValidator validator,
@@ -43,7 +43,7 @@ public class BusinessNeed(
 
     public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }
 
-    public interface IRepository { Task<Transaction> EditTransaction(BusinessNeed.Request request, CancellationToken token); }
+    public interface IRepository { Task<Transaction> EditTransaction(Request request, CancellationToken token); }
 }
 
 public static class Extensions {

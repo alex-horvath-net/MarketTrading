@@ -3,8 +3,8 @@ using Common.Adapters.App.Data.Model;
 using Common.Business.Model;
 using Common.Technology;
 using Common.Technology.EF.App;
-using Experts.Trader.EditTransaction;
-using Experts.Trader.EditTransaction.WorkSteps;
+using DomainExperts.Trader.EditTransaction;
+using DomainExperts.Trader.EditTransaction.WorkSteps;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests.Trader.Edit_Transaction;

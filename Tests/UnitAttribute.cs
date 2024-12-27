@@ -1,5 +1,3 @@
 ﻿namespace Tests;
 
-public class UnitAttribute : Xunit.FactAttribute {
-   
-}
+public class UnitAttribute : Xunit.FactAttribute { }

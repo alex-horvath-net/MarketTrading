@@ -1,7 +1,7 @@
 using Common.Technology;
 using Common.Validation.Business.Model;
-using Experts.Trader.EditTransaction;
-using Experts.Trader.EditTransaction.WorkSteps;
+using DomainExperts.Trader.EditTransaction;
+using DomainExperts.Trader.EditTransaction.WorkSteps;
 
 namespace Tests.Trader.Edit_Transaction;
 

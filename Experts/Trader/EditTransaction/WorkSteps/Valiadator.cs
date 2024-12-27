@@ -1,8 +1,9 @@
 ﻿using Common.Validation.Business.Model;
+using DomainExperts.Trader.EditTransaction;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.EditTransaction.WorkSteps;
+namespace DomainExperts.Trader.EditTransaction.WorkSteps;
 
 
 public class Valiadator {

@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Experts.Backtester {
+namespace DomainExperts.Backtester {
     internal class GenerateBacktestReport {
         //        Compile performance metrics.
         //Visualize results(e.g., equity curve, drawdown chart).

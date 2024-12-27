@@ -1,13 +1,14 @@
-﻿using Experts.Trader.FindTransactions.Triggers.Blazor;
-using Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
-using Experts.Trader.FindTransactions.UserStory;
-using Experts.Trader.FindTransactions.UserStory.InputPort;
-using Experts.Trader.FindTransactions.UserStory.OutputPort;
+﻿using DomainExperts.Trader.FindTransactions.Triggers.Blazor;
+using DomainExperts.Trader.FindTransactions.Triggers.Blazor.InputPort;
+using DomainExperts.Trader.FindTransactions.UserStory;
+using DomainExperts.Trader.FindTransactions.UserStory.InputPort;
+using DomainExperts.Trader.FindTransactions.UserStory.OutputPort;
+using DomainExperts.Trader.FindTransactions.WorkSteps;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.FindTransactions;
+namespace DomainExperts.Trader.FindTransactions;
 
 
 public static class FindTransactionsExtensions {
@@ -23,22 +24,22 @@ public static class FindTransactionsExtensions {
         .AddRepository();
 
     public static IServiceCollection AddClock(this IServiceCollection services) => services
-        .AddScoped<IClock, WorkSteps.Clock>()
-        .AddScoped<WorkSteps.Clock.IClient, WorkSteps.Clock.Client>();
+        .AddScoped<IClock, Clock>()
+        .AddScoped<Clock.IClient, Clock.Client>();
 
     public static IServiceCollection AddFlag(this IServiceCollection services) => services
-        .AddScoped<IFlag, WorkSteps.Flag>()
-        .AddScoped<WorkSteps.Flag.IClient, WorkSteps.Flag.Client>();
+        .AddScoped<IFlag, Flag>()
+        .AddScoped<Flag.IClient, Flag.Client>();
 
     public static IServiceCollection AddRepository(this IServiceCollection services) => services
-        .AddScoped<IRepository, WorkSteps.Repository>()
-        .AddScoped<WorkSteps.Repository.IClient, WorkSteps.Repository.Client>();
+        .AddScoped<IRepository, Repository>()
+        .AddScoped<Repository.IClient, Repository.Client>();
 
 
     public static IServiceCollection AddValidator(this IServiceCollection services) => services
-        .AddScoped<UserStory.OutputPort.IValidator, WorkSteps.Validator>()
-        .AddScoped<WorkSteps.Validator.IClient, WorkSteps.Validator.Client>()
-        .AddScoped<IValidator<Request>, WorkSteps.Validator.Client.Technology>();
+        .AddScoped<UserStory.OutputPort.IValidator, Validator>()
+        .AddScoped<Validator.IClient, Validator.Client>()
+        .AddScoped<IValidator<Request>, Validator.Client.Technology>();
 }
 
 

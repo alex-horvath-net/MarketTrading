@@ -4,7 +4,7 @@ using Common.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Experts.Trader.EditTransaction.WorkSteps;
+namespace DomainExperts.Trader.EditTransaction.WorkSteps;
 
 public class Repository {
     public class BusinessAdapter(BusinessAdapter.ITechnologyAdapter client) : BusinessNeed.IRepository {
@@ -52,7 +52,7 @@ public class Repository {
         }
     }
 }
-public static class AdapterExtensions{
+public static class AdapterExtensions {
     public static IServiceCollection AddRepositoryAdapter(this IServiceCollection services) => services
         .AddScoped<BusinessNeed.IRepository, Repository.BusinessAdapter>()
         .AddScoped<Repository.BusinessAdapter.ITechnologyAdapter, Repository.TechnologyAdapter>();

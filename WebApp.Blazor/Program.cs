@@ -1,10 +1,10 @@
 using AlgoritmicTrading.Components;
 using Common.Technology;
 using Common.Technology.Identity;
-using Experts.Trader.EditTransaction;
-using Experts.Trader.FindTransactions;
+using DomainExperts.Trader.EditTransaction;
+using DomainExperts.Trader.FindTransactions;
 
-namespace AlgoritmicTrading;
+namespace TradingWebSite;
 
 public class Program {
     public static void Main(string[] args) {
@@ -39,4 +39,7 @@ public class Program {
 
         app.Run();
     }
+}
+
+public interface IMarker {
 }

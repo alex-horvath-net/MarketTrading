@@ -1,8 +1,8 @@
 using Common.Validation.Business.Model;
-using Experts.Trader.FindTransactions;
-using Experts.Trader.FindTransactions.UserStory.InputPort;
-using Experts.Trader.FindTransactions.UserStory.OutputPort;
-using Experts.Trader.FindTransactions.WorkSteps;
+using DomainExperts.Trader.FindTransactions;
+using DomainExperts.Trader.FindTransactions.UserStory.InputPort;
+using DomainExperts.Trader.FindTransactions.UserStory.OutputPort;
+using DomainExperts.Trader.FindTransactions.WorkSteps;
 
 namespace Tests.Trader.Find_Transactions;
 

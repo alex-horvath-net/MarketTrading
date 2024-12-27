@@ -1,6 +1,6 @@
-﻿using Experts.Trader.FindTransactions.UserStory.OutputPort;
+﻿using DomainExperts.Trader.FindTransactions.UserStory.OutputPort;
 
-namespace Experts.Trader.FindTransactions.WorkSteps;
+namespace DomainExperts.Trader.FindTransactions.WorkSteps;
 
 public class Clock(Clock.IClient client) : IClock {
     public DateTime GetTime() => client.Now;

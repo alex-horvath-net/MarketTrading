@@ -1,4 +1,4 @@
-﻿namespace Experts.Trader.FindTransactions.UserStory.InputPort;
+﻿namespace DomainExperts.Trader.FindTransactions.UserStory.InputPort;
 
 public class Request {
     public Guid Id { get; set; } = Guid.NewGuid();

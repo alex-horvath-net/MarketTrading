@@ -1,7 +1,7 @@
-﻿using Experts.Trader.FindTransactions.UserStory.InputPort;
-using Experts.Trader.FindTransactions.UserStory.OutputPort;
+﻿using DomainExperts.Trader.FindTransactions.UserStory.InputPort;
+using DomainExperts.Trader.FindTransactions.UserStory.OutputPort;
 
-namespace Experts.Trader.FindTransactions.UserStory;
+namespace DomainExperts.Trader.FindTransactions.UserStory;
 
 public class WorkFlow(IValidator validator, IFlag flag, IRepository repository, IClock clock) : IUserStory {
 
