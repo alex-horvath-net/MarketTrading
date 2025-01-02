@@ -4,7 +4,7 @@ using Common.Technology.Identity;
 using Experts.Trader.EditTransaction;
 using Experts.Trader.FindTransactions.Feature;
 
-namespace TradingWebSite;
+namespace TradingWebApp;
 
 public class Program {
     public static void Main(string[] args) {

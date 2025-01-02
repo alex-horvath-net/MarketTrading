@@ -1,4 +1,4 @@
-﻿namespace Tests;
+﻿namespace Tests.Shared;
 
 public enum TestLevel {
     Unit,
