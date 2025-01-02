@@ -1,4 +1,4 @@
-using TradingWebSite.Components;
+using TradingWebApp.Components;
 using Common.Technology;
 using Common.Technology.Identity;
 using Experts.Trader.EditTransaction;
