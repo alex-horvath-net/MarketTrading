@@ -1,5 +1,5 @@
-﻿using Common.Validation.Business.Model;
-using FluentValidation;
+﻿using FluentValidation;
+using Infrastructure.Validation.Business.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Experts.Trader.EditTransaction;

@@ -1,7 +1,8 @@
-﻿namespace Common.Validation.FluentValidator.Adapters;
+﻿using Infrastructure.Validation.FluentValidator.Adapters.Model;
 
-public interface ICommonClient<TRequest>
-{
-    Task<List<Model.Model>> Validate(TRequest request, CancellationToken token);
+namespace Infrastructure.Validation.FluentValidator.Adapters;
+
+public interface ICommonClient<TRequest> {
+    Task<List<Model>> Validate(TRequest request, CancellationToken token);
 }
 

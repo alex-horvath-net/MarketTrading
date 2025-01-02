@@ -1,5 +1,5 @@
-﻿using Common.Validation.Business.Model;
-using Experts.Trader.FindTransactions.Feature;
+﻿using Experts.Trader.FindTransactions.Feature;
+using Infrastructure.Validation.Business.Model;
 
 namespace Experts.Trader.FindTransactions.Feature.OutputPorts;
 

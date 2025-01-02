@@ -1,7 +1,7 @@
-﻿using Common.Business.Model;
-using Common.Validation.Business.Model;
-using Experts.Trader.FindTransactions.Feature;
+﻿using Experts.Trader.FindTransactions.Feature;
 using Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
+using Infrastructure.Business.Model;
+using Infrastructure.Validation.Business.Model;
 
 namespace Experts.Trader.FindTransactions.Triggers.Blazor;
 
@@ -33,7 +33,7 @@ public class Trigger(IFeature service) : ITrigger {
             Id = businessModel.Id,
         };
 
-        static ViewModel.TransactionVM ToTranaztionViewModel(Transaction businessModel) => new() {
+        static ViewModel.TransactionVM ToTranaztionViewModel(Trade businessModel) => new() {
             Id = businessModel.Id,
             Name = businessModel.Name
         };

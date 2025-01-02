@@ -1,5 +1,5 @@
-﻿using Common.Business.Model;
-using Common.Validation.Business.Model;
+﻿using Infrastructure.Business.Model;
+using Infrastructure.Validation.Business.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using static Experts.Trader.EditTransaction.Feature;
@@ -36,12 +36,12 @@ public class Feature(IValidator validator, IRepository repository) {
         public Exception? Exception { get; set; }
         public Request? Request { get; set; }
         public List<Error> Errors { get; set; } = [];
-        public Transaction Transaction { get; set; }
+        public Trade Transaction { get; set; }
     }
 
     public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }
 
-    public interface IRepository { Task<Transaction> EditTransaction(Request request, CancellationToken token); }
+    public interface IRepository { Task<Trade> EditTransaction(Request request, CancellationToken token); }
 }
 
 public static class Extensions {

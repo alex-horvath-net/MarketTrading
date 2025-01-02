@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Common.Extensions;
+namespace Infrastructure.Extensions;
 
 public static class ReflectionExtensions {
 

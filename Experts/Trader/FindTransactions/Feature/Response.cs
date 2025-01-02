@@ -1,5 +1,5 @@
-﻿using Common.Business.Model;
-using Common.Validation.Business.Model;
+﻿using Infrastructure.Business.Model;
+using Infrastructure.Validation.Business.Model;
 
 namespace Experts.Trader.FindTransactions.Feature;
 
@@ -11,6 +11,6 @@ public class Response {
     public Exception? Exception { get; set; }
     public Request? Request { get; set; }
     public List<Error> Errors { get; set; } = [];
-    public List<Transaction> Transactions { get; set; } = [];
+    public List<Trade> Transactions { get; set; } = [];
 }
 

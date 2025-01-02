@@ -1,5 +1,5 @@
-﻿namespace Common.Business.Model {
-    public class Transaction {
+﻿namespace Infrastructure.Business.Model {
+    public class Trade {
         public long Id { get; set; }
         public required string Name { get; set; }
     }

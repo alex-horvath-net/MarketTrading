@@ -1,6 +1,6 @@
-﻿using Common.Validation.Business.Model;
+﻿using Infrastructure.Validation.Business.Model;
 
-namespace Common.Validation.Business;
+namespace Infrastructure.Validation.Business;
 
 public interface IValidator<TRequest> {
     Task<List<Error>> Validate(TRequest request, CancellationToken token);

@@ -1,6 +1,5 @@
-﻿namespace Common.Technology.Identity;
-public static class IdentityConstatansts
-{
+﻿namespace Infrastructure.Technology.Identity;
+public static class IdentityConstatansts {
     public static string LoginCallbackAction = "LoginCallback";
     public static string LinkLoginCallbackAction = "LinkLoginCallback";
 }

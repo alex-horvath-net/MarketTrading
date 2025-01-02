@@ -1,8 +1,8 @@
 using TradingWebApp.Components;
-using Common.Technology;
-using Common.Technology.Identity;
 using Experts.Trader.EditTransaction;
 using Experts.Trader.FindTransactions.Feature;
+using Infrastructure.Technology;
+using Infrastructure.Technology.Identity;
 
 namespace TradingWebApp;
 

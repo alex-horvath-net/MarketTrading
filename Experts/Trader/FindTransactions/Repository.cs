@@ -1,15 +1,15 @@
-﻿using Common.Adapters.App.Data.Model;
-using Common.Business.Model;
-using Common.Technology.EF.App;
-using Experts.Trader.FindTransactions.Feature;
+﻿using Experts.Trader.FindTransactions.Feature;
 using Experts.Trader.FindTransactions.Feature.OutputPorts;
 using FluentValidation;
+using Infrastructure.Adapters.App.Data.Model;
+using Infrastructure.Business.Model;
+using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 
 namespace Experts.Trader.FindTransactions;
 
 public class Repository(Repository.IClient client) : IRepository {
-    public async Task<List<Transaction>> FindTransactions(Request request, CancellationToken token) {
+    public async Task<List<Trade>> FindTransactions(Request request, CancellationToken token) {
         var dataModel = await client.Find(request.Name, token);
         var businessModel = dataModel.Select(ToBusinessModel).ToList();
 
@@ -17,8 +17,8 @@ public class Repository(Repository.IClient client) : IRepository {
         return businessModel;
     }
 
-    private static List<Transaction> ToBusinessModelList(List<TransactionDM> dataModelList) => dataModelList.Select(ToBusinessModel).ToList();
-    private static Transaction ToBusinessModel(TransactionDM dataModel) => new() {
+    private static List<Trade> ToBusinessModelList(List<TransactionDM> dataModelList) => dataModelList.Select(ToBusinessModel).ToList();
+    private static Trade ToBusinessModel(TransactionDM dataModel) => new() {
         Id = dataModel.Id,
         Name = dataModel.Name
     };

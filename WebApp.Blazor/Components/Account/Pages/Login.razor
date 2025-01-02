@@ -1,8 +1,10 @@
 ﻿@page "/Account/Login"
 
-@using System.ComponentModel.DataAnnotations
-@using Microsoft.AspNetCore.Authentication
-@using Microsoft.AspNetCore.Identity;
+@    using System.ComponentModel.DataAnnotations
+@    using Microsoft.AspNetCore.Authentication
+@    using Microsoft.AspNetCore.Identity;
+    using Infrastructure.Adapters.Identity.Data.Model;
+    using Infrastructure.Technology.Identity;
     using Common.Adapters.Identity.Technology
 
 @inject SignInManager<User> SignInManager

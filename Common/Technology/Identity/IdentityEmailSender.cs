@@ -1,11 +1,10 @@
-using Common.Adapters.Identity.Data.Model;
+using Infrastructure.Adapters.Identity.Data.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
-namespace Common.Technology.Identity;
+namespace Infrastructure.Technology.Identity;
 // Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.
-public sealed class IdentityEmailSender : IEmailSender<User>
-{
+public sealed class IdentityEmailSender : IEmailSender<User> {
     private readonly IEmailSender emailSender = new NoOpEmailSender();
 
     public Task SendConfirmationLinkAsync(User user, string email, string confirmationLink) =>

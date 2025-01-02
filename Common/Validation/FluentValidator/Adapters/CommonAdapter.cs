@@ -1,7 +1,8 @@
-﻿using Common.Validation.Business;
-using Common.Validation.Business.Model;
+﻿using Infrastructure.Validation.Business;
+using Infrastructure.Validation.Business.Model;
+using Infrastructure.Validation.FluentValidator.Adapters.Model;
 
-namespace Common.Validation.FluentValidator.Adapters;
+namespace Infrastructure.Validation.FluentValidator.Adapters;
 
 
 public class CommonAdapter<TRequest>(
@@ -13,6 +14,6 @@ public class CommonAdapter<TRequest>(
         return businessModel;
     }
 
-    private static Error ToBusiness(Model.Model model) => new(model.Name, model.Message);
+    private static Error ToBusiness(Model model) => new(model.Name, model.Message);
 }
 

@@ -1,8 +1,8 @@
-﻿using Common.Validation.FluentValidator.Adapters;
-using Common.Validation.FluentValidator.Technology;
+﻿using Infrastructure.Validation.FluentValidator.Adapters;
+using Infrastructure.Validation.FluentValidator.Technology;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Common.Extensions;
+namespace Infrastructure.Extensions;
 public static class ServiceExtensions {
 
     public static IServiceCollection AddValidatorClient<TRequest>(this IServiceCollection services) => services

@@ -1,4 +1,4 @@
-﻿namespace Common.Extensions;
+﻿namespace Infrastructure.Extensions;
 
 public static class TaskExtensions {
     public static Task<TInput> ToTask<TInput>(this TInput input) => Task.FromResult(input);

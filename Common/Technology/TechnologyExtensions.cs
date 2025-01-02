@@ -1,10 +1,10 @@
-﻿using Common.Technology.EF.App;
-using Common.Technology.EF.Identity;
+﻿using Infrastructure.Technology.EF.App;
+using Infrastructure.Technology.EF.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Common.Technology;
+namespace Infrastructure.Technology;
 public static class TechnologyExtensions {
 
     public static IServiceCollection AddCommonTechnology(this IServiceCollection services, ConfigurationManager configuration) => services

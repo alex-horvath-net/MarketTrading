@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Common\Infrastructure.csproj" />
     <ProjectReference Include="..\Experts\Experts.csproj" />
   </ItemGroup>
 

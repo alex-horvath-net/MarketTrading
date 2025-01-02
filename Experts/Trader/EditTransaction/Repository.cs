@@ -1,6 +1,6 @@
-﻿using Common.Adapters.App.Data.Model;
-using Common.Business.Model;
-using Common.Technology.EF.App;
+﻿using Infrastructure.Adapters.App.Data.Model;
+using Infrastructure.Business.Model;
+using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +8,7 @@ namespace Experts.Trader.EditTransaction;
 
 public class Repository {
     public class Adapter(Adapter.IInfrastructure client) : Feature.IRepository {
-        public async Task<Transaction> EditTransaction(Feature.Request request, CancellationToken token) {
+        public async Task<Trade> EditTransaction(Feature.Request request, CancellationToken token) {
             var dataModelToUpdate = await client.FindById(request.TransactionId, token);
             SetDtaModel(dataModelToUpdate, request);
             var updatedDataModel = await client.Update(dataModelToUpdate, token);
@@ -20,7 +20,7 @@ public class Repository {
             dm.Name = request.Name;
         }
 
-        private Transaction ToBusinessModel(TransactionDM dataModel) => new() {
+        private Trade ToBusinessModel(TransactionDM dataModel) => new() {
             Id = dataModel.Id,
             Name = dataModel.Name
         };

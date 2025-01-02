@@ -1,6 +1,6 @@
-﻿using Common.Validation.FluentValidator.Adapters.Model;
+﻿using Infrastructure.Validation.FluentValidator.Adapters.Model;
 
-namespace Common.Validation.FluentValidator.Technology;
+namespace Infrastructure.Validation.FluentValidator.Technology;
 
 public class CommonClient<TRequest>(FluentValidation.IValidator<TRequest> validator) : Adapters.ICommonClient<TRequest> {
 

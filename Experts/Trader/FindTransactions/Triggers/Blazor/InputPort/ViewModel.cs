@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Common.Adapters.Blazor;
+using Infrastructure.Adapters.Blazor;
 
 namespace Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
 

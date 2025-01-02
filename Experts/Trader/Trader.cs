@@ -1,13 +1,9 @@
-﻿
-using Common.Business.Model;
+﻿using Infrastructure.Business.Model;
 
 namespace Experts.Trader {
     public class Trader {
-        public Trader() {
-        }
-
-        public IEnumerable<Transaction> FindAllTransation() {
-           return Enumerable.Empty<Transaction>();
+        public IEnumerable<Trade> FindAllTrade() {
+            return [new() { Name = "Name1" }];
         }
     }
 }
