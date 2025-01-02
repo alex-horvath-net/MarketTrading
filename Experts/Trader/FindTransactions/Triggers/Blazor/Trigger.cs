@@ -1,11 +1,11 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
 using DomainExperts.Trader.FindTransactions.Triggers.Blazor.InputPort;
-using DomainExperts.Trader.FindTransactions.UserStory.InputPort;
+using static DomainExperts.Trader.FindTransactions.Feature.Ports;
 
 namespace DomainExperts.Trader.FindTransactions.Triggers.Blazor;
 
-public class Trigger(IUserStory service) : ITrigger {
+public class Trigger(IFeature service) : ITrigger {
     public async Task<ViewModel> Execute(string name, string userId, CancellationToken token) {
         var request = new Request {
             Name = name,

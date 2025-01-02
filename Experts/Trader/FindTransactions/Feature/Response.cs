@@ -1,7 +1,7 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
 
-namespace DomainExperts.Trader.FindTransactions.UserStory.InputPort;
+namespace DomainExperts.Trader.FindTransactions.Feature;
 
 public class Response {
     public Guid Id { get; set; } = Guid.NewGuid();
@@ -13,3 +13,4 @@ public class Response {
     public List<Error> Errors { get; set; } = [];
     public List<Transaction> Transactions { get; set; } = [];
 }
+

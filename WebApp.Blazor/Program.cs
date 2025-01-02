@@ -2,7 +2,7 @@ using TradingWebSite.Components;
 using Common.Technology;
 using Common.Technology.Identity;
 using DomainExperts.Trader.EditTransaction;
-using DomainExperts.Trader.FindTransactions;
+using DomainExperts.Trader.FindTransactions.Feature;
 
 namespace TradingWebSite;
 

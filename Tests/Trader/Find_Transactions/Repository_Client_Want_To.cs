@@ -4,9 +4,8 @@ using Common.Extensions;
 using Common.Technology;
 using Common.Technology.EF.App;
 using DomainExperts.Trader.FindTransactions;
-using DomainExperts.Trader.FindTransactions.UserStory.InputPort;
-using DomainExperts.Trader.FindTransactions.UserStory.OutputPort;
-using DomainExperts.Trader.FindTransactions.WorkSteps;
+using DomainExperts.Trader.FindTransactions.Feature;
+using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Tests.Trader.Find_Transactions;
@@ -14,7 +13,7 @@ namespace Tests.Trader.Find_Transactions;
 public class Repository_Client_Want_To {
 
     private Task<List<Transaction>> Talk_To_Unit(IRepository unit) => unit.FindTransactions(Request, Token);
-    public IRepository Create_Unit() => new  Repository(Client);
+    public IRepository Create_Unit() => new Repository(Client);
 
     public Repository.IClient Client;
     public Request Request;

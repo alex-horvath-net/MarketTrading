@@ -1,10 +1,10 @@
 ﻿using Common.Validation.Business.Model;
-using DomainExperts.Trader.FindTransactions.UserStory.InputPort;
+using DomainExperts.Trader.FindTransactions.Feature;
 using FluentValidation;
 
-namespace DomainExperts.Trader.FindTransactions.WorkSteps;
+namespace DomainExperts.Trader.FindTransactions;
 
-public class Validator(Validator.IClient client) : UserStory.OutputPort.IValidator {
+public class Validator(Validator.IClient client) : Feature.OutputPorts.IValidator {
     public async Task<List<Error>> Validate(Request request, CancellationToken token) {
         var clientModel = await client.Validate(request, token);
         var businessModel = clientModel.Select(ToBusiness).ToList();

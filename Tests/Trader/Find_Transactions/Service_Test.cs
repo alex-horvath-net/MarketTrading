@@ -1,9 +1,8 @@
 using Common.Technology;
 using DomainExperts.Trader.FindTransactions;
-using DomainExperts.Trader.FindTransactions.UserStory;
-using DomainExperts.Trader.FindTransactions.UserStory.InputPort;
-using DomainExperts.Trader.FindTransactions.UserStory.OutputPort;
-using DomainExperts.Trader.FindTransactions.WorkSteps;
+using DomainExperts.Trader.FindTransactions.Clock;
+using DomainExperts.Trader.FindTransactions.Feature;
+using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
 
 namespace Tests.Trader.Find_Transactions;
 
@@ -12,9 +11,9 @@ public class Service_Test {
     public IValidator Validator;
     public IFlag Flag;
     public IRepository Repository;
-    public IClock Clock;
-    public WorkFlow Unit;
-    public void Create_Unit() => Unit = new WorkFlow(Validator, Flag, Repository, Clock);
+    public IClockAdapter Clock;
+    public Featrure Unit;
+    public void Create_Unit() => Unit = new Featrure(Validator, Flag, Repository, Clock);
 
 
     public Response Response;
@@ -73,7 +72,7 @@ public class Service_Test {
         var sp = services.BuildServiceProvider();
 
         // Assert
-        var feature = sp.GetService<IUserStory>().Should().NotBeNull();
+        var feature = sp.GetService<IFeature>().Should().NotBeNull();
     }
 
 
@@ -86,7 +85,7 @@ public class Service_Test {
         var flagClient = new Flag.Client();
         Flag = new Flag(flagClient);
 
-        var clockClient = new Clock.Client();
+        var clockClient = new DefaultClockAdapter.Client();
         Clock = new Clock(clockClient);
     }
 

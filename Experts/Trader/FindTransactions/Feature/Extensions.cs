@@ -1,31 +1,27 @@
-﻿using DomainExperts.Trader.FindTransactions.Triggers.Blazor;
+﻿using DomainExperts.Trader.FindTransactions.Clock;
+using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
+using DomainExperts.Trader.FindTransactions.Triggers.Blazor;
 using DomainExperts.Trader.FindTransactions.Triggers.Blazor.InputPort;
-using DomainExperts.Trader.FindTransactions.UserStory;
-using DomainExperts.Trader.FindTransactions.UserStory.InputPort;
-using DomainExperts.Trader.FindTransactions.UserStory.OutputPort;
-using DomainExperts.Trader.FindTransactions.WorkSteps;
-using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainExperts.Trader.FindTransactions;
+namespace DomainExperts.Trader.FindTransactions.Feature;
 
-
-public static class FindTransactionsExtensions {
+public static class Extensions {
     public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager configuration) => services
         .AddScoped<ITrigger, Trigger>()
         .AddService(configuration);
 
     public static IServiceCollection AddService(this IServiceCollection services, ConfigurationManager configuration) => services
-        .AddScoped<IUserStory, WorkFlow>()
+        .AddScoped<IFeature, Featrure>()
         .AddClock()
         .AddFlag()
         .AddValidator()
         .AddRepository();
 
     public static IServiceCollection AddClock(this IServiceCollection services) => services
-        .AddScoped<IClock, Clock>()
-        .AddScoped<Clock.IClient, Clock.Client>();
+        .AddScoped<IClockAdapter, DefaultClockAdapter>()
+        .AddScoped<Clock.IClock, Clock.DefaultClock>();
 
     public static IServiceCollection AddFlag(this IServiceCollection services) => services
         .AddScoped<IFlag, Flag>()
@@ -37,10 +33,8 @@ public static class FindTransactionsExtensions {
 
 
     public static IServiceCollection AddValidator(this IServiceCollection services) => services
-        .AddScoped<UserStory.OutputPort.IValidator, Validator>()
+        .AddScoped<IValidator, Validator>()
         .AddScoped<Validator.IClient, Validator.Client>()
-        .AddScoped<IValidator<Request>, Validator.Client.Technology>();
+        .AddScoped<IValidator, Validator.Client.Technology>();
 }
-
-
 

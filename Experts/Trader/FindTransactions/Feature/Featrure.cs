@@ -1,9 +1,8 @@
-﻿using DomainExperts.Trader.FindTransactions.UserStory.InputPort;
-using DomainExperts.Trader.FindTransactions.UserStory.OutputPort;
+﻿using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
 
-namespace DomainExperts.Trader.FindTransactions.UserStory;
+namespace DomainExperts.Trader.FindTransactions.Feature;
 
-public class WorkFlow(IValidator validator, IFlag flag, IRepository repository, IClock clock) : IUserStory {
+public class Featrure(IValidator validator, IFlag flag, IRepository repository, IClockAdapter clock) : IFeature {
 
     public async Task<Response> Execute(Request request, CancellationToken token) {
         var response = new Response();
@@ -26,3 +25,4 @@ public class WorkFlow(IValidator validator, IFlag flag, IRepository repository, 
         return response;
     }
 }
+

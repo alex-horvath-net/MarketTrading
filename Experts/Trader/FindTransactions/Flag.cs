@@ -1,9 +1,10 @@
-﻿using DomainExperts.Trader.FindTransactions.UserStory.OutputPort;
+﻿using DomainExperts.Trader.FindTransactions.Feature;
+using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
 
-namespace DomainExperts.Trader.FindTransactions.WorkSteps;
+namespace DomainExperts.Trader.FindTransactions;
 
 public class Flag(Flag.IClient client) : IFlag {
-    public bool IsPublic(UserStory.InputPort.Request request, CancellationToken token) {
+    public bool IsPublic(Request request, CancellationToken token) {
         var isPublic = client.IsEnabled();
         token.ThrowIfCancellationRequested();
         return isPublic;
