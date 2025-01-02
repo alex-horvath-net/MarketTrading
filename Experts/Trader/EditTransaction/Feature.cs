@@ -1,4 +1,4 @@
-﻿using Infrastructure.Business.Model;
+﻿using Domain;
 using Infrastructure.Validation.Business.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

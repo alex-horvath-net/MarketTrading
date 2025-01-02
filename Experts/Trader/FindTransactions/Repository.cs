@@ -1,8 +1,8 @@
-﻿using DomainExperts.Trader.FindTransactions.Feature;
+﻿using Domain;
+using DomainExperts.Trader.FindTransactions.Feature;
 using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
 using FluentValidation;
 using Infrastructure.Adapters.App.Data.Model;
-using Infrastructure.Business.Model;
 using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 

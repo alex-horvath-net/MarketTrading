@@ -1,10 +1,10 @@
 ﻿@page "/Account/Manage/ResetAuthenticator"
 
-@    using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Identity;
     using Infrastructure.Adapters.Identity.Data.Model;
     using Infrastructure.Technology.Identity;
-    using Common.Adapters.Identity.Technology;
-    using Common.Adapters.Identity.Adapters.Model
+    using Infrastructure.Adapters.Identity.Technology;
+    using Infrastructure.Adapters.Identity.Adapters.Model
 
 @inject UserManager<User> UserManager
 @inject SignInManager<User> SignInManager

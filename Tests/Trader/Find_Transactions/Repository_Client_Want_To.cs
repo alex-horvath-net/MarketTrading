@@ -1,8 +1,8 @@
-//using Common.Adapters.App.Data.Model;
-//using Common.Business.Model;
-//using Common.Extensions;
-//using Common.Technology;
-//using Common.Technology.EF.App;
+//using Infrastructure.Adapters.App.Data.Model;
+//using Infrastructure.Business.Model;
+//using Infrastructure.Extensions;
+//using Infrastructure.Technology;
+//using Infrastructure.Technology.EF.App;
 //using Experts.Trader.FindTransactions;
 //using Experts.Trader.FindTransactions.Feature;
 //using Experts.Trader.FindTransactions.Feature.OutputPorts;

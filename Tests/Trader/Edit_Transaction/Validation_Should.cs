@@ -1,5 +1,5 @@
-//using Common.Technology;
-//using Common.Validation.Business.Model;
+//using Infrastructure.Technology;
+//using Infrastructure.Validation.Business.Model;
 //using Experts.Trader.EditTransaction;
 
 //namespace Tests.Trader.Edit_Transaction;

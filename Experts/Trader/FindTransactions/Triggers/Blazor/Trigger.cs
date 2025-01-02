@@ -1,6 +1,6 @@
-﻿using DomainExperts.Trader.FindTransactions.Feature;
+﻿using Domain;
+using DomainExperts.Trader.FindTransactions.Feature;
 using DomainExperts.Trader.FindTransactions.Triggers.Blazor.InputPort;
-using Infrastructure.Business.Model;
 using Infrastructure.Validation.Business.Model;
 
 namespace DomainExperts.Trader.FindTransactions.Triggers.Blazor;

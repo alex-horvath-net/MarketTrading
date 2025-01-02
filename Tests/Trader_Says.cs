@@ -1,4 +1,4 @@
-﻿using Experts.Trader;
+﻿using DomainExperts.Trader;
 
 namespace Tests {
     public class Trader_Says {
@@ -6,7 +6,7 @@ namespace Tests {
         public void I_Can_Find_All_Trades() {
             var trader = new Trader();
             
-            var trades = trader.FindAllTrade();
+            var trades = trader.FindAllTransations();
             
             trades.Should().NotBeEmpty();
         }

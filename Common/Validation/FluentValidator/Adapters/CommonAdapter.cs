@@ -14,6 +14,6 @@ public class CommonAdapter<TRequest>(
         return businessModel;
     }
 
-    private static Error ToBusiness(Model model) => new(model.Name, model.Message);
+    private static Error ToBusiness(Model.Model model) => new(model.Name, model.Message);
 }
 

@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Common.Technology.EF.App;
+using Infrastructure.Technology.EF.App;
 using Infrastructure.Adapters.App.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,4 +1,4 @@
-﻿using Infrastructure.Business.Model;
+﻿using Domain;
 
 namespace DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
 

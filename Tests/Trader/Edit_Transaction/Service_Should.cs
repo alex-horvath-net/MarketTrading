@@ -1,4 +1,4 @@
-//using Common.Technology;
+//using Infrastructure.Technology;
 //using Experts.Trader.EditTransaction;
 
 //namespace Tests.Trader.Edit_Transaction;

@@ -1,4 +1,6 @@
 ﻿
+using Domain;
+
 namespace DomainExperts.Trader {
     public class Trader {
         public IEnumerable<Trade> FindAllTransations() {

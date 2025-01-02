@@ -1,5 +1,5 @@
-﻿using Infrastructure.Adapters.App.Data.Model;
-using Infrastructure.Business.Model;
+﻿using Domain;
+using Infrastructure.Adapters.App.Data.Model;
 using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
