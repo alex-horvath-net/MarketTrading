@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Business.Model;
 using Infrastructure.Validation.Business.Model;
 
-namespace Experts.Trader.FindTransactions.Feature;
+namespace DomainExperts.Trader.FindTransactions.Feature;
 
 public class Response {
     public Guid Id { get; set; } = Guid.NewGuid();

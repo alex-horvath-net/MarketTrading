@@ -1,8 +1,7 @@
-﻿using Infrastructure.Business.Model;
-
-namespace Experts.Trader {
+﻿
+namespace DomainExperts.Trader {
     public class Trader {
-        public IEnumerable<Trade> FindAllTrade() {
+        public IEnumerable<Trade> FindAllTransations() {
             return [new() { Name = "Name1" }];
         }
     }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Experts.ComplianceOfficer {
+namespace DomainExperts.ComplianceOfficer {
     internal class GenerateComplianceReports {
         //Collect trade and strategy data.
         //Format reports according to regulatory standards.

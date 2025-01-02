@@ -1,12 +1,12 @@
-﻿using Experts.Trader.FindTransactions.Feature;
-using Experts.Trader.FindTransactions.Feature.OutputPorts;
+﻿using DomainExperts.Trader.FindTransactions.Feature;
+using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
 using FluentValidation;
 using Infrastructure.Adapters.App.Data.Model;
 using Infrastructure.Business.Model;
 using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 
-namespace Experts.Trader.FindTransactions;
+namespace DomainExperts.Trader.FindTransactions;
 
 public class Repository(Repository.IClient client) : IRepository {
     public async Task<List<Trade>> FindTransactions(Request request, CancellationToken token) {

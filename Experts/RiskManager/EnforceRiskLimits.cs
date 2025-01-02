@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Experts.RiskManager {
+namespace DomainExperts.RiskManager {
     internal class EnforceRiskLimits {
         //Set risk thresholds for each strategy.
         //Automatically adjust position sizes or halt trading if limits are exceeded.

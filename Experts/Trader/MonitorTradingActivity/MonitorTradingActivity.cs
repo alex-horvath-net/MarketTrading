@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Experts.Trader.MonitorTradingActivity {
+namespace DomainExperts.Trader.MonitorTradingActivity {
     internal class MonitorTradingActivity {
         //    Access real-time dashboard.
         //Review current positions and P&L.

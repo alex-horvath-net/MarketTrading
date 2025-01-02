@@ -1,8 +1,8 @@
-﻿using Experts.Trader.FindTransactions.Feature;
+﻿using DomainExperts.Trader.FindTransactions.Feature;
 using FluentValidation;
 using Infrastructure.Validation.Business.Model;
 
-namespace Experts.Trader.FindTransactions;
+namespace DomainExperts.Trader.FindTransactions;
 
 public class Validator(Validator.IClient client) : Feature.OutputPorts.IValidator {
     public async Task<List<Error>> Validate(Request request, CancellationToken token) {

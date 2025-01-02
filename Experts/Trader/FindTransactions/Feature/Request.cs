@@ -1,4 +1,4 @@
-﻿namespace Experts.Trader.FindTransactions.Feature;
+﻿namespace DomainExperts.Trader.FindTransactions.Feature;
 
 public class Request {
     public Guid Id { get; set; } = Guid.NewGuid();

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Experts.RiskManager {
+namespace DomainExperts.RiskManager {
     internal class ConductRiskAssessment {
         //        Run stress tests on strategies.
         //Analyze potential impact under different market scenarios.

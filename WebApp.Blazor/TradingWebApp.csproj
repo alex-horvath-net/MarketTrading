@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Infrastructure.csproj" />
-    <ProjectReference Include="..\Experts\Experts.csproj" />
+    <ProjectReference Include="..\Experts\DomainExperts.csproj" />
   </ItemGroup>
 
 </Project>

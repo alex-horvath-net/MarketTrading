@@ -2,9 +2,9 @@
 using Infrastructure.Validation.Business.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using static Experts.Trader.EditTransaction.Feature;
+using static DomainExperts.Trader.EditTransaction.Feature;
 
-namespace Experts.Trader.EditTransaction;
+namespace DomainExperts.Trader.EditTransaction;
 
 public class Feature(IValidator validator, IRepository repository) {
     public async Task<Response> Execute(Request request, CancellationToken token) {

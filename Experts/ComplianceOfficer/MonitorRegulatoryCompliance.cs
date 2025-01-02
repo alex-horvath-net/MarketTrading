@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System;
 
-namespace Experts.ComplianceOfficer {
+namespace DomainExperts.ComplianceOfficer {
     public class MonitorRegulatoryCompliance {
         //        Track all trades against regulatory guidelines.
         //Identify and flag non-compliant activities.

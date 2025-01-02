@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Experts.TechnicalOperator {
+namespace DomainExperts.TechnicalOperator {
     internal class ScaleSystemResources {
         //        Monitor system load and performance.
         //Provision additional resources as required.
