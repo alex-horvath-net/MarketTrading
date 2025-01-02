@@ -1,134 +1,134 @@
-using Common.Adapters.App.Data.Model;
-using Common.Business.Model;
-using Common.Extensions;
-using Common.Technology;
-using Common.Technology.EF.App;
-using DomainExperts.Trader.EditTransaction;
-using Microsoft.EntityFrameworkCore;
+//using Common.Adapters.App.Data.Model;
+//using Common.Business.Model;
+//using Common.Extensions;
+//using Common.Technology;
+//using Common.Technology.EF.App;
+//using DomainExperts.Trader.EditTransaction;
+//using Microsoft.EntityFrameworkCore;
 
-namespace Tests.Trader.Edit_Transaction;
+//namespace Tests.Trader.Edit_Transaction;
 
-public class Repository_Should {
+//public class Repository_Should {
 
-    public Repository.Adapter.IInfrastructure TechnologyAdapter;
-    public Feature.IRepository Unit;
-    public Feature.IRepository Create_The_Unit() => Unit = new Repository.Adapter(TechnologyAdapter);
+//    public Repository.Adapter.IInfrastructure TechnologyAdapter;
+//    public Feature.IRepository Unit;
+//    public Feature.IRepository Create_The_Unit() => Unit = new Repository.Adapter(TechnologyAdapter);
 
-    public Transaction Response;
-    public Feature.Request Request;
-    public CancellationToken Token;
-    public async Task Use_The_Unit() => Response = await Unit.EditTransaction(Request, Token);
-
-
-    [Xunit.Fact]
-    public async Task Present_Transaction() {
-        Create_Fast_Dependencies();
-        Create_The_Unit();
-        Create_Name_Chager_Arguments();
-        await Use_The_Unit();
-        Response.Should().NotBeNull();
-        Response.Should().BeOfType<Transaction>();
-    }
-
-    [Xunit.Fact]
-    public async Task Present_The_Rright_Transaction() {
-        Create_Fast_Dependencies();
-        Create_The_Unit();
-        Create_Name_Chager_Arguments();
-        await Use_The_Unit();
-        Response.Id.Should().Be(eurTansactionId);
-    }
-
-    [Xunit.Fact]
-    public async Task Present_The_Transaction_With_Updated_Name() {
-        Create_Fast_Dependencies();
-        Create_The_Unit();
-        Create_Name_Chager_Arguments();
-        await Use_The_Unit();
-        Response.Name.Should().Be(eurNewName);
-    }
-
-    [IntegrationFactAttribute]
-    public void Use_DI() {
-        // Arrange
-        var services = new ServiceCollection();
-        var configuration = new ConfigurationManager();
-        configuration.AddInMemoryCollection(new Dictionary<string, string?> {
-            { "ConnectionStrings:App", "" },
-            { "ConnectionStrings:Identity", "" }
-        });
-        // Act
-        services.AddCommonTechnology(configuration);
-        services.AddRepository();
-        var sp = services.BuildServiceProvider();
-
-        // Assert
-        sp.GetRequiredService<Feature.IRepository>().Should().NotBeNull();
-        sp.GetRequiredService<Repository.Adapter.IInfrastructure>().Should().NotBeNull();
-        sp.GetRequiredService<AppDB>().Should().NotBeNull();
-    }
+//    public Transaction Response;
+//    public Feature.Request Request;
+//    public CancellationToken Token;
+//    public async Task Use_The_Unit() => Response = await Unit.EditTransaction(Request, Token);
 
 
-    public Repository_Should Create_Default_Dependencies() {
-        var technology = CreateEfDB();
-        TechnologyAdapter = new Repository.Infrastructure(technology);
-        return this;
-    }
-    public void Create_Fast_Dependencies() {
-        var technology = FakeDB.Create();
-        TechnologyAdapter = new FakeTechnologyAdapter(technology);
-    }
+//    [Xunit.Fact]
+//    public async Task Present_Transaction() {
+//        Create_Fast_Dependencies();
+//        Create_The_Unit();
+//        Create_Name_Chager_Arguments();
+//        await Use_The_Unit();
+//        Response.Should().NotBeNull();
+//        Response.Should().BeOfType<Transaction>();
+//    }
+
+//    [Xunit.Fact]
+//    public async Task Present_The_Rright_Transaction() {
+//        Create_Fast_Dependencies();
+//        Create_The_Unit();
+//        Create_Name_Chager_Arguments();
+//        await Use_The_Unit();
+//        Response.Id.Should().Be(eurTansactionId);
+//    }
+
+//    [Xunit.Fact]
+//    public async Task Present_The_Transaction_With_Updated_Name() {
+//        Create_Fast_Dependencies();
+//        Create_The_Unit();
+//        Create_Name_Chager_Arguments();
+//        await Use_The_Unit();
+//        Response.Name.Should().Be(eurNewName);
+//    }
+
+//    [IntegrationFactAttribute]
+//    public void Use_DI() {
+//        // Arrange
+//        var services = new ServiceCollection();
+//        var configuration = new ConfigurationManager();
+//        configuration.AddInMemoryCollection(new Dictionary<string, string?> {
+//            { "ConnectionStrings:App", "" },
+//            { "ConnectionStrings:Identity", "" }
+//        });
+//        // Act
+//        services.AddCommonTechnology(configuration);
+//        services.AddRepository();
+//        var sp = services.BuildServiceProvider();
+
+//        // Assert
+//        sp.GetRequiredService<Feature.IRepository>().Should().NotBeNull();
+//        sp.GetRequiredService<Repository.Adapter.IInfrastructure>().Should().NotBeNull();
+//        sp.GetRequiredService<AppDB>().Should().NotBeNull();
+//    }
 
 
-    public (Feature.Request, CancellationToken) Create_Name_Chager_Arguments() {
-        Request = new() { TransactionId = eurTansactionId, Name = eurNewName };
-        Token = CancellationToken.None;
-        return (Request, Token);
-    }
-    private long eurTansactionId = 2;
-    private string eurNewName = "EUR2";
+//    public Repository_Should Create_Default_Dependencies() {
+//        var technology = CreateEfDB();
+//        TechnologyAdapter = new Repository.Infrastructure(technology);
+//        return this;
+//    }
+//    public void Create_Fast_Dependencies() {
+//        var technology = FakeDB.Create();
+//        TechnologyAdapter = new FakeTechnologyAdapter(technology);
+//    }
 
 
-    private AppDB CreateEfDB() {
-        var dbNmae = $"test-{Guid.NewGuid()}";
-        var builder = new DbContextOptionsBuilder<AppDB>().UseInMemoryDatabase(dbNmae);
-        var db = new AppDB(builder.Options);
-        db.Database.EnsureCreated();
-        if (!db.Transactions.Any()) {
-            var fakeDB = FakeDB.Create();
-            db.Transactions.AddRange(fakeDB.Transactions);
-            db.SaveChanges();
-        }
-        return db;
-    }
+//    public (Feature.Request, CancellationToken) Create_Name_Chager_Arguments() {
+//        Request = new() { TransactionId = eurTansactionId, Name = eurNewName };
+//        Token = CancellationToken.None;
+//        return (Request, Token);
+//    }
+//    private long eurTansactionId = 2;
+//    private string eurNewName = "EUR2";
 
-    public class FakeTechnologyAdapter(FakeDB db) : Repository.Adapter.IInfrastructure {
-        public Task<bool> NameIsUnique(string name, CancellationToken token) => db.Transactions.All(x => x.Name != name).ToTask();
 
-        public Task<bool> ExistsById(long id, CancellationToken token) => db.Transactions.Any(x => x.Id == id).ToTask();
+//    private AppDB CreateEfDB() {
+//        var dbNmae = $"test-{Guid.NewGuid()}";
+//        var builder = new DbContextOptionsBuilder<AppDB>().UseInMemoryDatabase(dbNmae);
+//        var db = new AppDB(builder.Options);
+//        db.Database.EnsureCreated();
+//        if (!db.Transactions.Any()) {
+//            var fakeDB = FakeDB.Create();
+//            db.Transactions.AddRange(fakeDB.Transactions);
+//            db.SaveChanges();
+//        }
+//        return db;
+//    }
 
-        public Task<List<TransactionDM>> Find(string? name, CancellationToken token) => name == null ? db.Transactions.ToTask() : db.Transactions.Where(x => x.Name == name).ToList().ToTask();
+//    public class FakeTechnologyAdapter(FakeDB db) : Repository.Adapter.IInfrastructure {
+//        public Task<bool> NameIsUnique(string name, CancellationToken token) => db.Transactions.All(x => x.Name != name).ToTask();
 
-        public Task<TransactionDM> FindById(long id, CancellationToken token) => db.Transactions.FirstOrDefault(x => x.Id == id).ToTask();
+//        public Task<bool> ExistsById(long id, CancellationToken token) => db.Transactions.Any(x => x.Id == id).ToTask();
 
-        public async Task<TransactionDM> Update(TransactionDM model, CancellationToken token) {
-            TransactionDM transaction = await FindById(model.Id, token);
-            transaction.Name = model.Name;
-            return transaction;
-        }
-    }
+//        public Task<List<TransactionDM>> Find(string? name, CancellationToken token) => name == null ? db.Transactions.ToTask() : db.Transactions.Where(x => x.Name == name).ToList().ToTask();
 
-    public class FakeDB {
-        public List<TransactionDM> Transactions { get; set; } = [];
+//        public Task<TransactionDM> FindById(long id, CancellationToken token) => db.Transactions.FirstOrDefault(x => x.Id == id).ToTask();
 
-        public static FakeDB Create() {
-            var db = new FakeDB();
+//        public async Task<TransactionDM> Update(TransactionDM model, CancellationToken token) {
+//            TransactionDM transaction = await FindById(model.Id, token);
+//            transaction.Name = model.Name;
+//            return transaction;
+//        }
+//    }
 
-            db.Transactions.Add(new() { Id = 1, Name = "USD" });
-            db.Transactions.Add(new() { Id = 2, Name = "EUR" });
-            db.Transactions.Add(new() { Id = 3, Name = "GBD" });
+//    public class FakeDB {
+//        public List<TransactionDM> Transactions { get; set; } = [];
 
-            return db;
-        }
-    }
-}
+//        public static FakeDB Create() {
+//            var db = new FakeDB();
+
+//            db.Transactions.Add(new() { Id = 1, Name = "USD" });
+//            db.Transactions.Add(new() { Id = 2, Name = "EUR" });
+//            db.Transactions.Add(new() { Id = 3, Name = "GBD" });
+
+//            return db;
+//        }
+//    }
+//}

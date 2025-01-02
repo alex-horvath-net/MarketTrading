@@ -2,6 +2,8 @@
 using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
 using DomainExperts.Trader.FindTransactions.Triggers.Blazor;
 using DomainExperts.Trader.FindTransactions.Triggers.Blazor.InputPort;
+using FluentValidation;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,8 +35,8 @@ public static class Extensions {
 
 
     public static IServiceCollection AddValidator(this IServiceCollection services) => services
-        .AddScoped<IValidator, Validator>()
+        .AddScoped<OutputPorts.IValidator, Validator>()
         .AddScoped<Validator.IClient, Validator.Client>()
-        .AddScoped<IValidator, Validator.Client.Technology>();
+        .AddScoped<IValidator<Request>, Validator.Client.Technology>();
 }
 

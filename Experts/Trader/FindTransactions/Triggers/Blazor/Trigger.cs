@@ -1,7 +1,7 @@
 ﻿using Common.Business.Model;
 using Common.Validation.Business.Model;
+using DomainExperts.Trader.FindTransactions.Feature;
 using DomainExperts.Trader.FindTransactions.Triggers.Blazor.InputPort;
-using static DomainExperts.Trader.FindTransactions.Feature.Ports;
 
 namespace DomainExperts.Trader.FindTransactions.Triggers.Blazor;
 
