@@ -1,6 +1,6 @@
-﻿using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
+﻿using Experts.Trader.FindTransactions.Feature.OutputPorts;
 
-namespace DomainExperts.Trader.FindTransactions.Feature;
+namespace Experts.Trader.FindTransactions.Feature;
 
 public class Featrure(IValidator validator, IFlag flag, IRepository repository, IClockAdapter clock) : IFeature {
 

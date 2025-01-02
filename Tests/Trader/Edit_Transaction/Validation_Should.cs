@@ -1,6 +1,6 @@
 //using Common.Technology;
 //using Common.Validation.Business.Model;
-//using DomainExperts.Trader.EditTransaction;
+//using Experts.Trader.EditTransaction;
 
 //namespace Tests.Trader.Edit_Transaction;
 

@@ -1,6 +1,7 @@
 ﻿using Common.Business.Model;
+using Experts.Trader.FindTransactions.Feature;
 
-namespace DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
+namespace Experts.Trader.FindTransactions.Feature.OutputPorts;
 
 public interface IRepository { Task<List<Transaction>> FindTransactions(Request request, CancellationToken token); }
 

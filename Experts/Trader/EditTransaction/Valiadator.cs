@@ -2,7 +2,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainExperts.Trader.EditTransaction;
+namespace Experts.Trader.EditTransaction;
 
 
 public class Valiadator {

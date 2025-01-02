@@ -1,8 +1,8 @@
 //using Common.Technology;
-//using DomainExperts.Trader.FindTransactions;
-//using DomainExperts.Trader.FindTransactions.Clock;
-//using DomainExperts.Trader.FindTransactions.Feature;
-//using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
+//using Experts.Trader.FindTransactions;
+//using Experts.Trader.FindTransactions.Clock;
+//using Experts.Trader.FindTransactions.Feature;
+//using Experts.Trader.FindTransactions.Feature.OutputPorts;
 
 //namespace Tests.Trader.Find_Transactions;
 

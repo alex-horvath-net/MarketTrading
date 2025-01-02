@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradingWebSite", "WebApp.Blazor\TradingWebSite.csproj", "{94202DB0-C21C-4C30-8382-7B2B7FB9B614}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainExperts", "Experts\DomainExperts.csproj", "{2A0BAA8D-4FB2-47AC-AD2F-9EE6036E260B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Experts", "Experts\Experts.csproj", "{2A0BAA8D-4FB2-47AC-AD2F-9EE6036E260B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

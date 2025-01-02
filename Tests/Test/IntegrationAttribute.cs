@@ -1,4 +1,6 @@
-﻿namespace Tests;
+﻿using Tests;
+
+namespace Common.Test;
 public class IntegrationFactAttribute : Xunit.FactAttribute {
     public IntegrationFactAttribute() {
         if (TestConfig.MaxTestLevel < TestLevel.Integration)

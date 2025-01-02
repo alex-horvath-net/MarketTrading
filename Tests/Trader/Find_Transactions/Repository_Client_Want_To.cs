@@ -3,9 +3,9 @@
 //using Common.Extensions;
 //using Common.Technology;
 //using Common.Technology.EF.App;
-//using DomainExperts.Trader.FindTransactions;
-//using DomainExperts.Trader.FindTransactions.Feature;
-//using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
+//using Experts.Trader.FindTransactions;
+//using Experts.Trader.FindTransactions.Feature;
+//using Experts.Trader.FindTransactions.Feature.OutputPorts;
 //using Microsoft.EntityFrameworkCore;
 
 //namespace Tests.Trader.Find_Transactions;

@@ -3,7 +3,7 @@
 //using Common.Extensions;
 //using Common.Technology;
 //using Common.Technology.EF.App;
-//using DomainExperts.Trader.EditTransaction;
+//using Experts.Trader.EditTransaction;
 //using Microsoft.EntityFrameworkCore;
 
 //namespace Tests.Trader.Edit_Transaction;

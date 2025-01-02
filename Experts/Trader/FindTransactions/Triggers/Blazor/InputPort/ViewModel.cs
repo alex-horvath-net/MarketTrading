@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Common.Adapters.Blazor;
 
-namespace DomainExperts.Trader.FindTransactions.Triggers.Blazor.InputPort;
+namespace Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
 
 public record ViewModel {
     public MetaVM Meta { get; set; }

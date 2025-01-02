@@ -4,7 +4,7 @@ using Common.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainExperts.Trader.EditTransaction;
+namespace Experts.Trader.EditTransaction;
 
 public class Repository {
     public class Adapter(Adapter.IInfrastructure client) : Feature.IRepository {

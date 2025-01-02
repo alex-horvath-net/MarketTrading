@@ -1,7 +1,7 @@
-﻿using DomainExperts.Trader.FindTransactions.Feature;
-using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
+﻿using Experts.Trader.FindTransactions.Feature;
+using Experts.Trader.FindTransactions.Feature.OutputPorts;
 
-namespace DomainExperts.Trader.FindTransactions;
+namespace Experts.Trader.FindTransactions;
 
 public class Flag(Flag.IClient client) : IFlag {
     public bool IsPublic(Request request, CancellationToken token) {

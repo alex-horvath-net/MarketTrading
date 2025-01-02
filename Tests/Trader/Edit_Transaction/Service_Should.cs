@@ -1,5 +1,5 @@
 //using Common.Technology;
-//using DomainExperts.Trader.EditTransaction;
+//using Experts.Trader.EditTransaction;
 
 //namespace Tests.Trader.Edit_Transaction;
 
