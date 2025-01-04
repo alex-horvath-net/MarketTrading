@@ -1,7 +1,6 @@
 using Domain;
 using DomainExperts.Trader;
 using Microsoft.AspNetCore.Mvc;
-using TradingWebApi;
 
 namespace TradingWebApi.Controllers {
     [ApiController]

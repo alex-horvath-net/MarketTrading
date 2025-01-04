@@ -1,0 +1,6 @@
+@BaseAddress = https://localhost:7095
+
+GET {{BaseAddress}}/trader/transations
+Accept: application/json
+
+###
