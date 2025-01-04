@@ -1,9 +1,9 @@
-﻿using Domain;
-using DomainExperts.Trader.FindTransactions.Feature;
-using DomainExperts.Trader.FindTransactions.Triggers.Blazor.InputPort;
+﻿using BusinesActors.Trader.FindTransactions.Feature;
+using BusinesActors.Trader.FindTransactions.Triggers.Blazor.InputPort;
+using BusinessDomain;
 using Infrastructure.Validation.Business.Model;
 
-namespace DomainExperts.Trader.FindTransactions.Triggers.Blazor;
+namespace BusinesActors.Trader.FindTransactions.Triggers.Blazor;
 
 public class Trigger(IFeature service) : ITrigger {
     public async Task<ViewModel> Execute(string name, string userId, CancellationToken token) {

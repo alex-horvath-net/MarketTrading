@@ -1,6 +1,6 @@
-﻿using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
+﻿using BusinesActors.Trader.FindTransactions.Feature.OutputPorts;
 
-namespace DomainExperts.Trader.FindTransactions.Clock;
+namespace BusinesActors.Trader.FindTransactions.Clock;
 
 public class DefaultClockAdapter(IClock client) : IClockAdapter {
     public DateTime GetTime() => client.Now;

@@ -1,3 +1,3 @@
-﻿namespace DomainExperts.Trader.FindTransactions.Clock;
+﻿namespace BusinesActors.Trader.FindTransactions.Clock;
 
 public interface IClock { DateTime Now { get; } }

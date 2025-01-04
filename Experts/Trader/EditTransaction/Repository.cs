@@ -1,10 +1,10 @@
-﻿using Domain;
+﻿using BusinessDomain;
 using Infrastructure.Adapters.App.Data.Model;
 using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainExperts.Trader.EditTransaction;
+namespace BusinesActors.Trader.EditTransaction;
 
 public class Repository {
     public class Adapter(Adapter.IInfrastructure client) : Feature.IRepository {

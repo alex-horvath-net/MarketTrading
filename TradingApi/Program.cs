@@ -1,4 +1,4 @@
-using DomainExperts.Trader;
+using BusinesActors.Trader;
 
 var builder = WebApplication.CreateBuilder(args);
 

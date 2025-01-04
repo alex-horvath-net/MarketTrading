@@ -1,6 +1,6 @@
 ﻿using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace DomainExperts.Backtester {
+namespace BusinesActors.Backtester {
     public class ConductStrategyBacktest {
         //        Select historical data period.
         //Run the strategy on historical data.

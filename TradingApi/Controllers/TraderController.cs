@@ -1,16 +1,18 @@
-using Domain;
-using DomainExperts.Trader;
+using BusinesActors.Trader;
+using BusinessDomain;
 using Microsoft.AspNetCore.Mvc;
-using TradingWebApi;
 
-namespace TradingWebApi.Controllers {
-    [ApiController]
-    [Route("[controller]")]
-    public class TraderController(Trader trader) : ControllerBase {
+namespace TradingWebApi.Controllers; 
+[ApiController]
+[Route("[controller]")]
+public class TraderController(Trader trader) : ControllerBase {
 
-        [HttpGet(template: "transations", Name = "FindAllTransations")]
-        public IEnumerable<Trade> Get() {
-            return trader.FindAllTransations();
-        }
+    [HttpGet("transations")]
+    public IEnumerable<Trade> Get() {
+        return trader.FindAllTransations();
+    }
+
+    [HttpHead("ping")]
+    public void Head() {
     }
 }

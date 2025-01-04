@@ -1,4 +1,4 @@
-﻿namespace DomainExperts.Trader.FindTransactions.Clock;
+﻿namespace BusinesActors.Trader.FindTransactions.Clock;
 
 public class DefaultClock : IClock {
     public DateTime Now => DateTime.Now;

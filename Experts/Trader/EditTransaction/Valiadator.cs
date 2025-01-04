@@ -2,7 +2,7 @@
 using Infrastructure.Validation.Business.Model;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainExperts.Trader.EditTransaction;
+namespace BusinesActors.Trader.EditTransaction;
 
 
 public class Valiadator {

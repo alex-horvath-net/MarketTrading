@@ -1,4 +1,4 @@
-﻿namespace DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
+﻿namespace BusinesActors.Trader.FindTransactions.Feature.OutputPorts;
 
 public interface IClockAdapter { DateTime GetTime(); }
 

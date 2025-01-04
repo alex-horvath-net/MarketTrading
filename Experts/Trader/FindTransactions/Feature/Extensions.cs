@@ -1,13 +1,13 @@
-﻿using DomainExperts.Trader.FindTransactions.Clock;
-using DomainExperts.Trader.FindTransactions.Feature.OutputPorts;
-using DomainExperts.Trader.FindTransactions.Triggers.Blazor;
-using DomainExperts.Trader.FindTransactions.Triggers.Blazor.InputPort;
+﻿using BusinesActors.Trader.FindTransactions.Clock;
+using BusinesActors.Trader.FindTransactions.Feature.OutputPorts;
+using BusinesActors.Trader.FindTransactions.Triggers.Blazor;
+using BusinesActors.Trader.FindTransactions.Triggers.Blazor.InputPort;
 using FluentValidation;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DomainExperts.Trader.FindTransactions.Feature;
+namespace BusinesActors.Trader.FindTransactions.Feature;
 
 public static class Extensions {
     public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager configuration) => services
