@@ -1,6 +1,0 @@
-@YourBank.Infrastructure.OrderManagement_HostAddress = http://localhost:5182
-
-GET {{YourBank.Infrastructure.OrderManagement_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
