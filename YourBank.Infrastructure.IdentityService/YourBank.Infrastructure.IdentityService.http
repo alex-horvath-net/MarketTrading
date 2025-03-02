@@ -1,0 +1,6 @@
+@YourBank.Infrastructure.IdentityService_HostAddress = http://localhost:5141
+
+GET {{YourBank.Infrastructure.IdentityService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

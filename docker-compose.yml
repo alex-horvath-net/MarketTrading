@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: yourbank_sql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Your_Pass123
+    ports:
+      - "1433:1433"
+    # For simplicity, no volumes, but in production use persistent storage.
+  
+  identityservice:
+    build:
+      context: .
+      dockerfile: src/YourBank.IdentityService/Dockerfile
+    container_name: yourbank_identityservice
+    depends_on:
+      - sqlserver
+    environment:
+      # Connection string to SQL in the docker-compose network
+      - ConnectionStrings__IdentityDb=Server=sqlserver,1433;Database=YourBankIdentityDb;User=sa;Password=Your_Pass123;TrustServerCertificate=true
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5000:80"  # map container port 80 to host port 5000
