@@ -3,12 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6FB86502-8350-4156-9ECE-A7D5C93F71F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.IdentityService", "src\YourBank.Infrastructure.IdentityService\YourBank.Infrastructure.IdentityService.csproj", "{0A2C6921-4D31-468B-9CEF-4F4249FACCFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{86DD53DB-646C-4E4D-A14C-9EDEC21D00F8}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.IdentityService", "src\YourBank.Infrastructure.IdentityService\YourBank.Infrastructure.IdentityService.csproj", "{0A2C6921-4D31-468B-9CEF-4F4249FACCFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Business.Domain", "src\YourBank.Business.Domain\YourBank.Business.Domain.csproj", "{C9C74343-6876-4204-9CC0-1D6B291FD142}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Business.Experts", "src\YourBank.Business.Experts\YourBank.Business.Experts.csproj", "{334884E7-0B36-45E6-8C90-1085E179CE44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure", "src\YourBank.Infrastructure\YourBank.Infrastructure.csproj", "{1C3D58F6-7B16-49D3-BC19-F4153AA66FDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.TradingGateway", "src\YourBank.Infrastructure.Gateway\YourBank.Infrastructure.TradingGateway.csproj", "{FFFA9268-2DE0-4204-B8D6-15AC58E95808}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.TradingPortal", "src\YourBank.Infrastructure.TradingPortal\YourBank.Infrastructure.TradingPortal.csproj", "{337BB6A1-B91E-4F36-9E35-88A1077CBB58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +30,26 @@ Global
 		{0A2C6921-4D31-468B-9CEF-4F4249FACCFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A2C6921-4D31-468B-9CEF-4F4249FACCFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A2C6921-4D31-468B-9CEF-4F4249FACCFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9C74343-6876-4204-9CC0-1D6B291FD142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9C74343-6876-4204-9CC0-1D6B291FD142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9C74343-6876-4204-9CC0-1D6B291FD142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9C74343-6876-4204-9CC0-1D6B291FD142}.Release|Any CPU.Build.0 = Release|Any CPU
+		{334884E7-0B36-45E6-8C90-1085E179CE44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{334884E7-0B36-45E6-8C90-1085E179CE44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{334884E7-0B36-45E6-8C90-1085E179CE44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{334884E7-0B36-45E6-8C90-1085E179CE44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C3D58F6-7B16-49D3-BC19-F4153AA66FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C3D58F6-7B16-49D3-BC19-F4153AA66FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C3D58F6-7B16-49D3-BC19-F4153AA66FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C3D58F6-7B16-49D3-BC19-F4153AA66FDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFFA9268-2DE0-4204-B8D6-15AC58E95808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFFA9268-2DE0-4204-B8D6-15AC58E95808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFFA9268-2DE0-4204-B8D6-15AC58E95808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFFA9268-2DE0-4204-B8D6-15AC58E95808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{337BB6A1-B91E-4F36-9E35-88A1077CBB58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{337BB6A1-B91E-4F36-9E35-88A1077CBB58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{337BB6A1-B91E-4F36-9E35-88A1077CBB58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{337BB6A1-B91E-4F36-9E35-88A1077CBB58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

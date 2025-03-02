@@ -1,0 +1,38 @@
+﻿@page "/trader/transactions"
+
+@    using System.ComponentModel;
+@    using BusinesActors.Trader.FindTransactions.Triggers.Blazor.InputPort;
+    using YourBank.Business.Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
+
+@inject NavigationManager NavigationManager
+@inject ITrigger findTransactions;
+
+<PageTitle>Trade Execution Page</PageTitle>
+
+<p>
+    This page allows Traders to execute manual trades when necessary, providing a more hands-on approach.
+</p>
+
+<p>
+    <DataList Model="viewModel.Transactions"></DataList>
+</p>
+Elements:
+<br />
+Order Entry Form: Traders can select the asset, choose the order type (market, limit, stop), and specify the quantity and price.
+<br />
+Order Book: Displays the real-time order book for the selected asset, allowing Traders to see market depth and place trades accordingly.
+<br />
+<br />
+
+@code {
+    protected override async Task OnInitializedAsync() => viewModel = await findTransactions.Execute(Name, UserId, Token);
+
+    ViewModel? viewModel;
+    string Name; 
+    string UserId => HttpContext?.User?.Identity?.Name ?? "123";
+    [CascadingParameter]
+    public HttpContext HttpContext { get; set; }
+    CancellationTokenSource tcs = new();
+    CancellationToken Token => tcs.Token;    
+}
+
