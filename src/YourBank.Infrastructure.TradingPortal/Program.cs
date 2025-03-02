@@ -1,4 +1,4 @@
-using TradingWebApp.Components;
+using YourBank.Infrastructure.TradingPortal.Components;
 using YourBank.Business.Experts.Trader.FindTransactions.Feature;
 using YourBank.Business.Experts.Trader.EditTransaction;
 using YourBank.Infrastructure.Technology;
