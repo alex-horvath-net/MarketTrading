@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\YourBank.Business.Domain\YourBank.Business.Domain.csproj" />
-    <ProjectReference Include="..\src\YourBank.Business.Experts\YourBank.Business.Experts.csproj" />
+    <ProjectReference Include="..\YourBank.Business.Domain\YourBank.Business.Domain.csproj" />
+    <ProjectReference Include="..\YourBank.Business.Experts\YourBank.Business.Experts.csproj" />
   </ItemGroup>
 
 </Project>

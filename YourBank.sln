@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.Tra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.TradingPortal", "src\YourBank.Infrastructure.TradingPortal\YourBank.Infrastructure.TradingPortal.csproj", "{337BB6A1-B91E-4F36-9E35-88A1077CBB58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.OrderManagement", "src\YourBank.Infrastructure.OrderManagement\YourBank.Infrastructure.OrderManagement.csproj", "{4F51910A-1FC2-4203-8405-6DD7F0C59361}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.OrderManagement", "src\YourBank.Infrastructure.OrderManagement\YourBank.Infrastructure.OrderManagement.csproj", "{A23BFEAB-B785-4142-9DE8-7C312BAF347C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,10 +52,10 @@ Global
 		{337BB6A1-B91E-4F36-9E35-88A1077CBB58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{337BB6A1-B91E-4F36-9E35-88A1077CBB58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{337BB6A1-B91E-4F36-9E35-88A1077CBB58}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F51910A-1FC2-4203-8405-6DD7F0C59361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F51910A-1FC2-4203-8405-6DD7F0C59361}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F51910A-1FC2-4203-8405-6DD7F0C59361}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F51910A-1FC2-4203-8405-6DD7F0C59361}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A23BFEAB-B785-4142-9DE8-7C312BAF347C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A23BFEAB-B785-4142-9DE8-7C312BAF347C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A23BFEAB-B785-4142-9DE8-7C312BAF347C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A23BFEAB-B785-4142-9DE8-7C312BAF347C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
