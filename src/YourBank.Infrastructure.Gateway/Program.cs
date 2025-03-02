@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-//using Microsoft.ReverseProxy.Abstractions;
-using System.Collections.Generic;
-using Yarp.ReverseProxy.Configuration;
+﻿using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,21 +17,15 @@ app.UseRouting();
 // e.g. app.UseMiddleware<CustomLoggingMiddleware>();
 
 // Map YARP reverse proxy to handle all routes matching the defined routes.
-app.UseEndpoints(endpoints => {
-    endpoints.MapReverseProxy();
-});
+app.MapReverseProxy();
 
 app.Run();
 
-// ------------------------------------------------------------------
-// Helper Methods: Define In‑Memory Routes and Clusters for YARP
-// ------------------------------------------------------------------
 
 IReadOnlyList<RouteConfig> GetRoutes() => new List<RouteConfig>
 {
     // Route for IdentityService
-    new RouteConfig
-    {
+    new() {
         RouteId = "identity_route",
         ClusterId = "identity_cluster",
         Match = new RouteMatch
@@ -45,8 +34,7 @@ IReadOnlyList<RouteConfig> GetRoutes() => new List<RouteConfig>
         }
     },
     // Route for OrderManagement (or any additional backend service)
-    new RouteConfig
-    {
+    new() {
         RouteId = "orders_route",
         ClusterId = "orders_cluster",
         Match = new RouteMatch
@@ -59,7 +47,7 @@ IReadOnlyList<RouteConfig> GetRoutes() => new List<RouteConfig>
 IReadOnlyList<ClusterConfig> GetClusters() => new List<ClusterConfig>
 {
     // Cluster pointing to the IdentityService container
-    new ClusterConfig
+    new ()
     {
         ClusterId = "identity_cluster",
         Destinations = new Dictionary<string, DestinationConfig>
@@ -68,7 +56,7 @@ IReadOnlyList<ClusterConfig> GetClusters() => new List<ClusterConfig>
         }
     },
     // Cluster pointing to the OrderManagement service (as an example)
-    new ClusterConfig
+    new ()
     {
         ClusterId = "orders_cluster",
         Destinations = new Dictionary<string, DestinationConfig>
