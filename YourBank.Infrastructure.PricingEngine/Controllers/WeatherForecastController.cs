@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace YourBank.Infrastructure.IdentityService.Controllers {
+namespace YourBank.Infrastructure.PricingEngine.Controllers {
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase {

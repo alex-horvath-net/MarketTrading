@@ -1,8 +1,12 @@
+using System.Reflection.Metadata;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
+// Handles user authentication and authorization.
+// It integrates with Azure AD for internal users and manages local accounts for external stakeholders.
+// Issues your own “YourBank” JWT tokens.
+    
+    builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

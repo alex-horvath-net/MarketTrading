@@ -1,0 +1,6 @@
+@YourBank.Infrastructure.RiskService_HostAddress = http://localhost:5039
+
+GET {{YourBank.Infrastructure.RiskService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

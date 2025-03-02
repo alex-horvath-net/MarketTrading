@@ -5,7 +5,8 @@ using YourBank.Infrastructure.Technology;
 using YourBank.Infrastructure.Technology.Identity;
 
 namespace YourBank.Infrastructure.TradingPortal;
-
+// A front-end application (Blazor Server) for traders.
+// It provides user interfaces for login, live market data, order entry, and status tracking.
 public class Program {
     public static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);

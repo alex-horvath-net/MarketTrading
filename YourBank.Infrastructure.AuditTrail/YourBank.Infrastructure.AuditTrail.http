@@ -1,0 +1,6 @@
+@YourBank.Infrastructure.AuditTrail_HostAddress = http://localhost:5037
+
+GET {{YourBank.Infrastructure.AuditTrail_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

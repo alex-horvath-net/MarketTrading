@@ -1,4 +1,4 @@
-namespace YourBank.Infrastructure.IdentityService {
+namespace YourBank.Infrastructure.AuditTrail {
     public class WeatherForecast {
         public DateOnly Date { get; set; }
 

@@ -1,4 +1,6 @@
 ﻿using Yarp.ReverseProxy.Configuration;
+// An API gateway built with YARP that centralizes routing, logging, and security for all client requests.
+// It abstracts the internal microservice topology from external consumers.
 
 var builder = WebApplication.CreateBuilder(args);
 

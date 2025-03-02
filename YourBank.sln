@@ -22,6 +22,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.Tra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.OrderManagement", "src\YourBank.Infrastructure.OrderManagement\YourBank.Infrastructure.OrderManagement.csproj", "{A23BFEAB-B785-4142-9DE8-7C312BAF347C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.PricingEngine", "YourBank.Infrastructure.PricingEngine\YourBank.Infrastructure.PricingEngine.csproj", "{F676A253-578F-4A33-A331-D5C344476C31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.RiskService", "YourBank.Infrastructure.RiskService\YourBank.Infrastructure.RiskService.csproj", "{09EC35ED-6383-493B-AB46-DF9EFF12003C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.ComplianceService", "YourBank.Infrastructure.ComplianceService\YourBank.Infrastructure.ComplianceService.csproj", "{A9339C02-893C-458F-9D3D-E11B5D7CA422}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YourBank.Infrastructure.AuditTrail", "YourBank.Infrastructure.AuditTrail\YourBank.Infrastructure.AuditTrail.csproj", "{D3974561-AB72-4AA9-B183-23596A2761A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +64,22 @@ Global
 		{A23BFEAB-B785-4142-9DE8-7C312BAF347C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A23BFEAB-B785-4142-9DE8-7C312BAF347C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A23BFEAB-B785-4142-9DE8-7C312BAF347C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F676A253-578F-4A33-A331-D5C344476C31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F676A253-578F-4A33-A331-D5C344476C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F676A253-578F-4A33-A331-D5C344476C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F676A253-578F-4A33-A331-D5C344476C31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09EC35ED-6383-493B-AB46-DF9EFF12003C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09EC35ED-6383-493B-AB46-DF9EFF12003C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09EC35ED-6383-493B-AB46-DF9EFF12003C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09EC35ED-6383-493B-AB46-DF9EFF12003C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9339C02-893C-458F-9D3D-E11B5D7CA422}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9339C02-893C-458F-9D3D-E11B5D7CA422}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9339C02-893C-458F-9D3D-E11B5D7CA422}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9339C02-893C-458F-9D3D-E11B5D7CA422}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3974561-AB72-4AA9-B183-23596A2761A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3974561-AB72-4AA9-B183-23596A2761A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3974561-AB72-4AA9-B183-23596A2761A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3974561-AB72-4AA9-B183-23596A2761A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

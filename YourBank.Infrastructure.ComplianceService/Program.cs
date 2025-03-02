@@ -1,16 +1,17 @@
-using YourBank.Business.Domain;
-// Manages trade orders by handling order placement, cancellation, and tracking execution statuses.
-// It integrates with external exchange APIs (e.g., via FIX).
+// Performs AML/KYC checks and monitors trades for regulatory compliance
+// using external compliance providers (e.g., Dow Jones Risk & Compliance).
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<Trade>();
+// Add services to the container.
 
 builder.Services.AddControllers();
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
     app.MapOpenApi();
 }
