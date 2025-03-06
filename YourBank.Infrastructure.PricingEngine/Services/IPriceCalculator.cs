@@ -1,5 +1,7 @@
-﻿namespace YourBank.Infrastructure.PricingEngine.Services {
+﻿using YourBank.Infrastructure.PricingEngine.Models;
+
+namespace YourBank.Infrastructure.PricingEngine.Services {
     public interface IPriceCalculator {
-        Task<decimal> CalculatePriceAsync(string symbol, decimal strike, double timeToExpiry);
+        Task<OptionPricingResult> CalculatePriceAsync(string symbol, decimal strike, double timeToExpiry);
     }
 }

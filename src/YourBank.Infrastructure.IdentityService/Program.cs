@@ -118,7 +118,7 @@ app.MapPost("/local/login", async (
         if (!signInResult.Succeeded)
             return Results.BadRequest("Invalid credentials.");
 
-        var token = await GenerateYourBankTokenAsync(user, userManager);
+        var token = await user.GenerateYourBankTokenAsync( userManager);
         return Results.Ok(new { Token = token });
     });
 
@@ -139,8 +139,8 @@ app.MapPost("/token/exchange", async (
 
         // Extract unique identifier and email from external claims
         var externalUserId = authResult.Principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var externalEmail = authResult.Principal?.FindFirst(ClaimTypes.Email)?.Value
-                           ?? authResult.Principal?.FindFirst("preferred_username")?.Value;
+        var externalEmail = authResult.Principal?.FindFirst(ClaimTypes.Email)?.Value                    
+                         ?? authResult.Principal?.FindFirst("preferred_username")?.Value;
 
         if (string.IsNullOrEmpty(externalUserId))
             return Results.BadRequest("External user identifier not found.");
@@ -162,41 +162,48 @@ app.MapPost("/token/exchange", async (
         }
 
         // Issue a YourBank JWT token for the local user
-        var token = await GenerateYourBankTokenAsync(localUser, userManager);
+        var token = await localUser.GenerateYourBankTokenAsync(userManager);
         return Results.Ok(new { Token = token });
     })
-// Note: You may remove the provider requirement from authorization here if needed.
 .RequireAuthorization();
 
-// Run the application
 app.Run();
 
-// ==========================
-// 6. Helper Methods
-// ==========================
-async Task<string> GenerateYourBankTokenAsync(IdentityUser user, UserManager<IdentityUser> userManager) {
-    // Get roles to embed in the token
-    var roles = await userManager.GetRolesAsync(user);
-    var claims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName ?? "")
-    };
+public static class Extensions {
+    public static async Task<string> GenerateYourBankTokenAsync(this IdentityUser user, UserManager<IdentityUser> userManager) {
 
-    foreach (var role in roles) {
-        claims.Add(new Claim(ClaimTypes.Role, role));
+        var claims = await user.GetClaimsAsync(userManager);
+
+        var token = claims.GetJwtSecurityToken();
+
+        var jwt =  new JwtSecurityTokenHandler().WriteToken(token);
+        
+        return jwt;
     }
 
-    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSecureKeyForLocalTokens!123"));
-    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+    public static async Task<IEnumerable<Claim>> GetClaimsAsync(this IdentityUser user, UserManager<IdentityUser> userManager) {
+        var claims = new List<Claim>();
+        claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
+        claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""));
 
-    var token = new JwtSecurityToken(
-        issuer: "https://identity.yourbank.com",
-        audience: "YourBankMicroservices",
-        claims: claims,
-        expires: DateTime.UtcNow.AddHours(1),
-        signingCredentials: creds
-    );
+        var roles = await userManager.GetRolesAsync(user);
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-    return new JwtSecurityTokenHandler().WriteToken(token);
+        return claims;
+    }
+
+    public static JwtSecurityToken GetJwtSecurityToken(this IEnumerable<Claim> claims) {
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSecureKeyForLocalTokens!123"));
+        var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: "https://identity.yourbank.com",
+            audience: "YourBankMicroservices",
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(1),
+            signingCredentials: signingCredentials
+        );
+
+        return token;
+    }
 }
