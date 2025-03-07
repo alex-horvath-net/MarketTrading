@@ -1,6 +1,3 @@
-// Handles user authentication and authorization.
-// It integrates with Azure AD for internal users and manages local accounts for external stakeholders.
-// Issues your own “YourBank” JWT tokens.
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -8,202 +5,148 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using YourBank.Infrastructure.IdentityService.Data;
+using YourBank.Infrastructure.IdentityService.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var sqlServerConnectionString = builder.Configuration.GetConnectionString("IdentityDb");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(sqlServerConnectionString));
+// Bind configuration sections using the Options Pattern.
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JWT"));
+builder.Services.Configure<AzureAdOptions>(builder.Configuration.GetSection("AzureAd"));
+builder.Services.Configure<FacebookOptions>(builder.Configuration.GetSection("Facebook"));
+
+// Configure EF Core & Identity (production password policies applied).
+var connectionString = builder.Configuration.GetConnectionString("IdentityDb")
+    ?? throw new Exception("Missing IdentityDb connection string");
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
-    options.User.RequireUniqueEmail = true;
-    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-
-
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 8;
     options.Password.RequireDigit = true;
     options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredUniqueChars = 1;
-    options.Password.RequiredLength = 6;
-
-    options.SignIn.RequireConfirmedEmail = true;
-    options.SignIn.RequireConfirmedAccount = true;
-    options.SignIn.RequireConfirmedPhoneNumber = true;
-
-    options.Lockout.AllowedForNewUsers = true;
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 })
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+// Configure authentication using JWT, Azure AD, and Facebook.
 builder.Services.AddAuthentication(options => {
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer("YourBank", options => {
+    var jwtOptions = builder.Configuration.GetSection("JWT").Get<JwtOptions>();
     options.TokenValidationParameters = new TokenValidationParameters {
         ValidateIssuer = true,
-        ValidIssuer = "https://identity.yourbank.com",
+        ValidIssuer = jwtOptions.Issuer,
         ValidateAudience = true,
-        ValidAudience = "YourBankMicroservices",
+        ValidAudience = jwtOptions.Audience,
         ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSecureKeyForLocalTokens!123"))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
+        ValidateIssuerSigningKey = true
     };
 })
-
 .AddOpenIdConnect("AzureAD", options => {
-    // Replace these settings with your Azure AD app registration values
-    options.Authority = "https://login.microsoftonline.com/<YOUR_TENANT_ID>/v2.0";
-    options.ClientId = "<YOUR_AZURE_AD_CLIENT_ID>";
-    options.ClientSecret = "<YOUR_AZURE_AD_CLIENT_SECRET>";
+    var azureAdOptions = builder.Configuration.GetSection("AzureAd").Get<AzureAdOptions>();
+    options.Authority = azureAdOptions.Instance + azureAdOptions.TenantId;
+    options.ClientId = azureAdOptions.ClientId;
+    options.ClientSecret = azureAdOptions.ClientSecret;
     options.ResponseType = "code";
     options.SaveTokens = true;
 })
-
 .AddFacebook("Facebook", options => {
-    // Replace with your Facebook App settings
-    options.AppId = "<YOUR_FACEBOOK_APP_ID>";
-    options.AppSecret = "<YOUR_FACEBOOK_APP_SECRET>";
+    var fbOptions = builder.Configuration.GetSection("Facebook").Get<FacebookOptions>();
+    options.AppId = fbOptions.AppId;
+    options.AppSecret = fbOptions.AppSecret;
 });
 
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+// Apply migrations automatically. In production, consider a controlled migration process.
 using (var scope = app.Services.CreateScope()) {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
-// Middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ==========================
-// 5. Define Endpoints
-// ==========================
+// Local registration endpoint with full error checking.
+app.MapPost("/local/register", handler: async (UserManager<IdentityUser> userManager, string email, string password) => {
+    var user = new IdentityUser { UserName = email, Email = email };
+    var result = await userManager.CreateAsync(user, password);
+    if (!result.Succeeded) {
+        return Results.BadRequest(new { Errors = result.Errors.Select(e => e.Description) });
+    }
+    await userManager.AddToRoleAsync(user, "Trader");
+    return Results.Ok(new { Message = "Registration successful." });
+});
 
-// 5.1 Local Registration (for external users)
-app.MapPost("/local/register", async (
-    UserManager<IdentityUser> userManager,
-    string email,
-    string password) => {
-        var existing = await userManager.FindByEmailAsync(email);
-        if (existing != null)
-            return Results.BadRequest("User already exists.");
+// Local login endpoint that issues a JWT.
+app.MapPost("/local/login", async (UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IOptions<JwtOptions> jwtOptionsAccessor, string email, string password) => {
+    var user = await userManager.FindByEmailAsync(email);
+    if (user == null)
+        return Results.BadRequest("Invalid credentials.");
+    var result = await signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure: true);
+    if (!result.Succeeded)
+        return Results.BadRequest("Invalid credentials.");
 
-        var newUser = new IdentityUser { UserName = email, Email = email };
-        var result = await userManager.CreateAsync(newUser, password);
+    var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+    };
+
+    var jwtOptions = jwtOptionsAccessor.Value;
+    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key));
+    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+    var token = new JwtSecurityToken(
+        issuer: jwtOptions.Issuer,
+        audience: jwtOptions.Audience,
+        claims: claims,
+        expires: DateTime.UtcNow.AddHours(2),
+        signingCredentials: creds);
+    return Results.Ok(new { Token = new JwtSecurityTokenHandler().WriteToken(token) });
+});
+
+// Federated token exchange endpoint (example with Azure AD).
+app.MapPost("/token/exchange", async (UserManager<IdentityUser> userManager, HttpContext context, IOptions<JwtOptions> jwtOptionsAccessor) => {
+    var authResult = await context.AuthenticateAsync("AzureAD");
+    if (!authResult.Succeeded)
+        return Results.Unauthorized();
+    var externalUserId = authResult.Principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var externalEmail = authResult.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+    if (string.IsNullOrEmpty(externalUserId))
+        return Results.BadRequest("External user identifier missing.");
+
+    var user = await userManager.FindByNameAsync(externalUserId);
+    if (user == null) {
+        user = new IdentityUser { UserName = externalUserId, Email = externalEmail };
+        var result = await userManager.CreateAsync(user);
         if (!result.Succeeded)
-            return Results.BadRequest(result.Errors);
+            return Results.BadRequest("Unable to create local user.");
+        await userManager.AddToRoleAsync(user, "Trader");
+    }
 
-        // Optionally, assign a role (e.g., Trader)
-        await userManager.AddToRoleAsync(newUser, "Trader");
+    var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+    };
 
-        return Results.Ok($"User {email} registered successfully.");
-    });
-
-// 5.2 Local Login (for external users)
-app.MapPost("/local/login", async (
-    UserManager<IdentityUser> userManager,
-    SignInManager<IdentityUser> signInManager,
-    string email,
-    string password) => {
-        var user = await userManager.FindByEmailAsync(email);
-        if (user == null)
-            return Results.BadRequest("Invalid credentials.");
-
-        var signInResult = await signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure: false);
-        if (!signInResult.Succeeded)
-            return Results.BadRequest("Invalid credentials.");
-
-        var token = await user.GenerateYourBankTokenAsync( userManager);
-        return Results.Ok(new { Token = token });
-    });
-
-// 5.3 External Token Exchange Endpoint
-// This endpoint accepts an external token (from Azure AD or Facebook) and returns a YourBank JWT.
-// The caller must indicate the provider via a query parameter (?provider=AzureAD or ?provider=Facebook).
-app.MapPost("/token/exchange", async (
-    UserManager<IdentityUser> userManager,
-    HttpContext context) => {
-        var provider = context.Request.Query["provider"].ToString();
-        if (string.IsNullOrEmpty(provider))
-            return Results.BadRequest("Provider not specified. Use ?provider=AzureAD or ?provider=Facebook.");
-
-        // Authenticate using the specified external provider
-        var authResult = await context.AuthenticateAsync(provider);
-        if (!authResult.Succeeded)
-            return Results.Unauthorized();
-
-        // Extract unique identifier and email from external claims
-        var externalUserId = authResult.Principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var externalEmail = authResult.Principal?.FindFirst(ClaimTypes.Email)?.Value                    
-                         ?? authResult.Principal?.FindFirst("preferred_username")?.Value;
-
-        if (string.IsNullOrEmpty(externalUserId))
-            return Results.BadRequest("External user identifier not found.");
-
-        // Map external identity to a local user.
-        // For simplicity, we use the externalUserId as the local username.
-        var localUser = await userManager.FindByNameAsync(externalUserId);
-        if (localUser == null) {
-            localUser = new IdentityUser {
-                UserName = externalUserId,
-                Email = externalEmail
-            };
-            var createResult = await userManager.CreateAsync(localUser);
-            if (!createResult.Succeeded)
-                return Results.BadRequest("Unable to create local user for external identity.");
-
-            // Optionally, assign a default role (e.g., Trader)
-            await userManager.AddToRoleAsync(localUser, "Trader");
-        }
-
-        // Issue a YourBank JWT token for the local user
-        var token = await localUser.GenerateYourBankTokenAsync(userManager);
-        return Results.Ok(new { Token = token });
-    })
-.RequireAuthorization();
+    var jwtOptions = jwtOptionsAccessor.Value;
+    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key));
+    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+    var token = new JwtSecurityToken(
+        issuer: jwtOptions.Issuer,
+        audience: jwtOptions.Audience,
+        claims: claims,
+        expires: DateTime.UtcNow.AddHours(2),
+        signingCredentials: creds);
+    return Results.Ok(new { Token = new JwtSecurityTokenHandler().WriteToken(token) });
+});
 
 app.Run();
-
-public static class Extensions {
-    public static async Task<string> GenerateYourBankTokenAsync(this IdentityUser user, UserManager<IdentityUser> userManager) {
-
-        var claims = await user.GetClaimsAsync(userManager);
-
-        var token = claims.GetJwtSecurityToken();
-
-        var jwt =  new JwtSecurityTokenHandler().WriteToken(token);
-        
-        return jwt;
-    }
-
-    public static async Task<IEnumerable<Claim>> GetClaimsAsync(this IdentityUser user, UserManager<IdentityUser> userManager) {
-        var claims = new List<Claim>();
-        claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
-        claims.Add(new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""));
-
-        var roles = await userManager.GetRolesAsync(user);
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-        return claims;
-    }
-
-    public static JwtSecurityToken GetJwtSecurityToken(this IEnumerable<Claim> claims) {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSecureKeyForLocalTokens!123"));
-        var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: "https://identity.yourbank.com",
-            audience: "YourBankMicroservices",
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
-            signingCredentials: signingCredentials
-        );
-
-        return token;
-    }
-}
