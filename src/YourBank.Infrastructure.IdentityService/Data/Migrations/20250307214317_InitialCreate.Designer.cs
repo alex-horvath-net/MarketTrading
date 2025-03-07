@@ -12,7 +12,7 @@ using YourBank.Infrastructure.IdentityService.Data;
 namespace YourBank.Infrastructure.IdentityService.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250307213252_InitialCreate")]
+    [Migration("20250307214317_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
