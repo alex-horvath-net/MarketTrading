@@ -1,62 +1,86 @@
 version: "3.9"
 services:
-  identityservice:
+  tradingportal:
     build:
-      context: ./src/YourBank.IdentityService
+      context: ./src/YourBank.TradingPortal
       dockerfile: Dockerfile
-    container_name: yourbank_identityservice
+      args:
+        APP_UID: ${APP_UID}
+    container_name: yourbank_tradingportal
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APP_UID=1001   
     ports:
       - "5000:80"
-
-  pricingengine:
+    
+  tradinggateway:
     build:
-      context: ./src/YourBank.PricingEngine
+      context: ./src/YourBank.TradingGateway
       dockerfile: Dockerfile
-    container_name: yourbank_pricingengine
+      args:
+        APP_UID: ${APP_UID}
+    container_name: yourbank_tradinggateway
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5001:80"
 
-  ordermanagement:
+  identityservice:
     build:
-      context: ./src/YourBank.OrderManagement
+      context: ./src/YourBank.IdentityService
       dockerfile: Dockerfile
-    container_name: yourbank_ordermanagement
+      args:
+        APP_UID: ${APP_UID}
+    container_name: yourbank_identityservice
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - APP_UID=1001   
     ports:
       - "5002:80"
 
-  orderexecution:
+  pricingengine:
     build:
-      context: ./src/YourBank.OrderExecution
+      context: ./src/YourBank.PricingEngine
       dockerfile: Dockerfile
-    container_name: yourbank_orderexecution
+      args:
+        APP_UID: ${APP_UID}
+    container_name: yourbank_pricingengine
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5003:80"
 
-  postexecutionmonitoring:
+  ordermanagement:
     build:
-      context: ./src/YourBank.PostExecutionMonitoring
+      context: ./src/YourBank.OrderManagement
       dockerfile: Dockerfile
-    container_name: yourbank_postexecutionmonitoring
+      args:
+        APP_UID: ${APP_UID}
+    container_name: yourbank_ordermanagement
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5004:80"
 
-  tradinggateway:
+  orderexecution:
     build:
-      context: ./src/YourBank.TradingGateway
+      context: ./src/YourBank.OrderExecution
       dockerfile: Dockerfile
-    container_name: yourbank_tradinggateway
+      args:
+        APP_UID: ${APP_UID}
+    container_name: yourbank_orderexecution
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5005:80"
+
+  postexecutionmonitoring:
+    build:
+      context: ./src/YourBank.PostExecutionMonitoring
+      dockerfile: Dockerfile
+      args:
+        APP_UID: ${APP_UID}
+    container_name: yourbank_postexecutionmonitoring
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5006:80"
