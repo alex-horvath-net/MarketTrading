@@ -1,4 +1,4 @@
-# Stage1:running the app from VS in fast mode (Default for Debug configuration)
+# Stage1: running the app from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base # Create base image from the official ASP.NET Core runtime image (9.0).
 ARG APP_UID # Set the APP_UID argument to the value passed in the docker-compose file
 USER $APP_UID # Set the user to the one created in docker compose file
@@ -6,19 +6,6 @@ RUN useradd -u ${APP_UID} -m myappuser # Create a non-root user with the specifi
 USER myappuser # Switch to the newly created user.
 WORKDIR /app # set the working directory to app inside the container
 EXPOSE 80
-
-
-# This stage is used to build the service project
-# Stage 2: Build the service project
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build # Create build image from the official ASP.NET Core SDK image (9.0)
-ARG BUILD_CONFIGURATION=Release # Set the build configuration to Release by default
-WORKDIR /src # set the working directory src inside the container
-# Copy the phisical file (relative fro .sln) to the container\src/YourBank.Infrastructure.IdentityService
-COPY ["src/YourBank.Infrastructure.IdentityService/YourBank.Infrastructure.IdentityService.csproj", "YourBank.Infrastructure.IdentityService/"] 
-RUN dotnet restore "./YourBank.Infrastructure.IdentityService/YourBank.Infrastructure.IdentityService.csproj" # Restore the service project
-COPY . . # Copy the rest of the files to the working directory
-WORKDIR "/src/YourBank.Infrastructure.IdentityService" # Change the working directory to the service project
-RUN dotnet build "./YourBank.Infrastructure.IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/build # Build the service project
 
 # Stage 2: Restore Dependencies
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore # Use the .NET SDK image for restoring packages
