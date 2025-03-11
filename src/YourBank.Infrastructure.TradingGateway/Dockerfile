@@ -2,7 +2,7 @@
 # Stage 1: Base Runtime Image
 # --------------------------------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-ARG APP_UID
+ARG APP_UID=1001 # Set a default UID if not provided
 # Correct user creation for Debian-based images (default for dotnet images)
 RUN useradd -u ${APP_UID} -m yourBankDockerUser
 USER yourBankDockerUser
@@ -15,6 +15,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+
 # Copy only the .csproj file to leverage caching
 COPY ["src/YourBank.Infrastructure.TradingGateway/YourBank.Infrastructure.TradingGateway.csproj", "YourBank.Infrastructure.TradingGateway/"]
 RUN dotnet restore "./YourBank.Infrastructure.TradingGateway/YourBank.Infrastructure.TradingGateway.csproj"
@@ -25,7 +26,8 @@ RUN dotnet restore "./YourBank.Infrastructure.TradingGateway/YourBank.Infrastruc
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-# Copy the restored files from the restore stage
+
+# Copy restored files from restore stage
 COPY --from=restore /src/YourBank.Infrastructure.TradingGateway/ /src/YourBank.Infrastructure.TradingGateway/
 # Copy the rest of the source code
 COPY . .

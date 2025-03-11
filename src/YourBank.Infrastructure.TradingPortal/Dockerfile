@@ -1,46 +1,52 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
+# --------------------------------------------------
+# Stage 1: Base Runtime Image
+# --------------------------------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-ARG APP_UID # Set the APP_UID argument to the value passed in the docker-compose file
-USER $APP_UID # Set the user to the one created in docker compose file
-RUN useradd -D -u ${APP_UID} -m yourBankDockerUser # Create a non-root user with the specified UID and a home directory.
-USER yourBankDockerUser # Switch to the newly created user.
-WORKDIR /app # set the working directory to app inside the container
+ARG APP_UID=1001  # Set a default UID if not provided
+# Correct user creation for Debian-based images (default for .NET official images)
+RUN useradd -u ${APP_UID} -m yourBankDockerUser
+# Switch to the non-root user for better security
+USER yourBankDockerUser
+WORKDIR /app
 EXPOSE 80
 
-
+# --------------------------------------------------
 # Stage 2: Restore Dependencies
-# Use the .NET SDK image for restoring packages
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore 
- # Set the build configuration to Release by default
+# --------------------------------------------------
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
 ARG BUILD_CONFIGURATION=Release
- # Set the working directory to /src inside the containe
-WORKDIR /srcr
-# copy the .csproj (relative path from .sln) to workdir + p2  
+WORKDIR /src
+
+# Copy only the .csproj file to leverage caching
 COPY ["src/YourBank.Infrastructure.TradingPortal/YourBank.Infrastructure.TradingPortal.csproj", "YourBank.Infrastructure.TradingPortal/"]
-# Run dotnet restore to cache NuGet dependencies; if the .csproj hasn't changed, this layer is cached.
 RUN dotnet restore "./YourBank.Infrastructure.TradingPortal/YourBank.Infrastructure.TradingPortal.csproj"
 
-# Stage 3: Build the Service Project
+# --------------------------------------------------
+# Stage 3: Build the TradingPortal Project
+# --------------------------------------------------
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-# Copy the project file and restored dependencies 
-# from restoreStage/src/YourBank.Infrastructure.TradingPortal/ to buildStage/src/YourBank.Infrastructure.TradingPortal/
-COPY --from=restore /src/YourBank.Infrastructure.TradingPortal/ "YourBank.Infrastructure.TradingPortal/"
-COPY . . # Copy the rest of the source code into the container.
-WORKDIR "/src/YourBank.Infrastructure.TradingPortal" # Change to the project directory to the folder of .csproj.
-# Build the project uand save tehe result to /app/build.
+
+# Copy restored files from restore stage
+COPY --from=restore /src/YourBank.Infrastructure.TradingPortal/ /src/YourBank.Infrastructure.TradingPortal/
+# Copy the rest of the source code
+COPY . .
+WORKDIR "/src/YourBank.Infrastructure.TradingPortal"
+# Build the project and store output in /app/build
 RUN dotnet build "./YourBank.Infrastructure.TradingPortal.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-
-# This stage is used to publish the service project to be copied to the final stage
+# --------------------------------------------------
+# Stage 4: Publish the TradingPortal Application
+# --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
+WORKDIR "/src/YourBank.Infrastructure.TradingPortal"
 RUN dotnet publish "./YourBank.Infrastructure.TradingPortal.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+# --------------------------------------------------
+# Stage 5: Final Runtime Image
+# --------------------------------------------------
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

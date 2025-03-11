@@ -1,42 +1,53 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
+# --------------------------------------------------
+# Stage 1: Base Runtime Image (For Execution)
+# --------------------------------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-ARG APP_UID # Set the APP_UID argument to the value passed in the docker-compose file
-USER $APP_UID # Set the user to the one created in docker compose file
-RUN useradd -D -u ${APP_UID} -m yourBankDockerUser # Create a non-root user with the specified UID and a home directory.
-USER yourBankDockerUser # Switch to the newly created user.
-WORKDIR /app # set the working directory to app inside the container
+ARG APP_UID  # Set the APP_UID argument to the value passed in the docker-compose file
+
+# Correct user creation for Debian-based images (default for .NET official images)
+RUN useradd -u ${APP_UID} -m yourBankDockerUser
+# Switch to the non-root user for better security
+USER yourBankDockerUser
+WORKDIR /app
 EXPOSE 80
 
-
+# --------------------------------------------------
 # Stage 2: Restore Dependencies
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore # Use the .NET SDK image for restoring packages
-ARG BUILD_CONFIGURATION=Release # Set the build configuration to Release by default
-WORKDIR /src # Set the working directory to /src inside the container
-# copy the .csproj (relative path from .sln) to workdir + p2  
+# --------------------------------------------------
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+
+# Copy only the .csproj file to optimize layer caching
 COPY ["src/YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj", "YourBank.Infrastructure.PricingEngine/"]
-# Run dotnet restore to cache NuGet dependencies; if the .csproj hasn't changed, this layer is cached.
 RUN dotnet restore "./YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj"
 
+# --------------------------------------------------
 # Stage 3: Build the Service Project
+# --------------------------------------------------
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-# Copy the project file and restored dependencies 
-# from restoreStage/src/YourBank.Infrastructure.PricingEngine/ to buildStage/src/YourBank.Infrastructure.PricingEngine/
-COPY --from=restore /src/YourBank.Infrastructure.PricingEngine/ "YourBank.Infrastructure.PricingEngine/"
-COPY . . # Copy the rest of the source code into the container.
-WORKDIR "/src/YourBank.Infrastructure.PricingEngine" # Change to the project directory to the folder of .csproj.
-# Build the project uand save tehe result to /app/build.
+
+# Copy restored project dependencies from restore stage
+COPY --from=restore /src/YourBank.Infrastructure.PricingEngine/ /src/YourBank.Infrastructure.PricingEngine/
+# Copy the remaining source files into the container
+COPY . .
+WORKDIR "/src/YourBank.Infrastructure.PricingEngine"
+# Build the project and store output in /app/build
 RUN dotnet build "./YourBank.Infrastructure.PricingEngine.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
+# --------------------------------------------------
+# Stage 4: Publish the Service Project
+# --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
+WORKDIR "/src/YourBank.Infrastructure.PricingEngine"
 RUN dotnet publish "./YourBank.Infrastructure.PricingEngine.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+# --------------------------------------------------
+# Stage 5: Final Runtime Image (For Execution)
+# --------------------------------------------------
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
