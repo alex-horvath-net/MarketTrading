@@ -11,9 +11,12 @@ EXPOSE 80
 
 
 # Stage 2: Restore Dependencies
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore # Use the .NET SDK image for restoring packages
-ARG BUILD_CONFIGURATION=Release # Set the build configuration to Release by default
-WORKDIR /src # Set the working directory to /src inside the container
+# Use the .NET SDK image for restoring packages
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore 
+ # Set the build configuration to Release by default
+ARG BUILD_CONFIGURATION=Release
+ # Set the working directory to /src inside the containe
+WORKDIR /srcr
 # copy the .csproj (relative path from .sln) to workdir + p2  
 COPY ["src/YourBank.Infrastructure.TradingPortal/YourBank.Infrastructure.TradingPortal.csproj", "YourBank.Infrastructure.TradingPortal/"]
 # Run dotnet restore to cache NuGet dependencies; if the .csproj hasn't changed, this layer is cached.
