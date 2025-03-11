@@ -37,50 +37,50 @@ services:
     ports:
       - "5002:80"
 
-  pricingengine:
-    build:
-      context: ./src/PricingEngineService
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}
-    container_name: yourbank_pricingengine
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5003:80"
+  # pricingengine:
+  #   build:
+  #     context: ./src/PricingEngineService
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}
+  #   container_name: yourbank_pricingengine
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5003:80"
 
-  ordermanagement:
-    build:
-      context: ./src/OrderManagementService
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}
-    container_name: yourbank_ordermanagement
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5004:80"
+  # ordermanagement:
+  #   build:
+  #     context: ./src/OrderManagementService
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}
+  #   container_name: yourbank_ordermanagement
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5004:80"
 
-  orderexecution:
-    build:
-      context: ./src/Infrastructure.OrderExecution
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}
-    container_name: yourbank_orderexecution
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5005:80"
+  # orderexecution:
+  #   build:
+  #     context: ./src/Infrastructure.OrderExecution
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}
+  #   container_name: yourbank_orderexecution
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5005:80"
 
-  postexecutionmonitoring:
-    build:
-      context: ./src/PostExecutionMonitoringService
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}
-    container_name: yourbank_postexecutionmonitoring
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5006:80"
+  # postexecutionmonitoring:
+  #   build:
+  #     context: ./src/PostExecutionMonitoringService
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}
+  #   container_name: yourbank_postexecutionmonitoring
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5006:80"
