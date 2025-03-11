@@ -19,7 +19,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to optimize layer caching
-COPY ["src/YourBank.Infrastructure.IdentityService/YourBank.Infrastructure.IdentityService.csproj", "YourBank.Infrastructure.IdentityService/"]
+COPY ["./src/YourBank.Infrastructure.IdentityService/YourBank.Infrastructure.IdentityService.csproj", "YourBank.Infrastructure.IdentityService/"]
 RUN dotnet restore "./YourBank.Infrastructure.IdentityService/YourBank.Infrastructure.IdentityService.csproj"
 
 # --------------------------------------------------

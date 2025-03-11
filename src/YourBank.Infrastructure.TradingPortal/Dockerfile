@@ -18,7 +18,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to leverage caching
-COPY ["src/YourBank.Infrastructure.TradingPortal/YourBank.Infrastructure.TradingPortal.csproj", "YourBank.Infrastructure.TradingPortal/"]
+COPY ["./src/YourBank.Infrastructure.TradingPortal/YourBank.Infrastructure.TradingPortal.csproj", "YourBank.Infrastructure.TradingPortal/"]
 RUN dotnet restore "./YourBank.Infrastructure.TradingPortal/YourBank.Infrastructure.TradingPortal.csproj"
 
 # --------------------------------------------------

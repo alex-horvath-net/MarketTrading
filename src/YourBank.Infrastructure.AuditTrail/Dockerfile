@@ -19,7 +19,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to optimize layer caching
-COPY ["src/YourBank.Infrastructure.AuditTrail/YourBank.Infrastructure.AuditTrail.csproj", "YourBank.Infrastructure.AuditTrail/"]
+COPY ["./src/YourBank.Infrastructure.AuditTrail/YourBank.Infrastructure.AuditTrail.csproj", "YourBank.Infrastructure.AuditTrail/"]
 RUN dotnet restore "./YourBank.Infrastructure.AuditTrail/YourBank.Infrastructure.AuditTrail.csproj"
 
 # --------------------------------------------------

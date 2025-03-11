@@ -19,7 +19,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to optimize layer caching
-COPY ["src/YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj", "YourBank.Infrastructure.PricingEngine/"]
+COPY ["./src/YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj", "YourBank.Infrastructure.PricingEngine/"]
 RUN dotnet restore "./YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj"
 
 # --------------------------------------------------
