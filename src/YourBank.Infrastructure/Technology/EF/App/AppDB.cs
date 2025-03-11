@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using YourBank.Infrastructure.Adapters.App.Data.Model;
+using Infrastructure.Adapters.App.Data.Model;
 
-namespace YourBank.Infrastructure.Technology.EF.App;
+namespace Infrastructure.Technology.EF.App;
 
 
 public class AppDB : DbContext {

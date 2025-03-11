@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace YourBank.Business.Experts.TechnicalOperator {
+namespace Business.Experts.TechnicalOperator {
     internal class ManageDataFeeds {
         //        Ensure real-time data feeds are operational.
         //Handle any disruptions or data discrepancies.

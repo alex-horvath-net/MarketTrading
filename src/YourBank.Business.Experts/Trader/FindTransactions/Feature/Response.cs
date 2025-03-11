@@ -1,7 +1,7 @@
-﻿using YourBank.Business.Domain;
-using YourBank.Infrastructure.Validation.Business.Model;
+﻿using Business.Domain;
+using Infrastructure.Validation.Business.Model;
 
-namespace YourBank.Business.Experts.Trader.FindTransactions.Feature;
+namespace Business.Experts.Trader.FindTransactions.Feature;
 
 public class Response {
     public Guid Id { get; set; } = Guid.NewGuid();

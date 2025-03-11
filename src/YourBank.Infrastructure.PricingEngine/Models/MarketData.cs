@@ -1,4 +1,4 @@
-﻿namespace YourBank.Infrastructure.PricingEngine.Models {
+﻿namespace PricingEngineService.Models {
     public class MarketData {
         public string Symbol { get; set; } = string.Empty;
         public decimal LastPrice { get; set; }

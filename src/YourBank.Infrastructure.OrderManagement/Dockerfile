@@ -19,8 +19,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to optimize layer caching
-COPY ["./src/YourBank.Infrastructure.OrderManagement/YourBank.Infrastructure.OrderManagement.csproj", "YourBank.Infrastructure.OrderManagement/"]
-RUN dotnet restore "./YourBank.Infrastructure.OrderManagement/YourBank.Infrastructure.OrderManagement.csproj"
+COPY ["./src/OrderManagementService/OrderManagementService.csproj", "OrderManagementService/"]
+RUN dotnet restore "./OrderManagementService/OrderManagementService.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the Service Project
@@ -30,20 +30,20 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy restored project dependencies from restore stage
-COPY --from=restore /src/YourBank.Infrastructure.OrderManagement/ /src/YourBank.Infrastructure.OrderManagement/
+COPY --from=restore /src/OrderManagementService/ /src/OrderManagementService/
 # Copy the remaining source files into the container
 COPY . .
-WORKDIR "/src/YourBank.Infrastructure.OrderManagement"
+WORKDIR "/src/OrderManagementService"
 # Build the project and store output in /app/build
-RUN dotnet build "./YourBank.Infrastructure.OrderManagement.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./OrderManagementService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # --------------------------------------------------
 # Stage 4: Publish the Service Project
 # --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR "/src/YourBank.Infrastructure.OrderManagement"
-RUN dotnet publish "./YourBank.Infrastructure.OrderManagement.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+WORKDIR "/src/OrderManagementService"
+RUN dotnet publish "./OrderManagementService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------
 # Stage 5: Final Runtime Image (For Execution)
@@ -51,4 +51,4 @@ RUN dotnet publish "./YourBank.Infrastructure.OrderManagement.csproj" -c $BUILD_
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "YourBank.Infrastructure.OrderManagement.dll"]
+ENTRYPOINT ["dotnet", "OrderManagementService.dll"]

@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using YourBank.Infrastructure.Validation.Business.Model;
+using Infrastructure.Validation.Business.Model;
 
-namespace YourBank.Business.Experts.Trader.EditTransaction;
+namespace Business.Experts.Trader.EditTransaction;
 
 
 public class Valiadator {

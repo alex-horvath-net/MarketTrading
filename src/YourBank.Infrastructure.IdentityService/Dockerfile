@@ -19,8 +19,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to optimize layer caching
-COPY ["./src/YourBank.Infrastructure.IdentityService/YourBank.Infrastructure.IdentityService.csproj", "YourBank.Infrastructure.IdentityService/"]
-RUN dotnet restore "./YourBank.Infrastructure.IdentityService/YourBank.Infrastructure.IdentityService.csproj"
+COPY ["./src/IdentityService/IdentityService.csproj", "IdentityService/"]
+RUN dotnet restore "./IdentityService/IdentityService.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the Service Project
@@ -30,20 +30,20 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy restored project dependencies from restore stage
-COPY --from=restore /src/YourBank.Infrastructure.IdentityService/ /src/YourBank.Infrastructure.IdentityService/
+COPY --from=restore /src/IdentityService/ /src/IdentityService/
 # Copy the remaining source files into the container
 COPY . .
-WORKDIR "/src/YourBank.Infrastructure.IdentityService"
+WORKDIR "/src/IdentityService"
 # Build the project and store output in /app/build
-RUN dotnet build "./YourBank.Infrastructure.IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # --------------------------------------------------
 # Stage 4: Publish the Service Project
 # --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR "/src/YourBank.Infrastructure.IdentityService"
-RUN dotnet publish "./YourBank.Infrastructure.IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+WORKDIR "/src/IdentityService"
+RUN dotnet publish "./IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------
 # Stage 5: Final Runtime Image (For Execution)
@@ -51,4 +51,4 @@ RUN dotnet publish "./YourBank.Infrastructure.IdentityService.csproj" -c $BUILD_
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "YourBank.Infrastructure.IdentityService.dll"]
+ENTRYPOINT ["dotnet", "IdentityService.dll"]

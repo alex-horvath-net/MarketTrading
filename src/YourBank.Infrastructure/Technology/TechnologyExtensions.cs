@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YourBank.Infrastructure.Technology.EF.App;
-using YourBank.Infrastructure.Technology.EF.Identity;
+using Infrastructure.Technology.EF.App;
+using Infrastructure.Technology.EF.Identity;
 
-namespace YourBank.Infrastructure.Technology;
+namespace Infrastructure.Technology;
 public static class TechnologyExtensions {
 
     public static IServiceCollection AddCommonTechnology(this IServiceCollection services, ConfigurationManager configuration) => services

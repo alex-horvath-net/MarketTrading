@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace YourBank.Infrastructure.IdentityService.Data.Migrations
+namespace IdentityService.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

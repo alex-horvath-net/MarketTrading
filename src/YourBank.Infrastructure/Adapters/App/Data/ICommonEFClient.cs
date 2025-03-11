@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace YourBank.Infrastructure.Adapters.App.Data;
+namespace Infrastructure.Adapters.App.Data;
 
 public interface ICommonEFClient<T> where T : class {
     Task<T> Add(T dataModel, CancellationToken token);

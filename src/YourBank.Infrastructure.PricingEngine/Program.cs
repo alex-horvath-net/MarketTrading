@@ -1,6 +1,6 @@
 ﻿// Aggregates and processes real‑time market data (from providers like Bloomberg or Refinitiv) to compute final price quotes.
 
-using YourBank.Infrastructure.PricingEngine.Services;
+using PricingEngineService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

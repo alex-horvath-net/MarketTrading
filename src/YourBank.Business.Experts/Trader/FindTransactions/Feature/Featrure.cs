@@ -1,6 +1,6 @@
-﻿using YourBank.Business.Experts.Trader.FindTransactions.Feature.OutputPorts;
+﻿using Business.Experts.Trader.FindTransactions.Feature.OutputPorts;
 
-namespace YourBank.Business.Experts.Trader.FindTransactions.Feature;
+namespace Business.Experts.Trader.FindTransactions.Feature;
 
 public class Featrure(IValidator validator, IFlag flag, IRepository repository, IClockAdapter clock) : IFeature {
 

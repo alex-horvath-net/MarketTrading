@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
-using YourBank.Infrastructure.Adapters.Identity.Data.Model;
+using Infrastructure.Adapters.Identity.Data.Model;
 
-namespace YourBank.Infrastructure.Technology.Identity;
+namespace Infrastructure.Technology.Identity;
 public sealed class IdentityUserAccessor(
     UserManager<User> userManager,
     IdentityRedirectManager redirectManager) {

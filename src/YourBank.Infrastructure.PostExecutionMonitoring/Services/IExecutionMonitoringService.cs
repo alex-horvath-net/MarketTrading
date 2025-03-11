@@ -1,6 +1,6 @@
-﻿using YourBank.Infrastructure.PostExecutionMonitoring.Models;
+﻿using PostExecutionMonitoringService.Models;
 
-namespace YourBank.Infrastructure.PostExecutionMonitoring.Services {
+namespace PostExecutionMonitoringService.Services {
     public interface IExecutionMonitoringService {
         Task RecordExecutionLogAsync(ExecutionLog log);
         Task<IEnumerable<ExecutionLog>> GetExecutionLogsAsync();

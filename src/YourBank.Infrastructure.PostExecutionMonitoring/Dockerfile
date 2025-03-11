@@ -19,8 +19,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to optimize layer caching
-COPY ["./src/YourBank.Infrastructure.PostExecutionMonitoring/YourBank.Infrastructure.PostExecutionMonitoring.csproj", "YourBank.Infrastructure.PostExecutionMonitoring/"]
-RUN dotnet restore "./YourBank.Infrastructure.PostExecutionMonitoring/YourBank.Infrastructure.PostExecutionMonitoring.csproj"
+COPY ["./src/PostExecutionMonitoringService/PostExecutionMonitoringService.csproj", "PostExecutionMonitoringService/"]
+RUN dotnet restore "./PostExecutionMonitoringService/PostExecutionMonitoringService.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the Service Project
@@ -30,20 +30,20 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy restored project dependencies from restore stage
-COPY --from=restore /src/YourBank.Infrastructure.PostExecutionMonitoring/ /src/YourBank.Infrastructure.PostExecutionMonitoring/
+COPY --from=restore /src/PostExecutionMonitoringService/ /src/PostExecutionMonitoringService/
 # Copy the remaining source files into the container
 COPY . .
-WORKDIR "/src/YourBank.Infrastructure.PostExecutionMonitoring"
+WORKDIR "/src/PostExecutionMonitoringService"
 # Build the project and store output in /app/build
-RUN dotnet build "./YourBank.Infrastructure.PostExecutionMonitoring.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./PostExecutionMonitoringService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # --------------------------------------------------
 # Stage 4: Publish the Service Project
 # --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR "/src/YourBank.Infrastructure.PostExecutionMonitoring"
-RUN dotnet publish "./YourBank.Infrastructure.PostExecutionMonitoring.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+WORKDIR "/src/PostExecutionMonitoringService"
+RUN dotnet publish "./PostExecutionMonitoringService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------
 # Stage 5: Final Runtime Image (For Execution)
@@ -51,4 +51,4 @@ RUN dotnet publish "./YourBank.Infrastructure.PostExecutionMonitoring.csproj" -c
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "YourBank.Infrastructure.PostExecutionMonitoring.dll"]
+ENTRYPOINT ["dotnet", "PostExecutionMonitoringService.dll"]

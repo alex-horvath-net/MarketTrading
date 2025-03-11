@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using YourBank.Infrastructure.Adapters.Identity.Data.Model;
+using Infrastructure.Adapters.Identity.Data.Model;
 
-namespace YourBank.Infrastructure.Technology.Identity;
+namespace Infrastructure.Technology.Identity;
 // Remove the "else if (EmailSender is IdentityNoOpEmailSender)" block from RegisterConfirmation.razor after updating with a real implementation.
 public sealed class IdentityEmailSender : IEmailSender<User> {
     private readonly IEmailSender emailSender = new NoOpEmailSender();

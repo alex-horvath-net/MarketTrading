@@ -1,4 +1,4 @@
-﻿namespace YourBank.Infrastructure.IdentityService.Options {
+﻿namespace IdentityService.Options {
     public class AzureAdOptions {
         public string Instance { get; set; } = "";
         public string TenantId { get; set; } = "";

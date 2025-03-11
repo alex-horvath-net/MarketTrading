@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using YourBank.Business.Domain;
-using YourBank.Business.Experts.Trader.FindTransactions.Feature;
-using YourBank.Business.Experts.Trader.FindTransactions.Feature.OutputPorts;
-using YourBank.Infrastructure.Adapters.App.Data.Model;
-using YourBank.Infrastructure.Technology.EF.App;
+using Business.Domain;
+using Business.Experts.Trader.FindTransactions.Feature;
+using Business.Experts.Trader.FindTransactions.Feature.OutputPorts;
+using Infrastructure.Adapters.App.Data.Model;
+using Infrastructure.Technology.EF.App;
 
-namespace YourBank.Business.Experts.Trader.FindTransactions;
+namespace Business.Experts.Trader.FindTransactions;
 
 public class Repository(Repository.IClient client) : IRepository {
     public async Task<List<Trade>> FindTransactions(Request request, CancellationToken token) {

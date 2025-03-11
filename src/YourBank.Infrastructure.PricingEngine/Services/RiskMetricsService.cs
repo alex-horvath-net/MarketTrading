@@ -1,4 +1,4 @@
-﻿namespace YourBank.Infrastructure.PricingEngine.Services {
+﻿namespace PricingEngineService.Services {
     public class RiskMetricsService : IRiskMetricsService {
         private readonly IMarketDataProvider _marketDataProvider;
 

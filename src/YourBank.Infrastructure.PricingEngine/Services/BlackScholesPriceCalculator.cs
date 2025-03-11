@@ -1,7 +1,7 @@
 ﻿using MathNet.Numerics.Distributions;
-using YourBank.Infrastructure.PricingEngine.Models;
+using PricingEngineService.Models;
 
-namespace YourBank.Infrastructure.PricingEngine.Services {
+namespace PricingEngineService.Services {
     public class BlackScholesPriceCalculator : IPriceCalculator {
         private readonly IConfiguration _configuration;
         private readonly IMarketDataProvider _marketDataProvider;

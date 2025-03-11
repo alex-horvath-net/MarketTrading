@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using YourBank.Infrastructure.IdentityService.Data;
+using IdentityService.Data;
 
 #nullable disable
 
-namespace YourBank.Infrastructure.IdentityService.Data.Migrations
+namespace IdentityService.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250307214317_InitialCreate")]

@@ -19,8 +19,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to optimize layer caching
-COPY ["./src/YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj", "YourBank.Infrastructure.PricingEngine/"]
-RUN dotnet restore "./YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj"
+COPY ["./src/PricingEngineService/PricingEngineService.csproj", "PricingEngineService/"]
+RUN dotnet restore "./PricingEngineService/PricingEngineService.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the Service Project
@@ -30,20 +30,20 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy restored project dependencies from restore stage
-COPY --from=restore /src/YourBank.Infrastructure.PricingEngine/ /src/YourBank.Infrastructure.PricingEngine/
+COPY --from=restore /src/PricingEngineService/ /src/PricingEngineService/
 # Copy the remaining source files into the container
 COPY . .
-WORKDIR "/src/YourBank.Infrastructure.PricingEngine"
+WORKDIR "/src/PricingEngineService"
 # Build the project and store output in /app/build
-RUN dotnet build "./YourBank.Infrastructure.PricingEngine.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./PricingEngineService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # --------------------------------------------------
 # Stage 4: Publish the Service Project
 # --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR "/src/YourBank.Infrastructure.PricingEngine"
-RUN dotnet publish "./YourBank.Infrastructure.PricingEngine.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+WORKDIR "/src/PricingEngineService"
+RUN dotnet publish "./PricingEngineService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------
 # Stage 5: Final Runtime Image (For Execution)
@@ -51,4 +51,4 @@ RUN dotnet publish "./YourBank.Infrastructure.PricingEngine.csproj" -c $BUILD_CO
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "YourBank.Infrastructure.PricingEngine.dll"]
+ENTRYPOINT ["dotnet", "PricingEngineService.dll"]

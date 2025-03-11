@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace YourBank.Infrastructure.Extensions;
+namespace Infrastructure.Extensions;
 
 public static class ReflectionExtensions {
 

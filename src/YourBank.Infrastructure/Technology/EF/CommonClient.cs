@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
-using YourBank.Infrastructure.Technology.EF.App;
+using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using YourBank.Infrastructure.Adapters.App.Data;
+using Infrastructure.Adapters.App.Data;
 
-namespace YourBank.Infrastructure.Technology.EF;
+namespace Infrastructure.Technology.EF;
 public class CommonEFClient<TDatabase, TDataModel>(TDatabase db) : ICommonEFClient<TDataModel> where TDatabase : DbContext where TDataModel : class {
     protected TDatabase DB => db;
 

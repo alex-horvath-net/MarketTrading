@@ -1,6 +1,6 @@
-﻿using YourBank.Infrastructure.OrderManagement.Models;
+﻿using OrderManagementService.Models;
 
-namespace YourBank.Infrastructure.OrderManagement.Services {
+namespace OrderManagementService.Services {
     public interface IRiskService {
         // Checks whether the order meets predefined risk limits.
         bool CheckOrderRisk(Order order);

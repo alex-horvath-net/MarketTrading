@@ -1,4 +1,4 @@
-﻿namespace YourBank.Business.Experts.PortfolioManager {
+﻿namespace Business.Experts.PortfolioManager {
     public class ManagePortfolioAllocation {
         //        Define asset allocation targets.
         //Adjust strategy parameters to align with portfolio goals.

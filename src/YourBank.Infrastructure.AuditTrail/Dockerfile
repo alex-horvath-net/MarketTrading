@@ -19,8 +19,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to optimize layer caching
-COPY ["./src/YourBank.Infrastructure.AuditTrail/YourBank.Infrastructure.AuditTrail.csproj", "YourBank.Infrastructure.AuditTrail/"]
-RUN dotnet restore "./YourBank.Infrastructure.AuditTrail/YourBank.Infrastructure.AuditTrail.csproj"
+COPY ["./src/AuditTrailService/AuditTrailService.csproj", "AuditTrailService/"]
+RUN dotnet restore "./AuditTrailService/AuditTrailService.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the Service Project
@@ -30,20 +30,20 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy restored project dependencies from restore stage
-COPY --from=restore /src/YourBank.Infrastructure.AuditTrail/ /src/YourBank.Infrastructure.AuditTrail/
+COPY --from=restore /src/AuditTrailService/ /src/AuditTrailService/
 # Copy the remaining source files into the container
 COPY . .
-WORKDIR "/src/YourBank.Infrastructure.AuditTrail"
+WORKDIR "/src/AuditTrailService"
 # Build the project and store output in /app/build
-RUN dotnet build "./YourBank.Infrastructure.AuditTrail.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./AuditTrailService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # --------------------------------------------------
 # Stage 4: Publish the Service Project
 # --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR "/src/YourBank.Infrastructure.AuditTrail"
-RUN dotnet publish "./YourBank.Infrastructure.AuditTrail.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+WORKDIR "/src/AuditTrailService"
+RUN dotnet publish "./AuditTrailService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------
 # Stage 5: Final Runtime Image (For Execution)
@@ -51,4 +51,4 @@ RUN dotnet publish "./YourBank.Infrastructure.AuditTrail.csproj" -c $BUILD_CONFI
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "YourBank.Infrastructure.AuditTrail.dll"]
+ENTRYPOINT ["dotnet", "AuditTrailService.dll"]

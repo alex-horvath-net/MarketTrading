@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YourBank.Business.Experts.RiskManager {
+namespace Business.Experts.RiskManager {
     internal class MonitorRiskExposure {
         //Review real-time risk metrics(e.g., exposure, VaR).
         //Compare current exposure to predefined limits.

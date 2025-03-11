@@ -1,4 +1,4 @@
-﻿namespace YourBank.Infrastructure.OrderManagement.Models {
+﻿namespace OrderManagementService.Models {
     public class OrderResponse {
         public Guid OrderId { get; set; }
         public OrderStatus Status { get; set; }

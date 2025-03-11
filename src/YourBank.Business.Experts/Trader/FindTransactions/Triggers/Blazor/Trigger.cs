@@ -1,9 +1,9 @@
-﻿using YourBank.Business.Domain;
-using YourBank.Business.Experts.Trader.FindTransactions.Feature;
-using YourBank.Business.Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
-using YourBank.Infrastructure.Validation.Business.Model;
+﻿using Business.Domain;
+using Business.Experts.Trader.FindTransactions.Feature;
+using Business.Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
+using Infrastructure.Validation.Business.Model;
 
-namespace YourBank.Business.Experts.Trader.FindTransactions.Triggers.Blazor;
+namespace Business.Experts.Trader.FindTransactions.Triggers.Blazor;
 
 public class Trigger(IFeature service) : ITrigger {
     public async Task<ViewModel> Execute(string name, string userId, CancellationToken token) {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YourBank.Business.Experts.RiskManager {
+namespace Business.Experts.RiskManager {
     internal class EnforceRiskLimits {
         //Set risk thresholds for each strategy.
         //Automatically adjust position sizes or halt trading if limits are exceeded.

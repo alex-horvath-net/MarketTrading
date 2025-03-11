@@ -1,6 +1,6 @@
-﻿using YourBank.Infrastructure.OrderManagement.Models;
+﻿using OrderManagementService.Models;
 
-namespace YourBank.Infrastructure.OrderManagement.Services {
+namespace OrderManagementService.Services {
     public interface IComplianceService {
         // Checks whether the order complies with regulatory and internal rules.
         bool CheckOrderCompliance(Order order);

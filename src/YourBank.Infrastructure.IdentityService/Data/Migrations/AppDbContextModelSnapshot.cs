@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using YourBank.Infrastructure.IdentityService.Data;
+using IdentityService.Data;
 
 #nullable disable
 
-namespace YourBank.Infrastructure.IdentityService.Data.Migrations
+namespace IdentityService.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot

@@ -1,4 +1,4 @@
-﻿namespace YourBank.Infrastructure.PricingEngine.Services {
+﻿namespace PricingEngineService.Services {
     public interface IRiskMetricsService {
         Task<decimal> CalculateVolatilityAsync(string symbol);
     }

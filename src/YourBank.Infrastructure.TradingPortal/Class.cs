@@ -1,4 +1,4 @@
-﻿namespace YourBank.Infrastructure.TradingPortal {
+﻿namespace TradingPortal {
     public class Class {
     }
 }

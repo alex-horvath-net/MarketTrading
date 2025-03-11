@@ -13,10 +13,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
-using YourBank.Infrastructure.Adapters.Identity.Data.Model;
-using YourBank.Infrastructure.Technology.EF.Identity;
+using Infrastructure.Adapters.Identity.Data.Model;
+using Infrastructure.Technology.EF.Identity;
 
-namespace YourBank.Infrastructure.Technology.Identity;
+namespace Infrastructure.Technology.Identity;
 public static class IdentityExtensions {
 
     public static IServiceCollection AddIdentityServices(this IServiceCollection services, ConfigurationManager configuration) {

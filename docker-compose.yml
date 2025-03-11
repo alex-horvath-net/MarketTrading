@@ -3,7 +3,7 @@ version: "3.9"
 services:
   tradingportal:
     build:
-      context: ./src/YourBank.Infrastructure.TradingPortal
+      context: ./src/TradingPortal
       dockerfile: Dockerfile # Removed incorrect ./
       args:
         APP_UID: ${APP_UID}
@@ -15,7 +15,7 @@ services:
 
   tradinggateway:
     build:
-      context: ./src/YourBank.Infrastructure.TradingGateway
+      context: ./src/ApiGateway
       dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
@@ -27,7 +27,7 @@ services:
 
   identityservice:
     build:
-      context: ./src/YourBank.Infrastructure.IdentityService
+      context: ./src/IdentityService
       dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
@@ -39,7 +39,7 @@ services:
 
   pricingengine:
     build:
-      context: ./src/YourBank.Infrastructure.PricingEngine
+      context: ./src/PricingEngineService
       dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
@@ -51,7 +51,7 @@ services:
 
   ordermanagement:
     build:
-      context: ./src/YourBank.Infrastructure.OrderManagement
+      context: ./src/OrderManagementService
       dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
@@ -63,7 +63,7 @@ services:
 
   orderexecution:
     build:
-      context: ./src/YourBank.Infrastructure.OrderExecution
+      context: ./src/Infrastructure.OrderExecution
       dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
@@ -75,7 +75,7 @@ services:
 
   postexecutionmonitoring:
     build:
-      context: ./src/YourBank.Infrastructure.PostExecutionMonitoring
+      context: ./src/PostExecutionMonitoringService
       dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}

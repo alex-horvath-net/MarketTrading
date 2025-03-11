@@ -1,6 +1,6 @@
-using YourBank.Business.Domain;
-using YourBank.Infrastructure.OrderManagement.Models;
-using YourBank.Infrastructure.OrderManagement.Services;
+using Business.Domain;
+using OrderManagementService.Models;
+using OrderManagementService.Services;
 // Manages trade orders by handling order placement, cancellation, and tracking execution statuses.
 // It integrates with external exchange APIs (e.g., via FIX).
 

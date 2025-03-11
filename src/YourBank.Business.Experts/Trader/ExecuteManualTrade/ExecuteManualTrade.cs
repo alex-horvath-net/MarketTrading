@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace YourBank.Business.Experts.Trader.ExecuteManualTrade {
+namespace Business.Experts.Trader.ExecuteManualTrade {
     public class ExecuteManualTrade {
         //        Select asset and quantity.
         //Choose order type (market, limit).

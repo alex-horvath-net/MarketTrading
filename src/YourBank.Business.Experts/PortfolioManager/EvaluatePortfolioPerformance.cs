@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YourBank.Business.Experts.PortfolioManager {
+namespace Business.Experts.PortfolioManager {
     internal class EvaluatePortfolioPerformance {
         //        Access performance dashboards.
         //Review key metrics(e.g., ROI, Sharpe ratio).

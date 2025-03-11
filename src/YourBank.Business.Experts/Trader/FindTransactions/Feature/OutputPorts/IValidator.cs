@@ -1,7 +1,7 @@
-﻿using YourBank.Business.Experts.Trader.FindTransactions.Feature;
-using YourBank.Infrastructure.Validation.Business.Model;
+﻿using Business.Experts.Trader.FindTransactions.Feature;
+using Infrastructure.Validation.Business.Model;
 
-namespace YourBank.Business.Experts.Trader.FindTransactions.Feature.OutputPorts;
+namespace Business.Experts.Trader.FindTransactions.Feature.OutputPorts;
 
 public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }
 

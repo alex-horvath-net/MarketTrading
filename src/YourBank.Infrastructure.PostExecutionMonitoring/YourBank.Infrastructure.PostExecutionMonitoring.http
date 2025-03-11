@@ -1,6 +1,6 @@
-@YourBank.Infrastructure.PostExecutionMonitoring_HostAddress = http://localhost:5262
+@PostExecutionMonitoringService_HostAddress = http://localhost:5262
 
-GET {{YourBank.Infrastructure.PostExecutionMonitoring_HostAddress}}/weatherforecast/
+GET {{PostExecutionMonitoringService_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

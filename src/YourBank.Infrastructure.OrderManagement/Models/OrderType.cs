@@ -1,4 +1,4 @@
-﻿namespace YourBank.Infrastructure.OrderManagement.Models {
+﻿namespace OrderManagementService.Models {
     public enum OrderType {
         Market,
         Limit

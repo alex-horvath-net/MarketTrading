@@ -1,10 +1,10 @@
-using YourBank.Infrastructure.TradingPortal.Components;
-using YourBank.Business.Experts.Trader.FindTransactions.Feature;
-using YourBank.Business.Experts.Trader.EditTransaction;
-using YourBank.Infrastructure.Technology;
-using YourBank.Infrastructure.Technology.Identity;
+using TradingPortal.Components;
+using Business.Experts.Trader.FindTransactions.Feature;
+using Business.Experts.Trader.EditTransaction;
+using Infrastructure.Technology;
+using Infrastructure.Technology.Identity;
 
-namespace YourBank.Infrastructure.TradingPortal;
+namespace TradingPortal;
 // A front-end application (Blazor Server) for traders.
 // It provides user interfaces for login, live market data, order entry, and status tracking.
 public class Program {

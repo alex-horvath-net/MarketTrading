@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using YourBank.Business.Domain;
-using YourBank.Infrastructure.Adapters.App.Data.Model;
-using YourBank.Infrastructure.Technology.EF.App;
+using Business.Domain;
+using Infrastructure.Adapters.App.Data.Model;
+using Infrastructure.Technology.EF.App;
 
-namespace YourBank.Business.Experts.Trader.EditTransaction;
+namespace Business.Experts.Trader.EditTransaction;
 
 public class Repository {
     public class Adapter(Adapter.IInfrastructure client) : Feature.IRepository {

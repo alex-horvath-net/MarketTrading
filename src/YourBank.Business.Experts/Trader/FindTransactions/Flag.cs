@@ -1,7 +1,7 @@
-﻿using YourBank.Business.Experts.Trader.FindTransactions.Feature;
-using YourBank.Business.Experts.Trader.FindTransactions.Feature.OutputPorts;
+﻿using Business.Experts.Trader.FindTransactions.Feature;
+using Business.Experts.Trader.FindTransactions.Feature.OutputPorts;
 
-namespace YourBank.Business.Experts.Trader.FindTransactions;
+namespace Business.Experts.Trader.FindTransactions;
 
 public class Flag(Flag.IClient client) : IFlag {
     public bool IsPublic(Request request, CancellationToken token) {

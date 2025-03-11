@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YourBank.Business.Domain;
-using YourBank.Infrastructure.Validation.Business.Model;
-using static YourBank.Business.Experts.Trader.EditTransaction.Feature;
+using Business.Domain;
+using Infrastructure.Validation.Business.Model;
+using static Business.Experts.Trader.EditTransaction.Feature;
 
-namespace YourBank.Business.Experts.Trader.EditTransaction;
+namespace Business.Experts.Trader.EditTransaction;
 
 public class Feature(IValidator validator, IRepository repository) {
     public async Task<Response> Execute(Request request, CancellationToken token) {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using YourBank.Infrastructure.PostExecutionMonitoring.Models;
+using PostExecutionMonitoringService.Models;
 
-namespace YourBank.Infrastructure.PostExecutionMonitoring.Services {
+namespace PostExecutionMonitoringService.Services {
     public class ExecutionMonitoringService : IExecutionMonitoringService {
         // Using an in-memory ConcurrentBag for demonstration.
         // In production, consider using a database for persistence.

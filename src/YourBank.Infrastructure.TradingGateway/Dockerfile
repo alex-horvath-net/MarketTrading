@@ -17,8 +17,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to leverage caching
-COPY ["./src/YourBank.Infrastructure.TradingGateway/YourBank.Infrastructure.TradingGateway.csproj", "YourBank.Infrastructure.TradingGateway/"]
-RUN dotnet restore "./YourBank.Infrastructure.TradingGateway/YourBank.Infrastructure.TradingGateway.csproj"
+COPY ["./src/ApiGateway/ApiGateway.csproj", "ApiGateway/"]
+RUN dotnet restore "./ApiGateway/ApiGateway.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the TradingGateway Project
@@ -28,20 +28,20 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy restored files from restore stage
-COPY --from=restore /src/YourBank.Infrastructure.TradingGateway/ /src/YourBank.Infrastructure.TradingGateway/
+COPY --from=restore /src/ApiGateway/ /src/ApiGateway/
 # Copy the rest of the source code
 COPY . .
-WORKDIR "/src/YourBank.Infrastructure.TradingGateway"
+WORKDIR "/src/ApiGateway"
 # Build the project and output the build artifacts
-RUN dotnet build "./YourBank.Infrastructure.TradingGateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./ApiGateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # --------------------------------------------------
 # Stage 4: Publish the TradingGateway Application
 # --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR "/src/YourBank.Infrastructure.TradingGateway"
-RUN dotnet publish "./YourBank.Infrastructure.TradingGateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+WORKDIR "/src/ApiGateway"
+RUN dotnet publish "./ApiGateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------
 # Stage 5: Final Runtime Image
@@ -49,4 +49,4 @@ RUN dotnet publish "./YourBank.Infrastructure.TradingGateway.csproj" -c $BUILD_C
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "YourBank.Infrastructure.TradingGateway.dll"]
+ENTRYPOINT ["dotnet", "ApiGateway.dll"]

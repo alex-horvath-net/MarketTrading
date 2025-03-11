@@ -1,6 +1,6 @@
-﻿using YourBank.Infrastructure.OrderManagement.Models;
+﻿using OrderManagementService.Models;
 
-namespace YourBank.Infrastructure.OrderManagement.Services {
+namespace OrderManagementService.Services {
     public class OrderService {
         private readonly IRiskService _riskService;
         private readonly IComplianceService _complianceService;

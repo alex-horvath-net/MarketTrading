@@ -1,4 +1,4 @@
-﻿namespace YourBank.Infrastructure.PricingEngine.Models {
+﻿namespace PricingEngineService.Models {
     public class OptionPricingResult {
         public decimal Price { get; set; }
 

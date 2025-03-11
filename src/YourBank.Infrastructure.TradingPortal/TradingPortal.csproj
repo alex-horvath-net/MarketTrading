@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\YourBank.Business.Experts\YourBank.Business.Experts.csproj" />
-    <ProjectReference Include="..\YourBank.Infrastructure\YourBank.Infrastructure.csproj" />
+    <ProjectReference Include="..\Business.Experts\Business.Experts.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

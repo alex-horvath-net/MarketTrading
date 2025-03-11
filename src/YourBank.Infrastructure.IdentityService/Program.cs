@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using YourBank.Infrastructure.IdentityService.Data;
-using YourBank.Infrastructure.IdentityService.Options;
+using IdentityService.Data;
+using IdentityService.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 

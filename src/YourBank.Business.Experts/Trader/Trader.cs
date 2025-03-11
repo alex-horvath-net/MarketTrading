@@ -1,6 +1,6 @@
-﻿using YourBank.Business.Domain;
+﻿using Business.Domain;
 
-namespace YourBank.Business.Experts.Trader {
+namespace Business.Experts.Trader {
     public class Trader {
         public IEnumerable<Trade> FindAllTransations() {
             return [new() { Name = "Name1" }];

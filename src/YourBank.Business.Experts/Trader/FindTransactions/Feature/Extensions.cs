@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YourBank.Business.Experts.Trader.FindTransactions.Clock;
-using YourBank.Business.Experts.Trader.FindTransactions.Feature.OutputPorts;
-using YourBank.Business.Experts.Trader.FindTransactions.Triggers.Blazor;
-using YourBank.Business.Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
+using Business.Experts.Trader.FindTransactions.Clock;
+using Business.Experts.Trader.FindTransactions.Feature.OutputPorts;
+using Business.Experts.Trader.FindTransactions.Triggers.Blazor;
+using Business.Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
 
-namespace YourBank.Business.Experts.Trader.FindTransactions.Feature;
+namespace Business.Experts.Trader.FindTransactions.Feature;
 
 public static class Extensions {
     public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager configuration) => services

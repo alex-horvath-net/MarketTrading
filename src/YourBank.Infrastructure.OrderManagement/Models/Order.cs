@@ -1,4 +1,4 @@
-﻿namespace YourBank.Infrastructure.OrderManagement.Models {
+﻿namespace OrderManagementService.Models {
     public class Order {
         public string Symbol { get; set; } = string.Empty;
         public OrderType OrderType { get; set; }

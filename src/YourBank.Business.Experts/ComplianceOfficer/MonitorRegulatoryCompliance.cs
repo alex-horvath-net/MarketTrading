@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System;
 
-namespace YourBank.Business.Experts.ComplianceOfficer {
+namespace Business.Experts.ComplianceOfficer {
     public class MonitorRegulatoryCompliance {
         //        Track all trades against regulatory guidelines.
         //Identify and flag non-compliant activities.

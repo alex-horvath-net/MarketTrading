@@ -1,7 +1,7 @@
-﻿using YourBank.Infrastructure.Validation.Business;
-using YourBank.Infrastructure.Validation.Business.Model;
+﻿using Infrastructure.Validation.Business;
+using Infrastructure.Validation.Business.Model;
 
-namespace YourBank.Infrastructure.Validation.FluentValidator.Adapters;
+namespace Infrastructure.Validation.FluentValidator.Adapters;
 
 
 public class CommonAdapter<TRequest>(

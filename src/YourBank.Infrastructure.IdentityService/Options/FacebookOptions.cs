@@ -1,4 +1,4 @@
-﻿namespace YourBank.Infrastructure.IdentityService.Options {
+﻿namespace IdentityService.Options {
     public class FacebookOptions {
         public string AppId { get; set; } = "";
         public string AppSecret { get; set; } = "";

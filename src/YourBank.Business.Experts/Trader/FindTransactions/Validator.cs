@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using YourBank.Business.Experts.Trader.FindTransactions.Feature;
-using YourBank.Infrastructure.Validation.Business.Model;
+using Business.Experts.Trader.FindTransactions.Feature;
+using Infrastructure.Validation.Business.Model;
 
-namespace YourBank.Business.Experts.Trader.FindTransactions;
+namespace Business.Experts.Trader.FindTransactions;
 
 public class Validator(Validator.IClient client) : Feature.OutputPorts.IValidator {
     public async Task<List<Error>> Validate(Request request, CancellationToken token) {

@@ -1,3 +1,3 @@
-﻿namespace YourBank.Business.Experts.Trader.FindTransactions.Clock;
+﻿namespace Business.Experts.Trader.FindTransactions.Clock;
 
 public interface IClock { DateTime Now { get; } }

@@ -18,8 +18,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to leverage caching
-COPY ["./src/YourBank.Infrastructure.TradingPortal/YourBank.Infrastructure.TradingPortal.csproj", "YourBank.Infrastructure.TradingPortal/"]
-RUN dotnet restore "./YourBank.Infrastructure.TradingPortal/YourBank.Infrastructure.TradingPortal.csproj"
+COPY ["./src/TradingPortal/TradingPortal.csproj", "TradingPortal/"]
+RUN dotnet restore "./TradingPortal/TradingPortal.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the TradingPortal Project
@@ -29,20 +29,20 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy restored files from restore stage
-COPY --from=restore /src/YourBank.Infrastructure.TradingPortal/ /src/YourBank.Infrastructure.TradingPortal/
+COPY --from=restore /src/TradingPortal/ /src/TradingPortal/
 # Copy the rest of the source code
 COPY . .
-WORKDIR "/src/YourBank.Infrastructure.TradingPortal"
+WORKDIR "/src/TradingPortal"
 # Build the project and store output in /app/build
-RUN dotnet build "./YourBank.Infrastructure.TradingPortal.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./TradingPortal.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # --------------------------------------------------
 # Stage 4: Publish the TradingPortal Application
 # --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR "/src/YourBank.Infrastructure.TradingPortal"
-RUN dotnet publish "./YourBank.Infrastructure.TradingPortal.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+WORKDIR "/src/TradingPortal"
+RUN dotnet publish "./TradingPortal.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------
 # Stage 5: Final Runtime Image
@@ -50,4 +50,4 @@ RUN dotnet publish "./YourBank.Infrastructure.TradingPortal.csproj" -c $BUILD_CO
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "YourBank.Infrastructure.TradingPortal.dll"]
+ENTRYPOINT ["dotnet", "TradingPortal.dll"]

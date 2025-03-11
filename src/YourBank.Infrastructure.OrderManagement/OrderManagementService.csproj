@@ -23,8 +23,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\YourBank.Business.Domain\YourBank.Business.Domain.csproj" />
-    <ProjectReference Include="..\YourBank.Business.Experts\YourBank.Business.Experts.csproj" />
+    <ProjectReference Include="..\YourBank.Business.Domain\Business.Domain.csproj" />
+    <ProjectReference Include="..\YourBank.Business.Experts\Business.Experts.csproj" />
   </ItemGroup>
 
 </Project>

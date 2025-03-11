@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using YourBank.Business.Domain;
-using YourBank.Business.Experts.Trader;
+using Business.Domain;
+using Business.Experts.Trader;
 
-namespace YourBank.Infrastructure.TradingGateway.Controllers;
+namespace OrderManagementService.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class TraderController(Trader trader) : ControllerBase {

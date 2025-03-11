@@ -1,6 +1,6 @@
-﻿using YourBank.Infrastructure.PricingEngine.Models;
+﻿using PricingEngineService.Models;
 
-namespace YourBank.Infrastructure.PricingEngine.Services {
+namespace PricingEngineService.Services {
     public class BloombergMarketDataProvider : IMarketDataProvider {
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;

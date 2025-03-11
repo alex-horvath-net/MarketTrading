@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 
-namespace YourBank.Infrastructure.Technology.Identity;
+namespace Infrastructure.Technology.Identity;
 public sealed class IdentityRedirectManager(NavigationManager navigationManager) {
     public const string StatusCookieName = "Identity.StatusMessage";
 

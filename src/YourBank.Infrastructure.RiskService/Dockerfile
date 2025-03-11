@@ -19,8 +19,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only the .csproj file to optimize layer caching
-COPY ["./src/YourBank.Infrastructure.RiskService/YourBank.Infrastructure.RiskService.csproj", "YourBank.Infrastructure.RiskService/"]
-RUN dotnet restore "./YourBank.Infrastructure.RiskService/YourBank.Infrastructure.RiskService.csproj"
+COPY ["./src/RiskService/RiskService.csproj", "RiskService/"]
+RUN dotnet restore "./RiskService/RiskService.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the Service Project
@@ -30,20 +30,20 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy restored project dependencies from restore stage
-COPY --from=restore /src/YourBank.Infrastructure.RiskService/ /src/YourBank.Infrastructure.RiskService/
+COPY --from=restore /src/RiskService/ /src/RiskService/
 # Copy the remaining source files into the container
 COPY . .
-WORKDIR "/src/YourBank.Infrastructure.RiskService"
+WORKDIR "/src/RiskService"
 # Build the project and store output in /app/build
-RUN dotnet build "./YourBank.Infrastructure.RiskService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./RiskService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # --------------------------------------------------
 # Stage 4: Publish the Service Project
 # --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR "/src/YourBank.Infrastructure.RiskService"
-RUN dotnet publish "./YourBank.Infrastructure.RiskService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+WORKDIR "/src/RiskService"
+RUN dotnet publish "./RiskService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------
 # Stage 5: Final Runtime Image (For Execution)
@@ -51,4 +51,4 @@ RUN dotnet publish "./YourBank.Infrastructure.RiskService.csproj" -c $BUILD_CONF
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "YourBank.Infrastructure.RiskService.dll"]
+ENTRYPOINT ["dotnet", "RiskService.dll"]

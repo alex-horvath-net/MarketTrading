@@ -1,5 +1,5 @@
-using YourBank.Infrastructure.PostExecutionMonitoring.Models;
-using YourBank.Infrastructure.PostExecutionMonitoring.Services;
+using PostExecutionMonitoringService.Models;
+using PostExecutionMonitoringService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
