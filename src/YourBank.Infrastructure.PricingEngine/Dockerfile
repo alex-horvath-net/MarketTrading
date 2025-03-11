@@ -10,14 +10,25 @@ WORKDIR /app # set the working directory to app inside the container
 EXPOSE 80
 
 
-# This stage is used to build the service project
+# Stage 2: Restore Dependencies
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore # Use the .NET SDK image for restoring packages
+ARG BUILD_CONFIGURATION=Release # Set the build configuration to Release by default
+WORKDIR /src # Set the working directory to /src inside the container
+# copy the .csproj (relative path from .sln) to workdir + p2  
+COPY ["src/YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj", "YourBank.Infrastructure.PricingEngine/"]
+# Run dotnet restore to cache NuGet dependencies; if the .csproj hasn't changed, this layer is cached.
+RUN dotnet restore "./YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj"
+
+# Stage 3: Build the Service Project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj", "YourBank.Infrastructure.PricingEngine/"]
-RUN dotnet restore "./YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj"
-COPY . .
-WORKDIR "/src/YourBank.Infrastructure.PricingEngine"
+# Copy the project file and restored dependencies 
+# from restoreStage/src/YourBank.Infrastructure.PricingEngine/ to buildStage/src/YourBank.Infrastructure.PricingEngine/
+COPY --from=restore /src/YourBank.Infrastructure.PricingEngine/ "YourBank.Infrastructure.PricingEngine/"
+COPY . . # Copy the rest of the source code into the container.
+WORKDIR "/src/YourBank.Infrastructure.PricingEngine" # Change to the project directory to the folder of .csproj.
+# Build the project uand save tehe result to /app/build.
 RUN dotnet build "./YourBank.Infrastructure.PricingEngine.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

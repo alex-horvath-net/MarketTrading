@@ -7,15 +7,26 @@ USER yourBankDockerUser # Switch to the newly created user.
 WORKDIR /app # set the working directory to app inside the container
 EXPOSE 80
 
-# This stage is used to build the service project
+# Stage 2: Restore Dependencies
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore # Use the .NET SDK image for restoring packages
+ARG BUILD_CONFIGURATION=Release # Set the build configuration to Release by default
+WORKDIR /src # Set the working directory to /src inside the container
+# copy the .csproj (relative path from .sln) to workdir + p2  
+COPY ["src/YourBank.Infrastructure.TradingGateway/YourBank.Infrastructure.TradingGateway.csproj", "YourBank.Infrastructure.TradingGateway/"]
+# Run dotnet restore to cache NuGet dependencies; if the .csproj hasn't changed, this layer is cached.
+RUN dotnet restore "./YourBank.Infrastructure.TradingGateway/YourBank.Infrastructure.TradingGateway.csproj"
+
+# Stage 3: Build the Service Project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["YourBank.Infrastructure.Gateway/YourBank.Infrastructure.Gateway.csproj", "YourBank.Infrastructure.Gateway/"]
-RUN dotnet restore "./YourBank.Infrastructure.Gateway/YourBank.Infrastructure.Gateway.csproj"
-COPY . .
-WORKDIR "/src/YourBank.Infrastructure.Gateway"
-RUN dotnet build "./YourBank.Infrastructure.Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
+# Copy the project file and restored dependencies 
+# from restoreStage/src/YourBank.Infrastructure.TradingGateway/ to buildStage/src/YourBank.Infrastructure.TradingGateway/
+COPY --from=restore /src/YourBank.Infrastructure.TradingGateway/ "YourBank.Infrastructure.TradingGateway/"
+COPY . . # Copy the rest of the source code into the container.
+WORKDIR "/src/YourBank.Infrastructure.TradingGateway" # Change to the project directory to the folder of .csproj.
+# Build the project uand save tehe result to /app/build.
+RUN dotnet build "./YourBank.Infrastructure.TradingGateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
