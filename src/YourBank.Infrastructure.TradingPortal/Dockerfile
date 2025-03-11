@@ -13,19 +13,19 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj", "YourBank.Infrastructure.PricingEngine/"]
-RUN dotnet restore "./YourBank.Infrastructure.PricingEngine/YourBank.Infrastructure.PricingEngine.csproj"
+COPY ["YourBank.Infrastructure.TradingPortal/YourBank.Infrastructure.TradingPortal.csproj", "YourBank.Infrastructure.TradingPortal/"]
+RUN dotnet restore "./YourBank.Infrastructure.TradingPortal/YourBank.Infrastructure.TradingPortal.csproj"
 COPY . .
-WORKDIR "/src/YourBank.Infrastructure.PricingEngine"
-RUN dotnet build "./YourBank.Infrastructure.PricingEngine.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/YourBank.Infrastructure.TradingPortal"
+RUN dotnet build "./YourBank.Infrastructure.TradingPortal.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./YourBank.Infrastructure.PricingEngine.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./YourBank.Infrastructure.TradingPortal.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "YourBank.Infrastructure.PricingEngine.dll"]
+ENTRYPOINT ["dotnet", "YourBank.Infrastructure.TradingPortal.dll"]
