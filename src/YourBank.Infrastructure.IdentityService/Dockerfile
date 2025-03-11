@@ -1,9 +1,10 @@
 # Stage1: running the app from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base # Create base image from the official ASP.NET Core runtime image (9.0).
+ # Create base image from the official ASP.NET Core runtime image (9.0).
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 ARG APP_UID # Set the APP_UID argument to the value passed in the docker-compose file
 USER $APP_UID # Set the user to the one created in docker compose file
-RUN useradd -u ${APP_UID} -m myappuser # Create a non-root user with the specified UID and a home directory.
-USER myappuser # Switch to the newly created user.
+RUN useradd -D -u ${APP_UID} -m yourBankDockerUser # Create a non-root user with the specified UID and a home directory.
+USER yourBankDockerUser # Switch to the newly created user.
 WORKDIR /app # set the working directory to app inside the container
 EXPOSE 80
 
