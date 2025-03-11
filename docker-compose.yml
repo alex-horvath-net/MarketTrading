@@ -4,7 +4,7 @@ services:
   tradingportal:
     build:
       context: ./src/YourBank.Infrastructure.TradingPortal
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile # Removed incorrect ./
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_tradingportal
@@ -12,11 +12,14 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5000:80"
+    depends_on:
+      - identityservice
+      - tradinggateway
 
   tradinggateway:
     build:
       context: ./src/YourBank.Infrastructure.TradingGateway
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_tradinggateway
@@ -24,11 +27,13 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5001:80"
+    depends_on:
+      - identityservice
 
   identityservice:
     build:
       context: ./src/YourBank.Infrastructure.IdentityService
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_identityservice
@@ -40,7 +45,7 @@ services:
   pricingengine:
     build:
       context: ./src/YourBank.Infrastructure.PricingEngine
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_pricingengine
@@ -52,7 +57,7 @@ services:
   ordermanagement:
     build:
       context: ./src/YourBank.Infrastructure.OrderManagement
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_ordermanagement
@@ -60,11 +65,14 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5004:80"
+    depends_on:
+      - identityservice
+      - pricingengine
 
   orderexecution:
     build:
       context: ./src/YourBank.Infrastructure.OrderExecution
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_orderexecution
@@ -72,11 +80,13 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5005:80"
+    depends_on:
+      - ordermanagement
 
   postexecutionmonitoring:
     build:
       context: ./src/YourBank.Infrastructure.PostExecutionMonitoring
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_postexecutionmonitoring
@@ -84,3 +94,5 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5006:80"
+    depends_on:
+      - orderexecution
