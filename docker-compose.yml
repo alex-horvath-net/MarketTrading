@@ -4,7 +4,7 @@ services:
   tradingportal:
     build:
       context: ./src/YourBank.Infrastructure.TradingPortal
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_tradingportal
@@ -16,7 +16,7 @@ services:
   tradinggateway:
     build:
       context: ./src/YourBank.Infrastructure.TradingGateway
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_tradinggateway
@@ -28,7 +28,7 @@ services:
   identityservice:
     build:
       context: ./src/YourBank.Infrastructure.IdentityService
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_identityservice
@@ -40,7 +40,7 @@ services:
   pricingengine:
     build:
       context: ./src/YourBank.Infrastructure.PricingEngine
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_pricingengine
@@ -52,7 +52,7 @@ services:
   ordermanagement:
     build:
       context: ./src/YourBank.Infrastructure.OrderManagement
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_ordermanagement
@@ -64,7 +64,7 @@ services:
   orderexecution:
     build:
       context: ./src/YourBank.Infrastructure.OrderExecution
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_orderexecution
@@ -76,7 +76,7 @@ services:
   postexecutionmonitoring:
     build:
       context: ./src/YourBank.Infrastructure.PostExecutionMonitoring
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_postexecutionmonitoring
