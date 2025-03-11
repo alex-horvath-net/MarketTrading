@@ -4,7 +4,7 @@ services:
   tradingportal:
     build:
       context: ./src/TradingPortal
-      dockerfile: Dockerfile # Removed incorrect ./
+      dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_tradingportal
