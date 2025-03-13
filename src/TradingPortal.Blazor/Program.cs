@@ -6,14 +6,6 @@ using TradingPortal.Blazor.Components.Account;
 using TradingPortal.Blazor.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-// docker pull mcr.microsoft.com/mssql/server:2022-latest
-// docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=SA_PASSWORD!123" -p 1433:1433 --name sqlserver -d mcr.microsoft.com/mssql/server:2022-latest
-// "DefaultConnection": "Server=.,1433;Database=TradingPortal;User Id=sa;Password=SA_PASSWORD!123;"
-// sqlcmd -S localhost,1433 -U sa -P 'SA_PASSWORD!123'
-// dotnet tool install --global dotnet-ef
-// dotnet tool update --global dotnet-ef
-
-
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
