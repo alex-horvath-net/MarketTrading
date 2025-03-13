@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "src\ApiGatewa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService", "src\IdentityService\IdentityService.csproj", "{0993E2BC-BB1E-4A80-AB1F-DCF28F27DE63}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingPortal.Blazor", "src\TradingPortal.Blazor\TradingPortal.Blazor.csproj", "{DC9FCB09-2EAE-4697-A4DD-7FE6D06D6BEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{0993E2BC-BB1E-4A80-AB1F-DCF28F27DE63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0993E2BC-BB1E-4A80-AB1F-DCF28F27DE63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0993E2BC-BB1E-4A80-AB1F-DCF28F27DE63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC9FCB09-2EAE-4697-A4DD-7FE6D06D6BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC9FCB09-2EAE-4697-A4DD-7FE6D06D6BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC9FCB09-2EAE-4697-A4DD-7FE6D06D6BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC9FCB09-2EAE-4697-A4DD-7FE6D06D6BEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
