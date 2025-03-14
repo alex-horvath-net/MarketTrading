@@ -24,4 +24,10 @@
     <ProjectReference Include="..\YourBank.Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="IdentityManager\Login\" />
+    <Folder Include="IdentityManager\Logout\" />
+    <Folder Include="IdentityManager\Register\" />
+  </ItemGroup>
+
 </Project>
