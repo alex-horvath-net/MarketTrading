@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 
 namespace TradingPortal.Blazor.Components.Account {
-    internal sealed class IdentityRedirectManager(NavigationManager navigationManager) {
+    public class IdentityRedirectManager(NavigationManager navigationManager) {
         public const string StatusCookieName = "Identity.StatusMessage";
 
         private static readonly CookieBuilder StatusCookieBuilder = new() {
@@ -14,24 +14,20 @@ namespace TradingPortal.Blazor.Components.Account {
 
         [DoesNotReturn]
         public void RedirectTo(string? uri) {
-            uri ??= "";
-
-            // Prevent open redirects.
-            if (!Uri.IsWellFormedUriString(uri, UriKind.Relative)) {
-                uri = navigationManager.ToBaseRelativePath(uri);
-            }
+            var relativeUri = GetLocalRelativeUriorExternalAbsoluteUri(uri);
 
             // During static rendering, NavigateTo throws a NavigationException which is handled by the framework as a redirect.
             // So as long as this is called from a statically rendered Identity component, the InvalidOperationException is never thrown.
-            navigationManager.NavigateTo(uri);
+            navigationManager.NavigateTo(relativeUri);
             throw new InvalidOperationException($"{nameof(IdentityRedirectManager)} can only be used during static rendering.");
         }
 
         [DoesNotReturn]
-        public void RedirectTo(string uri, Dictionary<string, object?> queryParameters) {
-            var uriWithoutQuery = navigationManager.ToAbsoluteUri(uri).GetLeftPart(UriPartial.Path);
-            var newUri = navigationManager.GetUriWithQueryParameters(uriWithoutQuery, queryParameters);
-            RedirectTo(newUri);
+        public void RedirectTo(string relativeUri, Dictionary<string, object?> queryParameters) {
+            //string absoluteUri = GenerateAbsoluteUri(relativeUri, queryParameters);
+            //RedirectTo(absoluteUri);
+            var newRelateUri = GetUriWithQueryParameters(relativeUri, queryParameters);
+            RedirectTo(newRelateUri);
         }
 
         [DoesNotReturn]
@@ -48,5 +44,20 @@ namespace TradingPortal.Blazor.Components.Account {
         [DoesNotReturn]
         public void RedirectToCurrentPageWithStatus(string message, HttpContext context)
             => RedirectToWithStatus(CurrentPath, message, context);
+
+        private string GetLocalRelativeUriorExternalAbsoluteUri(string? uri) {
+            uri ??= "";
+            var relatuveUri =
+                Uri.IsWellFormedUriString(uri, UriKind.Relative) ?
+                uri :
+                navigationManager.ToBaseRelativePath(uri);
+
+            return relatuveUri;
+        }
+         
+        public string GetUriWithQueryParameters(string uri, Dictionary<string, object?> newQueryParameters) {
+
+            return navigationManager.GetUriWithQueryParameters(uri, newQueryParameters);
+        }
     }
-}
+}   
