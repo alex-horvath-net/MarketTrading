@@ -22,4 +22,9 @@
     <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="IdentityManager\LocalLogIn\" />
+    <Folder Include="IdentityManager\ExternaLogOut\" />
+  </ItemGroup>
+
 </Project>

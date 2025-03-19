@@ -1,12 +1,11 @@
 ﻿@page "/Account/Login"
 
 @using System.ComponentModel.DataAnnotations
-@using Microsoft.AspNetCore.Authentication
-@using Microsoft.AspNetCore.Identity
-@using TradingPortal.Blazor.Data
 @using TradingPortal.Blazor.IdentityManager
 
+@inject ILogger<Login> Logger
 @inject IdentityManager IdentityManager
+@inject IdentityRedirectManager RedirectManager
 
 <PageTitle>Log in</PageTitle>
 
@@ -77,15 +76,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await ClearExternalLoginData();
+        await IdentityManager.ExternaLogOut(HttpContext);
 
-        accountRegisterUri = IdentityManager.GetUriWithQueryParameters("Account/Register", new() { ["ReturnUrl"] = ReturnUrl });
+        accountRegisterUri = RedirectManager.AddQueryParametersToUri("Account/Register", new() { ["ReturnUrl"] = ReturnUrl });
     }
 
 
     public async Task LoginUser()
     {
-        var result = await IdentityManager.PasswordSignInAsync(
+        var result = await IdentityManager.LocalLogIn(
             userName: Input.Email,
             password: Input.Password,
             isPersistent: Input.RememberMe,
@@ -99,7 +98,7 @@
         else if (result.RequiresTwoFactor)
         {
             Logger.LogInformation("User requires two-factor authentication.");
-            RedirectManager.RedirectTo("Account/LoginWith2fa", new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
+            RedirectManager.RedirectTo("Account/LoginWith2fa", new Dictionary<string, object?> { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
         }
         else if (result.IsLockedOut)
         {
@@ -110,15 +109,6 @@
         {
             Logger.LogWarning("Invalid login attempt.");
             errorMessage = "Error: Invalid login attempt.";
-        }
-    }
-
-    private async Task ClearExternalLoginData()
-    {
-        if (HttpMethods.IsGet(HttpContext.Request.Method))
-        {
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
         }
     }
 

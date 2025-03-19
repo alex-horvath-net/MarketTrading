@@ -19,11 +19,11 @@
 
     protected override void OnInitialized()
     {
-        messageFromCookie = HttpContext.Request.Cookies[IdentityRedirectManager.StatusCookieName];
+        messageFromCookie = HttpContext.Request.Cookies[IdentityRedirectManager.IdentityStatusMessageCookieName];
 
         if (messageFromCookie is not null)
         {
-            HttpContext.Response.Cookies.Delete(IdentityRedirectManager.StatusCookieName);
+            HttpContext.Response.Cookies.Delete(IdentityRedirectManager.IdentityStatusMessageCookieName);
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using TradingPortal.Blazor.Components;
 using TradingPortal.Blazor.Components.Account;
 using TradingPortal.Blazor.Data;
+using TradingPortal.Blazor.IdentityManager;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
+builder.Services.AddScoped<IdentityManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddAuthentication(options => {

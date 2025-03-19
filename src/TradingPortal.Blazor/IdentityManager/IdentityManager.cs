@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using TradingPortal.Blazor.Components.Account;
 using TradingPortal.Blazor.Data;
 
@@ -20,19 +21,19 @@ public class IdentityManager {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-
-    public string GetUriWithQueryParameters(string uri, Dictionary<string, object?> newQueryParameters) {
-
-        return _identityRedirectManager.GetUriWithQueryParameters(uri, newQueryParameters);
-    }
-
-
-    public async Task<SignInResult?> PasswordSignInAsync(string userName, string password, bool isPersistent, bool lockoutOnFailure) {
+    public async Task<SignInResult?> LocalLogIn(string userName, string password, bool isPersistent, bool lockoutOnFailure) {
         var result = await _signInManager.PasswordSignInAsync(
             userName,
             password,
             isPersistent,
             lockoutOnFailure);
         return result;
+    }
+
+    public async Task ExternaLogOut(HttpContext httpContext) {
+        if (HttpMethods.IsGet(httpContext.Request.Method)) {
+            // Clear the existing external cookie to ensure a clean login process
+            await httpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+        }
     }
 }
