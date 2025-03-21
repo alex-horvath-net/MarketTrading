@@ -1,5 +1,4 @@
 ﻿using Business.Domain;
-using Business.Experts.Trader.FindTransactions.Feature;
 using Business.Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
 using Infrastructure.Validation.Business.Model;
 

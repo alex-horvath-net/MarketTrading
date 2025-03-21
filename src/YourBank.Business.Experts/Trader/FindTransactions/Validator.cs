@@ -1,45 +1,50 @@
-﻿using FluentValidation;
-using Business.Experts.Trader.FindTransactions.Feature;
+﻿using Business.Experts.Trader.EditTransaction;
+using FluentValidation;
 using Infrastructure.Validation.Business.Model;
+using Microsoft.Extensions.DependencyInjection;
+//using Infrastructure.Validation.Business.Model;
 
 namespace Business.Experts.Trader.FindTransactions;
 
-public class Validator(Validator.IClient client) : Feature.OutputPorts.IValidator {
-    public async Task<List<Error>> Validate(Request request, CancellationToken token) {
-        var clientModel = await client.Validate(request, token);
-        var businessModel = clientModel.Select(ToBusiness).ToList();
-        token.ThrowIfCancellationRequested();
-        return businessModel;
-        static Error ToBusiness(ClientModel model) => new(model.Name, model.Message);
-    }
-
-    public record ClientModel(string Name, string Message);
-
-    public interface IClient {
-        Task<List<ClientModel>> Validate(Request request, CancellationToken token);
-    }
-
-    public class Client(IValidator<Request> technology) : IClient {
-        public async Task<List<ClientModel>> Validate(Request request, CancellationToken token) {
-            var techModel = await technology.ValidateAsync(request, token);
-            var clientModel = techModel.Errors.Select(ToModel).ToList();
-            token.ThrowIfCancellationRequested();
-            return clientModel;
+public class Valiadator {
+    public class Adapter(Adapter.IInfrastructure infra) : Feature.IValidator {
+        public async Task<List<Error>> Validate(Feature.Request request, CancellationToken token) {
+            var techModel = await infra.Validate(request, token);
+            var businessModel = techModel.Select(model => new Error(model.Name, model.Message)).ToList();
+            return businessModel;
         }
 
-        private static ClientModel ToModel(FluentValidation.Results.ValidationFailure tech) => new(tech.PropertyName, tech.ErrorMessage);
+        public record TechModel(string Name, string Message);
 
-        public class Technology : AbstractValidator<Request> {
-            public Technology() {
-                RuleFor(x => x).NotNull().WithMessage(RequestIsNull);
-                RuleFor(x => x.UserId).NotNull().WithMessage(UserIdIsNull);
-                RuleFor(x => x.Name).MinimumLength(3).When(x => !string.IsNullOrEmpty(x.Name)).WithMessage(NameIsShort);
-            }
+        public interface IInfrastructure {
+            Task<List<TechModel>> Validate(Feature.Request request, CancellationToken token);
+        }
+    }
 
-            public static string RequestIsNull => "Request must be provided.";
-            public static string UserIdIsNull => "UserId must be provided.";
-            public static string NameIsShort => "Name must be at least 3 characters long if it is provided.";
+    public class Infrastructure(IValidator<Feature.Request> technology) : Adapter.IInfrastructure {
+        public async Task<List<Adapter.TechModel>> Validate(Feature.Request request, CancellationToken token) {
+            var techData = await technology.ValidateAsync(request, token);
+            var techModel = techData.Errors.Select(ToTechModel).ToList();
+            return techModel;
         }
 
+        private Adapter.TechModel ToTechModel(FluentValidation.Results.ValidationFailure tech) => new(tech.PropertyName, tech.ErrorMessage);
+    }
+
+    public class Technology : AbstractValidator<Feature.Request> {
+        public Technology() {
+            RuleFor(x => x).NotNull().WithMessage("Request must be provided.");
+            RuleFor(x => x.UserId).NotNull().WithMessage("UserId must be provided.");
+            RuleFor(x => x.Name).MinimumLength(3).WithMessage("Name must be at least 3 characters long.");
+        }
     }
 }
+
+public static class ValidatorExtensions {
+    public static IServiceCollection AddValidatorAdapter(this IServiceCollection services) => services
+        .AddScoped<Feature.IValidator, Valiadator.Adapter>()
+        .AddScoped<Valiadator.Adapter.IInfrastructure, Valiadator.Infrastructure>()
+        //.AddScoped<Repository.IClient, Repository.Client>()
+        .AddScoped<IValidator<Feature.Request>, Valiadator.Technology>();
+}
+

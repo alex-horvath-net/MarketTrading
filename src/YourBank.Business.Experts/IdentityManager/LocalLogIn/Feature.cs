@@ -1,4 +1,4 @@
-﻿namespace TradingPortal.Blazor.IdentityManager;
+﻿namespace Business.Experts.IdentityManager.LocalLogIn;
 
 //public class Feature(IValidator validator, IRepository repository) {
 //    public async Task<Response> Execute(Request request, CancellationToken token) {

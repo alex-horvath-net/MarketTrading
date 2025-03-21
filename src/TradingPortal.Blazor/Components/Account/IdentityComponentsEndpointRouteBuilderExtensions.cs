@@ -10,7 +10,7 @@ using TradingPortal.Blazor.Components.Account.Pages;
 using TradingPortal.Blazor.Components.Account.Pages.Manage;
 using TradingPortal.Blazor.Data;
 
-namespace Microsoft.AspNetCore.Routing {
+namespace TradingPortal.Blazor.Components.Account {
     internal static class IdentityComponentsEndpointRouteBuilderExtensions {
         // These endpoints are required by the Identity Razor components defined in the /Components/Account/Pages directory of this project.
         public static IEndpointConventionBuilder MapAdditionalIdentityEndpoints(this IEndpointRouteBuilder endpoints) {

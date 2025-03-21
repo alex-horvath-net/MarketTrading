@@ -6,15 +6,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Business.Experts.IdentityManager;
 
-public class IdentityManager {
+public class Expert {
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
-    private readonly ILogger<IdentityManager> _logger;
+    private readonly ILogger<Expert> _logger;
 
-    public IdentityManager(
+    public Expert(
         SignInManager<User> signInManager,
         UserManager<User> userManager,
-        ILogger<IdentityManager> logger) {
+        ILogger<Expert> logger) {
         _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));

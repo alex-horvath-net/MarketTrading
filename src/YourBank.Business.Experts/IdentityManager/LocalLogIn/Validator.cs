@@ -2,9 +2,9 @@
 using Business.Experts.Trader.FindTransactions.Feature;
 using Infrastructure.Validation.Business.Model;
 
-namespace Business.Experts.Trader.FindTransactions;
+namespace Business.Experts.IdentityManager.LocalLogIn;
 
-public class Validator(Validator.IClient client) : Feature.OutputPorts.IValidator {
+public class Adapter(Adapter.IClient client) : Feature.OutputPorts.IValidator {
     public async Task<List<Error>> Validate(Request request, CancellationToken token) {
         var clientModel = await client.Validate(request, token);
         var businessModel = clientModel.Select(ToBusiness).ToList();

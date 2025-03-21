@@ -52,7 +52,7 @@ public class Repository {
         }
     }
 }
-public static class AdapterExtensions {
+public static class RepositoryExtensions {
     public static IServiceCollection AddRepository(this IServiceCollection services) => services
         .AddScoped<Feature.IRepository, Repository.Adapter>()
         .AddScoped<Repository.Adapter.IInfrastructure, Repository.Infrastructure>();

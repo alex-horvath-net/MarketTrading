@@ -1,8 +1,8 @@
 using TradingPortal.Components;
-using Business.Experts.Trader.FindTransactions.Feature;
 using Business.Experts.Trader.EditTransaction;
 using Infrastructure.Technology;
 using Infrastructure.Technology.Identity;
+using Business.Experts.Trader.FindTransactions;
 
 namespace TradingPortal;
 // A front-end application (Blazor Server) for traders.

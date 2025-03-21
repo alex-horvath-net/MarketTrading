@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Business.Domain;
+﻿using Business.Domain;
 using Infrastructure.Validation.Business.Model;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using static Business.Experts.Trader.EditTransaction.Feature;
 
 namespace Business.Experts.Trader.EditTransaction;
@@ -44,7 +44,7 @@ public class Feature(IValidator validator, IRepository repository) {
     public interface IRepository { Task<Trade> EditTransaction(Request request, CancellationToken token); }
 }
 
-public static class Extensions {
+public static class FeatureExtensions {
     public static IServiceCollection AddEditTransaction(this IServiceCollection services, ConfigurationManager config) => services
         .AddScoped<Feature>()
         .AddValidatorAdapter()
