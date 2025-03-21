@@ -1,6 +1,8 @@
 ﻿using Business.Domain;
 using Business.Experts.IdentityManager.LocalLogIn;
+using Business.Experts.Trader.EditTransaction;
 using Infrastructure.Validation.Business.Model;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Experts.Trader.FindTransactions;
@@ -60,34 +62,13 @@ public class Featrure(Featrure.IValidator validator, Featrure.IFlag flag, Featru
 }
 
 public static class FeatureExtensions {
-    public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager configuration) => services
-        .AddScoped<ITrigger, Trigger>()
-        .AddService(configuration);
 
-    public static IServiceCollection AddService(this IServiceCollection services, ConfigurationManager configuration) => services
-        .AddScoped<IFeature, Featrure>()
-        .AddClock()
-        .AddFlag()
+    public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager config) => services
+        .AddScoped<Feature>()
         .AddValidator()
-        .AddRepository();
-
-    public static IServiceCollection AddClock(this IServiceCollection services) => services
-        .AddScoped<IClockAdapter, DefaultClockAdapter>()
-        .AddScoped<IClock, DefaultClock>();
-
-    public static IServiceCollection AddFlag(this IServiceCollection services) => services
-        .AddScoped<IFlag, Flag>()
-        .AddScoped<Flag.IClient, Flag.Client>();
-
-    public static IServiceCollection AddRepository(this IServiceCollection services) => services
-        .AddScoped<IRepository, Repository>()
-        .AddScoped<Repository.IClient, Repository.Client>();
-
-
-    public static IServiceCollection AddValidator(this IServiceCollection services) => services
-        .AddScoped<OutputPorts.IValidator, Adapter>()
-        .AddScoped<Adapter.IClient, Adapter.Client>()
-        .AddScoped<IValidator<Request>, Adapter.Client.Technology>();
+        .AddRepository()
+        .AddFlag()
+        .AddClock();
 }
 
 

@@ -44,7 +44,7 @@ public static class ValidatorExtensions {
     public static IServiceCollection AddValidatorAdapter(this IServiceCollection services) => services
         .AddScoped<Feature.IValidator, Valiadator.Adapter>()
         .AddScoped<Valiadator.Adapter.IInfrastructure, Valiadator.Infrastructure>()
-        //.AddScoped<Repository.IClient, Repository.Client>()
+        //.AddScoped<Repository.IInfrastructure, Repository.Infrastructure>()
         .AddScoped<IValidator<Feature.Request>, Valiadator.Technology>();
 }
 

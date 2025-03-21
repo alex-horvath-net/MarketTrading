@@ -41,6 +41,6 @@
 //public static class Extensions {
 //    public static IServiceCollection AddEditTransaction(this IServiceCollection services, ConfigurationManager config) => services
 //        .AddScoped<Feature>()
-//        .AddValidatorAdapter()
+//        .AddValidator()
 //        .AddRepository();
 //}

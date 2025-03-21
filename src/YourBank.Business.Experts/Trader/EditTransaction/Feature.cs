@@ -47,6 +47,6 @@ public class Feature(IValidator validator, IRepository repository) {
 public static class FeatureExtensions {
     public static IServiceCollection AddEditTransaction(this IServiceCollection services, ConfigurationManager config) => services
         .AddScoped<Feature>()
-        .AddValidatorAdapter()
+        .AddValidator()
         .AddRepository();
 }

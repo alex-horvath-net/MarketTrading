@@ -36,8 +36,8 @@ public class Repository {
 
     public class Infrastructure(AppDB db) : Adapter.IInfrastructure {
 
-        public async Task<TransactionDM> FindById(long id, CancellationToken token) => await db.FindAsync<TransactionDM>(id, token) ??
-            throw new ArgumentException("Transaction not found");
+        public async Task<TransactionDM> FindById(long id, CancellationToken token) => await
+            db.FindAsync<TransactionDM>(id, token) ?? throw new ArgumentException("Transaction not found");
 
         public Task<bool> ExistsById(long id, CancellationToken token) =>
            db.Transactions.AnyAsync(x => x.Id == id, token);
