@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Infrastructure.Adapters.Identity.Data.Model;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -6,19 +7,16 @@ using Microsoft.Extensions.Logging;
 namespace Business.Experts.IdentityManager;
 
 public class IdentityManager {
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IdentityRedirectManager _identityRedirectManager;
+    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<User> _userManager;
     private readonly ILogger<IdentityManager> _logger;
 
     public IdentityManager(
-        SignInManager<ApplicationUser> signInManager,
-        UserManager<ApplicationUser> userManager,
-        IdentityRedirectManager identityRedirectManager,
+        SignInManager<User> signInManager,
+        UserManager<User> userManager,
         ILogger<IdentityManager> logger) {
         _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        _identityRedirectManager = identityRedirectManager ?? throw new ArgumentNullException(nameof(identityRedirectManager));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
