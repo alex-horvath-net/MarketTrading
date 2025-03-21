@@ -1,5 +1,4 @@
 ﻿using Business.Domain;
-using Business.Experts.IdentityManager.LocalLogIn;
 using Business.Experts.Trader.EditTransaction;
 using Infrastructure.Validation.Business.Model;
 using Microsoft.Extensions.Configuration;

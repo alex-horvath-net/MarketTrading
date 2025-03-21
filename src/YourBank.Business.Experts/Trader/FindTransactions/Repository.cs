@@ -1,18 +1,15 @@
 ﻿using Business.Domain;
-using Business.Experts.Trader.EditTransaction;
 using FluentValidation;
 using Infrastructure.Adapters.App.Data.Model;
 using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using static Business.Experts.Trader.FindTransactions.Featrure;
 
 namespace Business.Experts.Trader.FindTransactions;
-
-
-
-
 public class Repository {
-    public class Adapter(Adapter.IInfrastructure client) : Feature.IRepository {
+    public class Adapter(Adapter.IInfrastructure client) : IRepository {
+
         public async Task<List<Trade>> FindTransactions(Featrure.Request request, CancellationToken token) {
             var dataModel = await client.Find(request.Name, token);
             var businessModel = dataModel.Select(ToBusinessModel).ToList();
@@ -50,6 +47,6 @@ public class Repository {
 }
 public static class RepositoryExtensions {
     public static IServiceCollection AddRepository(this IServiceCollection services) => services
-        .AddScoped<Feature.IRepository, Repository.Adapter>()
+        .AddScoped<IRepository, Repository.Adapter>()
         .AddScoped<Repository.Adapter.IInfrastructure, Repository.Infrastructure>();
 }
