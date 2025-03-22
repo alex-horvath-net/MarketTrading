@@ -6,27 +6,34 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Experts.Trader.FindTransactions;
 
-public interface IFeature { Task<Featrure.Response> Execute(Featrure.Request request, CancellationToken token); }
-public class Featrure(Featrure.IValidator validator, Featrure.IFlag flag, Featrure.IRepository repository, Featrure.IClock clock) : IFeature {
+public interface IFeature { Task<Feature.Response> Execute(Feature.Request request, CancellationToken token); }
+public class Feature(
+    Feature.ICheck check,
+    Feature.IValidate validate,
+    Feature.IRepository repository,
+    Feature.IClock clock) : IFeature {
 
     public async Task<Response> Execute(Request request, CancellationToken token) {
-        var response = new Response();
+        var response = new Response(request, token);
+
         try {
-            response.IsUnderConstruction = flag.IsPublic(request, token);
-            response.Request = request;
-            response.Errors = await validator.Validate(request, token);
-            if (response.Errors.Count > 0)
+            if (check.Run(response))
                 return response;
 
+            if (await validate.Run(response))
+                return response;
 
             response.Transactions = await repository.FindTransactions(request, token);
 
             token.ThrowIfCancellationRequested();
         } catch (Exception ex) {
+            response.FailedAt = clock.GetTime();
             response.Exception = ex;
+            throw;
         } finally {
             response.StopedAt = clock.GetTime();
         }
+
         return response;
     }
 
@@ -37,23 +44,31 @@ public class Featrure(Featrure.IValidator validator, Featrure.IFlag flag, Featru
     }
 
     public class Response {
+
+        public Response(Request request, CancellationToken token) {
+            Request = request;
+            Token = token;
+        }
         public Guid Id { get; set; } = Guid.NewGuid();
-        public bool IsUnderConstruction { get; set; } = false;
+        public bool Enabled { get; set; } = false;
         public DateTime? StopedAt { get; set; }
-        public DateTime? FailedAt { get; internal set; }
+        public DateTime? FailedAt { get; set; }
         public Exception? Exception { get; set; }
-        public Request? Request { get; set; }
+        public Request Request { get; }
+        public CancellationToken Token { get; }
+
         public List<Error> Errors { get; set; } = [];
         public List<Trade> Transactions { get; set; } = [];
     }
 
+    public interface ICheck { bool Run(Response response); }
+    public interface IValidate { Task<bool> Run(Response response); }
+
     public interface IClock { DateTime GetTime(); }
 
-    public interface IFlag { bool IsPublic(Request request, CancellationToken token); }
 
     public interface IRepository { Task<List<Trade>> FindTransactions(Request request, CancellationToken token); }
 
-    public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }
 
 
 

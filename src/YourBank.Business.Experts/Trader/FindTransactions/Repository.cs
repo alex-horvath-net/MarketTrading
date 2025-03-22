@@ -4,13 +4,13 @@ using Infrastructure.Adapters.App.Data.Model;
 using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using static Business.Experts.Trader.FindTransactions.Featrure;
+using static Business.Experts.Trader.FindTransactions.Feature;
 
 namespace Business.Experts.Trader.FindTransactions;
 public class Repository {
     public class Adapter(Adapter.IInfrastructure client) : IRepository {
 
-        public async Task<List<Trade>> FindTransactions(Featrure.Request request, CancellationToken token) {
+        public async Task<List<Trade>> FindTransactions(Feature.Request request, CancellationToken token) {
             var dataModel = await client.Find(request.Name, token);
             var businessModel = dataModel.Select(ToBusinessModel).ToList();
 

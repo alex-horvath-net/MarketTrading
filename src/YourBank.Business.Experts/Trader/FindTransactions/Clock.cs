@@ -2,7 +2,7 @@
 
 namespace Business.Experts.Trader.FindTransactions;
 public class Clock {
-    public class Adapter(Adapter.IInfrastructure infra) : Featrure.IClock {
+    public class Adapter(Adapter.IInfrastructure infra) : Feature.IClock {
         public DateTime GetTime() => infra.Now;
 
         public interface IInfrastructure { DateTime Now { get; } }
@@ -15,6 +15,6 @@ public class Clock {
 
 public static class ClockExtensions {
     public static IServiceCollection AddClock(this IServiceCollection services) => services
-        .AddScoped<Featrure.IClock, Clock.Adapter>()
+        .AddScoped<Feature.IClock, Clock.Adapter>()
         .AddScoped<Clock.Adapter.IInfrastructure, Clock.Infrastructure>();
 }
