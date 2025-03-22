@@ -57,4 +57,9 @@ public class IdentityRedirectManager(NavigationManager navigationManager) {
 
         return navigationManager.GetUriWithQueryParameters(uri, newQueryParameters);
     }
+
+    private bool IsStaticRendering() {
+        // Check if the current URI is being rendered statically
+        return navigationManager.Uri.Contains("_blazor");
+    }
 }
