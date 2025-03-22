@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using TradingPortal.Blazor.Components.Account.Pages;
 using TradingPortal.Blazor.Components.Account.Pages.Manage;
-using TradingPortal.Blazor.Data;
+using Infrastructure.Adapters.Identity.Data.Model;
 
 namespace TradingPortal.Blazor.Components.Account {
     internal static class IdentityComponentsEndpointRouteBuilderExtensions {
@@ -20,7 +20,7 @@ namespace TradingPortal.Blazor.Components.Account {
 
             accountGroup.MapPost("/PerformExternalLogin", (
                 HttpContext context,
-                [FromServices] SignInManager<ApplicationUser> signInManager,
+                [FromServices] SignInManager<User> signInManager,
                 [FromForm] string provider,
                 [FromForm] string returnUrl) => {
                     IEnumerable<KeyValuePair<string, StringValues>> query = [
@@ -38,7 +38,7 @@ namespace TradingPortal.Blazor.Components.Account {
 
             accountGroup.MapPost("/Logout", async (
                 ClaimsPrincipal user,
-                [FromServices] SignInManager<ApplicationUser> signInManager,
+                [FromServices] SignInManager<User> signInManager,
                 [FromForm] string returnUrl) => {
                     await signInManager.SignOutAsync();
                     return TypedResults.LocalRedirect($"~/{returnUrl}");
@@ -48,7 +48,7 @@ namespace TradingPortal.Blazor.Components.Account {
 
             manageGroup.MapPost("/LinkExternalLogin", async (
                 HttpContext context,
-                [FromServices] SignInManager<ApplicationUser> signInManager,
+                [FromServices] SignInManager<User> signInManager,
                 [FromForm] string provider) => {
                     // Clear the existing external cookie to ensure a clean login process
                     await context.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -67,7 +67,7 @@ namespace TradingPortal.Blazor.Components.Account {
 
             manageGroup.MapPost("/DownloadPersonalData", async (
                 HttpContext context,
-                [FromServices] UserManager<ApplicationUser> userManager,
+                [FromServices] UserManager<User> userManager,
                 [FromServices] AuthenticationStateProvider authenticationStateProvider) => {
                     var user = await userManager.GetUserAsync(context.User);
                     if (user is null) {
@@ -79,7 +79,7 @@ namespace TradingPortal.Blazor.Components.Account {
 
                     // Only include personal data for download
                     var personalData = new Dictionary<string, string>();
-                    var personalDataProps = typeof(ApplicationUser).GetProperties().Where(
+                    var personalDataProps = typeof(User).GetProperties().Where(
                         prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
                     foreach (var p in personalDataProps) {
                         personalData.Add(p.Name, p.GetValue(user)?.ToString() ?? "null");
