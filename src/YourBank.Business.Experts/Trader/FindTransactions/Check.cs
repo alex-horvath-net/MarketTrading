@@ -21,7 +21,7 @@ public class Check {
 }
 
 public static class FlagExtensions {
-    public static IServiceCollection AddFlag(this IServiceCollection services) => services
+    public static IServiceCollection AddCheck(this IServiceCollection services) => services
         .AddScoped<Feature.ICheck, Check.Business>()
         .AddScoped<Check.Business.IInfrastructure, Check.Infrastructure>();
 }

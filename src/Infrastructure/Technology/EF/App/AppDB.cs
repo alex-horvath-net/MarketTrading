@@ -11,7 +11,7 @@ public class AppDB : DbContext {
         this.configuration = configuration;
     }
     private readonly IConfiguration configuration;
-    public DbSet<TransactionDM> Transactions { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
@@ -21,7 +21,7 @@ public class AppDB : DbContext {
         }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
-        modelBuilder.Entity<TransactionDM>().HasData(
+        modelBuilder.Entity<Transaction>().HasData(
             new() { Id = 1, Name = "USD" },
             new() { Id = 2, Name = "EUR" },
             new() { Id = 3, Name = "GBD" });

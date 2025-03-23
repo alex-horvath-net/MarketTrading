@@ -1,6 +1,4 @@
 ﻿using Business.Domain;
-using Business.Experts.Trader.EditTransaction;
-using Infrastructure.Validation.Business.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -66,22 +64,16 @@ public class Feature(
 
     public interface IClock { DateTime GetTime(); }
 
-
     public interface IRepository { Task<List<Trade>> FindTransactions(Request request, CancellationToken token); }
-
-
-
-
-
 }
 
 public static class FeatureExtensions {
 
     public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager config) => services
         .AddScoped<Feature>()
-        .AddValidator()
+        .AddCheck()
+        .AddValidate()
         .AddRepository()
-        .AddFlag()
         .AddClock();
 }
 

@@ -1,5 +1,4 @@
 ﻿using Business.Domain;
-using Infrastructure.Validation.Business.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using static Business.Experts.Trader.EditTransaction.Feature;

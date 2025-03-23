@@ -16,28 +16,28 @@ public class Repository {
             return businessModel;
         }
 
-        private void SetDtaModel(TransactionDM dm, Feature.Request request) {
+        private void SetDtaModel(Transaction dm, Feature.Request request) {
             dm.Name = request.Name;
         }
 
-        private Trade ToBusinessModel(TransactionDM dataModel) => new() {
+        private Trade ToBusinessModel(Transaction dataModel) => new() {
             Id = dataModel.Id,
             Name = dataModel.Name
         };
 
 
         public interface IInfrastructure {
-            Task<TransactionDM> FindById(long id, CancellationToken token);
+            Task<Transaction> FindById(long id, CancellationToken token);
             Task<bool> ExistsById(long id, CancellationToken token);
             Task<bool> NameIsUnique(string name, CancellationToken token);
-            Task<TransactionDM> Update(TransactionDM model, CancellationToken token);
+            Task<Transaction> Update(Transaction model, CancellationToken token);
         }
     }
 
     public class Infrastructure(AppDB db) : Adapter.IInfrastructure {
 
-        public async Task<TransactionDM> FindById(long id, CancellationToken token) => await
-            db.FindAsync<TransactionDM>(id, token) ?? throw new ArgumentException("Transaction not found");
+        public async Task<Transaction> FindById(long id, CancellationToken token) => await
+            db.FindAsync<Transaction>(id, token) ?? throw new ArgumentException("Transaction not found");
 
         public Task<bool> ExistsById(long id, CancellationToken token) =>
            db.Transactions.AnyAsync(x => x.Id == id, token);
@@ -45,7 +45,7 @@ public class Repository {
         public Task<bool> NameIsUnique(string name, CancellationToken token) =>
             db.Transactions.AllAsync(x => x.Name != name, token);
 
-        public async Task<TransactionDM> Update(TransactionDM model, CancellationToken token) {
+        public async Task<Transaction> Update(Transaction model, CancellationToken token) {
             db.Update(model);
             await db.SaveChangesAsync(token);
             return model;
