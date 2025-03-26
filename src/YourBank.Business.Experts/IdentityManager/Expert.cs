@@ -1,7 +1,11 @@
-﻿using Infrastructure.Adapters.Identity.Data.Model;
+﻿using Business.Experts.Trader.FindTransactions;
+using Infrastructure.Adapters.Identity.Data.Model;
+using Infrastructure.Technology.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Business.Experts.IdentityManager;
@@ -35,4 +39,10 @@ public class Expert {
             await httpContext.SignOutAsync(IdentityConstants.ExternalScheme);
         }
     }
+}
+
+public static class ExpertExtensions {
+    public static IServiceCollection AddIdentityManager(this IServiceCollection services, ConfigurationManager config) => services
+        .AddScoped<Expert>();
+     
 }

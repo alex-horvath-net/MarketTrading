@@ -1,12 +1,12 @@
 ﻿//namespace Business.Experts.IdentityManager.LocalLogIn;
 
-//public class Feature(IValidate validator, IRepository repository) {
+//public class Feature(IValidate validator, IEdit repository) {
 //    public async Task<Response> Execute(Request request, CancellationToken token) {
 //        var response = new Response();
 
 //        response.Request = request;
 
-//        response.Errors = await validator.Validate(request, token);
+//        response.Errors = await validator.Run(request, token);
 //        if (response.Errors.Count > 0)
 //            return response;
 
@@ -33,14 +33,14 @@
 //        public Trade Transaction { get; set; }
 //    }
 
-//    public interface IValidate { Task<List<Error>> Validate(Request request, CancellationToken token); }
+//    public interface IValidate { Task<List<Error>> Run(Request request, CancellationToken token); }
 
-//    public interface IRepository { Task<Trade> EditTransaction(Request request, CancellationToken token); }
+//    public interface IEdit { Task<Trade> EditTransaction(Request request, CancellationToken token); }
 //}
 
 //public static class Extensions {
 //    public static IServiceCollection AddEditTransaction(this IServiceCollection services, ConfigurationManager config) => services
 //        .AddScoped<Feature>()
 //        .AddValidator()
-//        .AddRepository();
+//        .AddEdit();
 //}

@@ -42,7 +42,6 @@ public class Feature(
     }
 
     public class Response {
-
         public Response(Request request, CancellationToken token) {
             Request = request;
             Token = token;

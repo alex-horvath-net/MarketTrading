@@ -1,5 +1,7 @@
 using System.Security.Claims;
 using System.Text.Json;
+using Infrastructure.Adapters.Identity.Data.Model;
+using Infrastructure.Technology.EF.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -13,13 +15,35 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
-using Infrastructure.Adapters.Identity.Data.Model;
-using Infrastructure.Technology.EF.Identity;
 
 namespace Infrastructure.Technology.Identity;
 public static class IdentityExtensions {
 
-    public static IServiceCollection AddIdentityServices(this IServiceCollection services, ConfigurationManager configuration) {
+    public static IServiceCollection AddIdentity(this IServiceCollection services) {
+        services.AddCascadingAuthenticationState();
+        services.AddScoped<IdentityUserAccessor>();
+        services.AddScoped<IdentityRedirectManager>();
+        services.AddScoped<Business.Experts.IdentityManager.Expert>();
+        //services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
+        //services.AddAuthentication(options => {
+        //    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+        //    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+        //}).AddIdentityCookies();
+
+        //var connectionString = Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        //services.AddDbContext<IdentityDB>(options => options.UseSqlServer(connectionString));
+        //services.AddDatabaseDeveloperPageExceptionFilter();
+
+        //services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
+        //    .AddEntityFrameworkStores<IdentityDB>()
+        //    .AddSignInManager()
+        //    .AddDefaultTokenProviders();
+
+        //services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
+        return services;
+    }
+    public static IServiceCollection AddIdentityServices2(this IServiceCollection services, ConfigurationManager configuration) {
         services.AddScoped<IdentityUserAccessor>();
         services.AddScoped<IdentityRedirectManager>();
         services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();

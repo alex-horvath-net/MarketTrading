@@ -1,21 +1,19 @@
 ﻿using Business.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using static Business.Experts.Trader.EditTransaction.Feature;
 
 namespace Business.Experts.Trader.EditTransaction;
 
-public class Feature(IValidator validator, IRepository repository) {
+public class Feature(
+    Feature.IValidate validate, 
+    Feature.IEdit edit) {
     public async Task<Response> Execute(Request request, CancellationToken token) {
-        var response = new Response();
+        var response = new Response(request, token);
 
-        response.Request = request;
-
-        response.Errors = await validator.Validate(request, token);
-        if (response.Errors.Count > 0)
+        if (await validate.Run(response))
             return response;
 
-        response.Transaction = await repository.EditTransaction(request, token);
+        await edit.Run(response);
 
         return response;
     }
@@ -28,24 +26,29 @@ public class Feature(IValidator validator, IRepository repository) {
     }
 
     public class Response {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Response(Request request, CancellationToken token) {
+            Request = request;
+            Token = token;
+        }
+        public Guid Id { get; } = Guid.NewGuid();
         public bool IsPublic { get; set; } = false;
         public DateTime? StopedAt { get; set; }
         public DateTime? FailedAt { get; internal set; }
         public Exception? Exception { get; set; }
-        public Request? Request { get; set; }
         public List<Error> Errors { get; set; } = [];
         public Trade Transaction { get; set; }
+        public Request Request { get; }
+        public CancellationToken Token { get; }
     }
 
-    public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }
+    public interface IValidate { Task<bool> Run(Feature.Response response); }
 
-    public interface IRepository { Task<Trade> EditTransaction(Request request, CancellationToken token); }
+    public interface IEdit { Task<bool> Run(Feature.Response response); }
 }
 
 public static class FeatureExtensions {
     public static IServiceCollection AddEditTransaction(this IServiceCollection services, ConfigurationManager config) => services
         .AddScoped<Feature>()
-        .AddValidator()
-        .AddRepository();
+        .AddValidate()
+        .AddEdit();
 }
