@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Technology.Identity;
-public sealed class IdentityRedirectManager(NavigationManager navigationManager) {
-    public const string StatusCookieName = "Identity.StatusMessage";
+public class IdentityRedirectManager(NavigationManager navigationManager) {
+    public const string IdentityStatusMessageCookieName = "Identity.StatusMessage";
 
     private static readonly CookieBuilder StatusCookieBuilder = new() {
         SameSite = SameSiteMode.Strict,
@@ -14,13 +14,11 @@ public sealed class IdentityRedirectManager(NavigationManager navigationManager)
     };
 
     [DoesNotReturn]
-    public void RedirectTo(string? uri) {
-        uri ??= "";
+    public void RedirectTo() => RedirectTo(CurrentPath);
 
-        // Prevent open redirects.
-        if (!Uri.IsWellFormedUriString(uri, UriKind.Relative)) {
-            uri = navigationManager.ToBaseRelativePath(uri);
-        }
+    [DoesNotReturn]
+    public void RedirectTo(string? uri) {
+        uri = ConvertUriToRelative(uri);
 
         // During static rendering, NavigateTo throws a NavigationException which is handled by the framework as a redirect.
         // So as long as this is called from a statically rendered Identity component, the InvalidOperationException is never thrown.
@@ -30,23 +28,39 @@ public sealed class IdentityRedirectManager(NavigationManager navigationManager)
 
     [DoesNotReturn]
     public void RedirectTo(string uri, Dictionary<string, object?> queryParameters) {
-        var uriWithoutQuery = navigationManager.ToAbsoluteUri(uri).GetLeftPart(UriPartial.Path);
-        var newUri = navigationManager.GetUriWithQueryParameters(uriWithoutQuery, queryParameters);
-        RedirectTo(newUri);
+        uri = AddQueryParametersToUri(uri, queryParameters);
+        navigationManager.NavigateTo(uri);
+        throw new InvalidOperationException($"{nameof(IdentityRedirectManager)} can only be used during static rendering.");
     }
 
     [DoesNotReturn]
-    public void RedirectToWithStatus(string uri, string message, HttpContext context) {
-        context.Response.Cookies.Append(StatusCookieName, message, StatusCookieBuilder.Build(context));
+    public void RedirectTo(string message, HttpContext context) => RedirectTo(CurrentPath, message, context);
+
+    [DoesNotReturn]
+    public void RedirectTo(string uri, string message, HttpContext context) {
+        context.Response.Cookies.Append(IdentityStatusMessageCookieName, message, StatusCookieBuilder.Build(context));
         RedirectTo(uri);
     }
 
     private string CurrentPath => navigationManager.ToAbsoluteUri(navigationManager.Uri).GetLeftPart(UriPartial.Path);
 
-    [DoesNotReturn]
-    public void RedirectToCurrentPage() => RedirectTo(CurrentPath);
+    public string ConvertUriToRelative(string? uri) {
+        uri ??= "";
+        var relativeUri =
+            Uri.IsWellFormedUriString(uri, UriKind.Relative) ?
+            uri :
+            navigationManager.ToBaseRelativePath(uri);
 
-    [DoesNotReturn]
-    public void RedirectToCurrentPageWithStatus(string message, HttpContext context)
-        => RedirectToWithStatus(CurrentPath, message, context);
+        return relativeUri;
+    }
+
+    public string AddQueryParametersToUri(string uri, Dictionary<string, object?> newQueryParameters) {
+
+        return navigationManager.GetUriWithQueryParameters(uri, newQueryParameters);
+    }
+
+    private bool IsStaticRendering() {
+        // ICheck if the current URI is being rendered statically
+        return navigationManager.Uri.Contains("_blazor");
+    }
 }

@@ -7,45 +7,29 @@ using Infrastructure.Technology.EF.App;
 namespace Business.Experts.Trader.EditTransaction;
 
 public class Edit {
-    public class Business(Business.IInfrastructure client) : Feature.IEdit {
+    public class Business(Business.IAdapter adapter) : Feature.IEdit {
         public async Task<bool> Run(Feature.Response response) {
-
-            var dataModelToUpdate = await client.FindById(response.Request.TransactionId, response.Token);
-            SetDtaModel(dataModelToUpdate, response.Request);
-            var updatedDataModel = await client.Update(dataModelToUpdate, response.Token);
-            var businessModel = ToBusinessModel(updatedDataModel);
-            response.Transaction = businessModel;
-            return businessModel != null;
+            response.Transaction = await adapter.Edit(response.Request, response.Token);
+            return response.Transaction != null;
         }
 
-        private void SetDtaModel(Transaction dm, Feature.Request request) {
-            dm.Name = request.Name;
+        public interface IAdapter {
+            Task<Domain.Trade> Edit(Feature.Request request, CancellationToken token);
         }
-
-        private Trade ToBusinessModel(Transaction dataModel) => new() {
-            Id = dataModel.Id,
-            Name = dataModel.Name
-        };
-
-
-
     }
 
-    public class Adapter(Adapter.IInfrastructure infrastructure) {
+    public class Adapter(Adapter.IInfrastructure infrastructure) : Business.IAdapter {
 
-        public async Task<bool> Edit(Feature.Response response) {
+        public async Task<Trade> Edit(Feature.Request request, CancellationToken token) {
 
-            var dataModelToUpdate = await infrastructure.FindById(response.Request.TransactionId, response.Token);
-            SetDtaModel(dataModelToUpdate, response.Request);
-            var updatedDataModel = await infrastructure.Update(dataModelToUpdate, response.Token);
-            var businessModel = ToBusinessModel(updatedDataModel);
-            response.Transaction = businessModel;
-            return businessModel != null;
+            var infraModel = await infrastructure.FindById(request.TransactionId, token);
+            infraModel!.Name = request.Name;
+            var updatedInfraModel = await infrastructure.Update(infraModel, token);
+
+            var businessModel = ToBusinessModel(updatedInfraModel);
+            return businessModel;
         }
 
-        private void SetDtaModel(Transaction dm, Feature.Request request) {
-            dm.Name = request.Name;
-        }
 
         private Trade ToBusinessModel(Transaction dataModel) => new() {
             Id = dataModel.Id,
@@ -57,6 +41,8 @@ public class Edit {
             Task<Transaction?> FindByName(string name, CancellationToken token);
             Task<Transaction> Update(Transaction model, CancellationToken token);
         }
+
+        // InfraModel is Infrastructure.Adapters.App.Data.Model.Transaction
     }
 
     public class Infrastructure(AppDB db) : Adapter.IInfrastructure {
