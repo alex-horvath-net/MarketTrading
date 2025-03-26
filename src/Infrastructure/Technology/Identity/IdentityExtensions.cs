@@ -19,46 +19,20 @@ using Microsoft.Extensions.Primitives;
 namespace Infrastructure.Technology.Identity;
 public static class IdentityExtensions {
 
-    public static IServiceCollection AddIdentity(this IServiceCollection services) {
+    public static IServiceCollection AddIdentity(this IServiceCollection services, ConfigurationManager config) {
         services.AddCascadingAuthenticationState();
         services.AddScoped<IdentityUserAccessor>();
         services.AddScoped<IdentityRedirectManager>();
-        services.AddScoped<Business.Experts.IdentityManager.Expert>();
-        //services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
-
-        //services.AddAuthentication(options => {
-        //    options.DefaultScheme = IdentityConstants.ApplicationScheme;
-        //    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-        //}).AddIdentityCookies();
-
-        //var connectionString = Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-        //services.AddDbContext<IdentityDB>(options => options.UseSqlServer(connectionString));
-        //services.AddDatabaseDeveloperPageExceptionFilter();
-
-        //services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
-        //    .AddEntityFrameworkStores<IdentityDB>()
-        //    .AddSignInManager()
-        //    .AddDefaultTokenProviders();
-
-        //services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
-        return services;
-    }
-    public static IServiceCollection AddIdentityServices2(this IServiceCollection services, ConfigurationManager configuration) {
-        services.AddScoped<IdentityUserAccessor>();
-        services.AddScoped<IdentityRedirectManager>();
         services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
-        services
-            .AddAuthentication(options => {
-                options.DefaultScheme = IdentityConstants.ApplicationScheme;
-                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-            })
-            .AddIdentityCookies();
 
-        var connectionString = configuration.GetConnectionString("Identity") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-        services.AddDbContext<IdentityDB>((sp, options) => options.UseSqlServer(connectionString));
+        services.AddAuthentication(options => {
+            options.DefaultScheme = IdentityConstants.ApplicationScheme;
+            options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+        }).AddIdentityCookies();
 
+        var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        services.AddDbContext<IdentityDB>(options => options.UseSqlServer(connectionString));
         services.AddDatabaseDeveloperPageExceptionFilter();
-
 
         services
             .AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -66,9 +40,7 @@ public static class IdentityExtensions {
             .AddSignInManager()
             .AddDefaultTokenProviders();
 
-        services.AddSingleton<IEmailSender<User>, IdentityEmailSender>();
-
-
+        services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
         return services;
     }
 
@@ -101,7 +73,6 @@ public static class IdentityExtensions {
                 IEnumerable<KeyValuePair<string, StringValues>> query = [
                     new("ReturnUrl", returnUrl),
                     new("Action", loginCallbackAction)];
-                //new("Action", ExternalLogin.LoginCallbackAction)];
 
                 var redirectUrl = UriHelper.BuildRelative(
                     context.Request.PathBase,
@@ -143,8 +114,7 @@ public static class IdentityExtensions {
                     context.Request.PathBase,
                     "/Account/Manage/ExternalLogins",
                     QueryString.Create("Action", linkLoginCallbackAction));
-                //QueryString.Create("Action", ExternalLogins.LinkLoginCallbackAction));
-
+               
                 var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, signInManager.UserManager.GetUserId(context.User));
                 return TypedResults.Challenge(properties, [provider]);
             });
