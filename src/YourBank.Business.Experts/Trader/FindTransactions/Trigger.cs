@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using Business.Domain;
 using Infrastructure.Adapters.Blazor;
-using Infrastructure.Validation.Business.Model;
 
 namespace Business.Experts.Trader.FindTransactions;
 
@@ -62,7 +61,7 @@ public class Trigger(IFeature service) : ITrigger {
             Name = businessModel.Name
         };
 
-        static ViewModel.ErrorVM ToErrorViewModel(Error businessModel) => new() {
+        static ViewModel.ErrorVM ToErrorViewModel(Domain.Error businessModel) => new() {
             Name = businessModel.Name,
             Message = businessModel.Message
         };

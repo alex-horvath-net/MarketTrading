@@ -26,23 +26,18 @@ public class Edit {
             infraModel!.Name = request.Name;
             var updatedInfraModel = await infrastructure.Update(infraModel, token);
 
-            var businessModel = ToBusinessModel(updatedInfraModel);
+            var businessModel = new Trade() {
+                Id = updatedInfraModel.Id,
+                Name = updatedInfraModel.Name
+            };
             return businessModel;
         }
-
-
-        private Trade ToBusinessModel(Transaction dataModel) => new() {
-            Id = dataModel.Id,
-            Name = dataModel.Name
-        };
 
         public interface IInfrastructure {
             Task<Transaction?> FindById(long id, CancellationToken token);
             Task<Transaction?> FindByName(string name, CancellationToken token);
             Task<Transaction> Update(Transaction model, CancellationToken token);
         }
-
-        // InfraModel is Infrastructure.Adapters.App.Data.Model.Transaction
     }
 
     public class Infrastructure(AppDB db) : Adapter.IInfrastructure {

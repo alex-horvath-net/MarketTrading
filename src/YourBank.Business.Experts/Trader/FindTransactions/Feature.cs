@@ -8,7 +8,7 @@ public interface IFeature { Task<Feature.Response> Execute(Feature.Request reque
 public class Feature(
     Feature.ICheck check,
     Feature.IValidate validate,
-    Feature.IRepository repository,
+    Feature.IFind find,
     Feature.IClock clock) : IFeature {
 
     public async Task<Response> Execute(Request request, CancellationToken token) {
@@ -21,7 +21,7 @@ public class Feature(
             if (await validate.Run(response))
                 return response;
 
-            response.Transactions = await repository.FindTransactions(request, token);
+            await find.Run(response);
 
             token.ThrowIfCancellationRequested();
         } catch (Exception ex) {
@@ -63,7 +63,7 @@ public class Feature(
 
     public interface IClock { DateTime GetTime(); }
 
-    public interface IRepository { Task<List<Trade>> FindTransactions(Request request, CancellationToken token); }
+    public interface IFind { Task<bool> Run(Feature.Response response); }
 }
 
 public static class FeatureExtensions {
