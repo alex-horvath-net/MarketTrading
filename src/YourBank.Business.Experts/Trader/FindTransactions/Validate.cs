@@ -1,5 +1,4 @@
-﻿using Business.Domain;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Experts.Trader.FindTransactions;
@@ -12,14 +11,14 @@ public class Validate {
         }
 
         public interface IAdapter {
-            Task<List<Error>> Validate(Feature.Request request, CancellationToken token);
+            Task<List<Domain.Error>> Validate(Feature.Request request, CancellationToken token);
         }
     }
 
     public class Adapter(Adapter.IInfrastructure infrastructure) : Business.IAdapter {
-        public async Task<List<Error>> Validate(Feature.Request request, CancellationToken token) {
+        public async Task<List<Domain.Error>> Validate(Feature.Request request, CancellationToken token) {
             var infraModel = await infrastructure.Validate(request, token);
-            var domainModel = infraModel.Select(model => new Error(model.Name, model.Message)).ToList();
+            var domainModel = infraModel.Select(model => new Domain.Error(model.Name, model.Message)).ToList();
             return domainModel;
         }
 
@@ -32,6 +31,7 @@ public class Validate {
 
     public class Infrastructure : FluentValidation.AbstractValidator<Feature.Request>, Adapter.IInfrastructure {
         public Infrastructure() {
+            RuleFor(x => x.Id).Must((id, token) => false).WithMessage("This feature is not enabled.");
             RuleFor(x => x).NotNull().WithMessage("Request must be provided.");
             RuleFor(x => x.UserId).NotNull().WithMessage("UserId must be provided.");
             RuleFor(x => x.Name).MinimumLength(3).WithMessage("Name must be at least 3 characters long.");

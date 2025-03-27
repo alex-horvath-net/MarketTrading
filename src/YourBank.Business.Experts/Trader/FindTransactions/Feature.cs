@@ -15,9 +15,6 @@ public class Feature(
         var response = new Response(request, token);
 
         try {
-            if (check.Run(response))
-                return response;
-
             if (await validate.Run(response))
                 return response;
 
