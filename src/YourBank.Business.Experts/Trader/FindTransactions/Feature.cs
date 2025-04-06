@@ -11,9 +11,7 @@ internal class Feature(
     IClockAdapter clock,
     IOptionsSnapshot<Settings> settings) : IFindTransactions {
 
-    public async Task<FindTransactionsResponse> Execute(
-        FindTransactionsRequest request,
-        CancellationToken token) {
+    public async Task<FindTransactionsResponse> Execute(FindTransactionsRequest request, CancellationToken token) {
         var response = new FindTransactionsResponse();
         response.Request = request;
 
@@ -28,7 +26,7 @@ internal class Feature(
 
             response.CompletedAt = clock.GetTime();
 
-        } catch (Exception ex) { 
+        } catch (Exception ex) {
             response.FailedAt = clock.GetTime();
             response.Exception = ex;
             throw;
