@@ -14,18 +14,18 @@ internal class ValidatorAdapter(
         CancellationToken token) {
 
         var settingsIssues = await settigsValidator.ValidateAsync(settings, token);
-        var errors = settingsIssues.Errors.Select(MakeInfrastructureFree).ToList();
+        var errors = settingsIssues.Errors.Select(MakeItFluentValidationFree).ToList();
 
         if (errors.Any())
             return errors;
 
         var requestIssues = await requestValidator.ValidateAsync(request, token);
-        errors = requestIssues.Errors.Select(MakeInfrastructureFree).ToList();
+        errors = requestIssues.Errors.Select(MakeItFluentValidationFree).ToList();
 
         return errors;
     }
 
-    private static Error MakeInfrastructureFree(ValidationFailure error) =>
+    private static Error MakeItFluentValidationFree(ValidationFailure error) =>
          new(error.PropertyName, error.ErrorMessage);
 
 }

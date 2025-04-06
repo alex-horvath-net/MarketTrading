@@ -6,9 +6,12 @@ namespace Business.Experts.Trader.EditTransaction;
 public class ValidatorAdapter(RequestValidator requestValidator) : IValidatorAdapter {
     public async Task<List<Domain.Error>> Validate(EditTransactionRequest request, CancellationToken token) {
         var issues = await requestValidator.ValidateAsync(request, token);
-        var errors = issues.Errors.Select(error => new Domain.Error(error.PropertyName, error.ErrorMessage)).ToList();
+        var errors = issues.Errors.Select(MakeItFluentValidationFree).ToList();
         return errors;
     }
+
+    private static Domain.Error MakeItFluentValidationFree(FluentValidation.Results.ValidationFailure error) =>
+         new(error.PropertyName, error.ErrorMessage);
 }
 
 public class RequestValidator : FluentValidation.AbstractValidator<EditTransactionRequest> {

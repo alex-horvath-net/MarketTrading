@@ -6,28 +6,30 @@ using Infrastructure.Technology.EF.App;
 
 namespace Business.Experts.Trader.EditTransaction;
 
-
-internal class RepositoryAdapter(IRepository infrastructure) : IRepositoryAdapter {
+internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
 
     public async Task<Trade> Edit(EditTransactionRequest request, CancellationToken token) {
 
-        var infraModel = await infrastructure.FindById(request.TransactionId, token);
-        infraModel!.Name = request.Name;
-        var updatedInfraModel = await infrastructure.Update(infraModel, token);
+        var dataModel = await repository.FindById(request.TransactionId, token);
+        dataModel!.Name = request.Name;
+        await repository.Update(dataModel, token);
 
-        var businessModel = new Trade() {
-            Id = updatedInfraModel.Id,
-            Name = updatedInfraModel.Name
-        };
-        return businessModel;
+        var domainModel = ToDomainModel(dataModel);
+        return domainModel;
     }
 
+    private static Trade ToDomainModel(Transaction? dataModel) {
+        return new Trade() {
+            Id = dataModel.Id,
+            Name = dataModel.Name
+        };
+    }
 }
 
 public interface IRepository {
     Task<Transaction?> FindById(long id, CancellationToken token);
     Task<Transaction?> FindByName(string name, CancellationToken token);
-    Task<Transaction> Update(Transaction model, CancellationToken token);
+    Task Update(Transaction model, CancellationToken token);
 }
 
 public class Repository(AppDB db) : IRepository {
@@ -38,15 +40,13 @@ public class Repository(AppDB db) : IRepository {
     public Task<Transaction?> FindByName(string name, CancellationToken token) =>
         db.Transactions.FirstOrDefaultAsync(x => x.Name == name, token);
 
-    public async Task<Transaction> Update(Transaction model, CancellationToken token) {
+    public async Task Update(Transaction model, CancellationToken token) {
         db.Update(model);
         await db.SaveChangesAsync(token);
-        return model;
     }
 }
 
-
-public static class EditExtensions {
+public static class RepositoryExtensions {
     public static IServiceCollection AddRepository(this IServiceCollection services) => services
         .AddScoped<IRepositoryAdapter, RepositoryAdapter>()
         .AddScoped<IRepository, Repository>();

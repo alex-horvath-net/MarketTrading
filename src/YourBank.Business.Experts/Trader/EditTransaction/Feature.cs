@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Business.Domain;
-using Business.Experts.Trader.FindTransactions;
+﻿using Business.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
