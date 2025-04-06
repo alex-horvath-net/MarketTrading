@@ -30,7 +30,7 @@ public record ViewModel {
 
 public class Trigger(IFeature service) : ITrigger {
     public async Task<ViewModel> Execute(string name, string userId, CancellationToken token) {
-        var request = new Feature. Request {
+        var request = new  Request {
             Name = name,
             UserId = userId
         };
@@ -52,7 +52,7 @@ public class Trigger(IFeature service) : ITrigger {
 
         return viewModel;
 
-        static ViewModel.MetaVM ToMetaViewModel(Feature. Request businessModel) => new() {
+        static ViewModel.MetaVM ToMetaViewModel(Request businessModel) => new() {
             Id = businessModel.Id,
         };
 

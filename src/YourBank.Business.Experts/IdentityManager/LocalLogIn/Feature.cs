@@ -1,12 +1,12 @@
 ﻿//namespace Business.Experts.IdentityManager.LocalLogIn;
 
-//public class Feature(IValidate validator, IEdit repository) {
+//public class Feature(IValidator validator, IEdit repository) {
 //    public async Task<Response> Execute(Request request, CancellationToken token) {
 //        var response = new Response();
 
 //        response.Request = request;
 
-//        response.Errors = await validator.Run(request, token);
+//        response.Errors = await validator.Validate(request, token);
 //        if (response.Errors.Count > 0)
 //            return response;
 
@@ -24,7 +24,7 @@
 
 //    public class Response {
 //        public Guid Id { get; set; } = Guid.NewGuid();
-//        public bool Run { get; set; } = false;
+//        public bool Validate { get; set; } = false;
 //        public DateTime? StopedAt { get; set; }
 //        public DateTime? FailedAt { get; internal set; }
 //        public Exception? Exception { get; set; }
@@ -33,7 +33,7 @@
 //        public Trade Transaction { get; set; }
 //    }
 
-//    public interface IValidate { Task<List<Error>> Run(Request request, CancellationToken token); }
+//    public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }
 
 //    public interface IEdit { Task<Trade> EditTransaction(Request request, CancellationToken token); }
 //}

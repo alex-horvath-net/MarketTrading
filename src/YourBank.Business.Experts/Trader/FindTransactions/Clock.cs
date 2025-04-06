@@ -1,20 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Experts.Trader.FindTransactions;
-public class Clock {
-    public class Adapter(Adapter.IInfrastructure infra) : Feature.IClock {
-        public DateTime GetTime() => infra.Now;
-
-        public interface IInfrastructure { DateTime Now { get; } }
-    }
-
-    public class Infrastructure : Adapter.IInfrastructure {
-        public DateTime Now => DateTime.Now;
-    }
+internal class ClockAdapter() : IClockAdapter {
+    public DateTime GetTime() => DateTime.UtcNow;
 }
 
-public static class ClockExtensions {
+internal static class ClockExtensions {
     public static IServiceCollection AddClock(this IServiceCollection services) => services
-        .AddScoped<Feature.IClock, Clock.Adapter>()
-        .AddScoped<Clock.Adapter.IInfrastructure, Clock.Infrastructure>();
+        .AddScoped<IClockAdapter, ClockAdapter>();
 }
