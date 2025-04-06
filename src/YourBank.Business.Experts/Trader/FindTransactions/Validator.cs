@@ -9,30 +9,20 @@ internal class ValidatorAdapter(
     SettigsValidator settigsValidator,
     RequestValidator requestValidator) : IValidatorAdapter {
     public async Task<List<Domain.Error>> Validate(
-        Request request,
+        FindTransactionsRequest request,
         Settings settings,
         CancellationToken token) {
-        var erors = new List<Domain.Error>();
 
-        var settingsIssues = await settigsValidator.ValidateAsync(
-            settings,
-            token);
-        foreach (var error in settingsIssues.Errors)
-            erors.Add(MakeInfrastructureFree(error));
+        var settingsIssues = await settigsValidator.ValidateAsync(settings, token);
+        var errors = settingsIssues.Errors.Select(MakeInfrastructureFree).ToList();
 
-        if (erors.Any())
-            return erors;
+        if (errors.Any())
+            return errors;
 
-        var requestIssues = await requestValidator.ValidateAsync(
-            request,
-            token);
-        foreach (var error in requestIssues.Errors)
-            erors.Add(
-                new Domain.Error(
-                    error.PropertyName,
-                    error.ErrorMessage));
+        var requestIssues = await requestValidator.ValidateAsync(request, token);
+        errors = requestIssues.Errors.Select(MakeInfrastructureFree).ToList();
 
-        return erors;
+        return errors;
     }
 
     private static Error MakeInfrastructureFree(ValidationFailure error) =>
@@ -51,7 +41,7 @@ internal class SettigsValidator : FluentValidation.AbstractValidator<Settings> {
     }
 }
 
-internal class RequestValidator : FluentValidation.AbstractValidator<Request> {
+internal class RequestValidator : FluentValidation.AbstractValidator<FindTransactionsRequest> {
     public RequestValidator() {
         RuleFor(request => request)
             .NotNull()
@@ -69,5 +59,5 @@ internal static class ValidateExtensions {
     public static IServiceCollection AddValidator(this IServiceCollection services) => services
         .AddScoped<IValidatorAdapter, ValidatorAdapter>()
         .AddScoped<IValidator<Settings>, SettigsValidator>()
-        .AddScoped<IValidator<Request>, RequestValidator>();
+        .AddScoped<IValidator<FindTransactionsRequest>, RequestValidator>();
 }

@@ -1,6 +1,6 @@
 ﻿//namespace Business.Experts.IdentityManager.LocalLogIn;
 
-//public class Feature(IValidator validator, IEdit repository) {
+//public class Feature(IValidator validator, IRepository repository) {
 //    public async Task<Response> Execute(Request request, CancellationToken token) {
 //        var response = new Response();
 
@@ -35,7 +35,7 @@
 
 //    public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }
 
-//    public interface IEdit { Task<Trade> EditTransaction(Request request, CancellationToken token); }
+//    public interface IRepository { Task<Trade> EditTransaction(Request request, CancellationToken token); }
 //}
 
 //public static class Extensions {

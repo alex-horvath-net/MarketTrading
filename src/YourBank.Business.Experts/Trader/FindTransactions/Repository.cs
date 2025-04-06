@@ -8,8 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Business.Experts.Trader.FindTransactions;
 
 internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
-
-    public async Task<List<Trade>> Find(Request request, CancellationToken token) {
+    public async Task<List<Trade>> Find(FindTransactionsRequest request, CancellationToken token) {
         var dataModel = request.Name == null ?
             await repository.FindAll(token) :
             await repository.FindByName(request.Name, token);

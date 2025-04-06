@@ -28,9 +28,9 @@ public record ViewModel {
     }
 }
 
-public class Trigger(IFeature service) : ITrigger {
+public class FeatureAdapter(IFindTransactions service) : ITrigger {
     public async Task<ViewModel> Execute(string name, string userId, CancellationToken token) {
-        var request = new  Request {
+        var request = new FindTransactionsRequest {
             Name = name,
             UserId = userId
         };
@@ -41,10 +41,10 @@ public class Trigger(IFeature service) : ITrigger {
 
         var viewModel = new ViewModel();
 
-        viewModel.Meta = ToMetaViewModel(response.Request);
-        viewModel.Errors = response.Errors.Select(ToErrorViewModel).ToList();
+        viewModel.Meta = ToMetaVM(response.Request);
+        viewModel.Errors = response.Errors.Select(ToErrorVM).ToList();
         viewModel.Transactions = new();
-        viewModel.Transactions.Rows = response.Transactions.Select(ToTranaztionViewModel).ToList();
+        viewModel.Transactions.Rows = response.Transactions.Select(ToTranasactionVM).ToList();
         viewModel.Transactions.Columns.Add(x => x.Id);
         viewModel.Transactions.Columns.Add(x => x.Name);
 
@@ -52,18 +52,13 @@ public class Trigger(IFeature service) : ITrigger {
 
         return viewModel;
 
-        static ViewModel.MetaVM ToMetaViewModel(Request businessModel) => new() {
-            Id = businessModel.Id,
-        };
+        static ViewModel.MetaVM ToMetaVM(FindTransactionsRequest x) =>
+            new() { Id = x.Id, };
 
-        static ViewModel.TransactionVM ToTranaztionViewModel(Trade businessModel) => new() {
-            Id = businessModel.Id,
-            Name = businessModel.Name
-        };
+        static ViewModel.TransactionVM ToTranasactionVM(Trade x) =>
+            new() { Id = x.Id, Name = x.Name };
 
-        static ViewModel.ErrorVM ToErrorViewModel(Domain.Error businessModel) => new() {
-            Name = businessModel.Name,
-            Message = businessModel.Message
-        };
+        static ViewModel.ErrorVM ToErrorVM(Domain.Error x) =>
+            new() { Name = x.Name, Message = x.Message };
     }
 }

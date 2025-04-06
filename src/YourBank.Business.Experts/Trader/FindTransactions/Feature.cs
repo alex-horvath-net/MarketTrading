@@ -9,12 +9,12 @@ internal class Feature(
     IValidatorAdapter validator,
     IRepositoryAdapter repository,
     IClockAdapter clock,
-    IOptionsSnapshot<Settings> settings) : IFeature {
+    IOptionsSnapshot<Settings> settings) : IFindTransactions {
 
-    public async Task<Response> Execute(
-        Request request,
+    public async Task<FindTransactionsResponse> Execute(
+        FindTransactionsRequest request,
         CancellationToken token) {
-        var response = new Response();
+        var response = new FindTransactionsResponse();
         response.Request = request;
 
         try {
@@ -38,21 +38,21 @@ internal class Feature(
     }
 }
 
-public interface IFeature {
-    Task<Response> Execute(Request request, CancellationToken token);
+public interface IFindTransactions {
+    Task<FindTransactionsResponse> Execute(FindTransactionsRequest request, CancellationToken token);
 }
-public class Request {
+public class FindTransactionsRequest {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string? Name { get; set; }
     public string UserId { get; set; }
 }
-public class Response {
+public class FindTransactionsResponse {
     public Guid Id { get; set; } = Guid.NewGuid();
     public bool Enabled { get; set; } = false;
     public DateTime? CompletedAt { get; set; }
     public DateTime? FailedAt { get; set; }
     public Exception? Exception { get; set; }
-    public Request Request { get; set; }
+    public FindTransactionsRequest Request { get; set; }
 
     public List<Error> Errors { get; set; } = [];
     public List<Trade> Transactions { get; set; } = [];
@@ -62,9 +62,9 @@ internal class Settings {
     public bool Enabled { get; set; } = false;
 }
 
-internal interface IValidatorAdapter { Task<List<Domain.Error>> Validate(Request request, Settings settings, CancellationToken token); }
+internal interface IValidatorAdapter { Task<List<Domain.Error>> Validate(FindTransactionsRequest request, Settings settings, CancellationToken token); }
 internal interface IClockAdapter { DateTime GetTime(); }
-internal interface IRepositoryAdapter { Task<List<Trade>> Find(Request request, CancellationToken token); }
+internal interface IRepositoryAdapter { Task<List<Trade>> Find(FindTransactionsRequest request, CancellationToken token); }
 
 public static class FeatureExtensions {
 

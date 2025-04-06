@@ -5,10 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Experts.Trader;
-public class Expert {
-    public IEnumerable<Trade> FindAllTransations() {
-        return [new() { Name = "Name1" }];
-    }
+public class Expert(IFindTransactions findTransactions, IEditTransaction editTransaction) {
+    public Task<FindTransactionsResponse> FindTransactions(FindTransactionsRequest request, CancellationToken token) => findTransactions.Execute(request, token);
+    public Task<EditTransactionResponse> EditTransaction(EditTransactionRequest request, CancellationToken token) => editTransaction.Execute(request, token);
 }
 
 
@@ -18,4 +17,4 @@ public static class ExpertExtensions {
         .AddFindTransactions(config)
         .AddEditTransaction(config);
 
-} 
+}
