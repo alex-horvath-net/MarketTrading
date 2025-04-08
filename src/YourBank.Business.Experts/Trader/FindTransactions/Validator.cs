@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Business.Experts.Trader.FindTransactions;
 
 internal class ValidatorAdapter(
-    SettigsValidator settigsValidator,
-    RequestValidator requestValidator) : IValidatorAdapter {
+    IValidator<Settings> settigsValidator,
+    IValidator<FindTransactionsRequest> requestValidator) : IValidatorAdapter {
     public async Task<List<Domain.Error>> Validate(
         FindTransactionsRequest request,
         Settings settings,

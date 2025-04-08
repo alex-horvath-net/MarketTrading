@@ -26,7 +26,7 @@ public class EditTransactionResponse {
     public EditTransactionRequest Request { get; set; }
 }
 
-internal class Feature(IValidatorAdapter validator, IRepositoryAdapter repository) {
+internal class Feature(IValidatorAdapter validator, IRepositoryAdapter repository): IEditTransaction {
     public async Task<EditTransactionResponse> Execute(EditTransactionRequest request, CancellationToken token) {
         var response = new EditTransactionResponse();
         response.Request = request;
@@ -48,7 +48,7 @@ internal interface IRepositoryAdapter { Task<Trade> Edit(EditTransactionRequest 
 
 public static class FeatureExtensions {
     public static IServiceCollection AddEditTransaction(this IServiceCollection services, ConfigurationManager config) => services
-        .AddScoped<Feature>()
+        .AddScoped< IEditTransaction, Feature>()
         .AddValidator()
         .AddRepository();
 }
