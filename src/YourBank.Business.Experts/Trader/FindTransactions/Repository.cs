@@ -6,6 +6,7 @@ using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace Business.Experts.Trader.FindTransactions;
@@ -111,5 +112,6 @@ public static class RepositoryExtensions {
             new RepositoryCacheDecorator(
                 provider.GetRequiredService<Repository>(),
                 provider.GetRequiredService<IMemoryCache>()
-            ));
+            ))
+        .AddScoped<AppDB>();
 }

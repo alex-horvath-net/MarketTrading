@@ -7,13 +7,21 @@ using Microsoft.Extensions.Options;
 
 namespace Business.Experts.Trader.FindTransactions;
 
-public interface IFindTransactionsAdapter {
-    Task<ViewModel> Execute(string name, string userId, CancellationToken token);
+public interface IFeatureAdapter {
+    Task<ViewModel> Execute(InputModel input, CancellationToken token);
+}
+public record InputModel(String UserName, string UserId) {
+    public FindTransactionsRequest ToRequest() => new() {
+        Id = Guid.NewGuid(),
+        Issuer = "TradingPortal",
+        Name = this.UserName,
+        UserId = this.UserId,
+    };
 }
 public record ViewModel {
     public MetaVM Meta { get; set; }
     public List<ErrorVM> Errors { get; set; } = [];
-    public DataListModel<TransactionVM> Transactions { get; set; }
+    public DataListModel<TransactionVM> Transactions { get; set; } = new();
     public class MetaVM {
         public Guid Id { get; internal set; }
     }
@@ -28,29 +36,14 @@ public record ViewModel {
         public long Id { get; set; }
         public string Name { get; set; }
     }
-}
-public class FeatureAdapter(IFindTransactions service) : IFindTransactionsAdapter {
-    public async Task<ViewModel> Execute(string name, string userId, CancellationToken token) {
-       
-        var request = new FindTransactionsRequest {
-            Name = name,
-            UserId = userId
-        };
 
-        token.ThrowIfCancellationRequested();
-
-        var response = await service.Execute(request, token);
-
+    internal static ViewModel From(FindTransactionsResponse response) {
         var viewModel = new ViewModel();
-
         viewModel.Meta = ToMetaVM(response.Request);
         viewModel.Errors = response.Errors.Select(ToErrorVM).ToList();
-        viewModel.Transactions = new();
         viewModel.Transactions.Rows = response.Transactions.Select(ToTranasactionVM).ToList();
         viewModel.Transactions.Columns.Add(x => x.Id);
         viewModel.Transactions.Columns.Add(x => x.Name);
-
-        token.ThrowIfCancellationRequested();
 
         return viewModel;
 
@@ -62,19 +55,30 @@ public class FeatureAdapter(IFindTransactions service) : IFindTransactionsAdapte
 
         static ViewModel.ErrorVM ToErrorVM(Domain.Error x) =>
             new() { Name = x.Name, Message = x.Message };
+
+    }
+}
+internal class FeatureAdapter(IFeature feature) : IFeatureAdapter {
+    // Blazor should be abel to call this adapter with minimum effort and zero technology leaking
+    public async Task<ViewModel> Execute(InputModel input, CancellationToken token) {
+        var request = input.ToRequest();
+        var response = await feature.Execute(request, token);
+        var viewModel = ViewModel.From(response);
+        return viewModel;
     }
 }
 
 
-public interface IFindTransactions {
+internal interface IFeature {
     Task<FindTransactionsResponse> Execute(FindTransactionsRequest request, CancellationToken token);
 }
 public class FindTransactionsRequest {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
     public string? Name { get; set; }
     public string UserId { get; set; }
+    public string Issuer { get; internal set; }
 }
-public class FindTransactionsResponse {
+internal class FindTransactionsResponse {
     public Guid Id { get; set; } = Guid.NewGuid();
     public bool Enabled { get; set; } = false;
     public DateTime? CompletedAt { get; set; }
@@ -90,7 +94,7 @@ internal class Feature(
     IValidatorAdapter validator,
     IRepositoryAdapter repository,
     IClockAdapter clock,
-    IOptionsSnapshot<Settings> settings) : IFindTransactions {
+    IOptionsSnapshot<Settings> settings) : IFeature {
 
     public async Task<FindTransactionsResponse> Execute(FindTransactionsRequest request, CancellationToken token) {
         var response = new FindTransactionsResponse();
@@ -133,7 +137,8 @@ public static class FeatureExtensions {
         services.Configure<Settings>(config.GetSection("Features:FindTransactions"));
 
         return services
-            .AddScoped<Feature>()
+            .AddScoped<IFeatureAdapter, FeatureAdapter>()
+            .AddScoped<IFeature, Feature>()
             .AddValidator()
             .AddRepository()
             .AddClock();

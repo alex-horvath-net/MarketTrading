@@ -10,15 +10,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Business.Experts.IdentityManager;
 
-public class Expert {
+public class IdentityManager {
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
-    private readonly ILogger<Expert> _logger;
+    private readonly ILogger<IdentityManager> _logger;
 
-    public Expert(
+    public IdentityManager(
         SignInManager<User> signInManager,
         UserManager<User> userManager,
-        ILogger<Expert> logger) {
+        ILogger<IdentityManager> logger) {
         _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -43,6 +43,6 @@ public class Expert {
 
 public static class ExpertExtensions {
     public static IServiceCollection AddIdentityManager(this IServiceCollection services, ConfigurationManager config) => services
-        .AddScoped<Expert>();
+        .AddScoped<IdentityManager>();
      
 }

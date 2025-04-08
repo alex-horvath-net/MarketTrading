@@ -1,0 +1,39 @@
+﻿@using Infrastructure.Adapters.Blazor
+@using Infrastructure.Extensions
+
+@typeparam TEntity
+
+<h3>Table</h3>
+ @if (Model != null) {
+    <table class="table align-middle table-striped caption-top table-hover">
+        <thead class="table-primary">
+            <tr>
+                @foreach (var coulumn in Model.Columns) {
+                    <th scope="col">@(coulumn.GetName())</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.Rows) {
+                <tr>
+                    @foreach (var column in Model.Columns) {
+                        if (Model.Columns.IndexOf(column) == 0) {
+                            <th scope="row">@column.GetValue(row)</th>
+                        } else {
+                            <td>@column.GetValue(row)</td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            @* <tr>
+        <th scope="col"></th>
+        <th scope="col" colspan="3">asdf</th>
+        </tr> *@
+        </tfoot> 
+    </table>
+}
+@code {
+    [Parameter] public DataListModel<TEntity> Model { get; set; }
+}
