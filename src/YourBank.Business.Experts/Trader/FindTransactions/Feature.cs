@@ -14,7 +14,7 @@ public record InputModel(String UserName, string UserId) {
     public FindTransactionsRequest ToRequest() => new() {
         Id = Guid.NewGuid(),
         Issuer = "TradingPortal",
-        Name = this.UserName,
+        TransactionName = this.UserName,
         UserId = this.UserId,
     };
 }
@@ -74,7 +74,7 @@ internal interface IFeature {
 }
 public class FindTransactionsRequest {
     public Guid Id { get; set; }
-    public string? Name { get; set; }
+    public string? TransactionName { get; set; }
     public string UserId { get; set; }
     public string Issuer { get; internal set; }
 }
@@ -131,8 +131,7 @@ internal interface IRepositoryAdapter { Task<List<Trade>> Find(FindTransactionsR
 
 public static class FeatureExtensions {
 
-    public static IServiceCollection AddFindTransactions(this IServiceCollection services,
-        ConfigurationManager config) {
+    public static IServiceCollection AddFindTransactions(this IServiceCollection services,        ConfigurationManager config) {
 
         services.Configure<Settings>(config.GetSection("Features:FindTransactions"));
 
@@ -140,7 +139,7 @@ public static class FeatureExtensions {
             .AddScoped<IFeatureAdapter, FeatureAdapter>()
             .AddScoped<IFeature, Feature>()
             .AddValidator()
-            .AddRepository()
+            .AddRepository(config)
             .AddClock();
     }
 }

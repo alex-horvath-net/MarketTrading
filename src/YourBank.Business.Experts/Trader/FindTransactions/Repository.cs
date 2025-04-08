@@ -5,6 +5,7 @@ using Infrastructure.Adapters.App.Data.Model;
 using Infrastructure.Technology.EF.App;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -13,9 +14,9 @@ namespace Business.Experts.Trader.FindTransactions;
 
 internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
     public async Task<List<Trade>> Find(FindTransactionsRequest request, CancellationToken token) {
-        var dataModel = request.Name == null ?
+        var dataModel = string.IsNullOrEmpty(request.TransactionName) ?
             await repository.FindAll(token) :
-            await repository.FindByName(request.Name, token);
+            await repository.FindByName(request.TransactionName, token);
         var domainModel = dataModel.Select(MakeItEntityFrameworkFree).ToList();
         return domainModel;
     }
@@ -104,7 +105,7 @@ internal class RepositoryMeasureDecorator : IRepository {
 }
 
 public static class RepositoryExtensions {
-    public static IServiceCollection AddRepository(this IServiceCollection services) => services
+    public static IServiceCollection AddRepository(this IServiceCollection services, ConfigurationManager config) => services
         .AddScoped<IRepositoryAdapter, RepositoryAdapter>()
         .AddScoped<Repository>()
         .AddMemoryCache()
@@ -113,5 +114,5 @@ public static class RepositoryExtensions {
                 provider.GetRequiredService<Repository>(),
                 provider.GetRequiredService<IMemoryCache>()
             ))
-        .AddScoped<AppDB>();
+        .AddDbContext<AppDB>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 }

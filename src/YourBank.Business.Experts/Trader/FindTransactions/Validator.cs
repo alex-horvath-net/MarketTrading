@@ -24,11 +24,11 @@ internal class ValidatorAdapter(
 
         return errors;
     }
-
+                                                                                                                       
     private static Error MakeItFluentValidationFree(ValidationFailure error) =>
          new(error.PropertyName, error.ErrorMessage);
 
-}
+}                                                                                                                                                                                       
 
 internal class SettigsValidator : FluentValidation.AbstractValidator<Settings> {
     public SettigsValidator() {
@@ -46,12 +46,14 @@ internal class RequestValidator : FluentValidation.AbstractValidator<FindTransac
         RuleFor(request => request)
             .NotNull()
             .WithMessage("Request must be provided.");
+       
         RuleFor(request => request.UserId)
             .NotNull()
             .WithMessage("UserId must be provided.");
-        RuleFor(request => request.Name)
-            .MinimumLength(3)
-            .WithMessage("Name must be at least 3 characters long.");
+       
+        RuleFor(request => request.TransactionName)
+            .Must(name => string.IsNullOrEmpty(name) || name.Length >= 3)
+            .WithMessage("TransactionName must be at least 3 characters long or empty.");
     }
 }
 

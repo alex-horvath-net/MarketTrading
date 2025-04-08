@@ -6,9 +6,9 @@ namespace Infrastructure.Technology.EF.App;
 
 
 public class AppDB : DbContext {
-    public AppDB() : base() { }
+   // public AppDB() : base() { }
     public AppDB(DbContextOptions<AppDB> options, IConfiguration configuration = null) : base(options) {
-        this.configuration = configuration;
+        this.configuration = configuration;      
     }
     private readonly IConfiguration configuration;
     public DbSet<Transaction> Transactions { get; set; }
@@ -16,7 +16,7 @@ public class AppDB : DbContext {
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         if (!optionsBuilder.IsConfigured) {
-            var coonectionString = configuration.GetConnectionString("App") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var coonectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             optionsBuilder.UseSqlServer(coonectionString);
         }
     }
