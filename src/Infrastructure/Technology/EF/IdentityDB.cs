@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Infrastructure.Adapters.Identity.Data.Model;
 
 namespace Infrastructure.Technology.EF;
-
+// Add-Migration InitIdentityDB -Context IdentityDB -OutputDir "Technology/EF/Migrations/IdentityDBMigrations"
 public class IdentityDB(DbContextOptions<IdentityDB> options) : IdentityDbContext<User>(options) { }
 // Add-Migration MigrationName -c IdentityDB -o Technology\IdentityData\Migrations
 // Remove-Migration -c IdentityDB
