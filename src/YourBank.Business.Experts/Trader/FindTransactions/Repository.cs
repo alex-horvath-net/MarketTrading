@@ -2,7 +2,7 @@
 using Business.Domain;
 using FluentValidation;
 using Infrastructure.Adapters.App.Data.Model;
-using Infrastructure.Technology.EF.App;
+using Infrastructure.Technology.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;

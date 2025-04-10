@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using System.Text.Json;
 using Infrastructure.Adapters.Identity.Data.Model;
-using Infrastructure.Technology.EF.Identity;
+using Infrastructure.Technology.EF;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;

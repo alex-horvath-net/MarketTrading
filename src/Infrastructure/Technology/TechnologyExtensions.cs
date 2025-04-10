@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Infrastructure.Technology.EF.App;
-using Infrastructure.Technology.EF.Identity;
+using Infrastructure.Technology.EF;
 
 namespace Infrastructure.Technology;
 public static class TechnologyExtensions {

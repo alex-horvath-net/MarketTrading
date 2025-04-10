@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Adapters.Identity.Data.Model;
 
-namespace Infrastructure.Technology.EF.Identity;
+namespace Infrastructure.Technology.EF;
 
 public class IdentityDB(DbContextOptions<IdentityDB> options) : IdentityDbContext<User>(options) { }
 // Add-Migration MigrationName -c IdentityDB -o Technology\IdentityData\Migrations

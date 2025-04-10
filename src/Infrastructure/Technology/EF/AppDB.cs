@@ -2,13 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Infrastructure.Adapters.App.Data.Model;
 
-namespace Infrastructure.Technology.EF.App;
+namespace Infrastructure.Technology.EF;
 
 
 public class AppDB : DbContext {
-   // public AppDB() : base() { }
+    // public AppDB() : base() { }
     public AppDB(DbContextOptions<AppDB> options, IConfiguration configuration = null) : base(options) {
-        this.configuration = configuration;      
+        this.configuration = configuration;
     }
     private readonly IConfiguration configuration;
     public DbSet<Transaction> Transactions { get; set; }

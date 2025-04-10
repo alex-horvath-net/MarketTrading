@@ -1,11 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Infrastructure.Validation.FluentValidator.Adapters;
+﻿using Infrastructure.Validation.FluentValidator.Adapters;
 using Infrastructure.Validation.FluentValidator.Technology;
-using Infrastructure.Adapters.Identity.Data.Model;
-using Infrastructure.Technology.EF.Identity;
-using Infrastructure.Technology.Identity;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions;
 public static class ServiceExtensions {

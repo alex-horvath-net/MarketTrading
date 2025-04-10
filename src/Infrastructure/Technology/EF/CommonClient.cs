@@ -1,8 +1,6 @@
 ﻿using System.Linq.Expressions;
-using Infrastructure.Technology.EF.App;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Adapters.App.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Technology.EF;
 public class CommonEFClient<TDatabase, TDataModel>(TDatabase db) : ICommonEFClient<TDataModel> where TDatabase : DbContext where TDataModel : class {

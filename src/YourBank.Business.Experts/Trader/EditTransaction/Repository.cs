@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Business.Domain;
 using Infrastructure.Adapters.App.Data.Model;
-using Infrastructure.Technology.EF.App;
+using Infrastructure.Technology.EF;
 
 namespace Business.Experts.Trader.EditTransaction;
 
