@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Technology\EF\App\**" />
+    <Compile Remove="Technology\EF\Identity\**" />
+    <EmbeddedResource Remove="Technology\EF\App\**" />
+    <EmbeddedResource Remove="Technology\EF\Identity\**" />
+    <None Remove="Technology\EF\App\**" />
+    <None Remove="Technology\EF\Identity\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.0.0-preview1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.2" />
@@ -15,11 +24,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Technology\EF\App\" />
-    <Folder Include="Technology\EF\Identity\" />
   </ItemGroup>
 
 </Project>
