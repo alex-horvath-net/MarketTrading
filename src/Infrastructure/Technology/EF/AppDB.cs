@@ -5,6 +5,7 @@ using Infrastructure.Adapters.App.Data.Model;
 namespace Infrastructure.Technology.EF;
 
 // Add-Migration InitAppDB -Context AppDB -OutputDir "Technology/EF/Migrations/AppDBMigrations"
+// Update-Database -Context AppDB
 public class AppDB : DbContext {
     // public AppDB() : base() { }
     public AppDB(DbContextOptions<AppDB> options, IConfiguration configuration = null) : base(options) {
