@@ -1,6 +1,4 @@
-﻿using Business.Experts.Trader.FindTransactions;
-using Infrastructure.Adapters.Identity.Data.Model;
-using Infrastructure.Technology.Identity;
+﻿using Infrastructure.Adapters.Identity.Data.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

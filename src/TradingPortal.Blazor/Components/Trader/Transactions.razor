@@ -3,6 +3,7 @@
 @using System.ComponentModel;
 @using Business.Experts
 @using Business.Experts.Trader.FindTransactions
+@using TradingPortal.Blazor.Components.Trader.Shared
 
 @inject NavigationManager NavigationManager
 @inject Experts experts;
@@ -12,9 +13,8 @@
 <p>
     This page allows Traders to execute manual trades when necessary, providing a more hands-on approach.
 </p>
-
+    <DataList Model="@viewModel?.Transactions"></DataList> 
 <p>
-    <DataList Model="viewModel.Transactions"></DataList>
 </p>
 Elements:
 <br />

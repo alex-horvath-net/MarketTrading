@@ -107,12 +107,12 @@ internal class RepositoryMeasureDecorator : IRepository {
 public static class RepositoryExtensions {
     public static IServiceCollection AddRepository(this IServiceCollection services, ConfigurationManager config) => services
         .AddScoped<IRepositoryAdapter, RepositoryAdapter>()
-        .AddScoped<Repository>()
-        .AddMemoryCache()
-        .AddScoped<IRepository>(provider =>
-            new RepositoryCacheDecorator(
-                provider.GetRequiredService<Repository>(),
-                provider.GetRequiredService<IMemoryCache>()
-            ))
+        .AddScoped<IRepository,Repository>()
+        //.AddMemoryCache()
+        //.AddScoped<IRepository>(provider =>
+        //    new RepositoryCacheDecorator(
+        //        provider.GetRequiredService<Repository>(),
+        //        provider.GetRequiredService<IMemoryCache>()
+        //    ))
         .AddDbContext<AppDB>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 }
