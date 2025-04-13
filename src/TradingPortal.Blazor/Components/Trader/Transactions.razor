@@ -3,7 +3,7 @@
 @using System.ComponentModel;
 @using Business.Experts
 @using Business.Experts.Trader.FindTransactions
-@using TradingPortal.Blazor.Components.Trader.Shared
+@using TradingPortal.Blazor.Components.Shared
 
 @inject NavigationManager NavigationManager
 @inject Experts experts;
@@ -30,9 +30,9 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
         viewModel = await experts.Trader.FindTransactions(inputModel, Token);
     }
     ViewModel? viewModel;
-    InputModel inputModel ;
+    InputModel? inputModel ;
     [CascadingParameter]
-    public HttpContext HttpContext { get; set; }
+    public HttpContext? HttpContext { get; set; }
     CancellationTokenSource tcs = new();
     CancellationToken Token => tcs.Token;    
 }

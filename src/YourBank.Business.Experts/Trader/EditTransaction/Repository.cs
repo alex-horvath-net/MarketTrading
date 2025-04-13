@@ -14,16 +14,22 @@ internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
         dataModel!.Name = request.Name;
         await repository.Update(dataModel, token);
 
-        var domainModel = ToDomainModel(dataModel);
+        var domainModel = MakeItEntityFrameworkFree(dataModel);
         return domainModel;
     }
 
-    private static Trade ToDomainModel(Transaction? dataModel) {
-        return new Trade() {
-            Id = dataModel.Id,
-            Name = dataModel.Name
-        };
-    }
+    private static Trade MakeItEntityFrameworkFree(Transaction dataModel) => new(
+            traderId: dataModel.Id.ToString(),
+            instrument: dataModel.Name,
+            side: TradeSide.Buy,
+            price: 0,
+            quantity: 0,
+            orderType: OrderType.Market,
+            timeInForce: TimeInForce.Day,
+            strategyCode: null,
+            portfolioCode: null,
+            userComment: null,
+            executionRequestedForUtc: null);
 }
 
 public interface IRepository {

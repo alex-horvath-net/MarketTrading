@@ -10,10 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
-namespace Business.Experts.Trader.FindTransactions;
+namespace Business.Experts.Trader.PlaceTrade;
 
 internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
-    public async Task<List<Trade>> Find(FindTransactionsRequest request, CancellationToken token) {
+    public async Task<List<Trade>> Find(PlaceTradeRequest request, CancellationToken token) {
         var dataModel = string.IsNullOrEmpty(request.TransactionName) ?
             await repository.FindAll(token) :
             await repository.FindByName(request.TransactionName, token);

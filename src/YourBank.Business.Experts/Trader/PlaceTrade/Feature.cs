@@ -1,24 +1,30 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel;
 using Business.Domain;
 using Infrastructure.Adapters.Blazor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Business.Experts.Trader.FindTransactions;
 
-public interface IFeatureAdapter {
-    Task<ViewModel> Execute(InputModel input, CancellationToken token);
+namespace Business.Experts.Trader.PlaceTrade;
+
+public interface IFeatureAdapter { 
+    Task<PlaceTradeViewModel> Execute(PlaceTradeInputModel input, CancellationToken token);
 }
-public record InputModel(String UserName, string UserId) {
-    public FindTransactionsRequest ToRequest() => new() {
+public record PlaceTradeInputModel(String UserName, string UserId) {
+    public PlaceTradeRequest ToRequest() => new() {
         Id = Guid.NewGuid(),
         Issuer = "TradingPortal",
         TransactionName = this.UserName,
         UserId = this.UserId,
     };
 }
-public record ViewModel {
+public record PlaceTradeViewModel {
     public MetaVM Meta { get; set; }
     public List<ErrorVM> Errors { get; set; } = [];
     public DataListModel<TransactionVM> Transactions { get; set; } = new();
@@ -37,8 +43,8 @@ public record ViewModel {
         public string Name { get; set; }
     }
 
-    internal static ViewModel From(FindTransactionsResponse response) {
-        var viewModel = new ViewModel();
+    internal static PlaceTradeViewModel From(PlaceTradeResponse response) {
+        var viewModel = new PlaceTradeViewModel();
         viewModel.Meta = ToMetaVM(response.Request);
         viewModel.Errors = response.Errors.Select(ToErrorVM).ToList();
         viewModel.Transactions.Rows = response.Transactions.Select(ToTranasactionVM).ToList();
@@ -47,44 +53,44 @@ public record ViewModel {
 
         return viewModel;
 
-        static ViewModel.MetaVM ToMetaVM(FindTransactionsRequest x) =>
+        static PlaceTradeViewModel.MetaVM ToMetaVM(PlaceTradeRequest x) =>
             new() { Id = x.Id, };
 
-        static ViewModel.TransactionVM ToTranasactionVM(Trade x) =>
+        static PlaceTradeViewModel.TransactionVM ToTranasactionVM(Trade x) =>
             new() { Id = x.TraderId, Name = x.Instrument };
 
-        static ViewModel.ErrorVM ToErrorVM(Domain.Error x) =>
+        static PlaceTradeViewModel.ErrorVM ToErrorVM(Domain.Error x) =>
             new() { Name = x.Name, Message = x.Message };
 
     }
 }
 internal class FeatureAdapter(IFeature feature) : IFeatureAdapter {
     // Blazor should be abel to call this adapter with minimum effort and zero technology leaking
-    public async Task<ViewModel> Execute(InputModel input, CancellationToken token) {
+    public async Task<PlaceTradeViewModel> Execute(PlaceTradeInputModel input, CancellationToken token) {
         var request = input.ToRequest();
         var response = await feature.Execute(request, token);
-        var viewModel = ViewModel.From(response);
+        var viewModel = PlaceTradeViewModel.From(response);
         return viewModel;
     }
 }
 
 
 internal interface IFeature {
-    Task<FindTransactionsResponse> Execute(FindTransactionsRequest request, CancellationToken token);
+    Task<PlaceTradeResponse> Execute(PlaceTradeRequest request, CancellationToken token);
 }
-public class FindTransactionsRequest {
+public class PlaceTradeRequest {
     public Guid Id { get; set; }
     public string? TransactionName { get; set; }
     public string UserId { get; set; }
     public string Issuer { get; internal set; }
 }
-internal class FindTransactionsResponse {
+internal class PlaceTradeResponse {
     public Guid Id { get; set; } = Guid.NewGuid();
     public bool Enabled { get; set; } = false;
     public DateTime? CompletedAt { get; set; }
     public DateTime? FailedAt { get; set; }
     public Exception? Exception { get; set; }
-    public FindTransactionsRequest Request { get; set; }
+    public PlaceTradeRequest Request { get; set; }
 
     public List<Error> Errors { get; set; } = [];
     public List<Trade> Transactions { get; set; } = [];
@@ -96,8 +102,8 @@ internal class Feature(
     IClockAdapter clock,
     IOptionsSnapshot<Settings> settings) : IFeature {
 
-    public async Task<FindTransactionsResponse> Execute(FindTransactionsRequest request, CancellationToken token) {
-        var response = new FindTransactionsResponse();
+    public async Task<PlaceTradeResponse> Execute(PlaceTradeRequest request, CancellationToken token) {
+        var response = new PlaceTradeResponse();
         response.Request = request;
 
         try {
@@ -125,13 +131,13 @@ internal class Settings {
     public bool Enabled { get; set; } = false;
 }
 
-internal interface IValidatorAdapter { Task<List<Error>> Validate(FindTransactionsRequest request, Settings settings, CancellationToken token); }
+internal interface IValidatorAdapter { Task<List<Error>> Validate(PlaceTradeRequest request, Settings settings, CancellationToken token); }
 internal interface IClockAdapter { DateTime GetTime(); }
-internal interface IRepositoryAdapter { Task<List<Trade>> Find(FindTransactionsRequest request, CancellationToken token); }
+internal interface IRepositoryAdapter { Task<List<Trade>> Find(PlaceTradeRequest request, CancellationToken token); }
 
 public static class FeatureExtensions {
 
-    public static IServiceCollection AddFindTransactions(this IServiceCollection services,        ConfigurationManager config) {
+    public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager config) {
 
         services.Configure<Settings>(config.GetSection("Features:FindTransactions"));
 

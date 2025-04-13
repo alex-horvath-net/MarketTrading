@@ -1,4 +1,5 @@
-using Business.Experts;
+using Business.Experts.IdentityManager;
+using Business.Experts.Trader;
 using Infrastructure.Technology.Identity;
 using TradingPortal.Blazor.Components;
 using TradingPortal.Blazor.Components.Account.Pages;
@@ -8,7 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-builder.Services.AddExperts(builder.Configuration).AddIdentity(builder.Configuration);
+builder.Services
+    .AddIdentityManager(builder.Configuration).AddIdentity(builder.Configuration)
+    .AddTrader(builder.Configuration);
+    
 
 var app = builder.Build();
 

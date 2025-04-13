@@ -37,13 +37,13 @@ public class RequestValidator : FluentValidation.AbstractValidator<EditTransacti
 
         RuleFor(x => x.Name)
             .MinimumLength(3)
-            .WithMessage("Name must be at least 3 characters long.");
+            .WithMessage("Symbol must be at least 3 characters long.");
         RuleFor(x => x.Name)
             .MustAsync(async (name, token) => {
                 var transaction = await repository.FindByName(name, token);
                 return transaction == null;
             })
-            .WithMessage("Name must be unique.");
+            .WithMessage("Symbol must be unique.");
     }
 }
 

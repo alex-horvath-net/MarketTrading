@@ -1,0 +1,190 @@
+﻿@page "/trader/place-trade"
+@using Business.Experts.Trader
+@using Business.Experts.IdentityManager
+@using Business.Experts.Trader.PlaceTrade
+@inject Trader trader
+@inject IdentityManager identityManager
+
+
+<PageTitle>Place Trade Page</PageTitle>
+
+<div class="card shadow-sm p-4 mt-3">
+    <h2 class="text-primary">📈 Place a New Trade</h2>
+
+    <EditForm Model="inputModel" OnValidSubmit="SubmitTrade">
+        <DataAnnotationsValidator />
+        <ValidationSummary class="text-danger" />
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Instrument</label>
+                <InputText @bind-Value="inputModel.Instrument" class="form-control" placeholder="e.g. AAPL, EUR/USD, CL" />
+                <ValidationMessage For="@(() => inputModel.Instrument)" class="text-danger" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Side</label>
+                <InputSelect @bind-Value="inputModel.Side" class="form-select">
+                    <option value="Buy">Buy</option>
+                    <option value="Sell">Sell</option>
+                </InputSelect>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Quantity</label>
+                <InputNumber @bind-Value="inputModel.Quantity" class="form-control" step="1" min="1" />
+                <ValidationMessage For="@(() => inputModel.Quantity)" class="text-danger" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Order Type</label>
+                <InputSelect @bind-Value="inputModel.OrderType" class="form-select">
+                    <option value="Market">Market</option>
+                    <option value="Limit">Limit</option>
+                    <option value="Stop">Stop</option>
+                    <option value="StopLimit">Stop-Limit</option>
+                </InputSelect>
+            </div>
+            @if (inputModel.OrderType != OrderType.Market)
+            {
+                <div class="col-md-4">
+                    <label class="form-label">Limit/Stop Price</label>
+                    <InputNumber @bind-Value="inputModel.Price" class="form-control" step="0.01" min="0.01" />
+                    <ValidationMessage For="@(() => inputModel.Price)" class="text-danger" />
+                </div>
+            }
+            <div class="col-md-4">
+                <label class="form-label">Time In Force</label>
+                <InputSelect @bind-Value="inputModel.TimeInForce" class="form-select">
+                    <option value="Day">Day</option>
+                    <option value="GTC">Good Till Cancelled</option>
+                    <option value="IOC">Immediate Or Cancel</option>
+                </InputSelect>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Strategy Tag</label>
+                <InputText @bind-Value="inputModel.StrategyCode" class="form-control" placeholder="Optional e.g. Momentum-Alpha" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Portfolio ID</label>
+                <InputText @bind-Value="inputModel.PortfolioCode" class="form-control" placeholder="Optional e.g. Port-AX01" />
+            </div>
+            <div class="col-md-12">
+                <label class="form-label">Trader Notes</label>
+                <InputTextArea @bind-Value="inputModel.UserComment" class="form-control" rows="3" placeholder="Optional: rationale or trade comments..." />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Requested Execution Time</label>
+                <InputDate @bind-Value="inputModel.ExecutionRequestedForUtc" class="form-control" />
+            </div>
+        </div>
+        <div class="mt-4 text-end">
+            <button class="btn btn-lg btn-success px-4" type="submit">💼 Submit Trade</button>
+        </div>
+    </EditForm>
+
+    @if (!string.IsNullOrWhiteSpace(result))
+    {
+        <div class="alert @alertCssClass mt-4">@result</div>
+    }
+</div>
+
+<div class="d-flex justify-content-between align-items-center mt-5 mb-2">
+    <h5 class="text-secondary">📋 Recently Submitted Trades</h5>
+    <div class="d-flex gap-2">
+        <InputDate @bind-Value="filterFromDate" class="form-control form-control-sm" style="width: 180px" placeholder="From" />
+        <InputDate @bind-Value="filterToDate" class="form-control form-control-sm" style="width: 180px" placeholder="To" />
+        <button class="btn btn-sm btn-outline-secondary" @onclick="ApplyFilters">Apply</button>
+        <InputText @bind-Value="filterInstrument" placeholder="Filter by Instrument" class="form-control form-control-sm" style="width: 200px" />
+        <InputSelect @bind-Value="filterSide" class="form-select form-select-sm" style="width: 120px">
+            <option value="">All Sides</option>
+            <option value="Buy">Buy</option>
+            <option value="Sell">Sell</option>
+        </InputSelect>
+    </div>
+</div>
+@if (filteredTrades.Any())
+{
+    <div class="card shadow-sm p-4 mt-5">
+        <h5 class="text-secondary">📋 Recently Submitted Trades</h5>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>Trade ID</th>
+                    <th>Instrument</th>
+                    <th>Side</th>
+                    <th>Qty</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Submitted</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var trade in filteredTrades)
+                {
+                    <tr>
+                        <td>@trade.Id</td>
+                        <td>@trade.Instrument</td>
+                        <td>@trade.Side</td>
+                        <td>@trade.Quantity</td>
+                        <td>@trade.OrderType</td>
+                        <td>@(trade.Price?.ToString("F2") ?? "-")</td>
+                        <td>@trade.SubmittedAtUtc.ToString("u")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="mt-2 text-muted small">
+            <strong>Total Trades:</strong> @totalTrades |
+            <strong>Total Buy Qty:</strong> @totalBuyQuantity |
+            <strong>Total Sell Qty:</strong> @totalSellQuantity
+        </div>
+    </div>
+}
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var userName = identityManager.GetUserName(HttpContext);
+        inputModel = new("", userName);
+        viewModel = await trader.PlaceTrade(inputModel, Token);
+    }
+
+
+    public async Task SubmitTrade()
+    {
+        var userName = identityManager.GetUserName(HttpContext);
+        inputModel = new("", userName);
+        viewModel = await trader.PlaceTrade(inputModel, Token);
+
+        // try
+        // {
+        //     var result = trader.PlaceTrade(inputModel, Token);
+        //     if (result.IsSuccess)
+        //     {
+        //         this.result = "Trade submitted successfully!";
+        //         alertCssClass = "alert alert-success";
+        //     }
+        //     else
+        //     {
+        //         this.result = $"Error: {result.ErrorMessage}";
+        //         alertCssClass = "alert alert-danger";
+        //     }
+        // }
+        // catch (Exception ex)
+        // {
+        //     this.result = $"Exception: {ex.Message}";
+        //     alertCssClass = "alert alert-danger";
+        // }
+    }
+
+    List<Transactions> filteredTrades;
+    int totalTrades;
+    decimal totalBuyQuantity;
+    decimal totalSellQuantity;
+
+    PlaceTradeViewModel? viewModel;
+    PlaceTradeInputModel? inputModel;
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+    CancellationTokenSource tcs = new();
+    CancellationToken Token => tcs.Token;
+}
+
