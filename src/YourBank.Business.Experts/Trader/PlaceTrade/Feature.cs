@@ -9,6 +9,7 @@ using Infrastructure.Adapters.Blazor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Business.Experts.Trader.PlaceTrade;
@@ -16,12 +17,27 @@ namespace Business.Experts.Trader.PlaceTrade;
 public interface IFeatureAdapter { 
     Task<PlaceTradeViewModel> Execute(PlaceTradeInputModel input, CancellationToken token);
 }
-public record PlaceTradeInputModel(String UserName, string UserId) {
+public record PlaceTradeInputModel {
+
+    [Required]
+    public string Instrument { get; set; } = "";
+    [Range(1, int.MaxValue)]
+    public decimal Quantity { get; set; }
+    public TradeSide Side { get; set; } = TradeSide.Buy;
+    public OrderType OrderType { get; set; } = OrderType.Market;
+    [Range(0.01, double.MaxValue)]
+    public decimal? Price { get; set; }
+    public TimeInForce TimeInForce { get; set; } = TimeInForce.Day;
+    public string? StrategyCode { get; set; }
+    public string? PortfolioCode { get; set; }
+    public string? UserComment { get; set; }
+    public DateTime? ExecutionRequestedForUtc { get; set; }
+
     public PlaceTradeRequest ToRequest() => new() {
         Id = Guid.NewGuid(),
-        Issuer = "TradingPortal",
+        Issuer = "TradingPortal",  
         TransactionName = this.UserName,
-        UserId = this.UserId,
+        UserId = this.tr,
     };
 }
 public record PlaceTradeViewModel {
@@ -78,12 +94,20 @@ internal class FeatureAdapter(IFeature feature) : IFeatureAdapter {
 internal interface IFeature {
     Task<PlaceTradeResponse> Execute(PlaceTradeRequest request, CancellationToken token);
 }
-public class PlaceTradeRequest {
-    public Guid Id { get; set; }
-    public string? TransactionName { get; set; }
-    public string UserId { get; set; }
-    public string Issuer { get; internal set; }
-}
+public class PlaceTradeRequest(
+    string TraderId,
+    string Instrument,
+    TradeSide Side,
+    decimal Quantity,
+    decimal? Price,
+    OrderType OrderType,
+    TimeInForce TimeInForce,
+    string? StrategyCode,
+    string? PortfolioCode,
+    string? UserComment,
+    DateTime? ExecutionRequestedForUtc
+);
+
 internal class PlaceTradeResponse {
     public Guid Id { get; set; } = Guid.NewGuid();
     public bool Enabled { get; set; } = false;

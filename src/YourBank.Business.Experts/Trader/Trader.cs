@@ -20,6 +20,9 @@ public class Trader(
     PlaceTrade.IFeatureAdapter placeTrade,
     FindTransactions.IFeatureAdapter findTransactions,
     IEditTransaction editTransaction) {
+    public Task<List<Trade>> GetRecentTradesAsync() {
+      return  Task.FromResult(new List<Trade>()); 
+    }
     public Task<PlaceTrade.PlaceTradeViewModel> PlaceTrade(PlaceTrade.PlaceTradeInputModel input, CancellationToken token) => placeTrade.Execute(input, token);
     public Task<FindTransactions.ViewModel> FindTransactions(FindTransactions.InputModel input, CancellationToken token) => findTransactions.Execute(input, token);
     public Task<EditTransactionResponse> EditTransaction(EditTransactionRequest request, CancellationToken token) => editTransaction.Execute(request, token);
