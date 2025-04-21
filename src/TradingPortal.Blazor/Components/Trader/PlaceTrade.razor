@@ -11,20 +11,20 @@
 <div class="card shadow-sm p-4 mt-3">
     <h2 class="text-primary">📈 Place a New Trade</h2>
 
-    <EditForm Model="inputModel" OnValidSubmit="SubmitTrade">
+    <EditForm Model="placeTradeInputModel" OnValidSubmit="SubmitTrade">
         <DataAnnotationsValidator />
         <ValidationSummary class="text-danger" />
 
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label">Instrument</label>
-                <InputText @bind-Value="inputModel.Instrument" class="form-control" />
-                <ValidationMessage For="@(() => inputModel.Instrument)" />
+                <InputText @bind-Value="placeTradeInputModel.Instrument" class="form-control" />
+                <ValidationMessage For="@(() => placeTradeInputModel.Instrument)" />
             </div>
 
             <div class="col-md-3">
                 <label class="form-label">Side</label>
-                <InputSelect @bind-Value="inputModel.Side" class="form-select">
+                <InputSelect @bind-Value="placeTradeInputModel.Side" class="form-select">
                     <option value="Buy">Buy</option>
                     <option value="Sell">Sell</option>
                 </InputSelect>
@@ -32,13 +32,13 @@
 
             <div class="col-md-3">
                 <label class="form-label">Quantity</label>
-                <InputNumber @bind-Value="inputModel.Quantity" class="form-control" />
-                <ValidationMessage For="@(() => inputModel.Quantity)" />
+                <InputNumber @bind-Value="placeTradeInputModel.Quantity" class="form-control" />
+                <ValidationMessage For="@(() => placeTradeInputModel.Quantity)" />
             </div>
 
             <div class="col-md-4">
                 <label class="form-label">Order Type</label>
-                <InputSelect @bind-Value="inputModel.OrderType" class="form-select">
+                <InputSelect @bind-Value="placeTradeInputModel.OrderType" class="form-select">
                     <option value="Market">Market</option>
                     <option value="Limit">Limit</option>
                     <option value="Stop">Stop</option>
@@ -46,18 +46,17 @@
                 </InputSelect>
             </div>
 
-            @if (inputModel.OrderType != OrderType.Market)
-            {
+            @if (placeTradeInputModel.OrderType != OrderType.Market) {
                 <div class="col-md-4">
                     <label class="form-label">Price</label>
-                    <InputNumber @bind-Value="inputModel.Price" class="form-control" />
-                    <ValidationMessage For="@(() => inputModel.Price)" />
+                    <InputNumber @bind-Value="placeTradeInputModel.Price" class="form-control" />
+                    <ValidationMessage For="@(() => placeTradeInputModel.Price)" />
                 </div>
             }
 
             <div class="col-md-4">
                 <label class="form-label">Time In Force</label>
-                <InputSelect @bind-Value="inputModel.TimeInForce" class="form-select">
+                <InputSelect @bind-Value="placeTradeInputModel.TimeInForce" class="form-select">
                     <option value="Day">Day</option>
                     <option value="GTC">GTC</option>
                     <option value="IOC">IOC</option>
@@ -66,22 +65,22 @@
 
             <div class="col-md-6">
                 <label class="form-label">Strategy Tag</label>
-                <InputText @bind-Value="inputModel.StrategyCode" class="form-control" />
+                <InputText @bind-Value="placeTradeInputModel.StrategyCode" class="form-control" />
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Portfolio ID</label>
-                <InputText @bind-Value="inputModel.PortfolioCode" class="form-control" />
+                <InputText @bind-Value="placeTradeInputModel.PortfolioCode" class="form-control" />
             </div>
 
             <div class="col-md-12">
                 <label class="form-label">User Notes</label>
-                <InputTextArea @bind-Value="inputModel.UserComment" class="form-control" rows="2" />
+                <InputTextArea @bind-Value="placeTradeInputModel.UserComment" class="form-control" rows="2" />
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">Requested Execution Time (UTC)</label>
-                <InputDate @bind-Value="inputModel.ExecutionRequestedForUtc" class="form-control" />
+                <InputDate @bind-Value="placeTradeInputModel.ExecutionRequestedFor" class="form-control" />
             </div>
         </div>
 
@@ -90,9 +89,8 @@
         </div>
     </EditForm>
 
-    @if (!string.IsNullOrWhiteSpace(result))
-    {
-        <div class="alert @alertCssClass mt-4">@result</div>
+    @if (!string.IsNullOrWhiteSpace(viewModel.Result)) {
+        <div class="alert @viewModel.AlertCssClass mt-4">@viewModel.Result</div>
     }
 </div>
 
@@ -111,8 +109,7 @@
     </div>
 </div>
 
-@if (filteredTrades.Any())
-{
+@if (filteredTrades.Any()) {
     <div class="card shadow-sm p-4 mt-3">
         <table class="table table-sm table-striped">
             <thead>
@@ -127,8 +124,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var t in filteredTrades)
-                {
+                @foreach (var t in filteredTrades) {
                     <tr>
                         <td>@t.Id</td>
                         <td>@t.Instrument</td>
@@ -136,7 +132,7 @@
                         <td>@t.Quantity</td>
                         <td>@t.OrderType</td>
                         <td>@(t.Price?.ToString("F2") ?? "-")</td>
-                        <td>@t.SubmittedAtUtc.ToString("u")</td>
+                        <td>@t.SubmittedAt.ToString("u")</td>
                     </tr>
                 }
             </tbody>
@@ -151,61 +147,45 @@
 }
 
 @code {
-    private PlaceTradeInputModel inputModel = new();
+    private PlaceTradeInputModel placeTradeInputModel = new();
     private PlaceTradeViewModel viewModel = new();
-    private string? result;
-    private string alertCssClass = "alert-info";
 
     private List<Trade> allTrades = new();
     private List<Trade> filteredTrades = new();
+
     private string filterInstrument = "";
     private string filterSide = "";
     private DateTime? filterFromDate;
     private DateTime? filterToDate;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadTrades();
-    }
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+    private CancellationTokenSource tcs = new();
+    private CancellationToken Token => tcs.Token;
 
-    private async Task LoadTrades()
-    {
-        allTrades = await trader.GetRecentTradesAsync();
+    protected override async Task OnInitializedAsync() {
+        placeTradeInputModel = new();
+        placeTradeInputModel.TraderId = identityManager.GetUserName(HttpContext);
+       
+        allTrades = await trader.GetRecentTrades();
         ApplyFilters();
     }
 
-    private void ApplyFilters()
-    {
+
+    private void ApplyFilters() {
         filteredTrades = allTrades
             .Where(t => string.IsNullOrWhiteSpace(filterInstrument) || t.Instrument.Contains(filterInstrument, StringComparison.OrdinalIgnoreCase))
-            .Where(t => string.IsNullOrWhiteSpace(filterSide) || t.Side.ToString() ==  filterSide)
-            .Where(t => !filterFromDate.HasValue || t.SubmittedAtUtc >= filterFromDate)
-            .Where(t => !filterToDate.HasValue || t.SubmittedAtUtc <= filterToDate.Value.Date.AddDays(1).AddTicks(-1))
+            .Where(t => string.IsNullOrWhiteSpace(filterSide) || t.Side.ToString() == filterSide)
+            .Where(t => !filterFromDate.HasValue || t.SubmittedAt >= filterFromDate)
+            .Where(t => !filterToDate.HasValue || t.SubmittedAt <= filterToDate.Value.Date.AddDays(1).AddTicks(-1))
             .ToList();
     }
 
-    private async Task SubmitTrade()
-    {
-        try
-        {
-           
-
-            var id = await trader.PlaceTrade(inputModel, Token);
-            result = $"✅ Trade submitted: {id}";
-            alertCssClass = "alert-success";
-            inputModel = new();
-            await LoadTrades();
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError(ex, "Trade failed");
-            result = $"❌ {ex.Message}";
-            alertCssClass = "alert-danger";
-        }
+    private async Task SubmitTrade() {
+        viewModel = await trader.PlaceTrade(placeTradeInputModel, Token);
+        placeTradeInputModel = new();
+        placeTradeInputModel.TraderId = identityManager.GetUserName(HttpContext);
+        allTrades = await trader.GetRecentTrades();
+        ApplyFilters();
     }
-
-    [CascadingParameter]
-    public HttpContext? HttpContext { get; set; }
-    CancellationTokenSource tcs = new();
-    CancellationToken Token => tcs.Token;
 }

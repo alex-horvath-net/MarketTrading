@@ -10,7 +10,7 @@
 //        if (response.Errors.Count > 0)
 //            return response;
 
-//        response.Transaction = await repository.EditTransaction(request, token);
+//        response.Trade = await repository.EditTransaction(request, token);
 
 //        return response;
 //    }
@@ -30,7 +30,7 @@
 //        public Exception? Exception { get; set; }
 //        public Request? Request { get; set; }
 //        public List<Error> Errors { get; set; } = [];
-//        public Trade Transaction { get; set; }
+//        public Trade Trade { get; set; }
 //    }
 
 //    public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }

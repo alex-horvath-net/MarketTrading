@@ -10,7 +10,7 @@ public class Trade {
     public decimal? Price { get; }
     public OrderType OrderType { get; }
     public TimeInForce TimeInForce { get; }
-    public DateTime SubmittedAtUtc { get; } = DateTime.UtcNow;
+    public DateTime SubmittedAt { get; } = DateTime.UtcNow;
     public string? StrategyCode { get; }
     public string? PortfolioCode { get; }
     public string? UserComment { get; }

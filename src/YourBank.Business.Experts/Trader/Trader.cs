@@ -1,26 +1,15 @@
-﻿using Azure;
-using Business.Domain;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics.Arm;
-using System;
+﻿using Business.Domain;
 using Business.Experts.Trader.EditTransaction;
 using Business.Experts.Trader.FindTransactions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Identity.Client;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System.Text.Json;
 
 namespace Business.Experts.Trader;
 public class Trader(
     PlaceTrade.IFeatureAdapter placeTrade,
     FindTransactions.IFeatureAdapter findTransactions,
-    IEditTransaction editTransaction) {
-    public Task<List<Trade>> GetRecentTradesAsync() {
+    EditTransaction.IEditTransaction editTransaction) {
+    public Task<List<Trade>> GetRecentTrades() {
       return  Task.FromResult(new List<Trade>()); 
     }
     public Task<PlaceTrade.PlaceTradeViewModel> PlaceTrade(PlaceTrade.PlaceTradeInputModel input, CancellationToken token) => placeTrade.Execute(input, token);
