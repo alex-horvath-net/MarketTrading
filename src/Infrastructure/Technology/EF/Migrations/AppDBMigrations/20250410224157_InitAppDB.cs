@@ -13,7 +13,7 @@ namespace Infrastructure.Technology.EF.Migrations.AppDBMigrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Transactions",
+                name: "Trades",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -26,7 +26,7 @@ namespace Infrastructure.Technology.EF.Migrations.AppDBMigrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Transactions",
+                table: "Trades",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
@@ -40,7 +40,7 @@ namespace Infrastructure.Technology.EF.Migrations.AppDBMigrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Transactions");
+                name: "Trades");
         }
     }
 }

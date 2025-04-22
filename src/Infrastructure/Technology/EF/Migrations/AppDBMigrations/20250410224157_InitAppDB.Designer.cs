@@ -24,7 +24,7 @@ namespace Infrastructure.Technology.EF.Migrations.AppDBMigrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Infrastructure.Adapters.App.Data.Model.Transaction", b =>
+            modelBuilder.Entity("Infrastructure.Adapters.App.Data.Model.Trade", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace Infrastructure.Technology.EF.Migrations.AppDBMigrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Trades");
 
                     b.HasData(
                         new

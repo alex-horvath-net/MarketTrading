@@ -17,8 +17,8 @@ public class Trade {
     public DateTime? ExecutionRequestedForUtc { get; }
     public TradeStatus Status { get; private set; } = TradeStatus.Submitted;
 
-    private readonly List<IDomainEvent> _domainEvents = new();
     public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents;
+    private readonly List<IDomainEvent> _domainEvents = new();
 
     public Trade(
         string traderId,

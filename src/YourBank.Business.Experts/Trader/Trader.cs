@@ -27,6 +27,7 @@ public static class ExpertExtensions {
 }
 
 
+// TODO: Implement the following features:
 
 //🎯 Trader Intentions / Activities
 //📈 Strategy & Preparation

@@ -47,13 +47,13 @@ internal class RequestValidator : FluentValidation.AbstractValidator<PlaceTradeR
             .NotNull()
             .WithMessage("Request must be provided.");
        
-        RuleFor(request => request.UserId)
+        RuleFor(request => request.TraderId)
             .NotNull()
-            .WithMessage("UserId must be provided.");
+            .WithMessage("TraderId must be provided.");
        
-        RuleFor(request => request.TransactionName)
-            .Must(name => string.IsNullOrEmpty(name) || name.Length >= 3)
-            .WithMessage("TransactionName must be at least 3 characters long or empty.");
+        RuleFor(request => request.Instrument)
+            .Must(instrument => string.IsNullOrEmpty(instrument) || instrument.Length >= 3)
+            .WithMessage("Instrument must be at least 3 characters long or empty.");
     }
 }
 

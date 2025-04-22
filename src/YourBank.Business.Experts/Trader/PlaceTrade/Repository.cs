@@ -13,15 +13,15 @@ using Microsoft.Extensions.Logging;
 namespace Business.Experts.Trader.PlaceTrade;
 
 internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
-    public async Task<List<Trade>> Find(PlaceTradeRequest request, CancellationToken token) {
-        var dataModel = string.IsNullOrEmpty(request.TransactionName) ?
+    public async Task<List<Domain.Trade>> Find(PlaceTradeRequest request, CancellationToken token) {
+        var dataModel = string.IsNullOrEmpty(request.Instrument) ?
             await repository.FindAll(token) :
-            await repository.FindByName(request.TransactionName, token);
+            await repository.FindByName(request.Instrument, token);
         var domainModel = dataModel.Select(MakeItEntityFrameworkFree).ToList();
         return domainModel;
     }
 
-    private static Trade MakeItEntityFrameworkFree(Transaction dataModel) => new(
+    private static Domain.Trade MakeItEntityFrameworkFree(Infrastructure.Adapters.App.Data.Model.Trade dataModel) => new(
             traderId: dataModel.Id.ToString(),
             instrument: dataModel.Name,
             side: TradeSide.Buy,
@@ -36,18 +36,18 @@ internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
 }
 
 internal interface IRepository {
-    Task<List<Transaction>> FindAll(CancellationToken token);
-    Task<List<Transaction>> FindByName(string name, CancellationToken token);
+    Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindAll(CancellationToken token);
+    Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindByName(string name, CancellationToken token);
 }
 
 internal class Repository(AppDB db) : IRepository {
-    public async Task<List<Transaction>> FindAll(CancellationToken token) => await db
-        .Transactions
+    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindAll(CancellationToken token) => await db
+        .Trades
         .AsNoTracking()
         .ToListAsync(token);
 
-    public async Task<List<Transaction>> FindByName(string name, CancellationToken token) => await db
-        .Transactions
+    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindByName(string name, CancellationToken token) => await db
+        .Trades
         .AsNoTracking()
         .Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
         .ToListAsync(token);
@@ -67,7 +67,7 @@ internal class RepositoryCacheDecorator : IRepository {
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
     }
 
-    public async Task<List<Transaction>> FindAll(CancellationToken token) {
+    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindAll(CancellationToken token) {
         var items = await _cache.GetOrCreateAsync($"FindAll", entry => {
             entry.SetOptions(_cacheOptions);
             return _repository.FindAll(token);
@@ -77,7 +77,7 @@ internal class RepositoryCacheDecorator : IRepository {
 
 
 
-    public async Task<List<Transaction>> FindByName(string name, CancellationToken token) {
+    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindByName(string name, CancellationToken token) {
         var items = await _cache.GetOrCreateAsync($"FindByName_{name}", async entry => {
             entry.SetOptions(_cacheOptions);
             return await _repository.FindByName(name, token);
@@ -97,7 +97,7 @@ internal class RepositoryMeasureDecorator : IRepository {
         _logger = logger;
     }
 
-    public async Task<List<Transaction>> FindAll(CancellationToken token) {
+    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindAll(CancellationToken token) {
         var stopwatch = Stopwatch.StartNew();
         var result = await _repository.FindAll(token);
         stopwatch.Stop();
@@ -105,7 +105,7 @@ internal class RepositoryMeasureDecorator : IRepository {
         return result;
     }
 
-    public async Task<List<Transaction>> FindByName(string name, CancellationToken token) {
+    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindByName(string name, CancellationToken token) {
         var stopwatch = Stopwatch.StartNew();
         var result = await _repository.FindByName(name, token);
         stopwatch.Stop();

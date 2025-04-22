@@ -141,8 +141,6 @@ public record PlaceTradeRequest(
     string? UserComment,
     DateTime? ExecutionRequestedForUtc) {
     public Guid Id { get; set; } = Guid.NewGuid();
-    //TransactionName = this.UserName,
-    //UserId = this.tr,
 }
 
 public class PlaceTradeResponse {

@@ -12,7 +12,7 @@ public class AppDB : DbContext {
         this.configuration = configuration;
     }
     private readonly IConfiguration configuration;
-    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Trade> Trades { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
@@ -22,7 +22,7 @@ public class AppDB : DbContext {
         }
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
-        modelBuilder.Entity<Transaction>().HasData(
+        modelBuilder.Entity<Trade>().HasData(
             new() { Id = 1, Name = "USD" },
             new() { Id = 2, Name = "EUR" },
             new() { Id = 3, Name = "GBD" });
@@ -36,5 +36,31 @@ public class AppDB : DbContext {
         return base.DisposeAsync();
     }
 }
+
+public class OutboxMessage {
+    public Guid Id { get; set; }                      // Message ID
+    public Guid TransactionId { get; set; }           // Local DB transaction for producing the message
+    public Guid CorrelationId { get; set; }           // End-to-end business operation ID (shared)
+    public DateTime OccurredOn { get; set; }          // Time of event
+    public string Type { get; set; } = default!;      // Full .NET type name
+    public string Payload { get; set; } = default!;   // Serialized JSON body
+    public string Status { get; set; } = "Created";   // Created, Sent, Failed
+    public DateTime? LastAttemptedOn { get; set; }    // Retry time
+    public int RetryCount { get; set; } = 0;          // Retry attempts
+    public string? Error { get; set; }                // Optional error info
+}
+
+public class InboxMessage {
+    public Guid Id { get; set; }                      // Message ID (matches producer’s ID)
+    public Guid TransactionId { get; set; }           // Local DB transaction for processing the message
+    public Guid CorrelationId { get; set; }           // Shared business ID from producer
+    public DateTime ReceivedOn { get; set; }          // Time received
+    public string Type { get; set; } = default!;      // Optional .NET type info
+    public DateTime? ProcessedOn { get; set; }        // Time of successful handling
+    public string? Error { get; set; }                // Error message (if failed)
+}
+
+
+
 
 

@@ -89,8 +89,8 @@
         </div>
     </EditForm>
 
-    @if (!string.IsNullOrWhiteSpace(viewModel.Result)) {
-        <div class="alert @viewModel.AlertCssClass mt-4">@viewModel.Result</div>
+    @if (!string.IsNullOrWhiteSpace(placeTradeViewModel.Result)) {
+        <div class="alert @placeTradeViewModel.AlertCssClass mt-4">@placeTradeViewModel.Result</div>
     }
 </div>
 
@@ -148,7 +148,7 @@
 
 @code {
     private PlaceTradeInputModel placeTradeInputModel = new();
-    private PlaceTradeViewModel viewModel = new();
+    private PlaceTradeViewModel placeTradeViewModel = new();
 
     private List<Trade> allTrades = new();
     private List<Trade> filteredTrades = new();
@@ -182,7 +182,7 @@
     }
 
     private async Task SubmitTrade() {
-        viewModel = await trader.PlaceTrade(placeTradeInputModel, Token);
+        placeTradeViewModel = await trader.PlaceTrade(placeTradeInputModel, Token);
         placeTradeInputModel = new();
         placeTradeInputModel.TraderId = identityManager.GetUserName(HttpContext);
         allTrades = await trader.GetRecentTrades();
