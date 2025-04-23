@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Business.Experts.Trader.FindTrades;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Experts.Trader.FindTransactions;
 internal class ClockAdapter() : IClockAdapter {

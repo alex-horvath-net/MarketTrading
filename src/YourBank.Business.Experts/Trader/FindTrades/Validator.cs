@@ -1,4 +1,5 @@
 ﻿using Business.Domain;
+using Business.Experts.Trader.FindTrades;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;

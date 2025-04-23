@@ -1,23 +1,14 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Business.Domain;
+using Infrastructure.Adapters.Blazor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-
 namespace Business.Experts.Trader.PlaceTrade;
-
-public interface IFeatureAdapter {
-    Task<PlaceTradeViewModel> Execute(PlaceTradeInputModel input, CancellationToken token);
-}
-public record PlaceTradeInputModel {
-
-    [Required]
-    public string Issuer { get; set; } = "TradingPortal";
-    [Required]
-    public string TraderId { get; set; } = "";
+public record PlaceTradeInputModel : InputModel {
     [Required]
     public string Instrument { get; set; } = "";
     [Range(1, int.MaxValue)]
@@ -46,20 +37,6 @@ public record PlaceTradeInputModel {
         UserComment: this.UserComment,
         ExecutionRequestedForUtc: this.ExecutionRequestedFor
     );
-}
-
-public record ViewModel {
-    public MetaVM Meta { get; set; }
-    public List<ErrorVM> Errors { get; set; } = [];
-    public class MetaVM {
-        public Guid Id { get; internal set; }
-    }
-
-    public class ErrorVM {
-        public string Name { get; internal set; }
-        public string Message { get; internal set; }
-    }
-
 }
 
 public record PlaceTradeViewModel : ViewModel {
@@ -108,17 +85,21 @@ public record PlaceTradeViewModel : ViewModel {
 
     }
 }
+public interface IFeatureAdapter {
+    Task<PlaceTradeViewModel> Execute(PlaceTradeInputModel input, CancellationToken token);
+}
+
 internal class FeatureAdapter(IFeature feature, ILogger<FeatureAdapter> logger) : IFeatureAdapter {
     // Blazor UI should be abel to call this adapter with no effort or leaking any UI technology 
     public async Task<PlaceTradeViewModel> Execute(PlaceTradeInputModel input, CancellationToken token) {
 
         var request = input.ToRequest();
         var response = await feature.Execute(request, token);
-        var viewModel = 
+        var viewModel =
             response.Exception == null ?
             PlaceTradeViewModel.From(response) :
             PlaceTradeViewModel.From(response.Exception);
-        
+
         return viewModel;
     }
 }
@@ -197,7 +178,7 @@ public static class FeatureExtensions {
 
     public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager config) {
 
-        services.Configure<Settings>(config.GetSection("Features:FindTransactions"));
+        services.Configure<Settings>(config.GetSection("Features:FindTrades"));
 
         return services
             .AddScoped<IFeatureAdapter, FeatureAdapter>()

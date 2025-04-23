@@ -10,7 +10,7 @@
 //        if (response.Errors.Count > 0)
 //            return response;
 
-//        response.Trade = await repository.EditTransaction(request, token);
+//        response.Trade = await repository.EditTrades(request, token);
 
 //        return response;
 //    }
@@ -35,7 +35,7 @@
 
 //    public interface IValidator { Task<List<Error>> Validate(Request request, CancellationToken token); }
 
-//    public interface IRepository { Task<Trade> EditTransaction(Request request, CancellationToken token); }
+//    public interface IRepository { Task<Trade> EditTrades(Request request, CancellationToken token); }
 //}
 
 //public static class Extensions {

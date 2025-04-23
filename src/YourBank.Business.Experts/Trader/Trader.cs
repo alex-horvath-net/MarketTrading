@@ -1,20 +1,20 @@
 ﻿using Business.Domain;
 using Business.Experts.Trader.EditTransaction;
-using Business.Experts.Trader.FindTransactions;
+using Business.Experts.Trader.FindTrades;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Experts.Trader;
 public class Trader(
     PlaceTrade.IFeatureAdapter placeTrade,
-    FindTransactions.IFeatureAdapter findTransactions,
+    IFeatureAdapter findTransactions,
     EditTransaction.IEditTransaction editTransaction) {
     public Task<List<Trade>> GetRecentTrades() {
       return  Task.FromResult(new List<Trade>()); 
     }
     public Task<PlaceTrade.PlaceTradeViewModel> PlaceTrade(PlaceTrade.PlaceTradeInputModel input, CancellationToken token) => placeTrade.Execute(input, token);
-    public Task<FindTransactions.ViewModel> FindTransactions(FindTransactions.InputModel input, CancellationToken token) => findTransactions.Execute(input, token);
-    public Task<EditTransactionResponse> EditTransaction(EditTransactionRequest request, CancellationToken token) => editTransaction.Execute(request, token);
+    public Task<FindTradesViewModel> FindTrades(FindTradesInputModel input, CancellationToken token) => findTransactions.Execute(input, token);
+    public Task<EditTransactionResponse> EditTrades(EditTransactionRequest request, CancellationToken token) => editTransaction.Execute(request, token);
 }
 
 

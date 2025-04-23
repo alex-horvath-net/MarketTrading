@@ -1,6 +1,8 @@
 ﻿@page "/trader/place-trade"
 @using Business.Domain
+@using Business.Experts.Trader.FindTrades
 @using Business.Experts.Trader.PlaceTrade
+@using Business.Experts.Trader.FindTrades
 @using System.ComponentModel.DataAnnotations
 @inject Business.Experts.Trader.Trader trader
 @inject Business.Experts.IdentityManager.IdentityManager identityManager
@@ -146,46 +148,34 @@
     </div>
 }
 
+
 @code {
     private PlaceTradeInputModel placeTradeInputModel = new();
     private PlaceTradeViewModel placeTradeViewModel = new();
 
-    private List<Trade> allTrades = new();
-    private List<Trade> filteredTrades = new();
-
-    private string filterInstrument = "";
-    private string filterSide = "";
-    private DateTime? filterFromDate;
-    private DateTime? filterToDate;
+    private FindTradesInputModel findTradesInputModel = new();
+    private FindTradesViewModel findTradesViewModel = new();
 
     [CascadingParameter]
     public HttpContext? HttpContext { get; set; }
     private CancellationTokenSource tcs = new();
     private CancellationToken Token => tcs.Token;
-
+    private string userName = string.Empty;
     protected override async Task OnInitializedAsync() {
-        placeTradeInputModel = new();
-        placeTradeInputModel.TraderId = identityManager.GetUserName(HttpContext);
-       
-        allTrades = await trader.GetRecentTrades();
-        ApplyFilters();
-    }
-
-
-    private void ApplyFilters() {
-        filteredTrades = allTrades
-            .Where(t => string.IsNullOrWhiteSpace(filterInstrument) || t.Instrument.Contains(filterInstrument, StringComparison.OrdinalIgnoreCase))
-            .Where(t => string.IsNullOrWhiteSpace(filterSide) || t.Side.ToString() == filterSide)
-            .Where(t => !filterFromDate.HasValue || t.SubmittedAt >= filterFromDate)
-            .Where(t => !filterToDate.HasValue || t.SubmittedAt <= filterToDate.Value.Date.AddDays(1).AddTicks(-1))
-            .ToList();
+        userName = identityManager.GetUserName(HttpContext);
+        await Reload();
     }
 
     private async Task SubmitTrade() {
         placeTradeViewModel = await trader.PlaceTrade(placeTradeInputModel, Token);
+        await Reload();
+    }
+
+    private async Task Reload() {
         placeTradeInputModel = new();
-        placeTradeInputModel.TraderId = identityManager.GetUserName(HttpContext);
-        allTrades = await trader.GetRecentTrades();
-        ApplyFilters();
+        placeTradeInputModel.TraderId = userName;
+        findTradesInputModel = new();
+        findTradesInputModel.TraderId = userName;
+        findTradesViewModel = await trader.GetRecentTrades(findTradesInputModel, Token);
     }
 }

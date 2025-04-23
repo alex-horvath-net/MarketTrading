@@ -1,35 +1,42 @@
 ﻿using System.ComponentModel;
 using Business.Domain;
+using Business.Experts.Trader.FindTransactions;
 using Infrastructure.Adapters.Blazor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Business.Experts.Trader.FindTransactions;
+namespace Business.Experts.Trader.FindTrades;
 
-public interface IFeatureAdapter {
-    Task<ViewModel> Execute(InputModel input, CancellationToken token);
-}
-public record InputModel(String UserName, string UserId) {
+public record FindTradesInputModel() :InputModel {
+
+    public string? Instrument { get; set; }
+    public string? Side { get; set; }
+    public DateTime? FromDate { get; set; }
+    public DateTime? ToDate { get; set; }
+
     public FindTransactionsRequest ToRequest() => new() {
         Id = Guid.NewGuid(),
         Issuer = "TradingPortal",
-        TransactionName = this.UserName,
-        UserId = this.UserId,
+        TransactionName = UserName,
+        UserId = UserId,
     };
-}
-public record ViewModel {
-    public MetaVM Meta { get; set; }
-    public List<ErrorVM> Errors { get; set; } = [];
-    public DataListModel<TransactionVM> Transactions { get; set; } = new();
-    public class MetaVM {
-        public Guid Id { get; internal set; }
-    }
 
-    public class ErrorVM {
-        public string Name { get; internal set; }
-        public string Message { get; internal set; }
-    }
+    //private void ApplyFilters() {
+    //    filteredTrades = allTrades
+    //        .Where(t => string.IsNullOrWhiteSpace(filterInstrument) || t.Instrument.Contains(filterInstrument, StringComparison.OrdinalIgnoreCase))
+    //        .Where(t => string.IsNullOrWhiteSpace(filterSide) || t.Side.ToString() == filterSide)
+    //        .Where(t => !filterFromDate.HasValue || t.SubmittedAt >= filterFromDate)
+    //        .Where(t => !filterToDate.HasValue || t.SubmittedAt <= filterToDate.Value.Date.AddDays(1).AddTicks(-1))
+    //        .ToList();
+    //}
+}
+public record FindTradesViewModel : ViewModel {
+    public TableModel<Trade> Trades { get; set; } = new();
+    public int TotalCount { get; set; }
+    public int BuyCount { get; set; }
+    public int SellCount { get; set; }
+    
 
     public record TransactionVM {
         [DisplayName("ID")]
@@ -37,33 +44,39 @@ public record ViewModel {
         public string Name { get; set; }
     }
 
-    internal static ViewModel From(FindTransactionsResponse response) {
-        var viewModel = new ViewModel();
+    internal static FindTradesViewModel From(FindTransactionsResponse response) {
+        var viewModel = new FindTradesViewModel();
         viewModel.Meta = ToMetaVM(response.Request);
         viewModel.Errors = response.Errors.Select(ToErrorVM).ToList();
-        viewModel.Transactions.Rows = response.Transactions.Select(ToTranasactionVM).ToList();
-        viewModel.Transactions.Columns.Add(x => x.Id);
-        viewModel.Transactions.Columns.Add(x => x.Name);
+        viewModel.Trades.Rows = response.Trades.Select(ToTranasactionVM).ToList();
+        viewModel.Trades.Columns.Add(x => x.Id);
+        viewModel.Trades.Columns.Add(x => x.Name);
 
         return viewModel;
 
-        static ViewModel.MetaVM ToMetaVM(FindTransactionsRequest x) =>
+        static MetaVM ToMetaVM(FindTransactionsRequest x) =>
             new() { Id = x.Id, };
 
-        static ViewModel.TransactionVM ToTranasactionVM(Trade x) =>
+        static TransactionVM ToTranasactionVM(Trade x) =>
             new() { Id = x.TraderId, Name = x.Instrument };
 
-        static ViewModel.ErrorVM ToErrorVM(Domain.Error x) =>
+        static ErrorVM ToErrorVM(Error x) =>
             new() { Name = x.Name, Message = x.Message };
 
     }
 }
+
+
+public interface IFeatureAdapter {
+    Task<FindTradesViewModel> Execute(FindTradesInputModel input, CancellationToken token);
+}
+
 internal class FeatureAdapter(IFeature feature) : IFeatureAdapter {
     // Blazor should be abel to call this adapter with minimum effort and zero technology leaking
-    public async Task<ViewModel> Execute(InputModel input, CancellationToken token) {
+    public async Task<FindTradesViewModel> Execute(FindTradesInputModel input, CancellationToken token) {
         var request = input.ToRequest();
         var response = await feature.Execute(request, token);
-        var viewModel = ViewModel.From(response);
+        var viewModel = FindTradesViewModel.From(response);
         return viewModel;
     }
 }
@@ -87,7 +100,7 @@ internal class FindTransactionsResponse {
     public FindTransactionsRequest Request { get; set; }
 
     public List<Error> Errors { get; set; } = [];
-    public List<Trade> Transactions { get; set; } = [];
+    public List<Trade> Trades { get; set; } = [];
     public DateTime StartedAt { get; internal set; }
 }
 internal class Feature(
@@ -107,7 +120,7 @@ internal class Feature(
             if (response.Errors.Any())
                 return response;
 
-            response.Transactions = await repository.Find(request, token);
+            response.Trades = await repository.Find(request, token);
 
             response.CompletedAt = clock.GetTime();
 
@@ -133,7 +146,7 @@ public static class FeatureExtensions {
 
     public static IServiceCollection AddFindTransactions(this IServiceCollection services,        ConfigurationManager config) {
 
-        services.Configure<Settings>(config.GetSection("Features:FindTransactions"));
+        services.Configure<Settings>(config.GetSection("Features:FindTrades"));
 
         return services
             .AddScoped<IFeatureAdapter, FeatureAdapter>()

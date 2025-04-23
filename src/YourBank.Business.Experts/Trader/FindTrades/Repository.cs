@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Business.Domain;
+using Business.Experts.Trader.FindTrades;
 using FluentValidation;
 using Infrastructure.Adapters.App.Data.Model;
 using Infrastructure.Technology.EF;
