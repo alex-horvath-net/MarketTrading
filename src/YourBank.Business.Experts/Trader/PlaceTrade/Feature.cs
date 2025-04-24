@@ -61,7 +61,7 @@ public record PlaceTradeViewModel : ViewModel {
 
         return viewModel;
 
-        PlaceTradeViewModel.MetaVM ToMetaVM(PlaceTradeRequest x) =>
+        MetaVM ToMetaVM(PlaceTradeRequest x) =>
             new() { Id = x.Id };
 
         PlaceTradeViewModel.TradeVM ToTradeVM(Trade x) =>

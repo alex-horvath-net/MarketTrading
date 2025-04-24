@@ -2,7 +2,6 @@
 @using Business.Domain
 @using Business.Experts.Trader.FindTrades
 @using Business.Experts.Trader.PlaceTrade
-@using Business.Experts.Trader.FindTrades
 @using System.ComponentModel.DataAnnotations
 @inject Business.Experts.Trader.Trader trader
 @inject Business.Experts.IdentityManager.IdentityManager identityManager
@@ -99,19 +98,19 @@
 <div class="d-flex justify-content-between align-items-center mt-5 mb-2">
     <h5 class="text-secondary">📋 Recently Submitted Trades</h5>
     <div class="d-flex gap-2">
-        <InputDate @bind-Value="filterFromDate" class="form-control form-control-sm" style="width: 160px" />
-        <InputDate @bind-Value="filterToDate" class="form-control form-control-sm" style="width: 160px" />
-        <InputText @bind-Value="filterInstrument" class="form-control form-control-sm" style="width: 150px" placeholder="Instrument" />
-        <InputSelect @bind-Value="filterSide" class="form-select form-select-sm" style="width: 120px">
+        <InputDate @bind-Value="findTradesInputModel.FromDate" class="form-control form-control-sm" style="width: 160px" />
+        <InputDate @bind-Value="findTradesInputModel.ToDate" class="form-control form-control-sm" style="width: 160px" />
+        <InputText @bind-Value="findTradesInputModel.Instrument" class="form-control form-control-sm" style="width: 150px" placeholder="Instrument" />
+        <InputSelect @bind-Value="findTradesInputModel.Side" class="form-select form-select-sm" style="width: 120px">
             <option value="">All</option>
             <option value="Buy">Buy</option>
             <option value="Sell">Sell</option>
         </InputSelect>
-        <button class="btn btn-sm btn-outline-secondary" @onclick="ApplyFilters">Apply</button>
+        <button class="btn btn-sm btn-outline-secondary" @onclick="Reload">Apply</button>
     </div>
 </div>
 
-@if (filteredTrades.Any()) {
+@if (findTradesViewModel.Trades.Rows.Any()) {
     <div class="card shadow-sm p-4 mt-3">
         <table class="table table-sm table-striped">
             <thead>
@@ -126,41 +125,44 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var t in filteredTrades) {
+                @foreach (var trade in findTradesViewModel.Trades.Rows) {
                     <tr>
-                        <td>@t.Id</td>
-                        <td>@t.Instrument</td>
-                        <td>@t.Side</td>
-                        <td>@t.Quantity</td>
-                        <td>@t.OrderType</td>
-                        <td>@(t.Price?.ToString("F2") ?? "-")</td>
-                        <td>@t.SubmittedAt.ToString("u")</td>
+                        <td>@trade.Id</td>
+                        <td>@trade.Instrument</td>
+                        <td>@trade.Side</td>
+                        <td>@trade.Quantity</td>
+                        <td>@trade.OrderType</td>
+                        <td>@(trade.Price?.ToString("F2") ?? "-")</td>
+                        <td>@trade.SubmittedAt.ToString("u")</td>
                     </tr>
                 }
             </tbody>
         </table>
 
         <div class="mt-2 text-muted small">
-            <strong>Total:</strong> @filteredTrades.Count |
-            <strong>Buy:</strong> @filteredTrades.Where(t => t.Side == TradeSide.Buy).Sum(t => t.Quantity) |
-            <strong>Sell:</strong> @filteredTrades.Where(t => t.Side == TradeSide.Sell).Sum(t => t.Quantity)
+            <strong>Total:</strong> @findTradesViewModel.Trades.Rows.Count |
+            <strong>Buy:</strong> @findTradesViewModel.BuyCount |
+            <strong>Sell:</strong> @findTradesViewModel.SellCount
         </div>
     </div>
 }
 
 
 @code {
-    private PlaceTradeInputModel placeTradeInputModel = new();
-    private PlaceTradeViewModel placeTradeViewModel = new();
 
     private FindTradesInputModel findTradesInputModel = new();
     private FindTradesViewModel findTradesViewModel = new();
+        
+    private PlaceTradeInputModel placeTradeInputModel = new();
+    private PlaceTradeViewModel placeTradeViewModel = new();
+        
+    private string userName = string.Empty;
 
     [CascadingParameter]
     public HttpContext? HttpContext { get; set; }
     private CancellationTokenSource tcs = new();
     private CancellationToken Token => tcs.Token;
-    private string userName = string.Empty;
+    
     protected override async Task OnInitializedAsync() {
         userName = identityManager.GetUserName(HttpContext);
         await Reload();
