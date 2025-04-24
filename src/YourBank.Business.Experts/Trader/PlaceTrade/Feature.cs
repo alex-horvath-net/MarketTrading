@@ -24,6 +24,7 @@ public record PlaceTradeInputModel : InputModel {
     public DateTime? ExecutionRequestedFor { get; set; }
 
     public PlaceTradeRequest ToRequest() => new(
+        Id: Guid.NewGuid(),
         Issuer: this.Issuer,
         TraderId: this.TraderId,
         Instrument: this.Instrument,
@@ -109,6 +110,7 @@ internal interface IFeature {
     Task<PlaceTradeResponse> Execute(PlaceTradeRequest request, CancellationToken token);
 }
 public record PlaceTradeRequest(
+    Guid Id,
     string Issuer,
     string TraderId,
     string Instrument,
@@ -121,7 +123,6 @@ public record PlaceTradeRequest(
     string? PortfolioCode,
     string? UserComment,
     DateTime? ExecutionRequestedForUtc) {
-    public Guid Id { get; set; } = Guid.NewGuid();
 }
 
 public class PlaceTradeResponse {

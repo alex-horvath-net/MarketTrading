@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace Business.Experts.Trader.FindTrades;
 
 internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
-    public async Task<List<Domain.Trade>> Find(FindTransactionsRequest request, CancellationToken token) {
+    public async Task<List<Domain.Trade>> Find(FindTradeRequest request, CancellationToken token) {
         var dataModel = string.IsNullOrEmpty(request.TransactionName) ?
             await repository.FindAll(token) :
             await repository.FindByName(request.TransactionName, token);

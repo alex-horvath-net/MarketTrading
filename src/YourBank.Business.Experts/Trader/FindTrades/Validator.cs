@@ -7,9 +7,9 @@ namespace Business.Experts.Trader.FindTrades;
 
 internal class ValidatorAdapter(
     IValidator<Settings> settigsValidator,
-    IValidator<FindTransactionsRequest> requestValidator) : IValidatorAdapter {
+    IValidator<FindTradeRequest> requestValidator) : IValidatorAdapter {
     public async Task<List<Error>> Validate(
-        FindTransactionsRequest request,
+        FindTradeRequest request,
         Settings settings,
         CancellationToken token) {
 
@@ -41,7 +41,7 @@ internal class SettigsValidator : AbstractValidator<Settings> {
     }
 }
 
-internal class RequestValidator : AbstractValidator<FindTransactionsRequest> {
+internal class RequestValidator : AbstractValidator<FindTradeRequest> {
     public RequestValidator() {
         RuleFor(request => request)
             .NotNull()
@@ -61,5 +61,5 @@ internal static class ValidateExtensions {
     public static IServiceCollection AddValidator(this IServiceCollection services) => services
         .AddScoped<IValidatorAdapter, ValidatorAdapter>()
         .AddScoped<IValidator<Settings>, SettigsValidator>()
-        .AddScoped<IValidator<FindTransactionsRequest>, RequestValidator>();
+        .AddScoped<IValidator<FindTradeRequest>, RequestValidator>();
 }
