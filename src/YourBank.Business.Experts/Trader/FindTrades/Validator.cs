@@ -1,15 +1,14 @@
 ﻿using Business.Domain;
-using Business.Experts.Trader.FindTrades;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Business.Experts.Trader.FindTransactions;
+namespace Business.Experts.Trader.FindTrades;
 
 internal class ValidatorAdapter(
     IValidator<Settings> settigsValidator,
     IValidator<FindTransactionsRequest> requestValidator) : IValidatorAdapter {
-    public async Task<List<Domain.Error>> Validate(
+    public async Task<List<Error>> Validate(
         FindTransactionsRequest request,
         Settings settings,
         CancellationToken token) {
@@ -31,7 +30,7 @@ internal class ValidatorAdapter(
 
 }                                                                                                                                                                                       
 
-internal class SettigsValidator : FluentValidation.AbstractValidator<Settings> {
+internal class SettigsValidator : AbstractValidator<Settings> {
     public SettigsValidator() {
         RuleFor(settings => settings)
             .NotNull()
@@ -42,7 +41,7 @@ internal class SettigsValidator : FluentValidation.AbstractValidator<Settings> {
     }
 }
 
-internal class RequestValidator : FluentValidation.AbstractValidator<FindTransactionsRequest> {
+internal class RequestValidator : AbstractValidator<FindTransactionsRequest> {
     public RequestValidator() {
         RuleFor(request => request)
             .NotNull()

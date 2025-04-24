@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Business.Domain;
-using Business.Experts.Trader.FindTrades;
 using FluentValidation;
 using Infrastructure.Adapters.App.Data.Model;
 using Infrastructure.Technology.EF;
@@ -11,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
-namespace Business.Experts.Trader.FindTransactions;
+namespace Business.Experts.Trader.FindTrades;
 
 internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
     public async Task<List<Domain.Trade>> Find(FindTransactionsRequest request, CancellationToken token) {

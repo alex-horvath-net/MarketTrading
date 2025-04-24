@@ -144,7 +144,7 @@ internal interface IRepositoryAdapter { Task<List<Trade>> Find(FindTransactionsR
 
 public static class FeatureExtensions {
 
-    public static IServiceCollection AddFindTransactions(this IServiceCollection services,        ConfigurationManager config) {
+    public static IServiceCollection AddFindTrade(this IServiceCollection services,        ConfigurationManager config) {
 
         services.Configure<Settings>(config.GetSection("Features:FindTrades"));
 

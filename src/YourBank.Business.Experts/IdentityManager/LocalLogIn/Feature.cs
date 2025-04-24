@@ -39,7 +39,7 @@
 //}
 
 //public static class Extensions {
-//    public static IServiceCollection AddEditTransaction(this IServiceCollection services, ConfigurationManager config) => services
+//    public static IServiceCollection AddEditTrade(this IServiceCollection services, ConfigurationManager config) => services
 //        .AddScoped<Feature>()
 //        .AddValidator()
 //        .AddEdit();

@@ -1,14 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Business.Domain;
-using Infrastructure.Adapters.App.Data.Model;
+﻿using Business.Domain;
 using Infrastructure.Technology.EF;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Business.Experts.Trader.EditTransaction;
+namespace Business.Experts.Trader.EditTrade;
 
 internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
 
-    public async Task<Domain.Trade> Edit(EditTransactionRequest request, CancellationToken token) {
+    public async Task<Domain.Trade> Edit(EditTradeRequest request, CancellationToken token) {
 
         var dataModel = await repository.FindById(request.TransactionId, token);
         dataModel!.Name = request.Name;

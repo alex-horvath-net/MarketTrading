@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Business.Experts.Trader.EditTransaction;
+namespace Business.Experts.Trader.EditTrade;
 
 public class ValidatorAdapter(RequestValidator requestValidator) : IValidatorAdapter {
-    public async Task<List<Domain.Error>> Validate(EditTransactionRequest request, CancellationToken token) {
+    public async Task<List<Domain.Error>> Validate(EditTradeRequest request, CancellationToken token) {
         var issues = await requestValidator.ValidateAsync(request, token);
         var errors = issues.Errors.Select(MakeItFluentValidationFree).ToList();
         return errors;
@@ -14,7 +14,7 @@ public class ValidatorAdapter(RequestValidator requestValidator) : IValidatorAda
          new(error.PropertyName, error.ErrorMessage);
 }
 
-public class RequestValidator : FluentValidation.AbstractValidator<EditTransactionRequest> {
+public class RequestValidator : AbstractValidator<EditTradeRequest> {
     public RequestValidator(IRepository repository) {
         RuleFor(x => x)
             .NotNull()

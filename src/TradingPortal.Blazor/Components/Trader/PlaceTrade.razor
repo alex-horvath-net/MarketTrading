@@ -176,8 +176,9 @@
     private async Task Reload() {
         placeTradeInputModel = new();
         placeTradeInputModel.TraderId = userName;
+        
         findTradesInputModel = new();
         findTradesInputModel.TraderId = userName;
-        findTradesViewModel = await trader.GetRecentTrades(findTradesInputModel, Token);
+        findTradesViewModel = await trader.FindTrades(findTradesInputModel, Token);
     }
 }

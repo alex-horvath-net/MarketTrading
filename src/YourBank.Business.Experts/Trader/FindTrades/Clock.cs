@@ -1,7 +1,6 @@
-﻿using Business.Experts.Trader.FindTrades;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Business.Experts.Trader.FindTransactions;
+namespace Business.Experts.Trader.FindTrades;
 internal class ClockAdapter() : IClockAdapter {
     public DateTime GetTime() => DateTime.UtcNow;
 }
