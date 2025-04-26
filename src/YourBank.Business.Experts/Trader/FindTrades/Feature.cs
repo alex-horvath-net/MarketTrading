@@ -7,14 +7,14 @@ using Microsoft.Extensions.Options;
 
 namespace Business.Experts.Trader.FindTrades;
 
-public record FindTradesInputModel() : InputModel {
+public record FindTradesInputModel(string TraderId) : InputModel(TraderId) {
 
     public string? Instrument { get; set; }
     public string? Side { get; set; }
     public DateTime? FromDate { get; set; }
     public DateTime? ToDate { get; set; }
 
-    public FindTradesRequest ToRequest() => new(Id: Guid.NewGuid(), Issuer,TraderId, Instrument, Side, FromDate, ToDate);
+    public FindTradesRequest ToRequest() => new(Id: Guid.NewGuid(), Issuer, TraderId, Instrument, Side, FromDate, ToDate);
 
     //private void ApplyFilters() {
     //    filteredTrades = allTrades
@@ -61,16 +61,19 @@ public record FindTradesViewModel : ViewModel {
 
 
 public interface IFeatureAdapter {
-    Task<FindTradesViewModel> Execute(FindTradesInputModel input, CancellationToken token);
+    FindTradesInputModel InputModel { get; set; }
+    FindTradesViewModel ViewModel { get; set; }
+    Task Execute(CancellationToken token);
 }
 
 internal class FeatureAdapter(IFeature feature) : IFeatureAdapter {
+    public FindTradesInputModel InputModel { get; set; }
+    public FindTradesViewModel ViewModel { get; set; }
     // Blazor should be abel to call this adapter with minimum effort and zero technology leaking
-    public async Task<FindTradesViewModel> Execute(FindTradesInputModel input, CancellationToken token) {
-        var request = input.ToRequest();
+    public async Task Execute(CancellationToken token) {
+        var request = InputModel.ToRequest();
         var response = await feature.Execute(request, token);
-        var viewModel = FindTradesViewModel.From(response);
-        return viewModel;
+        ViewModel = FindTradesViewModel.From(response);
     }
 }
 

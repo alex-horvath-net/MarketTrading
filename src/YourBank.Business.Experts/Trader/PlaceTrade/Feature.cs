@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Business.Experts.Trader.PlaceTrade;
-public record PlaceTradeInputModel : InputModel {
+public record PlaceTradeInputModel(string TraderId) : InputModel(TraderId) {
     [Required]
     public string Instrument { get; set; } = "";
     [Range(1, int.MaxValue)]
@@ -87,21 +87,23 @@ public record PlaceTradeViewModel : ViewModel {
     }
 }
 public interface IFeatureAdapter {
-    Task<PlaceTradeViewModel> Execute(PlaceTradeInputModel input, CancellationToken token);
+    PlaceTradeInputModel InputModel { get; set; }
+    PlaceTradeViewModel ViewModel { get; set; }
+    Task Execute(CancellationToken token);
 }
 
 internal class FeatureAdapter(IFeature feature, ILogger<FeatureAdapter> logger) : IFeatureAdapter {
+    public PlaceTradeInputModel InputModel { get; set; }
+    public PlaceTradeViewModel ViewModel { get; set; }
     // Blazor UI should be abel to call this adapter with no effort or leaking any UI technology 
-    public async Task<PlaceTradeViewModel> Execute(PlaceTradeInputModel input, CancellationToken token) {
+    public async Task Execute(CancellationToken token) {
 
-        var request = input.ToRequest();
+        var request = InputModel.ToRequest();
         var response = await feature.Execute(request, token);
-        var viewModel =
+        ViewModel =
             response.Exception == null ?
             PlaceTradeViewModel.From(response) :
             PlaceTradeViewModel.From(response.Exception);
-
-        return viewModel;
     }
 }
 
@@ -177,9 +179,9 @@ internal interface IRepositoryAdapter { Task<List<Trade>> Find(PlaceTradeRequest
 
 public static class FeatureExtensions {
 
-    public static IServiceCollection AddFindTransactions(this IServiceCollection services, ConfigurationManager config) {
+    public static IServiceCollection AddPlaceTrade(this IServiceCollection services, ConfigurationManager config) {
 
-        services.Configure<Settings>(config.GetSection("Features:FindTrades"));
+        services.Configure<Settings>(config.GetSection("Features:PlaceTrade"));
 
         return services
             .AddScoped<IFeatureAdapter, FeatureAdapter>()

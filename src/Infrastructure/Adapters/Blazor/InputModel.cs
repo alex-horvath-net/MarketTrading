@@ -3,10 +3,9 @@
 namespace Infrastructure.Adapters.Blazor;
 
 
-public record InputModel {
+public record InputModel(
+    [Required] string TraderId ) {
 
     [Required]
     public string Issuer { get; set; } = "TradingPortal";
-    [Required]
-    public string TraderId { get; set; } = "";
 }
