@@ -1,10 +1,4 @@
 ﻿@page "/trader/place-trade"
-@using Business.Domain
-@using Business.Experts.Trader.FindTrades
-@using Business.Experts.Trader.PlaceTrade
-@using System.ComponentModel.DataAnnotations
-@inject Business.Experts.Trader.Trader trader
-@inject Business.Experts.IdentityManager.IdentityManager identityManager
 
 <PageTitle>New Trade</PageTitle>
 
@@ -46,7 +40,7 @@
                 </InputSelect>
             </div>
 
-            @if (trader.PlaceTrade.InputModel.OrderType != OrderType.Market) {
+            @if (trader.PlaceTrade.InputModel.OrderTypeIsNotMarket) {
                 <div class="col-md-4">
                     <label class="form-label">Price</label>
                     <InputNumber @bind-Value="trader.PlaceTrade.InputModel.Price" class="form-control" />
@@ -109,39 +103,37 @@
     </div>
 </div>
 
-@if (trader.FindTrades.ViewModel.Trades.Rows.Any()) {
-    <div class="card shadow-sm p-4 mt-3">
-        <table class="table table-sm table-striped">
-            <thead>
+<div class="card shadow-sm p-4 mt-3">
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Instrument</th>
+                <th>Side</th>
+                <th>Qty</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var trade in trader.FindTrades.ViewModel.Trades.Rows) {
                 <tr>
-                    <th>ID</th>
-                    <th>Instrument</th>
-                    <th>Side</th>
-                    <th>Qty</th>
-                    <th>Type</th>
-                    <th>Price</th>
-                    <th>Time</th>
+                    <td>@trade.Id</td>
+                    <td>@trade.Instrument</td>
+                    <td>@trade.Side</td>
+                    <td>@trade.Quantity</td>
+                    <td>@trade.OrderType</td>
+                    <td>@(trade.Price?.ToString("F2") ?? "-")</td>
+                    <td>@trade.SubmittedAt.ToString("u")</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var trade in trader.FindTrades.ViewModel.Trades.Rows) {
-                    <tr>
-                        <td>@trade.Id</td>
-                        <td>@trade.Instrument</td>
-                        <td>@trade.Side</td>
-                        <td>@trade.Quantity</td>
-                        <td>@trade.OrderType</td>
-                        <td>@(trade.Price?.ToString("F2") ?? "-")</td>
-                        <td>@trade.SubmittedAt.ToString("u")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 
-        <div class="mt-2 text-muted small">
-            <strong>Total:</strong> @trader.FindTrades.ViewModel.Trades.Rows.Count |
-            <strong>Buy:</strong> @trader.FindTrades.ViewModel.BuyCount |
-            <strong>Sell:</strong> @trader.FindTrades.ViewModel.SellCount
-        </div>
+    <div class="mt-2 text-muted small">
+        <strong>Total:</strong> @trader.FindTrades.ViewModel.Trades.Rows.Count |
+        <strong>Buy:</strong> @trader.FindTrades.ViewModel.BuyCount |
+        <strong>Sell:</strong> @trader.FindTrades.ViewModel.SellCount
     </div>
-}
+</div>

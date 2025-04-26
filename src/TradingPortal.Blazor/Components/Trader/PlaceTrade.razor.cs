@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Business.Experts.IdentityManager;
+using Business.Experts.Trader;
+using Microsoft.AspNetCore.Components;
 
 namespace TradingPortal.Blazor.Components.Trader;
 public partial class PlaceTrade : ComponentBase {
@@ -6,6 +8,13 @@ public partial class PlaceTrade : ComponentBase {
 
     [CascadingParameter]
     public HttpContext? HttpContext { get; set; }
+
+    [Inject]
+    private IdentityManager identityManager { get; set; } = default!;
+
+    [Inject]
+    private Business.Experts.Trader.Trader trader { get; set; } = default!;
+
     private CancellationTokenSource tcs = new();
     private CancellationToken Token => tcs.Token;
 

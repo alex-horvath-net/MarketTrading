@@ -15,6 +15,7 @@ public record PlaceTradeInputModel(string TraderId) : InputModel(TraderId) {
     public decimal Quantity { get; set; }
     public TradeSide Side { get; set; } = TradeSide.Buy;
     public OrderType OrderType { get; set; } = OrderType.Market;
+    public bool OrderTypeIsNotMarket => OrderType != OrderType.Market;
     [Range(0.01, double.MaxValue)]
     public decimal? Price { get; set; }
     public TimeInForce TimeInForce { get; set; } = TimeInForce.Day;
