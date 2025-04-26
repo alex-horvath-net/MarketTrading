@@ -19,6 +19,15 @@ internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
         return domainModel;
     }
 
+    //private void ApplyFilters() {
+    //    filteredTrades = allTrades
+    //        .Where(t => string.IsNullOrWhiteSpace(filterInstrument) || t.Instrument.Contains(filterInstrument, StringComparison.OrdinalIgnoreCase))
+    //        .Where(t => string.IsNullOrWhiteSpace(filterSide) || t.Side.ToString() == filterSide)
+    //        .Where(t => !filterFromDate.HasValue || t.SubmittedAt >= filterFromDate)
+    //        .Where(t => !filterToDate.HasValue || t.SubmittedAt <= filterToDate.Value.Date.AddDays(1).AddTicks(-1))
+    //        .ToList();
+    //}
+
     private static Domain.Trade MakeItEntityFrameworkFree(Infrastructure.Adapters.App.Data.Model.Trade dataModel) => new(
             traderId: dataModel.Id.ToString(),
             instrument: dataModel.Name,

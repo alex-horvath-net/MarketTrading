@@ -69,16 +69,6 @@ internal class FeatureAdapter(IFeature feature) : IFeatureAdapter {
         BuyCount = response.Trades.Count(trade => trade.Side == TradeSide.Buy),
         SellCount = response.Trades.Count(trade => trade.Side == TradeSide.Sell),
     };
-
-
-    //private void ApplyFilters() {
-    //    filteredTrades = allTrades
-    //        .Where(t => string.IsNullOrWhiteSpace(filterInstrument) || t.Instrument.Contains(filterInstrument, StringComparison.OrdinalIgnoreCase))
-    //        .Where(t => string.IsNullOrWhiteSpace(filterSide) || t.Side.ToString() == filterSide)
-    //        .Where(t => !filterFromDate.HasValue || t.SubmittedAt >= filterFromDate)
-    //        .Where(t => !filterToDate.HasValue || t.SubmittedAt <= filterToDate.Value.Date.AddDays(1).AddTicks(-1))
-    //        .ToList();
-    //}
 }
 
 
