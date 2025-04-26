@@ -17,7 +17,6 @@ public static class ExpertExtensions {
         .AddPlaceTrade(config)
         .AddFindTrade(config)
         .AddEditTrade(config);
-
 }
 
 

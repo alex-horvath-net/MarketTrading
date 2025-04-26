@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.Metrics;
+using System.Drawing;
+using System.Linq.Expressions;
 using Business.Domain;
 using Infrastructure.Adapters.Blazor;
 using Microsoft.Extensions.Configuration;
@@ -8,57 +11,17 @@ using Microsoft.Extensions.Options;
 namespace Business.Experts.Trader.FindTrades;
 
 public record FindTradesInputModel(string TraderId) : InputModel(TraderId) {
-
     public string? Instrument { get; set; }
     public string? Side { get; set; }
     public DateTime? FromDate { get; set; }
     public DateTime? ToDate { get; set; }
-
-    public FindTradesRequest ToRequest() => new(Id: Guid.NewGuid(), Issuer, TraderId, Instrument, Side, FromDate, ToDate);
-
-    //private void ApplyFilters() {
-    //    filteredTrades = allTrades
-    //        .Where(t => string.IsNullOrWhiteSpace(filterInstrument) || t.Instrument.Contains(filterInstrument, StringComparison.OrdinalIgnoreCase))
-    //        .Where(t => string.IsNullOrWhiteSpace(filterSide) || t.Side.ToString() == filterSide)
-    //        .Where(t => !filterFromDate.HasValue || t.SubmittedAt >= filterFromDate)
-    //        .Where(t => !filterToDate.HasValue || t.SubmittedAt <= filterToDate.Value.Date.AddDays(1).AddTicks(-1))
-    //        .ToList();
-    //}
 }
 public record FindTradesViewModel : ViewModel {
     public TableModel<Trade> Trades { get; set; } = new();
     public int TotalCount { get; set; }
     public int BuyCount { get; set; }
     public int SellCount { get; set; }
-
-
-    internal static FindTradesViewModel From(FindTradesResponse response) {
-        var viewModel = new FindTradesViewModel();
-        viewModel.Meta = ToMetaVM(response.Request);
-        viewModel.Errors = response.Errors.Select(ToErrorVM).ToList();
-        viewModel.Trades.Rows = response.Trades;
-        viewModel.Trades.Columns.Add(x => x.Id);
-        viewModel.Trades.Columns.Add(x => x.Instrument);
-        viewModel.Trades.Columns.Add(x => x.Side);
-        viewModel.Trades.Columns.Add(x => x.Quantity);
-        viewModel.Trades.Columns.Add(x => x.GetType);
-        viewModel.Trades.Columns.Add(x => x.Price);
-        viewModel.Trades.Columns.Add(x => x.TimeInForce);
-        viewModel.TotalCount = response.Trades.Count();
-        viewModel.BuyCount = response.Trades.Count(trade => trade.Side == TradeSide.Buy);
-        viewModel.SellCount = response.Trades.Count(trade => trade.Side == TradeSide.Sell);
-        return viewModel;
-
-        static MetaVM ToMetaVM(FindTradesRequest x) =>
-            new() { Id = x.Id, };
-
-
-        static ErrorVM ToErrorVM(Error x) =>
-            new() { Name = x.Name, Message = x.Message };
-
-    }
 }
-
 
 public interface IFeatureAdapter {
     FindTradesInputModel InputModel { get; set; }
@@ -71,11 +34,53 @@ internal class FeatureAdapter(IFeature feature) : IFeatureAdapter {
     public FindTradesViewModel ViewModel { get; set; }
     // Blazor should be abel to call this adapter with minimum effort and zero technology leaking
     public async Task Execute(CancellationToken token) {
-        var request = InputModel.ToRequest();
+        var request = ToRequest(InputModel);
         var response = await feature.Execute(request, token);
-        ViewModel = FindTradesViewModel.From(response);
+        ViewModel = ToViewModel(response);
     }
+
+    public FindTradesRequest ToRequest(FindTradesInputModel inputModel) => new(
+        Id: Guid.NewGuid(),
+        inputModel.Issuer,
+        inputModel.TraderId,
+        inputModel.Instrument,
+        inputModel.Side,
+        inputModel.FromDate,
+        inputModel.ToDate);
+
+    internal static FindTradesViewModel ToViewModel(FindTradesResponse response) => new FindTradesViewModel() {
+        Meta = new MetaVM() {
+            Id = response.Request.Id
+        },
+        Errors = response.Errors.Select(x=> new ErrorVM() {
+            Name = x.Name,
+            Message = x.Message
+        }),
+        Trades = new TableModel<Trade>() {
+            Rows = response.Trades,
+            Columns = [
+                trade => trade.Instrument,
+                trade => trade.Side,
+                trade => trade.SubmittedAt,
+                trade => trade.Status
+            ]
+        },
+        TotalCount = response.Trades.Count(),
+        BuyCount = response.Trades.Count(trade => trade.Side == TradeSide.Buy),
+        SellCount = response.Trades.Count(trade => trade.Side == TradeSide.Sell),
+    };
+
+
+    //private void ApplyFilters() {
+    //    filteredTrades = allTrades
+    //        .Where(t => string.IsNullOrWhiteSpace(filterInstrument) || t.Instrument.Contains(filterInstrument, StringComparison.OrdinalIgnoreCase))
+    //        .Where(t => string.IsNullOrWhiteSpace(filterSide) || t.Side.ToString() == filterSide)
+    //        .Where(t => !filterFromDate.HasValue || t.SubmittedAt >= filterFromDate)
+    //        .Where(t => !filterToDate.HasValue || t.SubmittedAt <= filterToDate.Value.Date.AddDays(1).AddTicks(-1))
+    //        .ToList();
+    //}
 }
+
 
 
 internal interface IFeature {
