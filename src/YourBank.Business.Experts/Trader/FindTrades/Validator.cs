@@ -7,9 +7,9 @@ namespace Business.Experts.Trader.FindTrades;
 
 internal class ValidatorAdapter(
     IValidator<Settings> settigsValidator,
-    IValidator<FindTradeRequest> requestValidator) : IValidatorAdapter {
+    IValidator<FindTradesRequest> requestValidator) : IValidatorAdapter {
     public async Task<List<Error>> Validate(
-        FindTradeRequest request,
+        FindTradesRequest request,
         Settings settings,
         CancellationToken token) {
 
@@ -41,19 +41,19 @@ internal class SettigsValidator : AbstractValidator<Settings> {
     }
 }
 
-internal class RequestValidator : AbstractValidator<FindTradeRequest> {
+internal class RequestValidator : AbstractValidator<FindTradesRequest> {
     public RequestValidator() {
         RuleFor(request => request)
             .NotNull()
             .WithMessage("Request must be provided.");
        
-        RuleFor(request => request.UserId)
+        RuleFor(request => request.Id)
             .NotNull()
             .WithMessage("UserId must be provided.");
        
-        RuleFor(request => request.TransactionName)
+        RuleFor(request => request.Instrument)
             .Must(name => string.IsNullOrEmpty(name) || name.Length >= 3)
-            .WithMessage("TransactionName must be at least 3 characters long or empty.");
+            .WithMessage("Instrument must be at least 3 characters long or empty.");
     }
 }
 
@@ -61,5 +61,5 @@ internal static class ValidateExtensions {
     public static IServiceCollection AddValidator(this IServiceCollection services) => services
         .AddScoped<IValidatorAdapter, ValidatorAdapter>()
         .AddScoped<IValidator<Settings>, SettigsValidator>()
-        .AddScoped<IValidator<FindTradeRequest>, RequestValidator>();
+        .AddScoped<IValidator<FindTradesRequest>, RequestValidator>();
 }

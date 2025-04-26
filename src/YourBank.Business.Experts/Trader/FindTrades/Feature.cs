@@ -14,7 +14,7 @@ public record FindTradesInputModel() : InputModel {
     public DateTime? FromDate { get; set; }
     public DateTime? ToDate { get; set; }
 
-    public FindTradeRequest ToRequest() => new(Id: Guid.NewGuid(), Instrument, Side, FromDate, ToDate);
+    public FindTradesRequest ToRequest() => new(Id: Guid.NewGuid(), Issuer,TraderId, Instrument, Side, FromDate, ToDate);
 
     //private void ApplyFilters() {
     //    filteredTrades = allTrades
@@ -32,7 +32,7 @@ public record FindTradesViewModel : ViewModel {
     public int SellCount { get; set; }
 
 
-    internal static FindTradesViewModel From(FindTransactionsResponse response) {
+    internal static FindTradesViewModel From(FindTradesResponse response) {
         var viewModel = new FindTradesViewModel();
         viewModel.Meta = ToMetaVM(response.Request);
         viewModel.Errors = response.Errors.Select(ToErrorVM).ToList();
@@ -46,10 +46,10 @@ public record FindTradesViewModel : ViewModel {
         viewModel.Trades.Columns.Add(x => x.TimeInForce);
         viewModel.TotalCount = response.Trades.Count();
         viewModel.BuyCount = response.Trades.Count(trade => trade.Side == TradeSide.Buy);
-        viewModel.SellCount = response.Trades.Count(trade=>trade.Side==TradeSide.Sell);
+        viewModel.SellCount = response.Trades.Count(trade => trade.Side == TradeSide.Sell);
         return viewModel;
 
-        static MetaVM ToMetaVM(FindTradeRequest x) =>
+        static MetaVM ToMetaVM(FindTradesRequest x) =>
             new() { Id = x.Id, };
 
 
@@ -76,21 +76,23 @@ internal class FeatureAdapter(IFeature feature) : IFeatureAdapter {
 
 
 internal interface IFeature {
-    Task<FindTransactionsResponse> Execute(FindTradeRequest request, CancellationToken token);
+    Task<FindTradesResponse> Execute(FindTradesRequest request, CancellationToken token);
 }
-public record FindTradeRequest(
+public record FindTradesRequest(
     Guid Id,
+    string Issuer,
+    string TraderId,
     string? Instrument,
     string? Side,
     DateTime? fromDate,
     DateTime? ToDate);
-internal class FindTransactionsResponse {
+internal class FindTradesResponse {
     public Guid Id { get; set; } = Guid.NewGuid();
     public bool Enabled { get; set; } = false;
     public DateTime? CompletedAt { get; set; }
     public DateTime? FailedAt { get; set; }
     public Exception? Exception { get; set; }
-    public FindTradeRequest Request { get; set; }
+    public FindTradesRequest Request { get; set; }
 
     public List<Error> Errors { get; set; } = [];
     public List<Trade> Trades { get; set; } = [];
@@ -102,8 +104,8 @@ internal class Feature(
     IClockAdapter clock,
     IOptionsSnapshot<Settings> settings) : IFeature {
 
-    public async Task<FindTransactionsResponse> Execute(FindTradeRequest request, CancellationToken token) {
-        var response = new FindTransactionsResponse();
+    public async Task<FindTradesResponse> Execute(FindTradesRequest request, CancellationToken token) {
+        var response = new FindTradesResponse();
         response.Request = request;
 
         try {
@@ -131,9 +133,9 @@ internal class Settings {
     public bool Enabled { get; set; } = false;
 }
 
-internal interface IValidatorAdapter { Task<List<Error>> Validate(FindTradeRequest request, Settings settings, CancellationToken token); }
+internal interface IValidatorAdapter { Task<List<Error>> Validate(FindTradesRequest request, Settings settings, CancellationToken token); }
 internal interface IClockAdapter { DateTime GetTime(); }
-internal interface IRepositoryAdapter { Task<List<Trade>> Find(FindTradeRequest request, CancellationToken token); }
+internal interface IRepositoryAdapter { Task<List<Trade>> Find(FindTradesRequest request, CancellationToken token); }
 
 public static class FeatureExtensions {
 

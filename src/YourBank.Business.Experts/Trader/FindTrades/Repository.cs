@@ -1,22 +1,20 @@
 ﻿using System.Diagnostics;
 using Business.Domain;
 using FluentValidation;
-using Infrastructure.Adapters.App.Data.Model;
 using Infrastructure.Technology.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace Business.Experts.Trader.FindTrades;
 
 internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
-    public async Task<List<Domain.Trade>> Find(FindTradeRequest request, CancellationToken token) {
-        var dataModel = string.IsNullOrEmpty(request.TransactionName) ?
+    public async Task<List<Domain.Trade>> Find(FindTradesRequest request, CancellationToken token) {
+        var dataModel = string.IsNullOrEmpty(request.Instrument) ?
             await repository.FindAll(token) :
-            await repository.FindByName(request.TransactionName, token);
+            await repository.FindByName(request.Instrument, token);
         var domainModel = dataModel.Select(MakeItEntityFrameworkFree).ToList();
         return domainModel;
     }
