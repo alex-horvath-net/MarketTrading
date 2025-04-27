@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Business.Domain;
 using FluentValidation;
 using Infrastructure.Technology.EF;
 using Microsoft.EntityFrameworkCore;
@@ -7,35 +6,45 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using DataModel = Infrastructure.Adapters.App.Data.Model;
 
 namespace Business.Experts.Trader.FindTrades;
 
 internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
     public async Task<List<Domain.Trade>> Find(FindTradesRequest request, CancellationToken token) {
-        var dataModel = string.IsNullOrEmpty(request.Instrument) ?
-            await repository.FindAll(token) :
-            await repository.FindByName(request.Instrument, token);
+        var dataModel = await repository.FindWithFilters(
+            request.Instrument,
+            ToDataModelTradeSide(request.Side),
+            request.FromDate,
+            request.ToDate,
+            token);
         var domainModel = dataModel.Select(MakeItEntityFrameworkFree).ToList();
         return domainModel;
     }
 
-    //private void ApplyFilters() {
-    //    filteredTrades = allTrades
-    //        .Where(t => string.IsNullOrWhiteSpace(filterInstrument) || t.Instrument.Contains(filterInstrument, StringComparison.OrdinalIgnoreCase))
-    //        .Where(t => string.IsNullOrWhiteSpace(filterSide) || t.Side.ToString() == filterSide)
-    //        .Where(t => !filterFromDate.HasValue || t.SubmittedAt >= filterFromDate)
-    //        .Where(t => !filterToDate.HasValue || t.SubmittedAt <= filterToDate.Value.Date.AddDays(1).AddTicks(-1))
-    //        .ToList();
-    //}
+    private DataModel.TradeSide? ToDataModelTradeSide(string? side) => string.IsNullOrWhiteSpace(side) ? null : ToDataModelTradeSide(Enum.Parse<Domain.TradeSide>(side, true));
 
-    private static Domain.Trade MakeItEntityFrameworkFree(Infrastructure.Adapters.App.Data.Model.Trade dataModel) => new(
+    private DataModel.TradeSide? ToDataModelTradeSide(Domain.TradeSide? side) => side switch {
+        null => null,
+        Domain.TradeSide.Buy => DataModel.TradeSide.Buy,
+        Domain.TradeSide.Sell => DataModel.TradeSide.Sell,
+        _ => throw new ArgumentOutOfRangeException(nameof(side), side, null)
+    };
+
+    private Domain.TradeSide ToDomainTradeSide(DataModel.TradeSide side) => side switch {
+        DataModel.TradeSide.Buy => Domain.TradeSide.Buy,
+        DataModel.TradeSide.Sell => Domain.TradeSide.Sell,
+        _ => throw new ArgumentOutOfRangeException(nameof(side), side, null)
+    };
+
+    private Domain.Trade MakeItEntityFrameworkFree(DataModel.Trade dataModel) => new(
             traderId: dataModel.Id.ToString(),
-            instrument: dataModel.Name,
-            side: TradeSide.Buy,
+            instrument: dataModel.Instrument,
+            side: ToDomainTradeSide(dataModel.Side),
             price: 0,
             quantity: 0,
-            orderType: OrderType.Market,
-            timeInForce: TimeInForce.Day,
+            orderType: Domain.OrderType.Market,
+            timeInForce: Domain.TimeInForce.Day,
             strategyCode: null,
             portfolioCode: null,
             userComment: null,
@@ -43,21 +52,41 @@ internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
 }
 
 internal interface IRepository {
-    Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindAll(CancellationToken token);
-    Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindByName(string name, CancellationToken token);
+    Task<List<DataModel.Trade>> FindAll(CancellationToken token);
+    Task<List<DataModel.Trade>> FindByName(string name, CancellationToken token);
+    Task<List<DataModel.Trade>> FindWithFilters(string? instrument, DataModel.TradeSide? side, DateTime? fromDate, DateTime? toDate, CancellationToken token);
+
 }
 
 internal class Repository(AppDB db) : IRepository {
-    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindAll(CancellationToken token) => await db
+    public async Task<List<DataModel.Trade>> FindAll(CancellationToken token) => await db
         .Trades
         .AsNoTracking()
         .ToListAsync(token);
 
-    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindByName(string name, CancellationToken token) => await db
+    public async Task<List<DataModel.Trade>> FindByName(string name, CancellationToken token) => await db
         .Trades
         .AsNoTracking()
-        .Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
+        .Where(x => x.Instrument.Contains(name, StringComparison.OrdinalIgnoreCase))
         .ToListAsync(token);
+
+    public async Task<List<DataModel.Trade>> FindWithFilters(string? instrument, DataModel.TradeSide? side, DateTime? fromDate, DateTime? toDate, CancellationToken token) {
+        var query = db.Trades.AsNoTracking().AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(instrument))
+            query = query.Where(x => x.Instrument.Contains(instrument, StringComparison.OrdinalIgnoreCase));
+
+        if (side.HasValue)
+            query = query.Where(x => x.Side == side.Value);
+
+        if (fromDate.HasValue)
+            query = query.Where(x => x.SubmittedAt >= fromDate.Value);
+
+        if (toDate.HasValue)
+            query = query.Where(x => x.SubmittedAt <= toDate.Value);
+
+        return await query.ToListAsync(token);
+    }
 }
 
 internal class RepositoryCacheDecorator : IRepository {
@@ -74,7 +103,7 @@ internal class RepositoryCacheDecorator : IRepository {
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
     }
 
-    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindAll(CancellationToken token) {
+    public async Task<List<DataModel.Trade>> FindAll(CancellationToken token) {
         var items = await _cache.GetOrCreateAsync($"FindAll", entry => {
             entry.SetOptions(_cacheOptions);
             return _repository.FindAll(token);
@@ -82,14 +111,16 @@ internal class RepositoryCacheDecorator : IRepository {
         return items ?? [];
     }
 
-
-
-    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindByName(string name, CancellationToken token) {
+    public async Task<List<DataModel.Trade>> FindByName(string name, CancellationToken token) {
         var items = await _cache.GetOrCreateAsync($"FindByName_{name}", async entry => {
             entry.SetOptions(_cacheOptions);
             return await _repository.FindByName(name, token);
         });
         return items ?? [];
+    }
+
+    public async Task<List<DataModel.Trade>> FindWithFilters(string? instrument, DataModel.TradeSide? side, DateTime? fromDate, DateTime? toDate, CancellationToken token) {
+        return await _repository.FindWithFilters(instrument, side, fromDate, toDate, token);
     }
 }
 
@@ -104,7 +135,7 @@ internal class RepositoryMeasureDecorator : IRepository {
         _logger = logger;
     }
 
-    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindAll(CancellationToken token) {
+    public async Task<List<DataModel.Trade>> FindAll(CancellationToken token) {
         var stopwatch = Stopwatch.StartNew();
         var result = await _repository.FindAll(token);
         stopwatch.Stop();
@@ -112,12 +143,21 @@ internal class RepositoryMeasureDecorator : IRepository {
         return result;
     }
 
-    public async Task<List<Infrastructure.Adapters.App.Data.Model.Trade>> FindByName(string name, CancellationToken token) {
+    public async Task<List<DataModel.Trade>> FindByName(string name, CancellationToken token) {
         var stopwatch = Stopwatch.StartNew();
         var result = await _repository.FindByName(name, token);
         stopwatch.Stop();
-        Console.WriteLine($"FindByName executed in {stopwatch.ElapsedMilliseconds} ms");
+        _logger.LogDebug($"FindByName executed in {stopwatch.ElapsedMilliseconds} ms");
         return result;
+    }
+
+    public async Task<List<DataModel.Trade>> FindWithFilters(string? instrument, DataModel.TradeSide? side, DateTime? fromDate, DateTime? toDate, CancellationToken token) {
+        var stopwatch = Stopwatch.StartNew();
+        var result = await _repository.FindWithFilters(instrument, side, fromDate, toDate, token);
+        stopwatch.Stop();
+        _logger.LogDebug($"FindWithFilters executed in {stopwatch.ElapsedMilliseconds} ms");
+        return result;
+
     }
 }
 

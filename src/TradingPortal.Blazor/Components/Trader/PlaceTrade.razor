@@ -102,7 +102,7 @@
 </div>
 
 <div class="d-flex justify-content-between align-items-center mt-5 mb-2">
-    <h5 class="text-secondary">📋 Recently Submitted Trades</h5>
+    <h5 class="text-secondary">📋 Trade Filters</h5>
     <div class="d-flex gap-2">
         <InputDate @bind-Value="trader.FindTrades.InputModel.FromDate" class="form-control form-control-sm" style="width: 160px" />
         <InputDate @bind-Value="trader.FindTrades.InputModel.ToDate" class="form-control form-control-sm" style="width: 160px" />
@@ -111,6 +111,7 @@
             <option value="">All</option>
             <option value="Buy">Buy</option>
             <option value="Sell">Sell</option>
+            <option value="null">Null</option>
         </InputSelect>
         <button class="btn btn-sm btn-outline-secondary" @onclick="TradesFilterClick">Apply</button>
     </div>

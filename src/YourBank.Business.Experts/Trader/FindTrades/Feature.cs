@@ -78,11 +78,11 @@ internal interface IFeature {
 }
 public record FindTradesRequest(
     Guid Id,
-    string Issuer,
-    string TraderId,
+    string? Issuer,
+    string? TraderId,
     string? Instrument,
     string? Side,
-    DateTime? fromDate,
+    DateTime? FromDate,
     DateTime? ToDate);
 internal class FindTradesResponse {
     public Guid Id { get; set; } = Guid.NewGuid();

@@ -23,9 +23,9 @@ public class AppDB : DbContext {
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<Trade>().HasData(
-            new() { Id = 1, Name = "USD" },
-            new() { Id = 2, Name = "EUR" },
-            new() { Id = 3, Name = "GBD" });
+            new() { Id = Guid.NewGuid(), Instrument = "USD", Side = TradeSide.Buy, OrderType = OrderType.Market, Quantity = 1, Price = 100, TraderId = "me" },
+            new() { Id = Guid.NewGuid(), Instrument = "EUR", Side = TradeSide.Buy, OrderType = OrderType.Market, Quantity = 1, Price = 100, TraderId = "me" },
+            new() { Id = Guid.NewGuid(), Instrument = "GBD", Side = TradeSide.Buy, OrderType = OrderType.Market, Quantity = 1, Price = 100, TraderId = "me" });
     }
 
     public override void Dispose() {
