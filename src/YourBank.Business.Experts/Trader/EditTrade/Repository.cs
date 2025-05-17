@@ -10,7 +10,7 @@ internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
     public async Task<Domain.Trade> Edit(EditTradeRequest request, CancellationToken token) {
 
         var dataModel = await repository.FindById(request.TransactionId, token);
-        dataModel!.Name = request.Name;
+        dataModel!.Instrument = request.Name;
         await repository.Update(dataModel, token);
 
         var domainModel = MakeItEntityFrameworkFree(dataModel);
@@ -19,7 +19,7 @@ internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
 
     private static Domain.Trade MakeItEntityFrameworkFree(Infrastructure.Adapters.App.Data.Model.Trade dataModel) => new(
             traderId: dataModel.Id.ToString(),
-            instrument: dataModel.Name,
+            instrument: dataModel.Instrument,
             side: TradeSide.Buy,
             price: 0,
             quantity: 0,
@@ -32,18 +32,18 @@ internal class RepositoryAdapter(IRepository repository) : IRepositoryAdapter {
 }
 
 public interface IRepository {
-    Task<Infrastructure.Adapters.App.Data.Model.Trade?> FindById(long id, CancellationToken token);
+    Task<Infrastructure.Adapters.App.Data.Model.Trade?> FindById(Guid id, CancellationToken token);
     Task<Infrastructure.Adapters.App.Data.Model.Trade?> FindByName(string name, CancellationToken token);
     Task Update(Infrastructure.Adapters.App.Data.Model.Trade model, CancellationToken token);
 }
 
 public class Repository(AppDB db) : IRepository {
 
-    public Task<Infrastructure.Adapters.App.Data.Model.Trade?> FindById(long id, CancellationToken token) =>
+    public Task<Infrastructure.Adapters.App.Data.Model.Trade?> FindById(Guid id, CancellationToken token) =>
         db.Trades.FirstOrDefaultAsync(x => x.Id == id, token);
 
     public Task<Infrastructure.Adapters.App.Data.Model.Trade?> FindByName(string name, CancellationToken token) =>
-        db.Trades.FirstOrDefaultAsync(x => x.Name == name, token);
+        db.Trades.FirstOrDefaultAsync(x => x.Instrument == name, token);
 
     public async Task Update(Infrastructure.Adapters.App.Data.Model.Trade model, CancellationToken token) {
         db.Update(model);

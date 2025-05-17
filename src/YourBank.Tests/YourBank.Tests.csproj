@@ -47,10 +47,6 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Common\YourBank.Infrastructure.csproj" />
-    <ProjectReference Include="..\Experts\YourBank.Business.Actors.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />

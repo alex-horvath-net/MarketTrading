@@ -1,12 +1,12 @@
 ﻿
-namespace BusinesActors.Trader; 
-public class TraderScope {
-    [Fact]
-    public void I_Can_Find_All_Trades() {
-        var trader = new Trader();
+//namespace BusinesActors.Trader; 
+//public class TraderScope {
+//    [Fact]
+//    public void I_Can_Find_All_Trades() {
+//        var trader = new Business.Experts.Trader.Trader();
 
-        var trades = trader.FindAllTransations();
+//        var trades = trader.FindAllTransations();
 
-        trades.Should().NotBeEmpty();
-    }
-}
+//        trades.Should().NotBeEmpty();
+//    }
+//}

@@ -3,12 +3,12 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Business.Experts.Trader.PlaceTrade;
+namespace Business.Experts.Trader.PlaceTrade.WorkSteps;
 
-internal class ValidatorAdapter( 
+internal class ValidatorAdapter(
     IValidator<Settings> settigsValidator,
     IValidator<PlaceTradeRequest> requestValidator) : IValidatorAdapter {
-    public async Task<List<Domain.Error>> Validate(
+    public async Task<List<Error>> Validate(
         PlaceTradeRequest request,
         Settings settings,
         CancellationToken token) {
@@ -22,15 +22,18 @@ internal class ValidatorAdapter(
         var requestIssues = await requestValidator.ValidateAsync(request, token);
         errors = requestIssues.Errors.Select(MakeItFluentValidationFree).ToList();
 
+        if (errors.Any())
+            return errors;
+
         return errors;
     }
-                                                                                                                       
+
     private static Error MakeItFluentValidationFree(ValidationFailure error) =>
          new(error.PropertyName, error.ErrorMessage);
 
-}                                                                                                                                                                                       
+}
 
-internal class SettigsValidator : FluentValidation.AbstractValidator<Settings> {
+internal class SettigsValidator : AbstractValidator<Settings> {
     public SettigsValidator() {
         RuleFor(settings => settings)
             .NotNull()
@@ -41,21 +44,28 @@ internal class SettigsValidator : FluentValidation.AbstractValidator<Settings> {
     }
 }
 
-internal class RequestValidator : FluentValidation.AbstractValidator<PlaceTradeRequest> {
-    public RequestValidator() {
+internal class RequestValidator : AbstractValidator<PlaceTradeRequest> {
+    public RequestValidator(IRepository repository) {
         RuleFor(request => request)
             .NotNull()
             .WithMessage("Request must be provided.");
-       
+
         RuleFor(request => request.TraderId)
             .NotNull()
             .WithMessage("TraderId must be provided.");
-       
+
         RuleFor(request => request.Instrument)
-            .Must(instrument => string.IsNullOrEmpty(instrument) || instrument.Length >= 3)
-            .WithMessage("Instrument must be at least 3 characters long or empty.");
+            .NotEmpty()
+            .WithMessage("Instrument must be provided.")
+            .MinimumLength( 3)
+            .WithMessage("Instrument must be at least 3 characters long.");
+
+        //RuleFor(request => request.Instrument)
+        //    .MustAsync(async (instrument, token) => null != await repository.FindByName(instrument, token))
+        //    .WithMessage("A trade with the same details already exists.");
     }
 }
+
 
 internal static class ValidateExtensions {
     public static IServiceCollection AddValidator(this IServiceCollection services) => services

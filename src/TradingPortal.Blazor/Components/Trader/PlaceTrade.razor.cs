@@ -1,5 +1,4 @@
 ﻿using Business.Experts.IdentityManager;
-using Business.Experts.Trader;
 using Microsoft.AspNetCore.Components;
 
 namespace TradingPortal.Blazor.Components.Trader;
@@ -16,7 +15,7 @@ public partial class PlaceTrade : ComponentBase {
     private Business.Experts.Trader.Trader trader { get; set; } = default!;
 
     private CancellationTokenSource tcs = new();
-    private CancellationToken Token => tcs.Token;
+    private CancellationToken token => tcs.Token;
 
     protected override async Task OnInitializedAsync() {
         userName = identityManager.GetUserName(HttpContext);
@@ -24,15 +23,15 @@ public partial class PlaceTrade : ComponentBase {
         trader.PlaceTrade.InputModel = new(userName);
         trader.FindTrades.InputModel = new(userName);
 
-        await trader.FindTrades.Execute(Token);
+        await trader.FindTrades.Execute(token);
     }
 
     private async Task PlaceTradeClick() {
-        await trader.PlaceTrade.Execute(Token);
-        await trader.FindTrades.Execute(Token);
+        await trader.PlaceTrade.Execute(token);
+        await trader.FindTrades.Execute(token);
     }
 
     private async Task TradesFilterClick() {
-        await trader.FindTrades.Execute(Token);
+        await trader.FindTrades.Execute(token);
     }
 }

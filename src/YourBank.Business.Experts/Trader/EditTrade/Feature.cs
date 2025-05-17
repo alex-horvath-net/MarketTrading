@@ -10,7 +10,7 @@ public interface IEditTransaction {
 
 public class EditTradeRequest {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public long TransactionId { get; set; }
+    public Guid TransactionId { get; set; }
     public string Name { get; set; }
     public string UserId { get; set; }
 }

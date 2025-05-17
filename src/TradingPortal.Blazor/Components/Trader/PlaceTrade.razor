@@ -96,7 +96,7 @@
     @if (!string.IsNullOrWhiteSpace(trader.PlaceTrade.ViewModel.Result)) {
         <div class="alert @trader.PlaceTrade.ViewModel.AlertCssClass mt-4">@trader.PlaceTrade.ViewModel.Result</div>
     }
-    
+
 
 
 </div>
@@ -116,9 +116,8 @@
         <button class="btn btn-sm btn-outline-secondary" @onclick="TradesFilterClick">Apply</button>
     </div>
 
-   
-</div>
 
+</div>
 
 <div class="card shadow-sm p-4 mt-3">
     @if (trader.FindTrades.ViewModel.Errors != null && trader.FindTrades.ViewModel.Errors.Any()) {

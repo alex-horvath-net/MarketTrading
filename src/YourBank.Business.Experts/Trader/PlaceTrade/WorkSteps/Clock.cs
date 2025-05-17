@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Business.Experts.Trader.PlaceTrade;
+namespace Business.Experts.Trader.PlaceTrade.WorkSteps;
 internal class ClockAdapter() : IClockAdapter {
     public DateTime GetTime() => DateTime.UtcNow;
 }
