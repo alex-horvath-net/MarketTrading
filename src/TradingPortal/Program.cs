@@ -1,8 +1,7 @@
-using TradingPortal.Components;
-using Business.Experts.Trader.EditTransaction;
 using Infrastructure.Technology;
 using Infrastructure.Technology.Identity;
-using Business.Experts.Trader.FindTransactions;
+using TradingPortal.Components;
+using Business.Experts.Trader;
 
 namespace TradingPortal;
 // A front-end application (Blazor Server) for traders.
@@ -12,12 +11,11 @@ public class Program {
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddCommonTechnology(builder.Configuration);
-        builder.Services.AddFindTransactions(builder.Configuration);
-        builder.Services.AddEditTransaction(builder.Configuration);
+        builder.Services.AddTrader(builder.Configuration);
 
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
         builder.Services.AddCascadingAuthenticationState();
-        builder.Services.AddIdentityServices(builder.Configuration);
+        //builder.Services.AddIdentityServices(builder.Configuration);
 
         var app = builder.Build();
 

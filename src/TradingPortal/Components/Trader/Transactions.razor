@@ -1,10 +1,11 @@
 ﻿@page "/trader/transactions"
 
 @using System.ComponentModel;
-@using Business.Experts.Trader.FindTransactions.Triggers.Blazor.InputPort;
+@using Business.Experts.Trader;
+@using Business.Experts.Trader.FindTrades;
 
 @inject NavigationManager NavigationManager
-@inject ITrigger findTransactions;
+@inject Trader Trader;
 
 <PageTitle>Trade Execution Page</PageTitle>
 
@@ -13,7 +14,7 @@
 </p>
 
 <p>
-    <DataList Model="viewModel.Transactions"></DataList>
+    <DataList Model="Trader.FindTrades.ViewModel.Trades"></DataList>
 </p>
 Elements:
 <br />
@@ -24,9 +25,8 @@ Order Book: Displays the real-time order book for the selected asset, allowing T
 <br />
 
 @code {
-    protected override async Task OnInitializedAsync() => viewModel = await findTransactions.Execute(Name, UserId, Token);
+    protected override async Task OnInitializedAsync() => await Trader.FindTrades.Execute(Token);
 
-    ViewModel? viewModel;
     string Name; 
     string UserId => HttpContext?.User?.Identity?.Name ?? "123";
     [CascadingParameter]

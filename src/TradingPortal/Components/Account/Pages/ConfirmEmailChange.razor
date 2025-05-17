@@ -31,7 +31,7 @@
 
     protected override async Task OnInitializedAsync() {
         if (UserId is null || Email is null || Code is null) {
-            RedirectManager.RedirectToWithStatus(
+            RedirectManager.RedirectTo(
                 "Account/Login", "Error: Invalid email change confirmation link.", HttpContext);
         }
 

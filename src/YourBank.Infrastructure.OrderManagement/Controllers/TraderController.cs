@@ -8,8 +8,9 @@ namespace OrderManagementService.Controllers;
 public class TraderController(Trader trader) : ControllerBase {
 
     [HttpGet("transations")]
-    public IEnumerable<Trade> Get() {
-        return trader.FindAllTransations();
+    public async Task<IEnumerable<Trade>> Get() {
+        //return await trader.FindTrades();
+        return default;
     }
 
     [HttpHead("ping")]
