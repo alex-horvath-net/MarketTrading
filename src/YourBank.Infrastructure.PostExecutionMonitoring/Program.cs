@@ -1,5 +1,5 @@
-using PostExecutionMonitoringService.Models;
-using PostExecutionMonitoringService.Services;
+using MonitoringService.Models;
+using MonitoringService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

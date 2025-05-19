@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using PostExecutionMonitoringService.Models;
+using MonitoringService.Models;
 
-namespace PostExecutionMonitoringService.Services {
+namespace MonitoringService.Services {
     public class ExecutionMonitoringService : IExecutionMonitoringService {
         // Using an in-memory ConcurrentBag for demonstration.
         // In production, consider using a database for persistence.

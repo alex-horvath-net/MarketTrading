@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PricingEngineService", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditTrailService", "src\YourBank.Infrastructure.AuditTrail\AuditTrailService.csproj", "{D3974561-AB72-4AA9-B183-23596A2761A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostExecutionMonitoringService", "src\YourBank.Infrastructure.PostExecutionMonitoring\PostExecutionMonitoringService.csproj", "{E685A815-2D97-4E9A-90D2-450BF200072E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringService", "src\YourBank.Infrastructure.PostExecutionMonitoring\MonitoringService.csproj", "{E685A815-2D97-4E9A-90D2-450BF200072E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingPortal", "src\TradingPortal\TradingPortal.csproj", "{2ADBC52A-4A46-4790-B481-04F452471B7C}"
 EndProject

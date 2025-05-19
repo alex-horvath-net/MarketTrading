@@ -1,4 +1,4 @@
-﻿namespace PostExecutionMonitoringService.Models {
+﻿namespace MonitoringService.Models {
     public class ExecutionLog {
         public Guid OrderId { get; set; }              // Unique identifier for the order.
         public string Symbol { get; set; } = string.Empty; // The asset symbol (e.g., AAPL).

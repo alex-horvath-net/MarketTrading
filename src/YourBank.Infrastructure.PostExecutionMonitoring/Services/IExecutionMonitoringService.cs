@@ -1,6 +1,6 @@
-﻿using PostExecutionMonitoringService.Models;
+﻿using MonitoringService.Models;
 
-namespace PostExecutionMonitoringService.Services {
+namespace MonitoringService.Services {
     public interface IExecutionMonitoringService {
         Task RecordExecutionLogAsync(ExecutionLog log);
         Task<IEnumerable<ExecutionLog>> GetExecutionLogsAsync();
