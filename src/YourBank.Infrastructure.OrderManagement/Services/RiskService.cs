@@ -1,6 +1,6 @@
-﻿using OrderManagementService.Models;
+﻿using TradingService.Models;
 
-namespace OrderManagementService.Services {
+namespace TradingService.Services {
     public class RiskService : IRiskService {
         private readonly IConfiguration _configuration;
 

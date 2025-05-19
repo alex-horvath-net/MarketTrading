@@ -1,4 +1,4 @@
-﻿namespace OrderManagementService.Models {
+﻿namespace TradingService.Models {
     public class Order {
         public string Symbol { get; set; } = string.Empty;
         public OrderType OrderType { get; set; }

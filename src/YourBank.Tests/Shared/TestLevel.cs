@@ -1,4 +1,4 @@
-﻿namespace Tests.Shared;
+﻿namespace YourBank.Tests.Shared;
 
 public enum TestLevel {
     Unit,

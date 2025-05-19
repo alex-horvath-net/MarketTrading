@@ -1,4 +1,4 @@
-﻿namespace OrderManagementService.Models {
+﻿namespace TradingService.Models {
     public class OrderResponse {
         public Guid OrderId { get; set; }
         public OrderStatus Status { get; set; }

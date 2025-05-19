@@ -1,4 +1,4 @@
-﻿namespace Tests.Shared;
+﻿namespace YourBank.Tests.Shared;
 
 public static class TestConfig {
     static TestConfig() {

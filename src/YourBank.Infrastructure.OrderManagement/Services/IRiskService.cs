@@ -1,6 +1,6 @@
-﻿using OrderManagementService.Models;
+﻿using TradingService.Models;
 
-namespace OrderManagementService.Services {
+namespace TradingService.Services {
     public interface IRiskService {
         // Checks whether the order meets predefined risk limits.
         bool CheckOrderRisk(Order order);

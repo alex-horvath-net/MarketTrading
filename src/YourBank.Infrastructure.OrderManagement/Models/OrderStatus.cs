@@ -1,4 +1,4 @@
-﻿namespace OrderManagementService.Models {
+﻿namespace TradingService.Models {
     public enum OrderStatus {
         Pending,
         Approved,

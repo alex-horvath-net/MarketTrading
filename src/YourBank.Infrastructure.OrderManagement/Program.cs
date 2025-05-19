@@ -1,6 +1,6 @@
 using Business.Domain;
-using OrderManagementService.Models;
-using OrderManagementService.Services;
+using TradingService.Models;
+using TradingService.Services;
 // Manages trade orders by handling order placement, cancellation, and tracking execution statuses.
 // It integrates with external exchange APIs (e.g., via FIX).
 

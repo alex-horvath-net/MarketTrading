@@ -1,6 +1,6 @@
-﻿using OrderManagementService.Models;
+﻿using TradingService.Models;
 
-namespace OrderManagementService.Services {
+namespace TradingService.Services {
     public interface IComplianceService {
         // Checks whether the order complies with regulatory and internal rules.
         bool CheckOrderCompliance(Order order);
