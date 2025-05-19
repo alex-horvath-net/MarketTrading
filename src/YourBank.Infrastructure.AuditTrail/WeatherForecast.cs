@@ -1,4 +1,4 @@
-namespace AuditTrailService {
+namespace AuditlService {
     public class WeatherForecast {
         public DateOnly Date { get; set; }
 

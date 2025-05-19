@@ -19,9 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.Experts", "src\You
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PricingEngineService", "src\YourBank.Infrastructure.PricingEngine\PricingEngineService.csproj", "{F676A253-578F-4A33-A331-D5C344476C31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditTrailService", "src\YourBank.Infrastructure.AuditTrail\AuditTrailService.csproj", "{D3974561-AB72-4AA9-B183-23596A2761A8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringService", "src\YourBank.Infrastructure.PostExecutionMonitoring\MonitoringService.csproj", "{E685A815-2D97-4E9A-90D2-450BF200072E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditlService", "src\YourBank.Infrastructure.AuditTrail\AuditlService.csproj", "{D3974561-AB72-4AA9-B183-23596A2761A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingPortal", "src\TradingPortal\TradingPortal.csproj", "{2ADBC52A-4A46-4790-B481-04F452471B7C}"
 EndProject
@@ -40,6 +38,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiskService", "src\RiskService\RiskService.csproj", "{F3431DEF-C8E2-B7BF-B8A5-57B7B33B06B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplianceService", "src\ComplianceService\ComplianceService.csproj", "{3BF60E22-E16A-11FB-4978-2D2F7DD1959C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringService", "src\MonitoringService\MonitoringService.csproj", "{D1A8FCFD-C88F-440D-9DDC-815C28FE14FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +63,6 @@ Global
 		{D3974561-AB72-4AA9-B183-23596A2761A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3974561-AB72-4AA9-B183-23596A2761A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3974561-AB72-4AA9-B183-23596A2761A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E685A815-2D97-4E9A-90D2-450BF200072E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E685A815-2D97-4E9A-90D2-450BF200072E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E685A815-2D97-4E9A-90D2-450BF200072E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E685A815-2D97-4E9A-90D2-450BF200072E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2ADBC52A-4A46-4790-B481-04F452471B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2ADBC52A-4A46-4790-B481-04F452471B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ADBC52A-4A46-4790-B481-04F452471B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -103,6 +99,10 @@ Global
 		{3BF60E22-E16A-11FB-4978-2D2F7DD1959C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BF60E22-E16A-11FB-4978-2D2F7DD1959C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BF60E22-E16A-11FB-4978-2D2F7DD1959C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1A8FCFD-C88F-440D-9DDC-815C28FE14FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1A8FCFD-C88F-440D-9DDC-815C28FE14FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1A8FCFD-C88F-440D-9DDC-815C28FE14FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1A8FCFD-C88F-440D-9DDC-815C28FE14FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
