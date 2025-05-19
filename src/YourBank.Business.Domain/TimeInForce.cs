@@ -1,4 +1,3 @@
-﻿
-namespace Business.Domain;
+﻿namespace Domain;
 
 public enum TimeInForce { Day, GTC, IOC }

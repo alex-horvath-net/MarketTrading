@@ -26,4 +26,10 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.10.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="IdentityManager\ExternaLogOut\" />
+    <Folder Include="IdentityManager\Logout\" />
+    <Folder Include="IdentityManager\Register\" />
+  </ItemGroup>
+
 </Project>

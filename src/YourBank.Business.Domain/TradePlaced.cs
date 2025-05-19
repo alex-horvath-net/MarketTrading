@@ -1,5 +1,4 @@
-﻿
-namespace Business.Domain;
+﻿namespace Domain;
 
 public class TradePlaced : IDomainEvent {
     public Guid TradeId { get; }

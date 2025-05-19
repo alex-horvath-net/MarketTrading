@@ -1,0 +1,6 @@
+@BacktesterService_HostAddress = http://localhost:5084
+
+GET {{BacktesterService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

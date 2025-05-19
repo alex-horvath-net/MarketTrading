@@ -1,4 +1,4 @@
-using Business.Domain;
+using Domain;
 using TradingService.Models;
 using TradingService.Services;
 // Manages trade orders by handling order placement, cancellation, and tracking execution statuses.

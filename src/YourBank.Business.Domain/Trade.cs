@@ -1,5 +1,6 @@
-﻿
-namespace Business.Domain;
+﻿using Business.Domain;
+
+namespace Domain;
 
 public class Trade {
     public Guid Id { get; } = Guid.NewGuid();

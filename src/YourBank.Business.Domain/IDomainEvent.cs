@@ -1,5 +1,4 @@
-﻿
-namespace Business.Domain;
+﻿namespace Domain;
 
 public interface IDomainEvent {
 }

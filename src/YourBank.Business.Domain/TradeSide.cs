@@ -1,4 +1,3 @@
-﻿
-namespace Business.Domain;
+﻿namespace Domain;
 
 public enum TradeSide { Buy, Sell }
