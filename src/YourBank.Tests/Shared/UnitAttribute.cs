@@ -1,3 +1,3 @@
-﻿namespace YourBank.Tests.Shared;
+﻿namespace Tests.Shared;
 
 public class UnitAttribute : FactAttribute { }

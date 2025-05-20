@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  tradingportal:
+    volumes:
+      - ./src/tradingportal.blazor:/app
+      - ./src/tradingportal.blazor/appsettings.Development.json:/app/appsettings.Development.json
+
+  apigateway:
+    volumes:
+      - ./src/apigateway:/app
+      - ./src/apigateway/appsettings.Development.json:/app/appsettings.Development.json
+
+  identityservice:
+    volumes:
+      - ./src/identityservice:/app
+      - ./src/identityservice/appsettings.Development.json:/app/appsettings.Development.json
+
+  tradingservice:
+    volumes:
+      - ./src/tradingservice:/app
+      - ./src/tradingservice/appsettings.Development.json:/app/appsettings.Development.json
+
+  riskservice:
+    volumes:
+      - ./src/riskservice:/app
+      - ./src/riskservice/appsettings.Development.json:/app/appsettings.Development.json

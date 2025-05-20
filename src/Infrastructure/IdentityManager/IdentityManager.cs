@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace IdentityService.IdentityManager;
+namespace Infrastructure.IdentityManager;
 
 public class IdentityManager {
     private readonly SignInManager<User> _signInManager;

@@ -1,4 +1,4 @@
-﻿using Business.Experts.IdentityManager;
+﻿using Infrastructure.IdentityManager;
 using Microsoft.AspNetCore.Components;
 
 namespace TradingPortal.Blazor.Components.Trader;

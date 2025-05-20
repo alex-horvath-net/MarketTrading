@@ -1,49 +1,19 @@
-﻿using Yarp.ReverseProxy.Configuration;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 builder.Logging.AddDebug().AddConsole();
-builder.Services.AddReverseProxy().LoadFromMemory(GetRoutes(), GetClusters());
-var app = builder.Build();
+builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options => {
+    options.Authority = "https://yourbank_identityservice:443";  // Identity provider
+    options.Audience = "gateway";
+    options.RequireHttpsMetadata = false;
+});
+builder.Services.AddCors(options => {
+    options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
 
-app.UseRouting();
+var app = builder.Build();
+app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapReverseProxy();
 app.Run();
-
-
-IReadOnlyList<RouteConfig> GetRoutes() => new List<RouteConfig>
-{
-    // Route for IdentityService
-    new() {
-        RouteId = "identity_route",
-        ClusterId = "identity_cluster",
-        Match = new RouteMatch { Path = "/identity/{**catch-all}" }
-    },
-    // Route for OrderManagement (or any additional backend service)
-    new() {
-        RouteId = "orders_route",
-        ClusterId = "orders_cluster",
-        Match = new RouteMatch { Path = "/orders/{**catch-all}" }
-    }
-};
-
-IReadOnlyList<ClusterConfig> GetClusters() => new List<ClusterConfig>
-{
-    // Cluster pointing to the IdentityService container
-    new ()
-    {
-        ClusterId = "identity_cluster",
-        Destinations = new Dictionary<string, DestinationConfig>
-        {
-            { "dest1", new DestinationConfig { Address = "http://yourbank_identityservice:80" } }
-        }
-    },
-    // Cluster pointing to the OrderManagement service (as an example)
-    new ()
-    {
-        ClusterId = "orders_cluster",
-        Destinations = new Dictionary<string, DestinationConfig>
-        {
-            { "dest1", new DestinationConfig { Address = "http://yourbank_ordermanagement:80" } }
-        }
-    }
-};
