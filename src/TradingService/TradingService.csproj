@@ -22,8 +22,5 @@
     <!-- Optionally, you can include additional packages for logging, authentication, etc. -->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\YourBank.Business.Domain\Domain.csproj" />
-  </ItemGroup>
 
 </Project>
