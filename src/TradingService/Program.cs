@@ -1,26 +1,19 @@
 using Domain;
+using TradingService;
 using TradingService.Models;
 using TradingService.Services;
-// Manages trade orders by handling order placement, cancellation, and tracking execution statuses.
-// It integrates with external exchange APIs (e.g., via FIX).
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Domain service registration
 builder.Services.AddScoped<Trade>();
-// Register our services as singletons.
 builder.Services.AddSingleton<IRiskService, RiskService>();
 builder.Services.AddSingleton<IComplianceService, ComplianceService>();
 builder.Services.AddSingleton<OrderService>();
 
 var app = builder.Build();
 
-// Minimal API endpoint for order placement.
-// Example POST request to /orders with a JSON body:
-// {
-//   "symbol": "AAPL",
-//   "orderType": "Market",
-//   "quantity": 100
-// }
+// Minimal API: Place new order
 app.MapPost("/orders", (Order order, OrderService orderService) => {
     var response = orderService.PlaceOrder(order);
     return Results.Ok(response);

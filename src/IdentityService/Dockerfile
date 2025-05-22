@@ -2,14 +2,11 @@
 # Stage 1: Base Runtime Image (For Execution)
 # --------------------------------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-ARG APP_UID  # Set the APP_UID argument to the value passed in the docker-compose file
-
-# Correct user creation for Debian-based images (default for .NET official images)
+ARG APP_UID
 RUN useradd -u ${APP_UID} -m yourBankDockerUser
-# Switch to the non-root user for better security
 USER yourBankDockerUser
 WORKDIR /app
-EXPOSE 80
+EXPOSE 443
 
 # --------------------------------------------------
 # Stage 2: Restore Dependencies
@@ -17,8 +14,6 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-
-# Copy only the .csproj file to optimize layer caching
 COPY ["./src/IdentityService/IdentityService.csproj", "IdentityService/"]
 RUN dotnet restore "./IdentityService/IdentityService.csproj"
 
@@ -28,13 +23,9 @@ RUN dotnet restore "./IdentityService/IdentityService.csproj"
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-
-# Copy restored project dependencies from restore stage
 COPY --from=restore /src/IdentityService/ /src/IdentityService/
-# Copy the remaining source files into the container
 COPY . .
 WORKDIR "/src/IdentityService"
-# Build the project and store output in /app/build
 RUN dotnet build "./IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # --------------------------------------------------
@@ -46,9 +37,12 @@ WORKDIR "/src/IdentityService"
 RUN dotnet publish "./IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------
-# Stage 5: Final Runtime Image (For Execution)
+# Stage 5: Final Runtime Image
 # --------------------------------------------------
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "IdentityService.dll"]
+
+ENV ASPNETCORE_URLS="https://+:443"
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+ENV ASPNETCORE_Kestrel__Certificates

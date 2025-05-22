@@ -1,4 +1,4 @@
-﻿namespace ApiGateway.Client;
+﻿namespace ApiGateway.Client.Trader;
 
 public class PlaceTradeRequest {
     public string Instrument { get; set; } = string.Empty;

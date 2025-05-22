@@ -1,4 +1,4 @@
-﻿namespace ApiGateway.Client;
+﻿namespace ApiGateway.Client.Trader;
 
 public interface ITraderApiClient {
     Task<Guid> PlaceTradeAsync(PlaceTradeRequest request, CancellationToken cancellationToken = default);

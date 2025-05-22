@@ -13,7 +13,7 @@ services:
     ports:
       - "5000:443"   # UI over HTTPS
     volumes:
-      - ~/.aspnet/https:/https:ro
+      - ~/.aspnet/https:/https:ro # mount the HTTPS certificate
 
   apigateway:
     build:
@@ -67,41 +67,86 @@ services:
     ports:
       - "5004:80"
 
+  auditservice:
+    build:
+      context: ./src/auditservice
+      dockerfile: Dockerfile
+      args:
+        APP_UID: ${APP_UID}  
+    container_name: yourbank_auditservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5005:80"
 
-  # pricingengine:
-  #   build:
-  #     context: ./src/PricingEngineService
-  #     dockerfile: Dockerfile
-  #     args:
-  #       APP_UID: ${APP_UID}
-  #   container_name: yourbank_pricingengine
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Production
-  #   ports:
-  #     - "5003:80"
+  backtesterservice:
+    build:
+      context: ./src/backtesterservice
+      dockerfile: Dockerfile
+      args:
+        APP_UID: ${APP_UID}  
+    container_name: yourbank_backtesterservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5006:80"
 
- 
+  complianceservice:
+    build:
+      context: ./src/complianceservice
+      dockerfile: Dockerfile
+      args:
+        APP_UID: ${APP_UID}  
+    container_name: yourbank_complianceservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5007:80"
 
-  # orderexecution:
-  #   build:
-  #     context: ./src/Infrastructure.OrderExecution
-  #     dockerfile: Dockerfile
-  #     args:
-  #       APP_UID: ${APP_UID}
-  #   container_name: yourbank_orderexecution
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Production
-  #   ports:
-  #     - "5005:80"
+  monitoringservice:
+    build:
+      context: ./src/monitoringservice
+      dockerfile: Dockerfile
+      args:
+        APP_UID: ${APP_UID}  
+    container_name: yourbank_monitoringservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5008:80"
 
-  # postexecutionmonitoring:
-  #   build:
-  #     context: ./src/PostExecutionMonitoringService
-  #     dockerfile: Dockerfile
-  #     args:
-  #       APP_UID: ${APP_UID}
-  #   container_name: yourbank_postexecutionmonitoring
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Production
-  #   ports:
-  #     - "5006:80"
+  operatorservice:
+    build:
+      context: ./src/operatorservice
+      dockerfile: Dockerfile
+      args:
+        APP_UID: ${APP_UID}  
+    container_name: yourbank_operatorservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5009:80"
+
+  portfolioservice:
+    build:
+      context: ./src/portfolioservice
+      dockerfile: Dockerfile
+      args:
+        APP_UID: ${APP_UID}  
+    container_name: yourbank_portfolioservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5010:80"
+  
+  pricingservice:
+    build:
+      context: ./src/pricingservice
+      dockerfile: Dockerfile
+      args:
+        APP_UID: ${APP_UID}  
+    container_name: yourbank_pricingservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5011:80"

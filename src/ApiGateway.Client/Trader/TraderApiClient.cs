@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
 
-namespace ApiGateway.Client;
+namespace ApiGateway.Client.Trader;
 
 public class TraderApiClient : ITraderApiClient {
     private readonly HttpClient _http;

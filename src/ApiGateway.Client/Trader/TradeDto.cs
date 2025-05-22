@@ -1,4 +1,4 @@
-﻿namespace ApiGateway.Client;
+﻿namespace ApiGateway.Client.Trader;
 
 public class TradeDto {
     public Guid Id { get; set; }

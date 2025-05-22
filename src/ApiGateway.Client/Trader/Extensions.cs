@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
 
-namespace ApiGateway.Client;
+namespace ApiGateway.Client.Trader;
 
 public static class Extensions {
     public static IServiceCollection AddTraderApiClient(this IServiceCollection services) {
