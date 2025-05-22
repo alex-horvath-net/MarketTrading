@@ -3,11 +3,11 @@ using Microsoft.Extensions.Logging;
 
 namespace ApiGateway.Client.Trader;
 
-public class TraderApiClient : ITraderApiClient {
+public class TraderServiceClient : ITraderServiceClient {
     private readonly HttpClient _http;
-    private readonly ILogger<TraderApiClient> _logger;
+    private readonly ILogger<TraderServiceClient> _logger;
 
-    public TraderApiClient(HttpClient http, ILogger<TraderApiClient> logger) {
+    public TraderServiceClient(HttpClient http, ILogger<TraderServiceClient> logger) {
         _http = http;
         _logger = logger;
     }

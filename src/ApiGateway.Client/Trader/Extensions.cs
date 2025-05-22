@@ -1,14 +1,21 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Infrastructure.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace ApiGateway.Client.Trader;
 
 public static class Extensions {
-    public static IServiceCollection AddTraderApiClient(this IServiceCollection services) {
-        services.AddHttpClient<ITraderApiClient, TraderApiClient>(client =>
-        {
-            client.BaseAddress = new Uri("https://localhost:5001"); // API Gateway base URL
+    public static IServiceCollection AddApiGatewayClient(this IServiceCollection services, IConfiguration config) {
+
+        var options = config.GetSection("TraderService").Get<TraderServiceClienOptions>() ?? new TraderServiceClienOptions();
+
+        var clientBuilder = services.AddHttpClient<ITraderServiceClient, TraderServiceClient>(client => {
+            client.BaseAddress = new Uri(options.BaseAddress);
         });
+
+        clientBuilder.AddHttpMessageHandler<AccessTokenHandlerForBlazorServer>();
+
         return services;
     }
 }

@@ -2,24 +2,26 @@
 using Infrastructure.Identity;
 using Infrastructure.Technology.Identity;
 using TradingPortal.Blazor.Components;
+using ApiGateway.Client.Trader;
+using TradingPortal.Blazor.Components.Account.Pages;
+using TradingPortal.Blazor.Components.Account.Pages.Manage;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var config = builder.Configuration;
 // Razor + SignalR
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 // Token Forwarding + OIDC + cookie authentication 
-builder.Services.AddIdentityInfrastructure(builder.Configuration);
+builder.Services.AddIdentityInfrastructure(config);
 
 // Typed HttpClient for IdentityService microservice
-builder.Services.AddIdentityClient(builder.Configuration);
+builder.Services.AddIdentityClient(config);
 
+// Typed HttpClient for API Gateway 
+builder.Services.AddApiGatewayClient(config);
 
-// Typed HttpClient for API Gateway (e.g. Trader microservice)
-builder.Services.AddApiGatewayClient(builder.Configuration);
-
-// Register domain experts
-builder.Services.AddTrader(builder.Configuration);
+//// Register domain experts
+//builder.Services.AddTrader(confign);
 
 var app = builder.Build();
 
@@ -39,7 +41,10 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
 // Optional: exposes login/logout/profile/etc. from Identity UI
-app.MapAdditionalIdentityEndpoints();
+// Identity UI Endpoints
+app.MapAdditionalIdentityEndpoints(
+    ExternalLogin.LoginCallbackAction,
+    ExternalLogins.LinkLoginCallbackAction);
 
 app.Run();
 
