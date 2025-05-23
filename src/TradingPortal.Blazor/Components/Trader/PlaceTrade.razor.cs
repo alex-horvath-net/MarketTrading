@@ -1,4 +1,5 @@
-﻿using Infrastructure.IdentityManager;
+﻿using ApiGateway.Client.Trader;
+using Infrastructure.IdentityManager;
 using Microsoft.AspNetCore.Components;
 
 namespace TradingPortal.Blazor.Components.Trader;
@@ -12,7 +13,7 @@ public partial class PlaceTrade : ComponentBase {
     private IdentityManager identityManager { get; set; } = default!;
 
     [Inject]
-    private Business.Experts.Trader.Trader trader { get; set; } = default!;
+    private ITraderServiceClient trader { get; set; } = default!;
 
     private CancellationTokenSource tcs = new();
     private CancellationToken token => tcs.Token;
