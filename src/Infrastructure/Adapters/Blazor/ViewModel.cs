@@ -2,7 +2,7 @@
 
 public record ViewModel {
     public MetaVM Meta { get; set; }
-    public IEnumerable<ErrorVM> Errors { get; set; } = [];
+    public List<ErrorVM> Errors { get; set; } = [];
 
 
 }

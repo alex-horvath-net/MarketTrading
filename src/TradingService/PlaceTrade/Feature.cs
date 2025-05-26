@@ -1,6 +1,4 @@
 ﻿using Domain;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using TradingService.PlaceTrade.WorkSteps;
 

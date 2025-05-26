@@ -1,7 +1,12 @@
-﻿namespace ApiGateway.Client.Trader;
+﻿using ApiGateway.Client.Trader.FindTrades;
+using ApiGateway.Client.Trader.PlaceTrade;
 
+namespace ApiGateway.Client.Trader;
+
+/// <summary>
+/// Root interface for all trading-related client operations.
+/// </summary>
 public interface ITraderServiceClient {
-    Task<Guid> PlaceTradeAsync(PlaceTradeRequest request, CancellationToken cancellationToken = default);
-    Task<TradeDto?> GetTradeByIdAsync(Guid tradeId, CancellationToken cancellationToken = default);
-    Task<IEnumerable<TradeDto>> GetRecentTradesAsync(CancellationToken cancellationToken = default);
+    IPlaceTradeClient PlaceTrade { get; }
+    IFindTradesClient FindTrades { get; }
 }

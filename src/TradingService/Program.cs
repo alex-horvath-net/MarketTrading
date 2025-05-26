@@ -14,6 +14,7 @@ builder.Services.AddSingleton<OrderService>();
 var app = builder.Build();
 
 // Minimal API: Place new order
+app.MapGet("/ping", () => "pong");
 app.MapPost("/orders", (Order order, OrderService orderService) => {
     var response = orderService.PlaceOrder(order);
     return Results.Ok(response);

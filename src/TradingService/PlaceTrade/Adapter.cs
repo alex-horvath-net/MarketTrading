@@ -20,62 +20,9 @@ internal class Adapter(IFeature feature, ILogger<Adapter> logger) : IFeatureAdap
     public PlaceTradeViewModel ViewModel { get; set; }
     // Blazor UI should be abel to call this adapter with no effort or leaking any UI technology 
     public async Task Execute(CancellationToken token) {
-
-        var request = ToRequest();
+        var request = InputModel.ToRequest();
         var response = await feature.Execute(request, token);
-        ViewModel =
-            response.Exception == null ?
-            FromResponse(response) :
-            FromException(response.Exception);
-    }
-
-    private PlaceTradeRequest ToRequest() => new(
-        Id: InputModel.Id ?? Guid.NewGuid(),
-        Issuer: InputModel.Issuer,
-        TraderId: InputModel.TraderId,
-        Instrument: InputModel.Instrument,
-        Side: InputModel.Side,
-        Quantity: InputModel.Quantity,
-        Price: InputModel.Price,
-        OrderType: InputModel.OrderType,
-        TimeInForce: InputModel.TimeInForce,
-        StrategyCode: InputModel.StrategyCode,
-        PortfolioCode: InputModel.PortfolioCode,
-        UserComment: InputModel.UserComment,
-        ExecutionRequestedForUtc: InputModel.ExecutionRequestedFor
-    );
-
-    private PlaceTradeViewModel FromResponse(PlaceTradeResponse response) {
-        var viewModel = new PlaceTradeViewModel();
-        viewModel.Meta = ToMetaVM(response.Request);
-        viewModel.Errors = response.Errors.Select(ToErrorVM).ToList();
-        viewModel.Trade = ToTradeVM(response.Trade);
-        viewModel.Result = $"✅ Trade submitted: {response.Trade.Id}";
-        viewModel.AlertCssClass = "alert-success";
-
-        return viewModel;
-
-        MetaVM ToMetaVM(PlaceTradeRequest x) =>
-            new() { Id = x.Id };
-
-        TradeVM ToTradeVM(Trade x) =>
-            new() { Id = x.TraderId, Name = x.Instrument };
-
-        ErrorVM ToErrorVM(Error error) =>
-            new() { Name = error.Name, Message = error.Message };
-    }
-
-    private PlaceTradeViewModel FromException(Exception ex) {
-        var viewModel = new PlaceTradeViewModel();
-        viewModel.Errors = [ToErrorVM(ex)];
-        viewModel.Result = $"❌ {ex.Message}";
-        viewModel.AlertCssClass = "alert-danger";
-
-        return viewModel;
-
-        ErrorVM ToErrorVM(Exception exception) =>
-            new() { Name = "", Message = exception.Message };
-
+        ViewModel = response.Exception == null ? response.ToViewModel() : response.Exception.ToViewModel();
     }
 }
 
@@ -120,5 +67,54 @@ public static class Extensions {
         return services
             .AddScoped<IFeatureAdapter, Adapter>()
             .AddFeature(config);
+    }
+
+    internal static PlaceTradeRequest ToRequest(this PlaceTradeInputModel InputModel) => new(
+        Id: InputModel.Id ?? Guid.NewGuid(),
+        Issuer: InputModel.Issuer,
+        TraderId: InputModel.TraderId, 
+        Instrument: InputModel.Instrument,
+        Side: InputModel.Side,
+        Quantity: InputModel.Quantity,
+        Price: InputModel.Price,
+        OrderType: InputModel.OrderType,
+        TimeInForce: InputModel.TimeInForce,
+        StrategyCode: InputModel.StrategyCode,
+        PortfolioCode: InputModel.PortfolioCode,
+        UserComment: InputModel.UserComment,
+        ExecutionRequestedForUtc: InputModel.ExecutionRequestedFor
+    );
+
+    internal static PlaceTradeViewModel ToViewModel(this PlaceTradeResponse response) {
+        var viewModel = new PlaceTradeViewModel();
+        viewModel.Meta = ToMetaVM(response.Request);
+        viewModel.Errors = response.Errors.Select(ToErrorVM).ToList();
+        viewModel.Trade = ToTradeVM(response.Trade);
+        viewModel.Result = $"✅ Trade submitted: {response.Trade.Id}";
+        viewModel.AlertCssClass = "alert-success";
+
+        return viewModel;
+
+        MetaVM ToMetaVM(PlaceTradeRequest x) =>
+            new() { Id = x.Id };
+
+        TradeVM ToTradeVM(Trade x) =>
+            new() { Id = x.TraderId, Name = x.Instrument };
+
+        ErrorVM ToErrorVM(Error error) =>
+            new() { Name = error.Name, Message = error.Message };
+    }
+
+    internal static PlaceTradeViewModel ToViewModel(this Exception ex) {
+        var viewModel = new PlaceTradeViewModel();
+        viewModel.Errors = [ToErrorVM(ex)];
+        viewModel.Result = $"❌ {ex.Message}";
+        viewModel.AlertCssClass = "alert-danger";
+
+        return viewModel;
+
+        ErrorVM ToErrorVM(Exception exception) =>
+            new() { Name = "", Message = exception.Message };
+
     }
 }

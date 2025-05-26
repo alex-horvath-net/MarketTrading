@@ -6,6 +6,9 @@ namespace TradingPortal.Blazor.Components.Trader;
 public partial class PlaceTrade : ComponentBase {
     private string userName = string.Empty;
 
+    private CancellationTokenSource tcs = new();
+    private CancellationToken token => tcs.Token;
+
     [CascadingParameter]
     public HttpContext? HttpContext { get; set; }
 
@@ -14,9 +17,6 @@ public partial class PlaceTrade : ComponentBase {
 
     [Inject]
     private ITraderServiceClient trader { get; set; } = default!;
-
-    private CancellationTokenSource tcs = new();
-    private CancellationToken token => tcs.Token;
 
     protected override async Task OnInitializedAsync() {
         userName = identityManager.GetUserName(HttpContext);
