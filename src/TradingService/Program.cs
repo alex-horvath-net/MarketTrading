@@ -1,6 +1,7 @@
 using Domain;
 using TradingService;
 using TradingService.Models;
+using TradingService.PlaceTrade;
 using TradingService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,9 +16,6 @@ var app = builder.Build();
 
 // Minimal API: Place new order
 app.MapGet("/ping", () => "pong");
-app.MapPost("/orders", (Order order, OrderService orderService) => {
-    var response = orderService.PlaceOrder(order);
-    return Results.Ok(response);
-});
+app.MapPlaceTrade();
 
 app.Run();

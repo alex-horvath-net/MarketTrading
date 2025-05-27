@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain;
 using Infrastructure.Adapters.Blazor;
 
 namespace ApiGateway.Client.Trader.PlaceTrade;

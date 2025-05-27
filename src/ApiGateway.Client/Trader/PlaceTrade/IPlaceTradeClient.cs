@@ -2,6 +2,7 @@
 
 /// <summary>
 /// Handles all client-side logic for placing a trade, including form binding and execution.
+/// Convinient for UI
 /// </summary>
 public interface IPlaceTradeClient {
     PlaceTradeInputModel InputModel { get; set; }
