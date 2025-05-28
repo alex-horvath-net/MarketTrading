@@ -4,9 +4,9 @@ public static class Endpoint {
     public static IEndpointRouteBuilder MapPlaceTrade(this IEndpointRouteBuilder routes) {
         routes.MapPost("/api/trades", async (
             PlaceTradeRequest request,
-            Feature handler,
-            CancellationToken ct) => {
-                var response = await handler.Execute(request, ct);
+            Feature feature,
+            CancellationToken token) => {
+                var response = await feature.Execute(request,token);
                 return Results.Ok(response);
             })
         .WithName("PlaceTrade")

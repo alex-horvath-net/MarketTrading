@@ -7,5 +7,5 @@
 public interface IPlaceTradeClient {
     PlaceTradeInputModel InputModel { get; set; }
     PlaceTradeViewModel ViewModel { get; set; }
-    Task Execute(CancellationToken token);
+    Task Execute(CancellationToken cancellationToken);
 }

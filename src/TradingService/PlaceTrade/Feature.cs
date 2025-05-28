@@ -38,7 +38,7 @@ internal class Feature(
     }
 }
 
-internal record PlaceTradeRequest(
+public record PlaceTradeRequest(
     Guid Id,
     string Issuer,
     string TraderId,
@@ -54,7 +54,7 @@ internal record PlaceTradeRequest(
     DateTime? ExecutionRequestedForUtc) {
 }
 
-internal class PlaceTradeResponse {
+public class PlaceTradeResponse {
     public Guid Id { get; set; } = Guid.NewGuid();
     public bool Enabled { get; set; } = false;
     public DateTime? CompletedAt { get; set; }
