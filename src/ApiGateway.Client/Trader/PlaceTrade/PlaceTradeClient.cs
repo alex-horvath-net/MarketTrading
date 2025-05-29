@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using Domain;
 using Infrastructure.Adapters.Blazor;
 using TradingService.PlaceTrade;

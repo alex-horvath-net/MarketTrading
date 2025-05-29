@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Components;
 
 namespace TradingPortal.Blazor.Components.Trader;
 public partial class PlaceTrade : ComponentBase {
-    private string userName = string.Empty;
+    private string TraderId = string.Empty;
 
     private CancellationTokenSource tcs = new();
     private CancellationToken token => tcs.Token;
 
     [CascadingParameter]
-    public HttpContext? HttpContext { get; set; }
+    public HttpContext? httpContext { get; set; }
 
     [Inject]
     private IdentityManager identityManager { get; set; } = default!;
@@ -19,10 +19,10 @@ public partial class PlaceTrade : ComponentBase {
     private ITraderServiceClient trader { get; set; } = default!;
 
     protected override async Task OnInitializedAsync() {
-        userName = identityManager.GetUserName(HttpContext);
+        TraderId = identityManager.GetUserName(httpContext);
 
-        trader.PlaceTrade.InputModel = new(userName);
-        trader.FindTrades.InputModel = new(userName);
+        trader.PlaceTrade.InputModel = new(TraderId);
+        trader.FindTrades.InputModel = new(TraderId);
 
         await trader.FindTrades.Execute(token);
     }

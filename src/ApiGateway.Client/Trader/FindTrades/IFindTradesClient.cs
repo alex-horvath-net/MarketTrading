@@ -6,5 +6,5 @@ public interface IFindTradesClient {
     FindTradesInputModel InputModel { get; set; }
     FindTradesViewModel ViewModel { get; }
 
-    Task Execute(CancellationToken cancellationToken = default);
+    Task Execute(CancellationToken token = default);
 } 

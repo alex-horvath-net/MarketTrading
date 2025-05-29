@@ -38,7 +38,7 @@ public class IdentityManager {
         }
     }
 
-    public string GetUserName(HttpContext httpContext) =>
+    public string GetUserName(HttpContext? httpContext) =>
         httpContext?.User?.Identity?.IsAuthenticated == true ? 
         httpContext?.User.Identity?.Name ?? "unknown" :
         "guest";
