@@ -77,7 +77,7 @@ internal interface IRepositoryAdapter { Task<Trade> Create(PlaceTradeRequest req
 
 internal static class FeatureExtensions {
 
-    public static IServiceCollection AddFeature(this IServiceCollection services, ConfigurationManager config) {
+    public static IServiceCollection AddPlaceTrade(this IServiceCollection services, ConfigurationManager config) {
 
         services.Configure<Settings>(config.GetSection("Features:PlaceTrade"));
 

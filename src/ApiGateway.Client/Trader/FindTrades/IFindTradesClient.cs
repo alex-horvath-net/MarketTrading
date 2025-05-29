@@ -7,4 +7,4 @@ public interface IFindTradesClient {
     FindTradesViewModel ViewModel { get; }
 
     Task Execute(CancellationToken cancellationToken = default);
-} `
+} 

@@ -1,23 +1,23 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using TradingService.EditTrade;
-using TradingService.FindTrades;
-using TradingService.PlaceTrade;
+﻿//using Microsoft.Extensions.Configuration;
+//using Microsoft.Extensions.DependencyInjection;
+//using TradingService.EditTrade;
+//using TradingService.FindTrades;
+//using TradingService.PlaceTrade;
 
-namespace TradingService;
-public record Trader(
-    PlaceTrade.IFeatureAdapter PlaceTrade,
-    FindTrades.IFeatureAdapter FindTrades,
-    IEditTransaction EditTrade);
+//namespace TradingService;
+//public record Trader(
+//    PlaceTrade.IFeatureAdapter PlaceTrade,
+//    FindTrades.IFeatureAdapter FindTrades,
+//    IEditTransaction EditTrade);
 
 
-public static class ExpertExtensions {
-    public static IServiceCollection AddTrader(this IServiceCollection services, ConfigurationManager config) => services
-        .AddScoped<Trader>()
-        .AddPlaceTrade(config)
-        .AddFindTrade(config)
-        .AddEditTrade(config);
-}
+//public static class ExpertExtensions {
+//    public static IServiceCollection AddTrader(this IServiceCollection services, ConfigurationManager config) => services
+//        .AddScoped<Trader>()
+//        .AddPlaceTrade(config)
+//        .AddFindTrade(config)
+//        .AddEditTrade(config);
+//}
 
 
 // TODO: Implement the following features:

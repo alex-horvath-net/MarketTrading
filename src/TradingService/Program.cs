@@ -1,16 +1,12 @@
-using Domain;
-using TradingService;
-using TradingService.Models;
+using TradingService.FindTrades;
 using TradingService.PlaceTrade;
-using TradingService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
+var env = builder.Environment;
 
-// Domain service registration
-builder.Services.AddScoped<Trade>();
-builder.Services.AddSingleton<IRiskService, RiskService>();
-builder.Services.AddSingleton<IComplianceService, ComplianceService>();
-builder.Services.AddSingleton<OrderService>();
+builder.Services.AddFindTrade(config);
+builder.Services.AddPlaceTrade(config);
 
 var app = builder.Build();
 
