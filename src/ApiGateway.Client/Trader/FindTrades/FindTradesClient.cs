@@ -1,7 +1,4 @@
-﻿using Infrastructure.Adapters.Blazor;
-using TradingService.FindTrades;
-
-namespace ApiGateway.Client.Trader.FindTrades;
+﻿namespace ApiGateway.Client.Trader.FindTrades;
 public class FindTradesClient(HttpClient http) : IFindTradesClient {
 
     public FindTradesInputModel InputModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

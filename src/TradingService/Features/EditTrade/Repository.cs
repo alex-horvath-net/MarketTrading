@@ -1,6 +1,5 @@
-﻿using Infrastructure.Technology.EF;
+﻿using IdentityService.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using TradingService.Domain;
 
 namespace TradingService.Features.EditTrade;

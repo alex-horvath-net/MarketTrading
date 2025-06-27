@@ -1,5 +1,6 @@
 ﻿using ApiGateway.Client.Trader;
-using IdentityService.Client.IdentityManager;
+using IdentityService.Client;
+using IdentityService.IdentityManager;
 using Microsoft.AspNetCore.Components;
 
 namespace TradingPortal.Blazor.Components.Trader;
@@ -13,7 +14,6 @@ public partial class PlaceTrade : ComponentBase {
     public HttpContext? httpContext { get; set; }
 
     [Inject]
-    private IdentityClient identityManager { get; set; } = default!;
     private IdentityManager identityManager { get; set; } = default!;
 
     [Inject]

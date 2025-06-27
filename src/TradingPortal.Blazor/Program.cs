@@ -1,5 +1,7 @@
 ﻿using ApiGateway.Client.Trader;
 using IdentityService.Client;
+using IdentityService.Identity;
+
 //using Infrastructure.IdentityManager;
 //using Infrastructure.Technology.Identity;
 using TradingPortal.Blazor.Components;

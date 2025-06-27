@@ -1,12 +1,8 @@
 ﻿using System.Diagnostics;
-using Infrastructure.Technology.EF;
+using IdentityService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using TradingService.Domain;
-using TradingService.Features.PlaceTrade;
 
 namespace TradingService.Features.PlaceTrade.WorkSteps;
 
