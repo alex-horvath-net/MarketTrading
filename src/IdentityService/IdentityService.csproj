@@ -30,4 +30,10 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="IdentityManager\ExternaLogOut\" />
+    <Folder Include="IdentityManager\Logout\" />
+    <Folder Include="IdentityManager\Register\" />
+  </ItemGroup>
+
 </Project>

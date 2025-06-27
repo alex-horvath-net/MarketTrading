@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
-using Domain;
 using Infrastructure.Adapters.Blazor;
-using TradingService.PlaceTrade;
+using TradingService.Domain;
+using TradingService.Features.PlaceTrade;
 
 namespace ApiGateway.Client.Trader.PlaceTrade;
 

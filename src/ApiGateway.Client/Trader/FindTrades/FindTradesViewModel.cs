@@ -1,5 +1,5 @@
-﻿using Domain;
-using Infrastructure.Adapters.Blazor;
+﻿using Infrastructure.Adapters.Blazor;
+using TradingService.Domain;
 
 namespace ApiGateway.Client.Trader.FindTrades;
 public record FindTradesViewModel : ViewModel {

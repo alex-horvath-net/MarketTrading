@@ -1,5 +1,5 @@
-using TradingService.FindTrades;
-using TradingService.PlaceTrade;
+using TradingService.Features.FindTrades;
+using TradingService.Features.PlaceTrade;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
