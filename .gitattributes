@@ -1,3 +1,1 @@
-ClientApp/* linguist-vendored
-wwwroot/* linguist-vendored
-Views/* linguist-vendored
+src/TradingPortal.Blazor/* linguist-vendored
