@@ -14,8 +14,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["./src/IdentityService/IdentityService.csproj", "IdentityService/"]
-RUN dotnet restore "./IdentityService/IdentityService.csproj"
+COPY ["./IdentityService.csproj", "IdentityService/"]
+RUN dotnet restore "IdentityService/IdentityService.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the Service Project
@@ -26,7 +26,7 @@ WORKDIR /src
 COPY --from=restore /src/IdentityService/ /src/IdentityService/
 COPY . .
 WORKDIR "/src/IdentityService"
-RUN dotnet build "./IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # --------------------------------------------------
 # Stage 4: Publish the Service Project
@@ -34,7 +34,7 @@ RUN dotnet build "./IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/buil
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 WORKDIR "/src/IdentityService"
-RUN dotnet publish "./IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "IdentityService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------
 # Stage 5: Final Runtime Image
@@ -46,3 +46,5 @@ COPY --from=publish /app/publish .
 ENV ASPNETCORE_URLS="https://+:443"
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password=Alex!1978
+
+ENTRYPOINT ["dotnet", "IdentityService.dll"]

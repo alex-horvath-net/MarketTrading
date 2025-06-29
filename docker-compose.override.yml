@@ -1,4 +1,4 @@
-version: '3.9'
+﻿version: '3.9'
 
 services:
   tradingportalblazorwebapp:
@@ -12,24 +12,23 @@ services:
       - ASPNETCORE_HTTPS_PORT=5003
       - ASPNETCORE_URLS=https://+:443  
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Alex!1978
- 
 
-  tradingportal:
-    command: dotnet watch run --no-launch-profile
-    volumes:
-      - ./src/tradingportal.blazor:/app
-      - ./src/tradingportal.blazor/appsettings.Development.json:/app/appsettings.Development.json
-      - ~/.aspnet/https:/https:ro
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_HTTPS_PORT=5000
-      - ASPNETCORE_URLS=https://+:443
+  # tradingportal:
+  #   command: dotnet watch run --no-launch-profile
+  #   volumes:
+  #     - ./src/tradingportal.blazor:/app
+  #     - ./src/tradingportal.blazor/appsettings.Development.json:/app/appsettings.Development.json
+  #     - ~/.aspnet/https:/https:ro
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_HTTPS_PORT=5000
+  #     - ASPNETCORE_URLS=https://+:443
 
   apigateway:
     command: dotnet watch run
     volumes:
-      - ./src/apigateway:/app
-      - ./src/apigateway/appsettings.Development.json:/app/appsettings.Development.json
+      - ./src/ApiGateway:/app     # ✅ FIXED casing, comment kept
+      - ./src/ApiGateway/appsettings.Development.json:/app/appsettings.Development.json
       - ~/.aspnet/https:/https:ro
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=true
@@ -56,74 +55,75 @@ services:
       - DOTNET_USE_POLLING_FILE_WATCHER=true
       - ASPNETCORE_URLS=http://+:80
 
-  riskservice:
-    command: dotnet watch run
-    volumes:
-      - ./src/riskservice:/app
-      - ./src/riskservice/appsettings.Development.json:/app/appsettings.Development.json
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_URLS=http://+:80
+
+  # riskservice:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/riskservice:/app
+  #     - ./src/riskservice/appsettings.Development.json:/app/appsettings.Development.json
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_URLS=http://+:80
   
-  auditservice:
-    command: dotnet watch run
-    volumes:
-      - ./src/auditservice:/app
-      - ./src/auditservice/appsettings.Development.json:/app/appsettings.Development.json
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_URLS=http://+:80
+  # auditservice:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/auditservice:/app
+  #     - ./src/auditservice/appsettings.Development.json:/app/appsettings.Development.json
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_URLS=http://+:80
   
-  backtesterservice:
-    command: dotnet watch run
-    volumes:
-      - ./src/backtesterservice:/app
-      - ./src/backtesterservice/appsettings.Development.json:/app/appsettings.Development.json
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_URLS=http://+:80
+  # backtesterservice:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/backtesterservice:/app
+  #     - ./src/backtesterservice/appsettings.Development.json:/app/appsettings.Development.json
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_URLS=http://+:80
       
-  complianceservice:
-    command: dotnet watch run
-    volumes:
-      - ./src/complianceservice:/app
-      - ./src/complianceservice/appsettings.Development.json:/app/appsettings.Development.json
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_URLS=http://+:80
+  # complianceservice:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/complianceservice:/app
+  #     - ./src/complianceservice/appsettings.Development.json:/app/appsettings.Development.json
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_URLS=http://+:80
   
-  monitoringservice:
-    command: dotnet watch run
-    volumes:
-      - ./src/monitoringservice:/app
-      - ./src/monitoringservice/appsettings.Development.json:/app/appsettings.Development.json
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_URLS=http://+:80
+  # monitoringservice:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/monitoringservice:/app
+  #     - ./src/monitoringservice/appsettings.Development.json:/app/appsettings.Development.json
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_URLS=http://+:80
   
-  operatorservice:
-    command: dotnet watch run
-    volumes:
-      - ./src/operatorservice:/app
-      - ./src/operatorservice/appsettings.Development.json:/app/appsettings.Development.json
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_URLS=http://+:80
+  # operatorservice:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/operatorservice:/app
+  #     - ./src/operatorservice/appsettings.Development.json:/app/appsettings.Development.json
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_URLS=http://+:80
 
-  portfolioservice:
-    command: dotnet watch run
-    volumes:
-      - ./src/portfolioservice:/app
-      - ./src/portfolioservice/appsettings.Development.json:/app/appsettings.Development.json
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_URLS=http://+:80
+  # portfolioservice:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/portfolioservice:/app
+  #     - ./src/portfolioservice/appsettings.Development.json:/app/appsettings.Development.json
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_URLS=http://+:80
 
-  pricingservice:
-    command: dotnet watch run
-    volumes:
-      - ./src/pricingservice:/app
-      - ./src/pricingservice/appsettings.Development.json:/app/appsettings.Development.json
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_URLS=http://+:80
+  # pricingservice:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/pricingservice:/app
+  #     - ./src/pricingservice/appsettings.Development.json:/app/appsettings.Development.json
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_URLS=http://+:80

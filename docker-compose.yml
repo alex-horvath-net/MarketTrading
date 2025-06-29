@@ -15,23 +15,23 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro # mount the HTTPS certificate
 
-  tradingportal:
-    build:
-      context: ./src/tradingportal.blazor
-      dockerfile: Dockerfile
-      args:
-        app_uid: ${app_uid}
-    container_name: yourbank_tradingportal
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5000:443"   # UI over HTTPS
-    volumes:
-      - ~/.aspnet/https:/https:ro # mount the HTTPS certificate
+  # tradingportal:
+  #   build:
+  #     context: ./src/tradingportal.blazor
+  #     dockerfile: Dockerfile
+  #     args:
+  #       app_uid: ${app_uid}
+  #   container_name: yourbank_tradingportal
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5000:443"   # UI over HTTPS
+  #   volumes:
+  #     - ~/.aspnet/https:/https:ro # mount the HTTPS certificate
 
   apigateway:
     build:
-      context: ./src/apigateway
+      context: ./src/ApiGateway    # ✅ FIXED casing, comment kept
       dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
@@ -62,105 +62,106 @@ services:
       context: ./src/tradingservice
       dockerfile: Dockerfile
       args:
-        APP_UID: ${APP_UID}  
+        APP_UID: ${APP_UID}
     container_name: yourbank_tradingservice
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5003:80"
 
-  riskservice:
-    build:
-      context: ./src/riskservice
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}  
-    container_name: yourbank_riskservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5004:80"
 
-  auditservice:
-    build:
-      context: ./src/auditservice
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}  
-    container_name: yourbank_auditservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5005:80"
+  # riskservice:
+  #   build:
+  #     context: ./src/riskservice
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}  
+  #   container_name: yourbank_riskservice
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5004:80"
 
-  backtesterservice:
-    build:
-      context: ./src/backtesterservice
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}  
-    container_name: yourbank_backtesterservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5006:80"
+  # auditservice:
+  #   build:
+  #     context: ./src/auditservice
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}  
+  #   container_name: yourbank_auditservice
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5005:80"
 
-  complianceservice:
-    build:
-      context: ./src/complianceservice
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}  
-    container_name: yourbank_complianceservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5007:80"
+  # backtesterservice:
+  #   build:
+  #     context: ./src/backtesterservice
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}  
+  #   container_name: yourbank_backtesterservice
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5006:80"
 
-  monitoringservice:
-    build:
-      context: ./src/monitoringservice
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}  
-    container_name: yourbank_monitoringservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5008:80"
+  # complianceservice:
+  #   build:
+  #     context: ./src/complianceservice
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}  
+  #   container_name: yourbank_complianceservice
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5007:80"
 
-  operatorservice:
-    build:
-      context: ./src/operatorservice
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}  
-    container_name: yourbank_operatorservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5009:80"
+  # monitoringservice:
+  #   build:
+  #     context: ./src/monitoringservice
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}  
+  #   container_name: yourbank_monitoringservice
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5008:80"
 
-  portfolioservice:
-    build:
-      context: ./src/portfolioservice
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}  
-    container_name: yourbank_portfolioservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5010:80"
+  # operatorservice:
+  #   build:
+  #     context: ./src/operatorservice
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}  
+  #   container_name: yourbank_operatorservice
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5009:80"
+
+  # portfolioservice:
+  #   build:
+  #     context: ./src/portfolioservice
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}  
+  #   container_name: yourbank_portfolioservice
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5010:80"
   
-  pricingservice:
-    build:
-      context: ./src/pricingservice
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}  
-    container_name: yourbank_pricingservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5011:80"
+  # pricingservice:
+  #   build:
+  #     context: ./src/pricingservice
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}  
+  #   container_name: yourbank_pricingservice
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5011:80"

@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using TradingPortal.BlazorWebApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);

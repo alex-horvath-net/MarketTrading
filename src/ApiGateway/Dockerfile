@@ -14,8 +14,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["./src/ApiGateway/ApiGateway.csproj", "ApiGateway/"]
-RUN dotnet restore "./ApiGateway/ApiGateway.csproj"
+COPY ["./ApiGateway.csproj", "ApiGateway/"]
+RUN dotnet restore "ApiGateway/ApiGateway.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the ApiGateway Project
