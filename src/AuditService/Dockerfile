@@ -14,7 +14,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["./src/auditservice/AuditService.csproj", "AuditService/"]
+COPY ["./src/AuditService/AuditService.csproj", "AuditService/"]
 RUN dotnet restore "AuditService/AuditService.csproj"
 
 # -----------------------------------------------

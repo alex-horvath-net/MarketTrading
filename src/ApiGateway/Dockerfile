@@ -2,11 +2,11 @@
 # Stage 1: Base Runtime Image
 # --------------------------------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-ARG APP_UID=1001
+ARG APP_UID
 RUN useradd -u ${APP_UID} -m yourBankDockerUser
 USER yourBankDockerUser
 WORKDIR /app
-EXPOSE 443  # Expose HTTPS port
+EXPOSE 443  
 
 # --------------------------------------------------
 # Stage 2: Restore Dependencies
@@ -48,6 +48,6 @@ COPY --from=publish /app/publish .
 # ❗ Required for HTTPS binding
 ENV ASPNETCORE_URLS="https://+:443"
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password=""
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=Alex!1978
 
 ENTRYPOINT ["dotnet", "ApiGateway.dll"]

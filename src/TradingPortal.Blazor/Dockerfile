@@ -20,6 +20,6 @@ COPY --from=build /app/publish .
 # Use HTTPS in Docker
 ENV ASPNETCORE_URLS="https://+:443"
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password=""
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password=Alex!1978 
 
 ENTRYPOINT ["dotnet", "TradingPortal.Blazor.dll"]

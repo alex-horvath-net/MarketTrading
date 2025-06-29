@@ -1,6 +1,20 @@
 ﻿version: "3.9"
 
 services:
+  tradingportalblazorwebapp:
+    build:
+      context: ./src/tradingportal.blazorwebapp
+      dockerfile: Dockerfile
+      args:
+        app_uid: ${app_uid}
+    container_name: yourbank_tradingportal_blazorwebapp
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5012:443"   # UI over HTTPS
+    volumes:
+      - ~/.aspnet/https:/https:ro # mount the HTTPS certificate
+
   tradingportal:
     build:
       context: ./src/tradingportal.blazor

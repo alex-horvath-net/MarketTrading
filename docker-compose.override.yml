@@ -1,6 +1,19 @@
 version: '3.9'
 
 services:
+  tradingportalblazorwebapp:
+    command: dotnet watch run --no-launch-profile
+    volumes:
+      - ./src/tradingportal.blazorwebapp:/app
+      - ./src/tradingportal.blazorwebapp/appsettings.Development.json:/app/appsettings.Development.json
+      - ./certs/aspnetapp.pfx:/https/aspnetapp.pfx:ro   # mount the HTTPS certificate
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
+      - ASPNETCORE_HTTPS_PORT=5003
+      - ASPNETCORE_URLS=https://+:443  
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Alex!1978
+ 
+
   tradingportal:
     command: dotnet watch run --no-launch-profile
     volumes:
