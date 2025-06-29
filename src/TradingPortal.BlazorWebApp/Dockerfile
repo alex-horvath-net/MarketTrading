@@ -17,7 +17,7 @@ RUN dotnet restore "TradingPortal.BlazorWebApp.csproj"
 COPY . ./
 # build from scrach if there is any source code change, otherwies load from cache
 RUN dotnet build "TradingPortal.BlazorWebApp.csproj" -c $BUILD_CONFIGURATION --no-restore
-# publish but not restore dependencies, as they are already restored 
+# publish it without implicit build or restore 
 RUN dotnet publish "TradingPortal.BlazorWebApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-build --no-restore
 
 # Stage 2: Runtime Image
