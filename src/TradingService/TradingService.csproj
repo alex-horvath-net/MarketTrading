@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>29a25be0-26df-4618-bf73-6271fb3f8966</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,17 +15,9 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.5" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
-  </ItemGroup>
-
-  
-  
-  <ItemGroup>
-    <!-- Optionally, you can include additional packages for logging, authentication, etc. -->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
   </ItemGroup>
 
-  
-  
   <ItemGroup>
     <ProjectReference Include="..\IdentityService\IdentityService.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />

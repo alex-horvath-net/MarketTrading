@@ -10,7 +10,6 @@ builder.Services.AddPlaceTrade(config);
 
 var app = builder.Build();
 
-// Minimal API: Place new order
 app.MapGet("/ping", () => "pong");
 app.MapPlaceTrade();
 

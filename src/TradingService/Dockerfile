@@ -14,17 +14,17 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["./TradingService.csproj", "TradingService/"]
+
+# IMPORTANT: copy whole src folder to handle project references
+COPY ./ ./ 
+
 RUN dotnet restore "TradingService/TradingService.csproj"
 
 # --------------------------------------------------
 # Stage 3: Build the Project
 # --------------------------------------------------
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM restore AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY --from=restore /src/TradingService/ /src/TradingService/
-COPY . .
 WORKDIR "/src/TradingService"
 RUN dotnet build "TradingService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
