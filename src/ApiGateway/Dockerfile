@@ -12,11 +12,12 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
+COPY NuGet.Config ./
 COPY ApiGateway.csproj ./
-RUN dotnet restore "./ApiGateway.csproj"
+RUN dotnet restore "./ApiGateway.csproj" --configfile ./NuGet.Config
 
 COPY . ./
-RUN dotnet publish "./ApiGateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish
+RUN dotnet publish "./ApiGateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish --configfile ./NuGet.Config
 
 # --------------------------------------------------
 # Stage 3: Runtime Image

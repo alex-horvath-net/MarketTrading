@@ -18,11 +18,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\IdentityService\IdentityService.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-  </ItemGroup>
-
   <!-- ✅ Exclude IdentityService appsettings files to prevent publish conflicts -->
   <ItemGroup>
     <None Update="..\IdentityService\appsettings.json">

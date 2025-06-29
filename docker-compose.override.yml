@@ -24,36 +24,36 @@ services:
   #     - ASPNETCORE_HTTPS_PORT=5000
   #     - ASPNETCORE_URLS=https://+:443
 
-  apigateway:
-    command: dotnet watch run
-    volumes:
-      - ./src/ApiGateway:/app     # ✅ FIXED casing, comment kept
-      - ./src/ApiGateway/appsettings.Development.json:/app/appsettings.Development.json
-      - ~/.aspnet/https:/https:ro
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_HTTPS_PORT=5001
-      - ASPNETCORE_URLS=https://+:443
+  # apigateway:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/ApiGateway:/app     # ✅ FIXED casing, comment kept
+  #     - ./src/ApiGateway/appsettings.Development.json:/app/appsettings.Development.json
+  #     - ~/.aspnet/https:/https:ro
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_HTTPS_PORT=5001
+  #     - ASPNETCORE_URLS=https://+:443
 
-  identityservice:
-    command: dotnet watch run
-    volumes:
-      - ./src/identityservice:/app
-      - ./src/identityservice/appsettings.Development.json:/app/appsettings.Development.json
-      - ~/.aspnet/https:/https:ro
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_HTTPS_PORT=5002
-      - ASPNETCORE_URLS=https://+:443
+  # identityservice:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/identityservice:/app
+  #     - ./src/identityservice/appsettings.Development.json:/app/appsettings.Development.json
+  #     - ~/.aspnet/https:/https:ro
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_HTTPS_PORT=5002
+  #     - ASPNETCORE_URLS=https://+:443
 
-  tradingservice:
-    command: dotnet watch run
-    volumes:
-      - ./src/tradingservice:/app
-      - ./src/tradingservice/appsettings.Development.json:/app/appsettings.Development.json
-    environment:
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_URLS=http://+:80
+  # tradingservice:
+  #   command: dotnet watch run
+  #   volumes:
+  #     - ./src/tradingservice:/app
+  #     - ./src/tradingservice/appsettings.Development.json:/app/appsettings.Development.json
+  #   environment:
+  #     - DOTNET_USE_POLLING_FILE_WATCHER=true
+  #     - ASPNETCORE_URLS=http://+:80
 
 
   # riskservice:

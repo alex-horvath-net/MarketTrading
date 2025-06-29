@@ -29,45 +29,45 @@ services:
   #   volumes:
   #     - ~/.aspnet/https:/https:ro # mount the HTTPS certificate
 
-  apigateway:
-    build:
-      context: ./src/ApiGateway    # ✅ FIXED casing, comment kept
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}
-    container_name: yourbank_apigateway
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5001:443"
-    volumes:
-      - ~/.aspnet/https:/https:ro # mount the HTTPS certificate
+  # apigateway:
+  #   build:
+  #     context: ./src/ApiGateway    # ✅ FIXED casing, comment kept
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}
+  #   container_name: yourbank_apigateway
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5001:443"
+  #   volumes:
+  #     - ~/.aspnet/https:/https:ro # mount the HTTPS certificate
 
-  identityservice:
-    build:
-      context: ./src/IdentityService
-      dockerfile: Dockerfile
-      args:
-        APP_UID: ${APP_UID}
-    container_name: yourbank_identityservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5002:443"
-    volumes:
-      - ~/.aspnet/https:/https:ro
+  # identityservice:
+  #   build:
+  #     context: ./src/IdentityService
+  #     dockerfile: Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}
+  #   container_name: yourbank_identityservice
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5002:443"
+  #   volumes:
+  #     - ~/.aspnet/https:/https:ro
 
-  tradingservice:
-    build:
-      context: ./src
-      dockerfile: TradingService/Dockerfile
-      args:
-        APP_UID: ${APP_UID}
-    container_name: yourbank_tradingservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports:
-      - "5003:80"
+  # tradingservice:
+  #   build:
+  #     context: ./src
+  #     dockerfile: TradingService/Dockerfile
+  #     args:
+  #       APP_UID: ${APP_UID}
+  #   container_name: yourbank_tradingservice
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Production
+  #   ports:
+  #     - "5003:80"
 
   # riskservice:
   #   build:
