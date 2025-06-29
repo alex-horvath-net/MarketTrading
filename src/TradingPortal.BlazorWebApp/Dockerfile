@@ -1,29 +1,28 @@
-﻿# --------------------------------------------------
-# Stage 1: Base Runtime Image
-# --------------------------------------------------
+﻿# Stage 0: Base Runtime Image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 EXPOSE 443
 
-# --------------------------------------------------
-# Stage 2: Restore and Build
-# --------------------------------------------------
+
+# Stage 1: Restore & Build
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
+# set container base folder to src
 WORKDIR /src
-
-# Correct COPY for context when using src/tradingportalblazorwebapp as context!
+# Copy only .csproj 
 COPY TradingPortal.BlazorWebApp.csproj ./
-RUN dotnet restore "./TradingPortal.BlazorWebApp.csproj"
-
+# restore dependencies from nuget source if there is any csproj change, otherwies load from cache
+RUN dotnet restore "TradingPortal.BlazorWebApp.csproj"
+# Copy everything else
 COPY . ./
-WORKDIR "/src"
-RUN dotnet publish "TradingPortal.BlazorWebApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish
+# build from scrach if there is any source code change, otherwies load from cache
+RUN dotnet build "TradingPortal.BlazorWebApp.csproj" -c $BUILD_CONFIGURATION --no-restore
+# publish but not restore dependencies, as they are already restored 
+RUN dotnet publish "TradingPortal.BlazorWebApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-build --no-restore
 
-# --------------------------------------------------
-# Stage 3: Runtime Image
-# --------------------------------------------------
+# Stage 2: Runtime Image
 FROM base AS final
+# set container base folder to app
 WORKDIR /app
 COPY --from=build /app/publish .
 

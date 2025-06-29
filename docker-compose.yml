@@ -3,7 +3,7 @@
 services:
   tradingportalblazorwebapp:
     build:
-      context: ./src/TradingPortal.BlazorWebApp  # ✅ FIXED casing
+      context: ./src/TradingPortal.BlazorWebApp 
       dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
@@ -11,9 +11,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
-      - "5012:443"   # UI over HTTPS
+      # outside:inside 
+      - "5000:443"   
     volumes:
-      - ~/.aspnet/https:/https:ro # mount the HTTPS certificate
+      # mount the HTTPS certificate
+      - ~/.aspnet/https:/https:ro 
 
   # tradingportal:
   #   build:

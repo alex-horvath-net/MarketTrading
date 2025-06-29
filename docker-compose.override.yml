@@ -6,11 +6,13 @@ services:
     volumes:
       - ./src/tradingportal.blazorwebapp:/app
       - ./src/tradingportal.blazorwebapp/appsettings.Development.json:/app/appsettings.Development.json
-      - ./certs/aspnetapp.pfx:/https/aspnetapp.pfx:ro   # mount the HTTPS certificate
+      - ./certs/aspnetapp.pfx:/https/aspnetapp.pfx:ro   
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
       - DOTNET_USE_POLLING_FILE_WATCHER=true
-      - ASPNETCORE_HTTPS_PORT=5003
+      # Use HTTPS in Docker 
       - ASPNETCORE_URLS=https://+:443  
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Alex!1978
 
   # tradingportal:
