@@ -9,19 +9,19 @@ WORKDIR /app
 EXPOSE 80
 
 # --------------------------------------------------
-# Stage 2: Restore Dependencies
+# Stage 2: Restore
 # --------------------------------------------------
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# IMPORTANT: copy whole src folder to handle project references
-COPY ./ ./ 
+# Copy the whole src folder (important!)
+COPY ../ ./ 
 
 RUN dotnet restore "TradingService/TradingService.csproj"
 
 # --------------------------------------------------
-# Stage 3: Build the Project
+# Stage 3: Build
 # --------------------------------------------------
 FROM restore AS build
 ARG BUILD_CONFIGURATION=Release
@@ -33,7 +33,6 @@ RUN dotnet build "TradingService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 # --------------------------------------------------
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR "/src/TradingService"
 RUN dotnet publish "TradingService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # --------------------------------------------------

@@ -3,10 +3,10 @@
 services:
   tradingportalblazorwebapp:
     build:
-      context: ./src/tradingportal.blazorwebapp
+      context: ./src/TradingPortal.BlazorWebApp  # ✅ FIXED casing
       dockerfile: Dockerfile
       args:
-        app_uid: ${app_uid}
+        APP_UID: ${APP_UID}
     container_name: yourbank_tradingportal_blazorwebapp
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
@@ -20,7 +20,7 @@ services:
   #     context: ./src/tradingportal.blazor
   #     dockerfile: Dockerfile
   #     args:
-  #       app_uid: ${app_uid}
+  #       APP_UID: ${APP_UID}
   #   container_name: yourbank_tradingportal
   #   environment:
   #     - ASPNETCORE_ENVIRONMENT=Production
@@ -45,7 +45,7 @@ services:
 
   identityservice:
     build:
-      context: ./src/identityservice
+      context: ./src/IdentityService
       dockerfile: Dockerfile
       args:
         APP_UID: ${APP_UID}
@@ -59,8 +59,8 @@ services:
 
   tradingservice:
     build:
-      context: ./src/tradingservice
-      dockerfile: Dockerfile
+      context: ./src
+      dockerfile: TradingService/Dockerfile
       args:
         APP_UID: ${APP_UID}
     container_name: yourbank_tradingservice
@@ -68,7 +68,6 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
       - "5003:80"
-
 
   # riskservice:
   #   build:
