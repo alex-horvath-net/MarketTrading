@@ -6,15 +6,18 @@ WORKDIR /app
 EXPOSE 443
 
 # --------------------------------------------------
-# Stage 2: Restore and Publish
+# Stage 2: Restore and Build
 # --------------------------------------------------
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["./TradingPortal.BlazorWebApp.csproj", "TradingPortal.BlazorWebApp/"]
-RUN dotnet restore "TradingPortal.BlazorWebApp/TradingPortal.BlazorWebApp.csproj"
-COPY . .
-WORKDIR "/src/TradingPortal.BlazorWebApp"
+
+# Correct COPY for context when using src/tradingportalblazorwebapp as context!
+COPY TradingPortal.BlazorWebApp.csproj ./
+RUN dotnet restore "./TradingPortal.BlazorWebApp.csproj"
+
+COPY . ./
+WORKDIR "/src"
 RUN dotnet publish "TradingPortal.BlazorWebApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 # --------------------------------------------------
