@@ -4,12 +4,12 @@ WORKDIR /app
 EXPOSE 443
 
 
-# Stage 1: Restore & Build
+# Stage 1: Restore, Build, and Publish 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 # set container base folder to src
 WORKDIR /src
-# Copy only .csproj 
+# Copy from ProjectFolder/TradingPortal.BlazorWebApp.csproj  to buld/src/ 
 COPY TradingPortal.BlazorWebApp.csproj ./
 # restore dependencies from nuget source if there is any csproj change, otherwies load from cache
 RUN dotnet restore "TradingPortal.BlazorWebApp.csproj"
@@ -17,13 +17,15 @@ RUN dotnet restore "TradingPortal.BlazorWebApp.csproj"
 COPY . ./
 # build from scrach if there is any source code change, otherwies load from cache
 RUN dotnet build "TradingPortal.BlazorWebApp.csproj" -c $BUILD_CONFIGURATION --no-restore
-# publish it without implicit build or restore 
+# publish it to build/app/publish without implicit build or restore 
 RUN dotnet publish "TradingPortal.BlazorWebApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-build --no-restore
+
 
 # Stage 2: Runtime Image
 FROM base AS final
 # set container base folder to app
 WORKDIR /app
+# ccopy from buld/app/publish/ to final/app/
 COPY --from=build /app/publish .
 
 # Use HTTPS in Docker
