@@ -1,10 +1,15 @@
+using Microsoft.AspNetCore.DataProtection;
 using TradingPortal.BlazorServer.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddRazorComponents()    .AddInteractiveServerComponents();
+
+
+var keyRingPath = Path.Combine(builder.Environment.ContentRootPath, "..", "data-protection-keys");
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(keyRingPath));
+
 
 var app = builder.Build();
 

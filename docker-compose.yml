@@ -1,0 +1,12 @@
+services:
+  tradingportal:
+    build:
+      context: .
+      dockerfile: src/TradingPortal.BlazorServer/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ./data-protection-keys:/data-protection-keys 
