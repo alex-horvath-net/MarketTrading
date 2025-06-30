@@ -11,7 +11,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 # Copy from ProjectFolder/TradingPortal.BlazorWebApp.csproj  to buld/src/ 
 COPY TradingPortal.BlazorWebApp.csproj ./
-COPY Directory.Build.props ./
+COPY ../../Directory.Build.props ./
 # restore dependencies from nuget source if there is any csproj change, otherwies load from cache
 RUN dotnet restore "TradingPortal.BlazorWebApp.csproj"
 # Copy everything else

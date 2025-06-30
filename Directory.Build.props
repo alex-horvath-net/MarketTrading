@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup>
-    <!-- Disable fallback package folders inside Linux container -->
     <RestoreFallbackFolders></RestoreFallbackFolders>
   </PropertyGroup>
 </Project>
