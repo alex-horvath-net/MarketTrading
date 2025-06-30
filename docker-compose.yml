@@ -9,7 +9,8 @@ services:
         APP_UID: ${APP_UID}
     container_name: yourbank_tradingportal_blazorwebapp
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443
     ports:
       # outside:inside 
       - "5000:443"   

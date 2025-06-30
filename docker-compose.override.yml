@@ -11,6 +11,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - DOTNET_USE_POLLING_FILE_WATCHER=true
       # Use HTTPS in Docker 
+      - ASPNETCORE_HTTPS_PORT=5000
       - ASPNETCORE_URLS=https://+:443  
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Alex!1978
