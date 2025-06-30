@@ -1,12 +1,15 @@
-services:
+﻿services:
   tradingportal:
     build:
       context: .
       dockerfile: src/TradingPortal.BlazorServer/Dockerfile
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "5000:443"          # host → container
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword123
     volumes:
-      - ./data-protection-keys:/data-protection-keys 
+      - ./data-protection-keys:/data-protection-keys
+      - ./aspnetapp.pfx:/https/aspnetapp.pfx:ro
