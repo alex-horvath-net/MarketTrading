@@ -1,6 +1,0 @@
-@PostExecutionMonitoringService_HostAddress = http://localhost:5262
-
-GET {{PostExecutionMonitoringService_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
