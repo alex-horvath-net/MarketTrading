@@ -16,7 +16,6 @@ USER $APP_UID
 WORKDIR /app
 EXPOSE 443
 
-
 # Build Stage: restore and build image
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
