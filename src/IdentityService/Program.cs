@@ -1,7 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using IdentityService.Data;
+using IdentityService.Features.Login;
+using IdentityService.Features.Register;
+using IdentityService.Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +12,10 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // 1) EF + Identity
-builder.Services.AddDbContext<AppDbContext>(opts =>
+builder.Services.AddDbContext<IdentityDbContext>(opts =>
     opts.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
+    .AddEntityFrameworkStores<IdentityDbContext>()
     .AddDefaultTokenProviders();
 
 // 2) JWT setup
