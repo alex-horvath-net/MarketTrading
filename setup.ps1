@@ -1,41 +1,32 @@
 cd C:\src\github\alex-horvath-net\MarketTrading
 cls
 
-# 1) Ensure cert + key folders & cert exist
+Write-Host "# Ensure cert + key folders & cert exist"
 New-Item -ItemType Directory -Path .\certificates -Force | Out-Null
+
+Write-Host "# Generating dev certificate…"
 dotnet dev-certs https -ep ./certificates/aspnetapp.pfx -p YourPassword123
+
+Write-Host "# Trusting dev certificate…"
 dotnet dev-certs https --trust
 
-# 2) Close Visual Studio (important!)
-Stop-Process -Name devenv -Force -ErrorAction Ignore
+Write-Host "# Tear down any old Docker resources"
 
-# 3) Tear down any old Docker resources
+Write-Host "# Stopping and removing previous containers/networks"
 docker-compose down
 
-# 4) Start SQL only so we can migrate
-docker-compose up -d sql
+Write-Host "# Clean up Docker & NuGet caches"
 
-# 5) Wait for SQL to be ready
-Write-Host "Waiting for SQL to come online…" -NoNewline
-while (-not (Test-NetConnection -ComputerName localhost -Port 1433 -WarningAction SilentlyContinue).TcpTestSucceeded) {
-    Write-Host "." -NoNewline
-    Start-Sleep 1
-}
-Write-Host " OK"
+Write-Host "# Removing local packages folder"
+Remove-Item -Recurse -Force .\packages -ErrorAction Ignore
 
-# 6) Apply EF Core migrations against that SQL
-Push-Location .\src\IdentityService\
-dotnet ef database update
-Pop-Location
-
-# 7) Clean up Docker caches
-Remove-Item -Recurse -Force -ErrorAction Ignore .\packages
+Write-Host "# Clearing NuGet caches"
 dotnet nuget locals all --clear
+
+Write-Host "# Pruning Docker system"
 docker system prune -a --volumes --force
 docker builder prune --all --force
 
-# 8) Build & start the rest of your services
-docker-compose up -d --build tradingportal identity
+Write-Host "# Start all services (SQL, IdentityService, TradingPortal)"
+docker-compose up -d
 
-# 9) Tail their logs
-docker-compose logs -f tradingportal identity

@@ -1,3 +1,4 @@
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -40,6 +41,12 @@ builder.Services.AddAuthentication(options => {
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope()) {
+    var db = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+    db.Database.Migrate();
+}
+
 app.UseAuthentication();
 app.UseAuthorization();
 
