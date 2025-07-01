@@ -3,10 +3,13 @@
 # Base Stage: base image is a linux server with .net sdk 9.0
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 
-# Ensure DPAPI key folder exists and is writable (as root)
+# Create and secure the certificates directory (root)
+RUN mkdir -p /certificates && chmod 700 /certificates
+
+# Create and secure the data-protection keys directory (root)
 RUN mkdir -p /keys && chmod 777 /keys
 
-# Switch to non-root runtime user
+# Switch to the unprivileged ASP.NET user
 USER $APP_UID
 
 # base/app is the container base folder
@@ -48,7 +51,13 @@ RUN dotnet publish "TradingPortal.BlazorServer.csproj" -c $BUILD_CONFIGURATION -
 # Final stage: create the production image
 FROM base AS final
 WORKDIR /app
+
+# Copy the published app
 COPY --from=publish /app/publish .
 
+# Copy the HTTPS development certificate into the container
+COPY certificates/aspnetapp.pfx /certificates/aspnetapp.pfx
+
+# Listen on HTTPS only
 ENV ASPNETCORE_URLS="https://+:443"
 ENTRYPOINT ["dotnet", "TradingPortal.BlazorServer.dll"]

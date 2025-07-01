@@ -1,6 +1,4 @@
-﻿#version: '3.8'
-
-services:
+﻿services:
   tradingportal:
     build:
       context: .
@@ -13,5 +11,5 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword123
     volumes:
+      - ./certificates:/certificates:ro
       - ./keys:/keys
-      - .certificates/aspnetapp.pfx:/certificates/aspnetapp.pfx:ro
