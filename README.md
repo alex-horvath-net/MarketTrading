@@ -17,7 +17,7 @@ This project uses a local HTTPS dev certificate. To set it up:
 
 ```powershell
 # Generate cert file
-dotnet dev-certs https -ep ./aspnetapp.pfx -p YourPassword123
+dotnet dev-certs https -ep ./certificates/aspnetapp.pfx -p YourPassword123
 
 # Trust it (Windows/macOS)
 dotnet dev-certs https --trust
