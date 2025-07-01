@@ -4,7 +4,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 
 # Ensure DPAPI key folder exists and is writable (as root)
-RUN mkdir -p /data-protection-keys && chmod 777 /data-protection-keys
+RUN mkdir -p /keys && chmod 777 /keys
 
 # Switch to non-root runtime user
 USER $APP_UID

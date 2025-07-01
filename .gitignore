@@ -6,3 +6,4 @@
 *.csproj.user
 # Ignore local dev cert
 aspnetapp.pfx
+/keys/

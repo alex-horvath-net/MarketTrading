@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()    .AddInteractiveServerComponents();
 
 
-var keyRingPath = Path.Combine(builder.Environment.ContentRootPath, "..", "data-protection-keys");
+var keyRingPath = Path.Combine(builder.Environment.ContentRootPath, "..", "keys");
 builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(keyRingPath));
 

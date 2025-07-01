@@ -13,5 +13,5 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword123
     volumes:
-      - ./data-protection-keys:/data-protection-keys
+      - ./keys:/keys
       - ./aspnetapp.pfx:/https/aspnetapp.pfx:ro
