@@ -1,4 +1,26 @@
 ﻿services:
+  identity:
+    build:
+      context: .
+      dockerfile: src/IdentityService/Dockerfile
+    ports:
+      - "5101:443"   # host → container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword123
+    volumes:
+      - ./.certificates:/certificates:ro
+      - ./keys:/keys
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=Your!Pass123
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433" 
+
   tradingportal:
     build:
       context: .
