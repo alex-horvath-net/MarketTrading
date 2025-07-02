@@ -1,4 +1,5 @@
-@BaseAddress = {{BaseAddress}}
+@BaseAddress = https://localhost:5001  
+@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDFmOWJkMC1lZWEwLTRmZGQtOWRlNS00M2UwMzNhOTAwNjAiLCJlbWFpbCI6ImFsaWNlQGV4YW1wbGUuY29tIiwiZXhwIjoxNzUxNDUzNjU0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MTAxIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTEwMSJ9.FrJOnFLohJijWDUERKWjRk4eh0ek88a0Ov2AS2lkJj4
 
 ### Register a new user
 POST {{BaseAddress}}/auth/register
@@ -16,8 +17,12 @@ Content-Type: application/json
   "password": "P@ssw0rd!"
 }
 
-### Use the returned token to call a protected endpoint (example)
-# Replace {{token}} with the JWT you got from the login call
-GET {{BaseAddress}}/protected/resource
+
+### anonymus ping
+GET {{BaseAddress}}/ping
 Authorization: Bearer {{token}}
 
+
+### authorized secureping 
+GET {{BaseAddress}}/sping
+Authorization: Bearer {{token}}

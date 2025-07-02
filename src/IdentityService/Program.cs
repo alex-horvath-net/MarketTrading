@@ -50,6 +50,10 @@ using (var scope = app.Services.CreateScope()) {
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGet("/ping", () => "pong").AllowAnonymous();
+
+app.MapGet("/sping", () => "secure pong").RequireAuthorization();
+
 app.MapPost("/auth/register", async (RegisterDto dto, UserManager<IdentityUser> um) => {
     var user = new IdentityUser(dto.Email) { Email = dto.Email };
     var result = await um.CreateAsync(user, dto.Password);
