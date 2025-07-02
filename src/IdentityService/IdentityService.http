@@ -1,6 +1,23 @@
-@IdentityService_HostAddress = http://localhost:5206
+@BaseAddress = https://localhost:5101
 
-GET {{IdentityService_HostAddress}}/weatherforecast/
-Accept: application/json
+### Register a new user
+POST {{BaseAddress}}/auth/register
+Content-Type: application/json
+{
+  "email": "alice@example.com",
+  "password": "P@ssw0rd!"
+}
 
-###
+### Login with that user
+POST {{BaseAddress}}/auth/login
+Content-Type: application/json
+{
+  "email": "alice@example.com",
+  "password": "P@ssw0rd!"
+}
+
+### Use the returned token to call a protected endpoint (example)
+# Replace {{token}} with the JWT you got from the login call
+GET {{BaseAddress}}/protected/resource
+Authorization: Bearer {{token}}
+
