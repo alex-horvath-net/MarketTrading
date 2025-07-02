@@ -12,41 +12,39 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // 1) EF + Identity
-builder.Services.AddDbContext<IdentityDbContext>(opts =>
-    opts.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<IdentityDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
 
 // 2) JWT setup
-var jwtKey = builder.Configuration["Jwt:Key"];
-var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
-builder.Services.AddAuthentication(options => {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(opts => {
-    opts.TokenValidationParameters = new TokenValidationParameters {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
-    };
-});
+builder.Services
+    .AddAuthentication(options => {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options => {
+        var jwtKey = builder.Configuration["Jwt:Key"];
+        var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
+        options.TokenValidationParameters = new TokenValidationParameters {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
+        };
+    });
 
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope()) {
-    var db = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
-    if (!db.Users.Any()) {
-        db.Database.Migrate();
-    }
-}
+//using (var scope = app.Services.CreateScope()) {
+//    var db = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+//    if (!db.Users.Any()) {
+//        db.Database.Migrate();
+//    }
+//}
 
 app.UseAuthentication();
 app.UseAuthorization();
