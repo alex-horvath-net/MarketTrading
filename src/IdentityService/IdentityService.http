@@ -20,7 +20,6 @@ Content-Type: application/json
 
 ### anonymus ping
 GET {{BaseAddress}}/ping
-Authorization: Bearer {{token}}
 
 
 ### authorized secureping 

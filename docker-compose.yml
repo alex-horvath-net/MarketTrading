@@ -1,6 +1,4 @@
-﻿version: "3.8"
-
-services:
+﻿services:
   sql:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
@@ -9,7 +7,8 @@ services:
     ports:
       - "1433:1433"
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "Your!Pass123", "-Q", "SELECT 1"]
+      # use CMD-SHELL so "localhost,1433" parses correctly
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost,1433 -U sa -P Your!Pass123 -Q \"SELECT 1\""]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -21,8 +20,9 @@ services:
     depends_on:
       sql:
         condition: service_healthy
+    # host 5002 ➔ container 80 (HTTP only)
     ports:
-      - "5002:80"   # host port 5002 → container port 80
+      - "5002:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -38,7 +38,7 @@ services:
       sql:
         condition: service_healthy
     ports:
-      - "5001:443"   # host → container
+      - "5001:443"    # host 5001 → container 443 (HTTPS only)
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443
@@ -56,8 +56,9 @@ services:
     depends_on:
       - sql
       - identity
+    # host 5000 ➔ container 443 (HTTPS)
     ports:
-      - "5000:443"   # host → container
+      - "5000:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443
