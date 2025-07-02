@@ -20,8 +20,6 @@ if (app.Environment.IsDevelopment()) {
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
 app.MapGet("/ping", () => "pong").AllowAnonymous();
 
 app.MapGet("/sping", () => "secure pong").RequireAuthorization();

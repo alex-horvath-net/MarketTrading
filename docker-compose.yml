@@ -22,15 +22,12 @@ services:
       sql:
         condition: service_healthy
     ports:
-      - "5001:443"   # host → container
+      - "5002:80"   # host port 5002 → container port 80
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/aspnetapp.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword123
+      - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__Default=Server=sql,1433;Database=TradingDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;
     volumes:
-      - ./certificates:/certificates:ro
       - ./keys:/keys
 
   identity:

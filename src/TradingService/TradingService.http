@@ -1,9 +1,8 @@
-@BaseAddress = https://localhost:5002  
+@BaseAddress = http://localhost:5002  
 @Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDFmOWJkMC1lZWEwLTRmZGQtOWRlNS00M2UwMzNhOTAwNjAiLCJlbWFpbCI6ImFsaWNlQGV4YW1wbGUuY29tIiwiZXhwIjoxNzUxNDUzNjU0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo1MTAxIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTEwMSJ9.FrJOnFLohJijWDUERKWjRk4eh0ek88a0Ov2AS2lkJj4
 
 ### anonymus ping
 GET {{BaseAddress}}/ping
-Authorization: Bearer {{token}}
 
 
 ### authorized secureping 

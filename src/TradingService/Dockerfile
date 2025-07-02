@@ -3,9 +3,6 @@
 # Base Stage: base image is a linux server with .net sdk 9.0
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 
-# Create and secure the certificates directory (root)
-RUN mkdir -p /certificates && chmod 700 /certificates
-
 # Create and secure the data-protection keys directory (root)
 RUN mkdir -p /keys && chmod 777 /keys
 
@@ -14,7 +11,7 @@ USER $APP_UID
 
 # base/app is the container base folder
 WORKDIR /app
-EXPOSE 443
+EXPOSE 80
 
 # Build Stage: restore and build image
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
@@ -54,9 +51,7 @@ WORKDIR /app
 # Copy the published app
 COPY --from=publish /app/publish .
 
-# Copy the HTTPS development certificate into the container
-COPY certificates/aspnetapp.pfx /certificates/aspnetapp.pfx
+# Tell Kestrel to listen on HTTP port 80 only
+ENV ASPNETCORE_URLS="http://+:80"
 
-# Listen on HTTPS only
-ENV ASPNETCORE_URLS="https://+:443"
 ENTRYPOINT ["dotnet", "TradingService.dll"]
