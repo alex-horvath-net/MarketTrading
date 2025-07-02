@@ -4,7 +4,7 @@
       context: .
       dockerfile: src/IdentityService/Dockerfile
     ports:
-      - "5101:443"   # host → container
+      - "5001:443"   # host → container
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443
