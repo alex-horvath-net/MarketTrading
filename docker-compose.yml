@@ -14,6 +14,25 @@ services:
       timeout: 5s
       retries: 10
 
+  tradingservice:
+    build:
+      context: .
+      dockerfile: src/TradingService/Dockerfile
+    depends_on:
+      sql:
+        condition: service_healthy
+    ports:
+      - "5001:443"   # host → container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword123
+      - ConnectionStrings__Default=Server=sql,1433;Database=TradingDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;
+    volumes:
+      - ./certificates:/certificates:ro
+      - ./keys:/keys
+
   identity:
     build:
       context: .
