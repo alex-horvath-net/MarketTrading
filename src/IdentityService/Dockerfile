@@ -1,7 +1,6 @@
 # Base Stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 RUN mkdir -p /certificates && chmod 700 /certificates
-RUN mkdir -p /keys && chmod 777 /keys
 USER $APP_UID
 WORKDIR /app
 EXPOSE 443

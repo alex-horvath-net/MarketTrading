@@ -1,31 +1,31 @@
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "https": {
+    "project": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:5001",
         "ASPNETCORE_Kestrel__Certificates__Default__Path": "../../certificates/aspnetapp.pfx",
         "ASPNETCORE_Kestrel__Certificates__Default__Password": "YourPassword123",
         "ConnectionStrings__Default": "Server=localhost,1433;Database=IdentityDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;"
       }
     },
-    "Docker": {
+    "docker": {
       "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://localhost:5001",
-      "applicationUrl": "https://localhost:5001",
+      "launchBrowser": false,
+      //Dockerfile ENV ASPNETCORE_URLS="https://+:443" tells the container to listen on port 443
+      //publishAllPorts": false is set to false to avoid publishing all ports
+      "publishAllPorts": false,
+      "useSSL": true,
+      "sslPort": 443,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HTTPS_PORTS": "5001",
         "ConnectionStrings__Default": "Server=host.docker.internal,1433;Database=IdentityDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;"
-      },
-      "publishAllPorts": false,
-      "useSSL": true,
-      "sslPort": 443
+      }
     }
   }
 }

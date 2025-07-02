@@ -1,5 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Authentication;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using IdentityService.Features.Login;
 using IdentityService.Features.Register;
@@ -10,6 +12,30 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Add HSTS and HTTPS redirection
+//builder.Services.AddHsts(options => {
+//    options.MaxAge = TimeSpan.FromDays(365);
+//    options.IncludeSubDomains = true;
+//});
+//builder.Services.AddHttpsRedirection(options => {
+//    options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
+//    options.HttpsPort = 443;
+//});
+
+//builder.WebHost.ConfigureKestrel((context, options) => {
+//    var certPath = Path.Combine(AppContext.BaseDirectory, context.Configuration["Certificate:Path"]);
+//    var certPassword = context.Configuration["Certificate:Password"];
+//    var cert = new X509Certificate2(certPath, certPassword);
+
+//    options.ListenAnyIP(443, options => {
+//        options.UseHttps(httpsOptions => {
+//            httpsOptions.ServerCertificate = cert;
+//            httpsOptions.SslProtocols = SslProtocols.Tls13 | SslProtocols.Tls12;
+//        });
+//    });
+//});
 
 // 1) EF + Identity
 builder.Services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
@@ -45,6 +71,8 @@ var app = builder.Build();
 //        db.Database.Migrate();
 //    }
 //}
+//app.UseHsts();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
