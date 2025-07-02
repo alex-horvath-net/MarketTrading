@@ -30,3 +30,10 @@ docker builder prune --all --force
 Write-Host "# Start all services (SQL, IdentityService, TradingPortal)"
 docker-compose up -d
 
+
+# cd C:\src\github\alex-horvath-net\MarketTrading\src
+# dotnet new webapi -n TradingService
+# dotnet sln add TradingService/TradingService.csproj
+# dotnet sln ../MarketTrading.sln add TradingService/TradingService.csproj
+# cd ..
+
