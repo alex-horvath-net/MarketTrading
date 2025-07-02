@@ -1,8 +1,26 @@
-﻿services:
+﻿version: "3.8"
+
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=Your!Pass123
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "Your!Pass123", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
   identity:
     build:
       context: .
       dockerfile: src/IdentityService/Dockerfile
+    depends_on:
+      sql:
+        condition: service_healthy
     ports:
       - "5001:443"   # host → container
     environment:
@@ -10,23 +28,20 @@
       - ASPNETCORE_URLS=https://+:443
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword123
+      - ConnectionStrings__Default=Server=sql,1433;Database=IdentityDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;
     volumes:
       - ./certificates:/certificates:ro
       - ./keys:/keys
-  sql:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      - SA_PASSWORD=Your!Pass123
-      - ACCEPT_EULA=Y
-    ports:
-      - "1433:1433" 
 
   tradingportal:
     build:
       context: .
       dockerfile: src/TradingPortal.BlazorServer/Dockerfile
+    depends_on:
+      - sql
+      - identity
     ports:
-      - "5000:443"          # host → container
+      - "5000:443"   # host → container
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443

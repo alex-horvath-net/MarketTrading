@@ -8,8 +8,10 @@
       "applicationUrl": "https://localhost:5101",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        // point to the shared cert folder, two levels up
         "ASPNETCORE_Kestrel__Certificates__Default__Path": "../../certificates/aspnetapp.pfx",
         "ASPNETCORE_Kestrel__Certificates__Default__Password": "YourPassword123",
+        // when running from VS F5 → Project
         "ConnectionStrings__Default": "Server=localhost,1433;Database=IdentityDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;"
       }
     },
@@ -19,6 +21,9 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        // under the "Docker" profile VS will spin up *only* the Identity container,
+        // so we point at the host's SQL instance via host.docker.internal
+        "ConnectionStrings__Default": "Server=host.docker.internal,1433;Database=IdentityDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;",
         "ASPNETCORE_HTTPS_PORTS": "5001"
       },
       "publishAllPorts": true,
