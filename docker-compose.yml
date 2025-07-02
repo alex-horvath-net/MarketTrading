@@ -38,7 +38,7 @@
       sql:
         condition: service_healthy
     ports:
-      - "5001:443"    # host 5001 → container 443 (HTTPS only)
+      - "5001:443"   
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443

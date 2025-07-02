@@ -43,10 +43,9 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope()) {
     var db = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
-    if (db.Database.IsSqlServer()) {
-        db.Database.EnsureCreated();
+    if (!db.Users.Any()) {
+        db.Database.Migrate();
     }
-    db.Database.Migrate();
 }
 
 app.UseAuthentication();
