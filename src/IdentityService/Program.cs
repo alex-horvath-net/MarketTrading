@@ -13,6 +13,11 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//var certPath = builder.Configuration["Certificate:Path"];
+//if (!File.Exists(certPath))
+//{
+//    throw new FileNotFoundException($"Certificate file not found at path: {certPath}");
+//}
 
 // Add HSTS and HTTPS redirection
 //builder.Services.AddHsts(options => {
