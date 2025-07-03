@@ -8,11 +8,10 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["NuGet.Config", "./"]
-COPY ["src/TradingPortal.BlazorServer/TradingPortal.BlazorServer.csproj", "src/TradingPortal.BlazorServer/"]
+COPY "NuGet.Config", "./"]
+COPY ["src/TradingPortal.BlazorServer/TradingPortal.BlazorServer.csproj", "./"]
 RUN dotnet restore "src/TradingPortal.BlazorServer/TradingPortal.BlazorServer.csproj"
-COPY . .
-WORKDIR "/src/src/TradingPortal.BlazorServer"
+COPY ["src/IdentityService/", "./"]
 RUN dotnet build "TradingPortal.BlazorServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

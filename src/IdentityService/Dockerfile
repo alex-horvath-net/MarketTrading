@@ -3,15 +3,17 @@ WORKDIR /app
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY NuGet.Config ./
 COPY src/IdentityService/IdentityService.csproj ./
 RUN dotnet restore IdentityService.csproj
 COPY src/IdentityService/ ./
-RUN dotnet build IdentityService.csproj -c Release -o /app/build
+RUN dotnet build IdentityService.csproj -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish IdentityService.csproj -c Release -o /app/publish /p:UseAppHost=false
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish IdentityService.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 USER root
