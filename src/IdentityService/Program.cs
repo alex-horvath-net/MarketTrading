@@ -65,12 +65,10 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-//using (var scope = app.Services.CreateScope()) {
-//    var db = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
-//    if (!db.Users.Any()) {
-//        db.Database.Migrate();
-//    }
-//}
+using (var scope = app.Services.CreateScope()) {
+    var db = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
+    db.Database.Migrate();
+}
 //app.UseHsts();
 app.UseHttpsRedirection();
 
