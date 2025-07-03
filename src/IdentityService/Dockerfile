@@ -22,7 +22,7 @@ FROM base AS final
 USER root
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ../../Certificates/aspnetapp.pfx /certificates/aspnetapp.pfx
+COPY ../../certificates/aspnetapp.pfx /certificates/aspnetapp.pfx
 RUN chmod 644 /certificates/aspnetapp.pfx && chown $APP_UID:$APP_GID /certificates/aspnetapp.pfx
 USER $APP_UID
 ENV ASPNETCORE_URLS="https://+:443"

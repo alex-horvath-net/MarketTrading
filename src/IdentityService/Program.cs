@@ -13,35 +13,6 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var certPath = builder.Configuration["Certificate:Path"];
-//if (!File.Exists(certPath))
-//{
-//    throw new FileNotFoundException($"Certificate file not found at path: {certPath}");
-//}
-
-// Add HSTS and HTTPS redirection
-//builder.Services.AddHsts(options => {
-//    options.MaxAge = TimeSpan.FromDays(365);
-//    options.IncludeSubDomains = true;
-//});
-//builder.Services.AddHttpsRedirection(options => {
-//    options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
-//    options.HttpsPort = 443;
-//});
-
-//builder.WebHost.ConfigureKestrel((context, options) => {
-//    var certPath = Path.Combine(AppContext.BaseDirectory, context.Configuration["Certificate:Path"]);
-//    var certPassword = context.Configuration["Certificate:Password"];
-//    var cert = new X509Certificate2(certPath, certPassword);
-
-//    options.ListenAnyIP(443, options => {
-//        options.UseHttps(httpsOptions => {
-//            httpsOptions.ServerCertificate = cert;
-//            httpsOptions.SslProtocols = SslProtocols.Tls13 | SslProtocols.Tls12;
-//        });
-//    });
-//});
-
 // 1) EF + Identity
 builder.Services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
