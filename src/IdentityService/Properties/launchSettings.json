@@ -15,15 +15,12 @@
     },
     "docker": {
       "commandName": "Docker",
-      "launchBrowser": false,
+      "useSSL": true,
+      "sslPort": 5001,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HTTPS_PORTS": "5001",
         "ConnectionStrings__Default": "Server=host.docker.internal,1433;Database=IdentityDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;"
-      },
-      "publishAllPorts": true,
-      "useSSL": true,
-      "sslPort": 5001
+      }
     }
   }
 }
