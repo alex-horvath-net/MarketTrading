@@ -16,10 +16,9 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish IdentityService.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
-USER root
 WORKDIR /app
 COPY --from=publish /app/publish .  
-COPY certificates/aspnetapp.pfx ./certificates/aspnetapp.pfx
+COPY certificates/aspnetapp.pfx /certificates/aspnetapp.pfx
 
 ENV ASPNETCORE_URLS="https://+:443"
 ENTRYPOINT ["dotnet", "IdentityService.dll"]

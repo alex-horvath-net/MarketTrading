@@ -16,15 +16,14 @@
     "docker": {
       "commandName": "Docker",
       "launchBrowser": false,
-      "publishAllPorts": false,
-      "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "https://+:443",
-        "ASPNETCORE_Kestrel__Certificates__Default__Path": "/app/certificates/aspnetapp.pfx",
-        "ASPNETCORE_Kestrel__Certificates__Default__Password": "YourPassword123",
+        "ASPNETCORE_HTTPS_PORTS": "5001",
         "ConnectionStrings__Default": "Server=host.docker.internal,1433;Database=IdentityDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;"
-      }
+      },
+      "publishAllPorts": true,
+      "useSSL": true,
+      "sslPort": 5001
     }
   }
 }
