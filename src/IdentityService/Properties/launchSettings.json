@@ -3,6 +3,7 @@
   "profiles": {
     "project": {
       "commandName": "Project",
+      "dotnetRunMessages": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_URLS": "https://localhost:5001",

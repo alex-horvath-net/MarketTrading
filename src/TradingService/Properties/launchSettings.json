@@ -1,33 +1,22 @@
-﻿// C:\src\github\alex-horvath-net\MarketTrading\src\TradingService\Properties\launchSettings.json
-{
+﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "http": {
+    "project": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "http://localhost:5002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        // Listen on all IPs port 5002 when running via F5→Project
-        "ASPNETCORE_Kestrel__Endpoints__Http__Url": "http://+:5002",
+        "ASPNETCORE_URLS": "http://localhost:5002",
         "ConnectionStrings__Default": "Server=localhost,1433;Database=TradingDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;"
       }
     },
-    "Docker": {
+    "docker": {
       "commandName": "Docker",
-      "launchBrowser": true,
-      // VS will use docker-compose.yml’s ports mapping (5002→80)
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      //"useSSL": false,
+      //"sslPort": 5002,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        // Inside container, Kestrel listens on port 80
-        "ASPNETCORE_URLS": "http://+:80",
-        // When debugging container alone, reach host SQL via host.docker.internal
         "ConnectionStrings__Default": "Server=host.docker.internal,1433;Database=TradingDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;"
-      },
-      // prevent VS from auto-publishing random ports
-      "publishAllPorts": false
+      }
     }
   }
 }
