@@ -7,6 +7,20 @@
     ports:
       - "1433:1433"
 
+  api-gateway:
+    build:
+      context: .
+      dockerfile: src/ApiGateway/Dockerfile
+    ports:
+      - "5003:443"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "<YOUR_CERT_PASSWORD>"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/certificates/aspnetapp.pfx"
+    volumes:
+      - ./certificates/aspnetapp.pfx:/certificates/aspnetapp.pfx:ro
+
+
   tradingservice:
     build:
       context: .

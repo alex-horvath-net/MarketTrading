@@ -1,20 +1,17 @@
 ﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "http": {
+    "project": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "http://localhost:5094",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:7290;http://localhost:5094",
+    "docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "trading/",
+      "dockerRunOptions": "--service-ports",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
