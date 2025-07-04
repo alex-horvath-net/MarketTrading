@@ -1,6 +1,4 @@
-﻿version: '3.8'
-
-services:
+﻿services:
   sql:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
@@ -37,11 +35,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/aspnetapp.pfx    # matches Dockerfile COPY
       - ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword123
       - ConnectionStrings__Default=Server=sql,1433;Database=IdentityDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;
     volumes:
-      - ./keys:/keys    # removed ./certificates volume now that PFX is embedded
+      - ./keys:/keys
 
   tradingportal:
     build:
@@ -60,4 +58,4 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/certificates/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword123
     volumes:
-      - ./keys:/keys   # removed ./certificates volume here as well
+      - ./keys:/keys

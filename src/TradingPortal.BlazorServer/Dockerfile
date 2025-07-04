@@ -8,7 +8,7 @@ WORKDIR /src
 COPY NuGet.Config ./
 COPY src/TradingPortal.BlazorServer/TradingPortal.BlazorServer.csproj ./
 RUN dotnet restore TradingPortal.BlazorServer.csproj
-COPY src/IdentityService/ ./
+COPY src/TradingPortal.BlazorServer/ ./
 RUN dotnet build TradingPortal.BlazorServer.csproj -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
