@@ -1,25 +1,42 @@
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure logging
 builder.Logging.AddDebug().AddConsole();
 
+// Load YARP reverse proxy configuration
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
-builder.Services.AddAuthorization();
-builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options => {
-    options.Authority = "https://localhost:5002"; // Blazor & Gateway trust this
-    options.Audience = "gateway";
-    options.RequireHttpsMetadata = false;
-});
+// Configure authentication & authorization
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options => {
+        // IdentityService listens on host 5001 mapped to container HTTPS 443
+        options.Authority = "https://localhost:5001";
+        options.Audience = "gateway";
+        options.RequireHttpsMetadata = true;
+    });
 
+builder.Services.AddAuthorization();
+
+// Configure CORS
 builder.Services.AddCors(options => {
-    options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+    options.AddDefaultPolicy(policy =>
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod());
 });
 
 var app = builder.Build();
 
+// Middleware pipeline
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Reverse proxy endpoints (protected by auth)
 app.MapReverseProxy();
-app.MapGet("/ping", () => "pong");
+
+// Health check
+app.MapGet("/ping", () => Results.Ok($"ApiGateway {DateTime.Now:dd/MM/yyyy HH:mm:ss}")).AllowAnonymous();
+
 app.Run();
