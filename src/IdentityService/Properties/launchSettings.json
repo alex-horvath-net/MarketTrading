@@ -3,14 +3,11 @@
   "profiles": {
     "project": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        //"ASPNETCORE_URLS": "https://localhost:5001",
-        //"ASPNETCORE_Kestrel__Certificates__Default__Path": "../../certificates/aspnetapp.pfx",
-        //"ASPNETCORE_Kestrel__Certificates__Default__Password": "YourPassword123",
+        "ASPNETCORE_URLS": "https://localhost:5001",
+        "ASPNETCORE_Kestrel__Certificates__Default__Path": "../../certificates/aspnetapp.pfx",
+        "ASPNETCORE_Kestrel__Certificates__Default__Password": "YourPassword123",
         "ConnectionStrings__Default": "Server=localhost,1433;Database=IdentityDb;User Id=sa;Password=Your!Pass123;TrustServerCertificate=True;"
       }
     },
