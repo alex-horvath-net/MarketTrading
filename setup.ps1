@@ -41,7 +41,6 @@ docker-compose up -d
 
 # cd C:\src\github\alex-horvath-net\MarketTrading\src
 # dotnet new webapi -n TradingService
-# dotnet sln add TradingService/TradingService.csproj
-# dotnet sln ../MarketTrading.sln add TradingService/TradingService.csproj
 # cd ..
+# dotnet sln ../MarketTrading.sln add src/TradingService/TradingService.csproj
 
