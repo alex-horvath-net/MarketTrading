@@ -15,7 +15,7 @@
       - "5003:443"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "<YOUR_CERT_PASSWORD>"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "YourPassword123"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/certificates/aspnetapp.pfx"
     volumes:
       - ./certificates/aspnetapp.pfx:/certificates/aspnetapp.pfx:ro
