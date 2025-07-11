@@ -30,7 +30,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests\Tests.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{7A5ADD48-E64B-4486-BB3F-92FA4EEBA832}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pulumi", "infra\Pulumi\Pulumi.csproj", "{5963B468-0745-4814-9C06-2915CD753005}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PulumiInfra", "infra\Pulumi\PulumiInfra.csproj", "{5963B468-0745-4814-9C06-2915CD753005}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
