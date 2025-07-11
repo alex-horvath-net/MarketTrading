@@ -51,7 +51,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/ping", () => "pong").AllowAnonymous();
+app.MapGet("/ping", () => Results.Ok($"IdentityService {DateTime.Now:dd/MM/yyyy HH:mm:ss}")).AllowAnonymous();
 
 app.MapGet("/sping", () => "secure pong").RequireAuthorization();
 
