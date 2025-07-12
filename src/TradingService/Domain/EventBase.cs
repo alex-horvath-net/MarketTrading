@@ -1,4 +1,3 @@
 ﻿namespace TradingService.Domain;
-public abstract record EventBase {
-    public DateTime Timestamp { get; init; } = DateTime.UtcNow;
-}
+public abstract record EventBase( DateTime Timestamp); //= DateTime.UtcNow;
+

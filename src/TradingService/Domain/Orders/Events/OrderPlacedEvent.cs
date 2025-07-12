@@ -6,4 +6,5 @@ public record OrderPlacedEvent(
   Guid OrderId,
   string Symbol,
   int Quantity,
-  Price Price) : EventBase;
+  Price Price,
+  DateTime Timestamp) : EventBase(Timestamp);

@@ -2,25 +2,26 @@
 using TradingService.Domain;
 
 namespace Tests;
-
 public abstract class TestCommandHandler<TCommand> {
     protected readonly Guid _defaultAggregateId = Guid.NewGuid();
 
-    protected abstract CommandHandler<TCommand, Guid> Handler { get; }
+    protected abstract CommandHandler<TCommand, Guid> CommandHandler { get; }
 
-    protected TestEventStore fakeEventStore = new();
+    protected TestEventStore testEventStore = new();
 
+    protected ITime testTime = new TestTime();
+     
     protected void Given(params object[] previousEvents) {
         Given(_defaultAggregateId, previousEvents);
     }
 
     protected void Given(Guid aggregateId, params object[] previousEvents) {
-        fakeEventStore.previousEvents.AddRange(previousEvents
+        testEventStore.previousEvents.AddRange(previousEvents
             .Select((e, i) => new EventModel<Guid>(aggregateId, i, DateTime.Now, e)));
     }
 
     protected void When(TCommand command) {
-        Handler.Handle(command);
+        CommandHandler.Handle(command);
     }
 
     protected void Then(params object[] expectedEvents) {
@@ -28,7 +29,7 @@ public abstract class TestCommandHandler<TCommand> {
     }
 
     protected void Then(Guid aggregateId, params object[] expectedEvents) {
-        var actualEvents = fakeEventStore.newEvents
+        var actualEvents = testEventStore.newEvents
             .Where(e => e.AggregateId == aggregateId)
             .OrderBy(e => e.SequenceNumber)
             .Select(e => e.Payload)
