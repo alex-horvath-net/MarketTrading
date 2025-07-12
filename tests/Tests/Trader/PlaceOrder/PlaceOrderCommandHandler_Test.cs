@@ -25,3 +25,4 @@ public class PlaceOrderCommandHandler_Test : Order_Test_Language<PlaceOrderComma
             OrderPlacementFailedEvent());
     }
 }
+ 
