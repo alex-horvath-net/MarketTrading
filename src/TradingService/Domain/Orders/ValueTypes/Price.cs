@@ -7,9 +7,7 @@ public record Price(
     // I prefer to use explicit validation, so the business logic can split the flow or react in another way.
     public bool IsValid() {
         if (Value <= 0)
-            throw new ArgumentOutOfRangeException(
-               nameof(Value),
-               "Price must be greater than zero.");
+           return false;
 
         return true;
     }

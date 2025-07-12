@@ -2,7 +2,7 @@
 using TradingService.Domain;
 
 namespace Tests;
-public abstract class TestCommandHandler<TCommand> {
+public abstract class Test_Language<TCommand> {
     protected readonly Guid _defaultAggregateId = Guid.NewGuid();
 
     protected abstract CommandHandler<TCommand, Guid> CommandHandler { get; }
