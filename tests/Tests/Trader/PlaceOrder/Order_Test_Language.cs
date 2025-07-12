@@ -20,13 +20,13 @@ public abstract class Order_Test_Language<TCommand> : Test_Language<TCommand> {
             "AAPL",
             10,
             new Price(150.00m),
-            testTime.UtcNow);
+            testTime.Now);
 
 
     protected PlaceOrderCommand InValid_PlaceOrderCommand() =>
         Valid_PlaceOrderCommand() with { Price = new Price(0.00m) };
 
     protected OrderPlacementFailedEvent OrderPlacementFailedEvent() => new(
-        FailReson.InvalidPrice, testTime.UtcNow);
+        FailReson.InvalidPrice, testTime.Now);
 
 }

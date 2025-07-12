@@ -18,14 +18,14 @@ public class PlaceOrderCommandHandler(IEventStore<Guid> eventStore, ITime time) 
                 command.Symbol,
                 command.Quantity,
                 command.Price,
-       time.UtcNow);
+       time.Now);
 
             eventStream.Append(orderPlacedEvent);
         } else {
             var orderPlacementFailedEvent =
                 new OrderPlacementFailedEvent(
                      OrderPlacementFailedEvent.FailReson.InvalidPrice,
-                     time.UtcNow);
+                     time.Now);
             eventStream.Append(orderPlacementFailedEvent);
         }
     }

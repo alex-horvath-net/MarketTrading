@@ -1,9 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using TradingService.Domain;
 using TradingService.Infrastructure.Database;
+using TradingService.Infrastructure.Time;
 
 var builder = WebApplication.CreateBuilder(args);
-// 1) EF 
-builder.Services.AddDbContext<TradingDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AdddLondonTime();
+builder.Services.AddDatabase(builder.Configuration);
+builder.Services.AddEventStore();
+builder.Services.AddDomain();
 
 
 builder.Services.AddOpenApi();

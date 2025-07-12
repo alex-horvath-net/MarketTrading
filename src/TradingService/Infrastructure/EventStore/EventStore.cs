@@ -1,20 +1,11 @@
 ﻿using System.Data;
 using System.Reflection;
 using System.Text.Json;
-using Microsoft.Data.SqlClient;
 using TradingService.Domain;
 using TradingService.Infrastructure.Database;
 using TradingService.Infrastructure.Database.Models;
 
 namespace TradingService.Infrastructure.EventStore;
-
-public class EventStoreConnectionFactory(IConfiguration configuration) {
-    private readonly string? _connectionString
-        = configuration.GetConnectionString("EventStore");
-
-    public IDbConnection Create()
-        => new SqlConnection(_connectionString);
-}
 
 public class EventStore(TradingDbContext db) : IEventStore<Guid> {
 
@@ -35,7 +26,7 @@ public class EventStore(TradingDbContext db) : IEventStore<Guid> {
        db.SaveChanges();
     }
 
-    public static EventModel FromEventDescription(EventDescription<Guid> eventDescription) => new() {
+    private EventModel FromEventDescription(EventDescription<Guid> eventDescription) => new() {
         Id = eventDescription.AggregateId,
         SequenceNumber = eventDescription.SequenceNumber,
         RaisedAt = eventDescription.RaisedAt,
@@ -43,7 +34,7 @@ public class EventStore(TradingDbContext db) : IEventStore<Guid> {
         EventContent = JsonSerializer.Serialize(eventDescription.BusinessEvent)
     };
 
-    public EventDescription<Guid> ToEventDescription(EventModel eventModel) {
+    private EventDescription<Guid> ToEventDescription(EventModel eventModel) {
 
         if (eventModel.EventTypeName == null)
             throw new Exception("EventTypeName should not be null");
