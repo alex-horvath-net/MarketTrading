@@ -2,7 +2,7 @@
 
 // It is an EventModel repository.
 public interface IEventStore<TAggregateId> {
-    IEnumerable<EventModel<TAggregateId>> GetEvents(TAggregateId aggregateId);
-    void AppendEvent(EventModel<TAggregateId> eventModel);
+    IEnumerable<EventDescription<TAggregateId>> GetEvents(TAggregateId aggregateId);
+    void AppendEvent(EventDescription<TAggregateId> eventModel);
     void SaveChanges();
 }

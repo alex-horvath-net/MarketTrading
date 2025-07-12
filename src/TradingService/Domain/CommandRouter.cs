@@ -1,4 +1,7 @@
-﻿namespace TradingService.Domain;
+﻿using TradingService.Domain.Orders.CommandHendlers;
+using TradingService.Domain.Orders.Commands;
+
+namespace TradingService.Domain;
 
 // It orchestrates the event persistence process for all CommandHandlers.
 public class CommandRouter<TAggregateId>(
@@ -28,5 +31,14 @@ public class CommandRouter<TAggregateId>(
            new[] { command });
 
         eventStore.SaveChanges();
+    }
+}
+
+
+public static class Extensions {
+    public static void AddPlaceOrder(this IServiceCollection services) {
+        services.AddScoped<CommandRouter<Guid>>();
+
+        services.AddTransient<CommandHandler<PlaceOrderCommand,Guid>, PlaceOrderCommandHandler>();
     }
 }

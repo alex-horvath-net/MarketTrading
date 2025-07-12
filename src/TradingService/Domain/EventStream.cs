@@ -3,16 +3,14 @@
 // It represents the event store adapter of the AgregetRoot.
 public class EventStream<TAggregateRoot, TAggregateId>(
     IEventStore<TAggregateId> eventStore,
-    TAggregateId aggregateId)
-    where TAggregateRoot : AggregateRoot<TAggregateId>, new() {
-    private int _lastSequenceNumber;
-
+    TAggregateId aggregateId)    where TAggregateRoot : AggregateRoot<TAggregateId>, new() {
+    
     public TAggregateRoot GetAggregateRoot() {
-        var eventModels = eventStore.GetEvents(aggregateId);
-
         var aggregateRoot = new TAggregateRoot();
+
+        var eventModels = eventStore.GetEvents(aggregateId);
         foreach (var eventModel in eventModels) {
-            aggregateRoot.Apply(eventModel.Payload);
+            aggregateRoot.Apply(eventModel.BusinessEvent);
             _lastSequenceNumber = eventModel.SequenceNumber;
         }
 
@@ -22,7 +20,7 @@ public class EventStream<TAggregateRoot, TAggregateId>(
     public void Append(object businessEvent) {
         _lastSequenceNumber++;
 
-        var eventModel = new EventModel<TAggregateId>(
+        var eventModel = new EventDescription<TAggregateId>(
             aggregateId,
             _lastSequenceNumber,
             DateTime.UtcNow,
@@ -31,4 +29,6 @@ public class EventStream<TAggregateRoot, TAggregateId>(
 
         eventStore.AppendEvent(eventModel);
     }
+
+    private int _lastSequenceNumber;
 }

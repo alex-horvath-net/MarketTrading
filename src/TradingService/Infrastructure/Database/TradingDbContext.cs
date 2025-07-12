@@ -9,6 +9,7 @@ public class TradingDbContext : DbContext {
     public TradingDbContext(DbContextOptions options) : base(options) { }
 
     public DbSet<Trade> Trades { get; set; }
+    public DbSet<EventModel> Events { get; set; } 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         var trades = new List<Trade>() {

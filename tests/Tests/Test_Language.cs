@@ -17,7 +17,7 @@ public abstract class Test_Language<TCommand> {
 
     protected void Given(Guid aggregateId, params object[] previousEvents) {
         testEventStore.previousEvents.AddRange(previousEvents
-            .Select((e, i) => new EventModel<Guid>(aggregateId, i, DateTime.Now, e)));
+            .Select((e, i) => new EventDescription<Guid>(aggregateId, i, DateTime.Now, e)));
     }
 
     protected void When(TCommand command) {
@@ -32,7 +32,7 @@ public abstract class Test_Language<TCommand> {
         var actualEvents = testEventStore.newEvents
             .Where(e => e.AggregateId == aggregateId)
             .OrderBy(e => e.SequenceNumber)
-            .Select(e => e.Payload)
+            .Select(e => e.BusinessEvent)
             .ToArray();
 
         actualEvents.Length.Should().Be(expectedEvents.Length);
