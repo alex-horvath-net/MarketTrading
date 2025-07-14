@@ -18,14 +18,12 @@ public class CommandRouter<TAggregateId>(
             throw new InvalidOperationException(
               $"No handler registered for {commandType.Name}");
 
-        var handleMethodInfo = commandHandlerType.GetMethod("Handle");
-        if (handleMethodInfo == null)
+        var handleMethod = commandHandlerType.GetMethod("Handle");
+        if (handleMethod == null)
             throw new InvalidOperationException(
                $"Handle method not found on {commandHandlerType.Name}");
 
-        handleMethodInfo.Invoke(
-           commandHandlerInstance,
-           new[] { command });
+        handleMethod.Invoke(commandHandlerInstance, new[] { command });
 
         eventStore.SaveChanges();
     }

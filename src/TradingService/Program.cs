@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TradingService.Domain;
+using TradingService.Domain.Orders.Commands;
 using TradingService.Infrastructure.Database;
 using TradingService.Infrastructure.Time;
 
@@ -25,7 +26,11 @@ if (app.Environment.IsDevelopment()) {
     app.MapOpenApi();
 }
 
-app.MapGet("/placeorder", () => Results.Ok($"TradingService {DateTime.Now:dd/MM/yyyy HH:mm:ss}")).AllowAnonymous();
+app.MapPost("/command/placeorder", (PlaceOrderCommand command, CommandRouter<Guid> router) => {
+    router.HandleCommand(command);
+    return Results.Accepted();
+
+}).AllowAnonymous();
 
 app.MapGet("/ping", () => Results.Ok($"TradingService {DateTime.Now:dd/MM/yyyy HH:mm:ss}")).AllowAnonymous();
 
