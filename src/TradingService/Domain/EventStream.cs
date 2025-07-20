@@ -8,8 +8,8 @@ public class EventStream<TAggregateRoot, TAggregateId>(
     public TAggregateRoot GetAggregateRoot() {
         var aggregateRoot = new TAggregateRoot();
 
-        var eventModels = eventStore.GetEvents(aggregateId);
-        foreach (var eventModel in eventModels) {
+        var eventDescriptions = eventStore.GetEvents(aggregateId);
+        foreach (var eventModel in eventDescriptions) {
             aggregateRoot.Apply(eventModel.BusinessEvent);
             _lastSequenceNumber = eventModel.SequenceNumber;
         }

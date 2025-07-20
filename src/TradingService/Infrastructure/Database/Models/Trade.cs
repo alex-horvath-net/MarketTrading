@@ -14,4 +14,9 @@ public class Trade {
     public string UserComment { get; set; }
     public DateTime? ExecutionRequestedForUtc { get; set; }
     public TradeStatus Status { get; set; }
+    public bool IsDeleted { get; set; }
+
+    public TradeExecutionDetail? ExecutionDetail { get; set; } // 1:1
+    public ICollection<TradeLeg> Legs { get; set; } = []; // 1:*
+    public ICollection<Tag> Tags { get; set; } = []; // *:*
 }

@@ -1,97 +1,89 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using TradingService.Domain.Orders.AggregetRoot;
 using TradingService.Infrastructure.Database.Models;
 
 namespace TradingService.Infrastructure.Database;
 
 // cd .\src\TradingService
 // dotnet ef migrations add AddTradesTable -c TradingDbContext -o Infrastructure\Database\Migrations
-public class TradingDbContext : DbContext {
-    public TradingDbContext(DbContextOptions options) : base(options) { }
+public class TradingDbContext(DbContextOptions options, ILogger<TradingDbContext> logger) : DbContext(options) {
 
     public DbSet<Trade> Trades { get; set; }
+    public DbSet<TradeLeg> TradeLegs { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<TradeExecutionDetail> ExecutionDetails { get; set; }
     public DbSet<EventModel> Events { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
-        var trades = new List<Trade>() {
-            new () { Id = Guid.Parse("E170BA5F-98D8-4893-8333-E21C5C79DC01"), PortfolioCode = "P1", StrategyCode = "S1", Instrument = "USD", Side = TradeSide.Buy, OrderType = OrderType.Market, Quantity = 1, Price = 100, TraderId = "me", UserComment ="" },
-            new () { Id = Guid.Parse("E170BA5F-98D8-4893-8333-E21C5C79DC02"), PortfolioCode = "P1", StrategyCode = "S1", Instrument = "EUR", Side = TradeSide.Buy, OrderType = OrderType.Market, Quantity = 1, Price = 100, TraderId = "me", UserComment ="" },
-            new () { Id = Guid.Parse("E170BA5F-98D8-4893-8333-E21C5C79DC03"), PortfolioCode = "P1", StrategyCode = "S1", Instrument = "GBD", Side = TradeSide.Buy, OrderType = OrderType.Market, Quantity = 1, Price = 100, TraderId = "me", UserComment ="" }
-        };
-        modelBuilder.Entity<Trade>()
-            .HasData(trades);
+        var contextTpe = GetType();
 
-        modelBuilder.Entity<EventModel>(b => {
-            b.ToTable("Events");
-
-            b.HasKey(e => new { e.Id, e.SequenceNumber }); // supports GetEvents and AppendEvent in EventStore
-
-            b.Property(e => e.RaisedAt).HasColumnType("datetime2(7)");
-            b.Property(e => e.EventTypeName).HasMaxLength(256).IsRequired();
-            b.Property(e => e.RowVersion).IsRowVersion();
-        });
-
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            contextTpe.Assembly,
+            type => type.Namespace != null &&
+                             type.Namespace.StartsWith(contextTpe.Namespace));
     }
-}
 
-private struct PlaceOrderAsyncStateMachine : IAsyncStateMachine {
-    public int _state;
-    public AsyncTaskMethodBuilder _builder;
 
-    public string customerName;
-    public RewrittenOrderService _this;
 
-    private Order _order;
-    private TaskAwaiter _dbAwaiter;
-    private TaskAwaiter _sbAwaiter;
+    //  if enabled lage bulk query is faster
+    //  if disabled the bulk insert/update faster
+    public void SetAutoDetectChanges(bool enabled = true) {
+        ChangeTracker.AutoDetectChangesEnabled = enabled;
+    }
 
-    public void MoveNext() {
-        try {
-            if (_state == -1) {
-                _order = new Order {
-                    Id = Guid.NewGuid(),
-                    CustomerName = customerName,
-                    CreatedAt = DateTime.UtcNow
-                };
-
-                var dbTask = _this._db.SaveAsync(_order);
-                _dbAwaiter = dbTask.GetAwaiter();
-
-                if (!_dbAwaiter.IsCompleted) {
-                    _state = 0;
-                    _builder.AwaitUnsafeOnCompleted(ref _dbAwaiter, ref this);
-                    return;
-                }
-
-                _dbAwaiter.GetResult();
-            }
-
-            if (_state == 0) {
-                _dbAwaiter.GetResult();
-            }
-
-            var sbTask = _this._sb.SendMessageAsync("Ordered");
-            _sbAwaiter = sbTask.GetAwaiter();
-
-            if (!_sbAwaiter.IsCompleted) {
-                _state = 1;
-                _builder.AwaitUnsafeOnCompleted(ref _sbAwaiter, ref this);
-                return;
-            }
-
-            _sbAwaiter.GetResult();
-        } catch (Exception ex) {
-            _builder.SetException(ex);
-            return;
+    public void InspectTrackedState() {
+        if (!ChangeTracker.AutoDetectChangesEnabled) {
+            ChangeTracker.DetectChanges();
         }
 
-        _builder.SetResult();
+        foreach (var entry in ChangeTracker.Entries()) {
+            logger.LogDebug($"Entity: {entry.Entity.GetType().Name}, State: {entry.State}");
+        }
     }
 
-    public void SetStateMachine(IAsyncStateMachine stateMachine) {
-        _builder.SetStateMachine(stateMachine);
+
+    public async Task InspectConcuency() {
+        try {
+            //Events: //  builder.Property(e => e.RowVersion).IsRowVersion();
+            await SaveChangesAsync();
+        } catch (DbUpdateConcurrencyException ex) {
+
+            logger.LogDebug("Concurrency conflict detected!");
+            foreach (var entry in ex.Entries) {
+                logger.LogDebug($"Conflicted entity: {entry.Entity.GetType().Name}");
+            }
+        }
     }
+
+
+    public Task<List<Trade>> GetTrades() => Trades
+        .Include(t => t.Legs.Where(leg => leg.Quantity > 0))
+        .ThenInclude(l => l.Detail)
+        .Include(t => t.Tags)
+        .Include(t => t.ExecutionDetail)
+        .AsNoTracking()  // ChangeTracker skipped
+        .AsSplitQuery()
+        .Where(t => t.PortfolioCode == "P1")
+        .ToListAsync();
+
+    public Task<Dictionary<string, List<Trade>>> GetTradesGroupedByPortfolio() => Trades
+            .AsNoTracking()
+            .GroupBy(t => t.PortfolioCode)
+            .ToDictionaryAsync(g => g.Key, g => g.ToList());
+    public Task<List<Trade>> GetTradesByRawSql(string portfolioCode) => Trades
+        .FromSqlInterpolated($"SELECT * FROM Trades WHERE PortfolioCode = {portfolioCode}")
+        .AsNoTracking()
+        .ToListAsync();
+
+    // Shadow Property Query (LastUpdatedAt must be defined in config)
+    public Task<List<Trade>> GetRecentlyUpdatedTrades(DateTime since) => Trades
+        .Where(t => EF.Property<DateTime>(t, "LastUpdatedAt") >= since)
+        .AsNoTracking()
+        .ToListAsync();
+
+    // Global Query Filter override
+    public Task<List<Trade>> GetAllTradesIncludingDeleted() => Trades
+        .IgnoreQueryFilters()
+        .ToListAsync();
+
 }
-    
-

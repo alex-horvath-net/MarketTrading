@@ -11,21 +11,12 @@ public class PlaceOrderCommandHandler(IEventStore<Guid> eventStore, ITime time) 
 
     public override void Handle(PlaceOrderCommand command) {
         var eventStream = base.GetEventStream<Order>(command.OrderId);
-        var order = eventStream.GetAggregateRoot();
         if (command.Price.IsValid()) {
-            var orderPlacedEvent = new OrderPlacedEvent(
-                command.OrderId,
-                command.Symbol,
-                command.Quantity,
-                command.Price,
-       time.Now);
-
+            var order = eventStream.GetAggregateRoot();
+            var orderPlacedEvent = new OrderPlacedEvent(command.OrderId, command.Symbol, command.Quantity, command.Price, time.Now);
             eventStream.Append(orderPlacedEvent);
         } else {
-            var orderPlacementFailedEvent =
-                new OrderPlacementFailedEvent(
-                     OrderPlacementFailedEvent.FailReson.InvalidPrice,
-                     time.Now);
+            var orderPlacementFailedEvent = new OrderPlacementFailedEvent(OrderPlacementFailedEvent.FailReson.InvalidPrice, time.Now);
             eventStream.Append(orderPlacementFailedEvent);
         }
     }
