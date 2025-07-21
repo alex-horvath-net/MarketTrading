@@ -18,3 +18,4 @@ public class EventModelConfiguration : IEntityTypeConfiguration<EventModel> {
     }
 
     private EventModel[] SeedData() => [];
+}
