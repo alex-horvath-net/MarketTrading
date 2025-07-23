@@ -1,14 +1,10 @@
-using MarketDataIngestorService.Domain;
-using MarketDataIngestorService.Features.LiveMarketData;
+using MarketDataIngestionService.Domain;
+using MarketDataIngestionService.Features.LiveMarketData;
 
-namespace MarketDataIngestorService.Infrastructure.LiveDataReceiver;
+namespace MarketDataIngestionService.Infrastructure.LiveDataReceiver;
 
 public class FakeLReceiver : IReceiver {
-    public Task Receive(IEnumerable<string> symbols, Action<MarketPrice> onTick, CancellationToken token) => Task.Run(
-            () => ReceiveLiveDataOnBackroundThread(symbols, onTick, token),
-            token);
-
-    private static async Task ReceiveLiveDataOnBackroundThread(IEnumerable<string> symbols, Action<MarketPrice> onNewLiveDataReceived, CancellationToken token) {
+    public async Task Receive(IEnumerable<string> symbols, Action<MarketPrice> onNewLiveDataReceived, CancellationToken token) { 
         var rand = new Random();
         while (!token.IsCancellationRequested) {
             foreach (var symbol in symbols) {
@@ -23,7 +19,7 @@ public class FakeLReceiver : IReceiver {
                 var liveData = new MarketPrice {
                     Symbol = symbol, 
                     Bid = bid,
-                    Ask = ask,
+                    Ask = ask, 
                     Last = last,
                     Timestamp = timestamp,
                     CorrelationId = correlationId   
@@ -31,7 +27,6 @@ public class FakeLReceiver : IReceiver {
                  
                 onNewLiveDataReceived(liveData);
             }
-
 
             await Task.Delay(1000, token);
         }

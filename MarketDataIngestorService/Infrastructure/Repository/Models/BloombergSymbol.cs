@@ -1,4 +1,4 @@
-﻿namespace MarketDataIngestorService.Infrastructure.Database.Models;
+﻿namespace MarketDataIngestionService.Infrastructure.Database.Models;
 
 public class BloombergSymbol {
     public int Id { get; set; }

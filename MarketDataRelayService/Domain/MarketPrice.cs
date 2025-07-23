@@ -1,4 +1,5 @@
-﻿namespace MarketDataIngestionService.Domain;
+﻿namespace MarketDataRelayService.Domain;
+
 public class MarketPrice {
     public string Symbol { get; set; } = string.Empty;
     public double Bid { get; set; }
@@ -7,3 +8,4 @@ public class MarketPrice {
     public DateTime Timestamp { get; set; }
     public string CorrelationId { get; set; } = string.Empty;
 }
+

@@ -1,4 +1,4 @@
-﻿namespace MarketDataIngestorService.Domain;
+﻿namespace MarketDataIngestionService.Domain;
 
 public class Symbol {
     public int Id { get; set; }

@@ -1,11 +1,11 @@
-﻿using MarketDataIngestorService.Features.AcquiereLiveMarketData;
-using MarketDataIngestorService.Infrastructure.Database;
+﻿using MarketDataIngestionService.Features.AcquiereLiveMarketData;
+using MarketDataIngestionService.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Polly;
 using Polly.CircuitBreaker;
 using Polly.Retry;
 
-namespace MarketDataIngestorService.Infrastructure.Repository;
+namespace MarketDataIngestionService.Infrastructure.Repository;
 public class EFRepository : IRepository {
     private readonly IngestorDbContext _db;
     private readonly ILogger<EFRepository> _logger;

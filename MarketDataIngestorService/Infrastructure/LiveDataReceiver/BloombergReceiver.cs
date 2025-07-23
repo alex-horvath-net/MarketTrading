@@ -1,6 +1,6 @@
-﻿//using MarketDataIngestorService.Domain;
-//using MarketDataIngestorService.Features.LiveMarketData;
-//namespace MarketDataIngestorService.Infrastructure.LiveDataReceiver;
+﻿//using MarketDataIngestionService.Domain;
+//using MarketDataIngestionService.Features.LiveMarketData;
+//namespace MarketDataIngestionService.Infrastructure.LiveDataReceiver;
 
 //public class BloombergClient : IMarketDataProvider {
 //    private Session? _session;

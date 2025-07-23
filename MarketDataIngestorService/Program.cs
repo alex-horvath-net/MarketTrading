@@ -1,7 +1,7 @@
-using MarketDataIngestorService;
+using MarketDataIngestionService;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddHostedService<MarketDataIngestorServiceWorker>();
+builder.Services.AddHostedService<MarketDataIngestorBackgroundService>();
 
 var host = builder.Build();
 host.Run();

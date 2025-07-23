@@ -1,14 +1,13 @@
 ﻿using System.Text.Json;
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Producer;
-using MarketDataIngestorService.Domain;
-using MarketDataIngestorService.Features.LiveMarketData;
+using MarketDataIngestionService.Domain;
+using MarketDataIngestionService.Features.LiveMarketData;
 using Polly;
 using Polly.CircuitBreaker;
 using Polly.Retry;
-using Polly.Timeout;
 
-namespace MarketDataIngestorService.Infrastructure.LiveDataPublisher;
+namespace MarketDataIngestionService.Infrastructure.LiveDataPublisher;
 
 public class EventHubPublisher : IPublisher {
     private readonly EventHubProducerClient _eventHub;
@@ -49,28 +48,29 @@ public class EventHubPublisher : IPublisher {
             .Build();
     }
 
-    public async Task SendAsync(MarketPrice price, CancellationToken token) {
-        var json = JsonSerializer.Serialize(price);
-        var eventData = new EventData(json) {
-            CorrelationId = price.CorrelationId
-        };
+    public async Task Publish(IEnumerable<MarketPrice> liveDataBatch, string symbol, CancellationToken token) {
+        var eventBatch = new List<EventData>();
 
-        eventData.Properties["Symbol"] = price.Symbol;
-        eventData.Properties["Timestamp"] = price.Timestamp.ToString("O");
-
+        foreach (var liveData in liveDataBatch) {
+            var json = JsonSerializer.Serialize(liveData);
+            var eventData = new EventData(json) {
+                CorrelationId = liveData.CorrelationId
+            };
+            eventData.Properties["Symbol"] = liveData.Symbol;
+            eventData.Properties["Timestamp"] = liveData.Timestamp.ToString("O");
+            
+            eventBatch.Add(eventData);
+        }
 
         var options = new SendEventOptions {
-            PartitionKey = price.Symbol.Replace(" ", "").ToUpperInvariant()
+            PartitionKey = symbol.Replace(" ", "").ToUpperInvariant()
         };
-
-
-        var eventBatch = new List<EventData> { eventData };
 
         await _resiliencePipeline.ExecuteAsync(
             async (t) => await _eventHub.SendAsync(eventBatch, options, t),
             token
         );
 
-        _logger.LogDebug("Sent event for {Symbol} [{CorrelationId}]", price.Symbol, price.CorrelationId);
+        _logger.LogDebug("Published live data for {Symbol}", symbol);
     }
 }
