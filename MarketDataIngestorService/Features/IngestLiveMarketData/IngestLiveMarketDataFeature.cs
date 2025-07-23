@@ -139,3 +139,10 @@ public class IngestLiveMarketDataFeature : IIngestLiveMarketDataFeature {
         && price.Ask <= 1_000_000
         && price.Last <= 1_000_000;
 }
+
+
+public class IngestLiveMarketDataOptions {
+    public int BufferCapacity { get; set; } = 100_000;
+    public int BatchSize { get; set; } = 50;
+    public int FlushIntervalMs { get; set; } = 100;
+}

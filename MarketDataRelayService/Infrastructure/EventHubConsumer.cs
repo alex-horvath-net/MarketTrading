@@ -17,7 +17,7 @@ public class EventHubConsumerOptions {
 }
 
  
-public class EventHubConsumer : IEventHubConsumer {
+public class EventHubConsumer : IEventReader {
     private readonly EventHubConsumerOptions _options;
     private readonly ILogger<EventHubConsumer> _logger;
 

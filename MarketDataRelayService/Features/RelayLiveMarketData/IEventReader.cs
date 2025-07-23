@@ -2,7 +2,7 @@
 
 namespace MarketDataRelayService.Features.RelayLiveMarketData;
 
-public interface IEventHubConsumer {
+public interface IEventReader {
     IAsyncEnumerable<MarketPrice> ReadAsync(CancellationToken token);
 }
 

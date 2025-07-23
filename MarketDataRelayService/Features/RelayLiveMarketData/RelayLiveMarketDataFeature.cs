@@ -2,37 +2,37 @@
 public class RelayLiveMarketDataFeature : IRelayLiveMarketDataFeature {
     private readonly IMarketDataCache _cache;
     private readonly IMarketDataStorage _storage;
-    private readonly IEventHubConsumer _consumer;
+    private readonly IEventReader _eventReader;
     private readonly IClientNotifier _notifier;
-    private readonly IQueue _queue;
+    private readonly ISrorageEnqueue _storageEnqueue;
     private readonly ILogger<RelayLiveMarketDataFeature> _logger;
 
     public RelayLiveMarketDataFeature(
         IMarketDataCache cache,
         IMarketDataStorage storage,
-        IEventHubConsumer consumer,
+        IEventReader consumer,
         IClientNotifier notifier,
-        IQueue queue,
+        ISrorageEnqueue queue,
         ILogger<RelayLiveMarketDataFeature> logger) {
         _logger = logger;
-        _consumer = consumer;
+        _eventReader = consumer;
         _notifier = notifier;
-        _queue = queue;
+        _storageEnqueue = queue;
         _cache = cache;
         _storage = storage;
     }
 
     public async Task RunAsync(CancellationToken token) {
 
-        await foreach (var liveData in _consumer.ReadAsync(token)) {
+        await foreach (var marketData in _eventReader.ReadAsync(token)) {
             try {
-                _cache.Set(liveData);
+                _cache.Set(marketData);
 
-                _queue.Enqueue(t => _storage.StoreAsync(liveData, t));
+                _storageEnqueue.Enqueue(t => _storage.StoreAsync(marketData, t));
 
-                await _notifier.SendAsync(liveData, token);
+                await _notifier.SendAsync(marketData, token);
             } catch (Exception ex) {
-                _logger.LogError(ex, "Failed to notify UI for {Symbol}", liveData.Symbol);
+                _logger.LogError(ex, "Failed to notify UI for {Symbol}", marketData.Symbol);
             }
         }
     }
