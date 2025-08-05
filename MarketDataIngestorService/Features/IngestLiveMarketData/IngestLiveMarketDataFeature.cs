@@ -1,35 +1,36 @@
 ﻿using System.Collections.Concurrent;
 using MarketDataIngestionService.Domain;
-using MarketDataIngestionService.Features.AcquiereLiveMarketData;
+using MarketDataIngestionService.Infrastructure.Host;
 using Microsoft.Extensions.Options;
 
-namespace MarketDataIngestionService.Features.LiveMarketData;
+namespace MarketDataIngestionService.Features.IngestLiveMarketData;
 
 
 public class IngestLiveMarketDataFeature : IIngestLiveMarketDataFeature {
     private readonly IRepository _repository;
     private readonly IPublisher _publisher;
     private readonly IReceiver _receiver;
+    private readonly ITime _time;
     private readonly ILogger<IngestLiveMarketDataFeature> _logger;
-    private readonly IngestLiveMarketDataOptions _options;
-    private readonly BlockingCollection<MarketPrice> _buffer;
+    private readonly IBuffer _buffer;
     private IEnumerable<string> _symbols = [];
-    private long _droppedTicks;
-    private int _bufferHighWaterMark = 0;
+    private long _missedTicks;
+    private int _bufferSizeRecord = 0;
     private readonly string _instanceId = Guid.NewGuid().ToString();
 
     public IngestLiveMarketDataFeature(
         IReceiver receiver,
         IPublisher publisher,
         IRepository repository,
+        IBuffer buffer,
         ILogger<IngestLiveMarketDataFeature> logger,
-        IOptions<IngestLiveMarketDataOptions> options) {
+        ITime time) {
         _receiver = receiver;
         _publisher = publisher;
         _repository = repository;
         _logger = logger;
-        _options = options.Value;
-        _buffer = new BlockingCollection<MarketPrice>(_options.BufferCapacity);
+        _buffer = buffer;
+        _time = time;
     }
 
     public async Task RunAsync(CancellationToken token) {
@@ -44,64 +45,43 @@ public class IngestLiveMarketDataFeature : IIngestLiveMarketDataFeature {
         }
 
         var publishTask = Task.Run(() => PublishLiveData(token), token);
-        var monitorTask = Task.Run(() => MonitorBuffer(token), token);
+        //var monitorTask = Task.Run(() => MonitorBuffer(token), token);
 
-        await _receiver.Receive(_symbols, LiveDataReceived, token);
+        await _receiver.StartReceivingLiveData(_symbols,  _instanceId,  token);
 
-        _buffer.CompleteAdding();
 
-        await Task.WhenAll(publishTask, monitorTask);
+        //await Task.WhenAll(publishTask, monitorTask);
 
-        _logger.LogInformation("Dropped tick count during run: {Count} [InstanceId: {InstanceId}]", _droppedTicks, _instanceId);
-        _logger.LogInformation("Max buffer usage reached: {Max} / {Capacity} [InstanceId: {InstanceId}]", _bufferHighWaterMark, _buffer.BoundedCapacity, _instanceId);
+        _logger.LogInformation("Dropped tick count during run: {Count} [InstanceId: {InstanceId}]", _missedTicks, _instanceId);
+        _logger.LogInformation("Max buffer usage reached: {Max} / {Capacity} [InstanceId: {InstanceId}]", _bufferSizeRecord, _buffer.BoundedCapacity, _instanceId);
         _logger.LogInformation("MarketDataIngestionService stopped — InstanceId: {InstanceId}", _instanceId);
     }
 
-    private void LiveDataReceived(MarketPrice liveData) {
-        try {
-            if (!IsValid(liveData)) {
-                _logger.LogWarning("Invalid live data received: {@Price} [InstanceId: {InstanceId}]", liveData, _instanceId);
-                return;
-            }
-
-            if (_buffer.TryAdd(liveData)) {
-                var current = _buffer.Count;
-                Interlocked.Exchange(ref _bufferHighWaterMark, Math.Max(_bufferHighWaterMark, current));
-            } else {
-                Interlocked.Increment(ref _droppedTicks);
-                _logger.LogWarning("Buffer overflow — dropped live data for {Symbol} [InstanceId: {InstanceId}]",
-                    liveData.Symbol, _instanceId);
-            }
-        } catch (Exception ex) {
-            _logger.LogError(ex, "Failed to receive live data [InstanceId: {InstanceId}]", _instanceId);
-        }
-    }
 
     private async Task PublishLiveData(CancellationToken token) {
-        var liveDataBatch = new List<MarketPrice>(_options.BatchSize);
-        var flushInterval = TimeSpan.FromMilliseconds(_options.FlushIntervalMs);
-        var lastFlush = DateTime.UtcNow;
+        var liveDataBatch = new List<MarketPrice>(_options.BatchSizeTrashold);
+        var publishIntervalTrashold = TimeSpan.FromMilliseconds(_options.PublishIntervalTrasholdMs);
+        var lastPublish = _time.UtcNow;
 
         foreach (var liveData in _buffer.GetConsumingEnumerable(token)) {
             liveDataBatch.Add(liveData);
 
-            bool sizeLimitReached = liveDataBatch.Count >= _options.BatchSize;
-            bool timeLimitReached = (DateTime.UtcNow - lastFlush) >= flushInterval;
-
-            if (sizeLimitReached || timeLimitReached) {
-                await FlushBatchByPartitionKey(liveDataBatch, token);
+            bool sizeTrigger = liveDataBatch.Count >= _options.BatchSizeTrashold;
+            bool timeTrigger = _time.UtcNow - lastPublish >= publishIntervalTrashold;
+            if (sizeTrigger || timeTrigger) {
+                await PublishBatch(liveDataBatch, token);
                 liveDataBatch.Clear();
-                lastFlush = DateTime.UtcNow;
+                lastPublish = _time.UtcNow;
             }
         }
 
         // Flush remaining messages at the end
         if (liveDataBatch.Count > 0) {
-            await FlushBatchByPartitionKey(liveDataBatch, token);
+            await PublishBatch(liveDataBatch, token);
         }
     }
 
-    private async Task FlushBatchByPartitionKey(List<MarketPrice> batch, CancellationToken token) {
+    private async Task PublishBatch(List<MarketPrice> batch, CancellationToken token) {
         var grouped = batch.GroupBy(p => p.Symbol.Replace(" ", "").ToUpperInvariant());
 
         foreach (var group in grouped) {
@@ -116,33 +96,5 @@ public class IngestLiveMarketDataFeature : IIngestLiveMarketDataFeature {
             }
         }
     }
-
-    private async Task MonitorBuffer(CancellationToken token) {
-        while (!token.IsCancellationRequested) {
-            _logger.LogInformation("Buffer: {Count}/{Capacity}, Dropped: {Dropped}, MaxUsed: {HighWaterMark} [InstanceId: {InstanceId}]",
-               _buffer.Count,
-               _buffer.BoundedCapacity,
-               _droppedTicks,
-               _bufferHighWaterMark,
-               _instanceId);
-
-            await Task.Delay(TimeSpan.FromSeconds(60), token);
-        }
-    }
-
-    private static bool IsValid(MarketPrice price) => !string.IsNullOrWhiteSpace(price.Symbol)
-        && price.Timestamp != default
-        && price.Bid >= 0
-        && price.Ask >= 0
-        && price.Last >= 0
-        && price.Bid <= 1_000_000
-        && price.Ask <= 1_000_000
-        && price.Last <= 1_000_000;
 }
 
-
-public class IngestLiveMarketDataOptions {
-    public int BufferCapacity { get; set; } = 100_000;
-    public int BatchSize { get; set; } = 50;
-    public int FlushIntervalMs { get; set; } = 100;
-}

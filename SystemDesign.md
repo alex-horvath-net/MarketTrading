@@ -1,5 +1,35 @@
 # System Design
 
+```mermaid
+sequenceDiagram
+    participant IngestionService
+    participant IngestionFeature
+    participant Repository
+    participant Receiver
+    participant Buffer
+    participant Batch
+    participant Publisher
+    participant EventHub
+
+
+
+    IngestionService->>IngestionFeature: RunAsync(token)
+    IngestionFeature->>Repository: LoadSymbols(token)
+    Repository-->>IngestionFeature: IEnumerable<string>
+    
+    IngestionFeature->>Receiver: StartReceivingLiveData(symbols, token)
+     loop every second
+        Receiver->>Receiver: ReceiveRawLiveData(symbol)
+        Receiver->>Receiver: ValidateRawLiveData(raw)
+        Receiver->>Receiver: MapRawLiveData(raw)
+        Receiver->>Buffer: TryAdd(liveData)
+     end
+```
+ 
+
+
+
+---
 - Blazor UI
   -  Display real-time price updates
 - MarketDataService

@@ -38,7 +38,7 @@
 //                }
 //            });
 
-//            if (!_session.Receive() || !_session.OpenService(BloombergService))
+//            if (!_session.StartReceiveLiveDataContinuesly() || !_session.OpenService(BloombergService))
 //                return;
 
 //            var subscriptions = new SubscriptionList();

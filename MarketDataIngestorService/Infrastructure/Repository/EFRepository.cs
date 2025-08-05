@@ -1,4 +1,4 @@
-﻿using MarketDataIngestionService.Features.AcquiereLiveMarketData;
+﻿using MarketDataIngestionService.Features.IngestLiveMarketData;
 using MarketDataIngestionService.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Polly;

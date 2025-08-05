@@ -1,9 +1,10 @@
-﻿using MarketDataIngestionService.Domain;
+﻿using System.Collections.Concurrent;
+using MarketDataIngestionService.Domain;
 
-namespace MarketDataIngestionService.Features.LiveMarketData;
+namespace MarketDataIngestionService.Features.IngestLiveMarketData;
 
 public interface IReceiver {
-    Task Receive(IEnumerable<string> symbols, Action<MarketPrice> onNewLiveDataReceived, CancellationToken token);
+    Task StartReceivingLiveData(IEnumerable<string> symbols, string instanceId, CancellationToken token);
 }
 
  

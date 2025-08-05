@@ -1,4 +1,4 @@
-﻿namespace MarketDataIngestionService; 
+﻿namespace MarketDataIngestionService.Infrastructure.Host; 
 public class MarketDataIngestorBackgroundService : BackgroundService {
     private readonly ILogger<MarketDataIngestorBackgroundService> _logger;
     private IIngestLiveMarketDataFeature _ingestLiveMarketData;
@@ -14,8 +14,3 @@ public class MarketDataIngestorBackgroundService : BackgroundService {
         _logger.LogInformation("MarketDataIngestorBackgroundService stopped");
     }
 }
-
-public interface IIngestLiveMarketDataFeature {
-    Task RunAsync(CancellationToken token);
-}
-

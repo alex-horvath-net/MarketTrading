@@ -2,7 +2,7 @@
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Producer;
 using MarketDataIngestionService.Domain;
-using MarketDataIngestionService.Features.LiveMarketData;
+using MarketDataIngestionService.Features.IngestLiveMarketData;
 using Polly;
 using Polly.CircuitBreaker;
 using Polly.Retry;
@@ -49,7 +49,7 @@ public class EventHubPublisher : IPublisher {
     }
 
     public async Task Publish(IEnumerable<MarketPrice> liveDataBatch, string symbol, CancellationToken token) {
-        var eventBatch = new List<EventData>();
+        var EventDataBatch = new List<EventData>();
 
         foreach (var liveData in liveDataBatch) {
             var json = JsonSerializer.Serialize(liveData);
@@ -59,7 +59,7 @@ public class EventHubPublisher : IPublisher {
             eventData.Properties["Symbol"] = liveData.Symbol;
             eventData.Properties["Timestamp"] = liveData.Timestamp.ToString("O");
             
-            eventBatch.Add(eventData);
+            EventDataBatch.Add(eventData);
         }
 
         var options = new SendEventOptions {
@@ -67,7 +67,7 @@ public class EventHubPublisher : IPublisher {
         };
 
         await _resiliencePipeline.ExecuteAsync(
-            async (t) => await _eventHub.SendAsync(eventBatch, options, t),
+            async (t) => await _eventHub.SendAsync(EventDataBatch, options, t),
             token
         );
 
