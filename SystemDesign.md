@@ -1,5 +1,5 @@
 # System Design
-
+# Live Data Ingestion
 ```mermaid
 sequenceDiagram
     participant IngestionService
@@ -7,26 +7,65 @@ sequenceDiagram
     participant Repository
     participant Receiver
     participant Buffer
-    participant Batch
     participant Publisher
+    participant Batch
     participant EventHub
 
-
-
     IngestionService->>IngestionFeature: RunAsync(token)
+
     IngestionFeature->>Repository: LoadSymbols(token)
     Repository-->>IngestionFeature: IEnumerable<string>
-    
+
+    IngestionFeature->>Publisher: Start background: PublishLiveData(token)
+
     IngestionFeature->>Receiver: StartReceivingLiveData(symbols, token)
-     loop every second
+    
+    loop each symbol, second
         Receiver->>Receiver: ReceiveRawLiveData(symbol)
         Receiver->>Receiver: ValidateRawLiveData(raw)
         Receiver->>Receiver: MapRawLiveData(raw)
-        Receiver->>Buffer: TryAdd(liveData)
-     end
+        Receiver->>Buffer: BufferLiveData(liveData)
+    end
+
+    loop periodically or on flush condition
+        Publisher->>Buffer: GetItems(token)
+        Publisher->>EventHub: Publish(batch, partitionKey)
+    end
 ```
  
+###  1. Receiver → Buffer 
+Operation: Adds item to a BlockingCollection.
 
+🔁 Latency: ~10–30 µs (negligible)
+
+⚡ Throughput: ~500k–1M ticks/sec (receiver thread can ingest this easily)
+
+✅ Handles burst ingestion (e.g., 10,000 ticks in 100ms burst)
+
+✅ Zero blocking unless buffer is full
+
+### 2. Buffer → Publisher → Batch Creation
+Operation: Publisher pulls from buffer and accumulates ticks into a list.
+
+⏳ Latency:
+
+Controlled by:
+
+BatchSizeThreshold = 250
+
+PublishIntervalThreshold = 100ms
+
+→ If batch fills quickly: ~20–40ms
+
+→ Otherwise: capped at 100ms wait
+
+📦 Throughput:
+
+If 4 publishers run in parallel, each sending 250 ticks per 100ms →
+
+4 x 250 x 10 = 10,000 ticks/sec
+
+(scales linearly with parallelism)
 
 
 ---

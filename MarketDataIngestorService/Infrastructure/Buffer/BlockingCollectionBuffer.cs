@@ -2,57 +2,66 @@
 using MarketDataIngestionService.Domain;
 using MarketDataIngestionService.Features.IngestLiveMarketData;
 using Microsoft.Extensions.Options;
+using System.Runtime.CompilerServices;
 
 namespace MarketDataIngestionService.Infrastructure.Buffer;
+
 public class BlockingCollectionBuffer : IBuffer {
-    private readonly BlockingCollection<MarketPrice> buffer;
+    private readonly BlockingCollection<MarketPrice> _buffer;
     private readonly ILogger<BlockingCollectionBuffer> _logger;
-    private long _bufferOverFlowCounter;
-    private int _bufferSizeRecord = 0;
+    private long _overFlowCounter;
+    private int _maxSize = 0;
 
-    private readonly BufferOptions _options;
+    public BufferOptions Options { get; private set; }
     public BlockingCollectionBuffer(IOptions<BufferOptions> options, ILogger<BlockingCollectionBuffer> logger) {
-        this.buffer = new BlockingCollection<MarketPrice>();
+        Options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+        _buffer = new BlockingCollection<MarketPrice>(Options.BufferCapacity);
     }
-    public void BufferLiveData(MarketPrice liveData, string instanceId) {
-        try {
 
-            if (buffer.TryAdd(liveData)) {
-                var current = buffer.Count;
-                if (current > _bufferSizeRecord) {
-                    Interlocked.Exchange(ref _bufferSizeRecord, current);
-                    _logger.LogWarning("Buffer size reached new record.");
-                    MonitorBuffer(buffer, instanceId);
+    public async IAsyncEnumerable<MarketPrice> GetItemsAsync([EnumeratorCancellation] CancellationToken cancellationToken) {
+        while (!cancellationToken.IsCancellationRequested) {
+            MarketPrice item;
+            try {
+                item = _buffer.Take(cancellationToken);
+            } catch (OperationCanceledException) {
+                yield break;
+            } catch (InvalidOperationException) {
+                // Buffer is marked as completed and empty
+                yield break;
+            }
+            yield return item;  
+        }
+        await Task.CompletedTask;
+    }
+
+    public void AddItem(MarketPrice liveData, string instanceId) {
+        try {
+            if (_buffer.TryAdd(liveData)) {
+                var currentSize = _buffer.Count;
+                if (currentSize > _maxSize) {
+                    Interlocked.Exchange(ref _maxSize, currentSize);
+                    _logger.LogWarning("Buffer max size is {MaxSize}. [InstanceId: {InstanceId}]", _maxSize, instanceId);
+                    MonitorBuffer(_buffer, instanceId);
                 }
             } else {
-                Interlocked.Increment(ref _bufferOverFlowCounter);
-                _logger.LogWarning("Buffer size overflow");
-                MonitorBuffer(buffer, instanceId);
+                Interlocked.Increment(ref _overFlowCounter);
+                _logger.LogWarning("Buffer overflow happened at the {OverFlowCounter} times. [InstanceId: {InstanceId}]", _overFlowCounter, instanceId);
+                MonitorBuffer(_buffer, instanceId);
             }
         } catch (Exception ex) {
-            _logger.LogError(ex, "Failed to buffer live data [InstanceId: {InstanceId}]", instanceId);
-            MonitorBuffer(buffer, instanceId);
+            _logger.LogError(ex, "Failed to buffer live data. [InstanceId: {InstanceId}]", instanceId);
+            MonitorBuffer(_buffer, instanceId);
+            throw;
         }
     }
 
-
-    public void CompleteAdding() {
-         buffer.CompleteAdding();
+    public void StopAddItem() {
+        _buffer.CompleteAdding();
     }
-
-
 
     private void MonitorBuffer(BlockingCollection<MarketPrice> buffer, string instanceId) {
-        _logger.LogDebug("BufferSize: {BufferSize}; BufferCapacity: {BufferCapacity}; BufferSizeRecord: {BufferSizeRecord} BufferOverFlowCount: {BufferOverFlowCount}. [InstanceId: {InstanceId}]",
-                    buffer.Count, buffer.BoundedCapacity, _bufferSizeRecord, _bufferOverFlowCounter, instanceId);
+        _logger.LogDebug("BufferCurrentSize: {BufferCurrentSize}; BufferCapacity: {BufferCapacity}; BufferMaxSize: {BufferMaxSize} er: {BufferOverFlowCounter}. [InstanceId: {InstanceId}]",
+            buffer.Count, buffer.BoundedCapacity, _maxSize, _overFlowCounter, instanceId);
     }
-}
-
-
-public class BufferOptions {
-    public int BufferCapacity { get; set; } = 100_000;
-    public int BatchSizeTrashold { get; set; } = 50;
-    public int PublishIntervalTrasholdMs { get; set; } = 100;
 }
