@@ -23,28 +23,20 @@ public class FakeLReceiver : IReceiver
 
     public async Task StartReceivingLiveData(string instanceId, CancellationToken token)
     {
-        IEnumerable<string> symbols = Array.Empty<string>();
-        int maxRetries = 3;
-        int retryDelayMs = 500;
         int receivedCount = 0, failedCount = 0, invalidCount = 0;
         var stopwatch = Stopwatch.StartNew();
-        bool symbolsLoaded = false;
 
-        // Resilient symbol loading
-        for (int attempt = 1; attempt <= maxRetries && !symbolsLoaded; attempt++)
+        IEnumerable<string> symbols;
+        try
         {
-            try
-            {
-                symbols = await _repository.LoadSymbols(token);
-                ValidateArguments(symbols, instanceId);
-                symbolsLoaded = true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error loading symbols (attempt {Attempt}) [InstanceId: {InstanceId}]", attempt, instanceId);
-                if (attempt < maxRetries) await Task.Delay(retryDelayMs, token);
-                else throw;
-            }
+            // All retry logic is handled by the repository itself.
+            symbols = await _repository.LoadSymbols(token);
+            ValidateArguments(symbols, instanceId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading symbols [InstanceId: {InstanceId}]", instanceId);
+            throw;
         }
 
         var lastHealthLog = _time.UtcNow;
@@ -63,7 +55,7 @@ public class FakeLReceiver : IReceiver
                         else
                         {
                             invalidCount++;
-                        }
+                        } 
                     }
                     catch (Exception ex)
                     {
