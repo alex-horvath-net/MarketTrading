@@ -6,12 +6,10 @@ using MarketDataIngestionService.Features.IngestLiveMarketData;
 using Polly;
 using Polly.CircuitBreaker;
 using Polly.Retry;
-using System.Diagnostics;
 
 namespace MarketDataIngestionService.Infrastructure.LiveDataPublisher;
 
-public class EventHubPublisher : IPublisher
-{
+public class EventHubPublisher : IPublisher {
     private readonly EventHubProducerClient _eventHub;
     private readonly ResiliencePipeline _resiliencePipeline;
     private readonly IBuffer _buffer;
@@ -23,12 +21,11 @@ public class EventHubPublisher : IPublisher
 
     public EventHubPublisher(
         EventHubProducerClient eventHub,
-        ILogger<EventHubPublisher> logger,
         IBuffer buffer,
         IListBacth batch,
         ITime time,
-        ResiliencePipeline? resiliencePipeline = null)
-    {
+        ILogger<EventHubPublisher> logger,
+        ResiliencePipeline? resiliencePipeline = null) {
         _eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _buffer = buffer ?? throw new ArgumentNullException(nameof(buffer));
@@ -37,85 +34,47 @@ public class EventHubPublisher : IPublisher
         _resiliencePipeline = resiliencePipeline ?? BuildDefaultResiliencePipeline(_logger);
     }
 
-    public async Task PublishLiveData(CancellationToken token)
-    {
-        _logger.LogInformation("Started publishing live market data to EventHub");
-        List<MarketPrice> batch = new();
-        var stopwatch = Stopwatch.StartNew();
+    public async Task PublishLiveData(string hostId, CancellationToken token) {
+        var batch = new List<MarketPrice>();
 
-        try
-        {
-            await foreach (var liveData in _buffer.GetItemsAsync(token))
-            {
-                token.ThrowIfCancellationRequested();
-                try
-                {
-                    if (_batch.Add(liveData, ref batch))
-                    {
-                        await PublishListBatch(batch, token);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error processing live data item");
-                }
-            }
-
-            if (_batch.Count > 0)
-            {
-                await PublishListBatch(batch, token);
+        await foreach (var liveData in _buffer.GetItemsAsync(token)) {
+            token.ThrowIfCancellationRequested();
+            if (_batch.Add(liveData, ref batch)) {
+                await PublishListBatch(batch, hostId, token);
             }
         }
-        catch (OperationCanceledException)
-        {
-            _logger.LogWarning("Publishing cancelled");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error during publishing");
-            throw;
-        }
-        finally
-        {
-            stopwatch.Stop();
-            _logger.LogInformation("Publishing completed — Total published: {PublishedCount}, Skipped: {SkippedCount}, Uptime: {ElapsedSeconds}s", _publishedCount, _skippedCount, stopwatch.Elapsed.TotalSeconds);
+
+        if (_batch.Count > 0) {
+            await PublishListBatch(batch, hostId, token);
         }
     }
 
-    private async Task PublishListBatch(List<MarketPrice> listBatch, CancellationToken token)
-    {
+    private async Task PublishListBatch(List<MarketPrice> listBatch, string hostId, CancellationToken token) {
         var grouped = listBatch.GroupBy(p => p.Symbol.Replace(" ", "").ToUpperInvariant());
-        foreach (var group in grouped)
-        {
+        foreach (var group in grouped) {
             var symbol = group.Key;
             var events = group.ToList();
-            try
-            {
+            try {
                 await Publish(events, symbol, token);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 _logger.LogError(ex, $"Failed to publish {events.Count} events to partition {symbol}");
             }
         }
         listBatch.Clear();
     }
 
-    private async Task Publish(IEnumerable<MarketPrice> batch, string partitionKey, CancellationToken token)
-    {
+    private async Task Publish(IEnumerable<MarketPrice> batch, string partitionKey, CancellationToken token) {
         var batchOptions = new CreateBatchOptions { PartitionKey = partitionKey };
         var eventBatch = await _eventHub.CreateBatchAsync(batchOptions, token);
 
         int skipped = 0;
-        foreach (var liveData in batch)
-        {
+        foreach (var liveData in batch) {
             var json = JsonSerializer.Serialize(liveData);
             var eventData = new EventData(json) { CorrelationId = liveData.CorrelationId };
             eventData.Properties[nameof(liveData.Symbol)] = liveData.Symbol;
             eventData.Properties[nameof(liveData.Timestamp)] = liveData.Timestamp.ToString("O");
 
-            if (!eventBatch.TryAdd(eventData))
-            {
+            if (!eventBatch.TryAdd(eventData)) {
                 skipped = batch.Count() - eventBatch.Count;
                 break;
             }
@@ -130,34 +89,28 @@ public class EventHubPublisher : IPublisher
         Interlocked.Add(ref _skippedCount, skipped);
     }
 
-    private static ResiliencePipeline BuildDefaultResiliencePipeline(ILogger logger)
-    {
+    private static ResiliencePipeline BuildDefaultResiliencePipeline(ILogger logger) {
         return new ResiliencePipelineBuilder()
-            .AddRetry(new RetryStrategyOptions
-            {
+            .AddRetry(new RetryStrategyOptions {
                 MaxRetryAttempts = 3,
                 Delay = TimeSpan.FromMilliseconds(500),
                 BackoffType = DelayBackoffType.Exponential,
-                OnRetry = args =>
-                {
+                OnRetry = args => {
                     logger.LogWarning(args.Outcome.Exception, "Retry #{Retry} after {Delay}ms", args.AttemptNumber, args.RetryDelay.TotalMilliseconds);
                     return ValueTask.CompletedTask;
                 }
             })
-            .AddCircuitBreaker(new CircuitBreakerStrategyOptions
-            {
+            .AddCircuitBreaker(new CircuitBreakerStrategyOptions {
                 ShouldHandle = args => PredicateResult.True(),
                 FailureRatio = 1.0,
                 MinimumThroughput = 5,
                 SamplingDuration = TimeSpan.FromSeconds(10),
                 BreakDuration = TimeSpan.FromSeconds(30),
-                OnOpened = args =>
-                {
+                OnOpened = args => {
                     logger.LogError(args.Outcome.Exception, "Circuit breaker opened for {Duration} seconds", args.BreakDuration.TotalSeconds);
                     return ValueTask.CompletedTask;
                 },
-                OnClosed = _ =>
-                {
+                OnClosed = _ => {
                     logger.LogInformation("Circuit breaker reset");
                     return ValueTask.CompletedTask;
                 }

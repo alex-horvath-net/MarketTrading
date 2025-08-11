@@ -35,23 +35,23 @@ public class BlockingCollectionBuffer : IBuffer {
         await Task.CompletedTask;
     }
 
-    public void AddItem(MarketPrice liveData, string instanceId) {
+    public void AddItem(MarketPrice liveData, string hostId) {
         try {
             if (_buffer.TryAdd(liveData)) {
                 var currentSize = _buffer.Count;
                 if (currentSize > _maxSize) {
                     Interlocked.Exchange(ref _maxSize, currentSize);
-                    _logger.LogWarning("Buffer max size is {MaxSize}. [InstanceId: {InstanceId}]", _maxSize, instanceId);
-                    MonitorBuffer(_buffer, instanceId);
+                    _logger.LogWarning("Buffer max size is {MaxSize}. [HostId: {HostId}]", _maxSize, hostId);
+                    MonitorBuffer(_buffer, hostId);
                 }
             } else {
                 Interlocked.Increment(ref _overFlowCounter);
-                _logger.LogWarning("Buffer overflow happened at the {OverFlowCounter} times. [InstanceId: {InstanceId}]", _overFlowCounter, instanceId);
-                MonitorBuffer(_buffer, instanceId);
+                _logger.LogWarning("Buffer overflow happened at the {OverFlowCounter} times. [HostId: {HostId}]", _overFlowCounter, hostId);
+                MonitorBuffer(_buffer, hostId);
             }
         } catch (Exception ex) {
-            _logger.LogError(ex, "Failed to buffer live data. [InstanceId: {InstanceId}]", instanceId);
-            MonitorBuffer(_buffer, instanceId);
+            _logger.LogError(ex, "Failed to buffer live data. [HostId: {HostId}]", hostId);
+            MonitorBuffer(_buffer, hostId);
             throw;
         }
     }
@@ -60,8 +60,8 @@ public class BlockingCollectionBuffer : IBuffer {
         _buffer.CompleteAdding();
     }
 
-    private void MonitorBuffer(BlockingCollection<MarketPrice> buffer, string instanceId) {
-        _logger.LogDebug("BufferCurrentSize: {BufferCurrentSize}; BufferCapacity: {BufferCapacity}; BufferMaxSize: {BufferMaxSize} er: {BufferOverFlowCounter}. [InstanceId: {InstanceId}]",
-            buffer.Count, buffer.BoundedCapacity, _maxSize, _overFlowCounter, instanceId);
+    private void MonitorBuffer(BlockingCollection<MarketPrice> buffer, string hostId) {
+        _logger.LogDebug("BufferCurrentSize: {BufferCurrentSize}; BufferCapacity: {BufferCapacity}; BufferMaxSize: {BufferMaxSize} er: {BufferOverFlowCounter}. [HostId: {HostId}]",
+            buffer.Count, buffer.BoundedCapacity, _maxSize, _overFlowCounter, hostId);
     }
 }

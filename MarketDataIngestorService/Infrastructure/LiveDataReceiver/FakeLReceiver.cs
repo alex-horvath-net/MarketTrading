@@ -21,7 +21,7 @@ public class FakeLReceiver : IReceiver
         _random = new Random();
     }
 
-    public async Task StartReceivingLiveData(string instanceId, CancellationToken token)
+    public async Task StartReceivingLiveData(string hostId, CancellationToken token)
     {
         int receivedCount = 0, failedCount = 0, invalidCount = 0;
         var stopwatch = Stopwatch.StartNew();
@@ -31,11 +31,11 @@ public class FakeLReceiver : IReceiver
         {
             // All retry logic is handled by the repository itself.
             symbols = await _repository.LoadSymbols(token);
-            ValidateArguments(symbols, instanceId);
+            ValidateArguments(symbols, hostId);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error loading symbols [InstanceId: {InstanceId}]", instanceId);
+            _logger.LogError(ex, "Error loading symbols [HostId: {HostId}]", hostId);
             throw;
         }
 
@@ -48,7 +48,7 @@ public class FakeLReceiver : IReceiver
                 {
                     try
                     {
-                        if (TryAddMarketPrice(symbol, instanceId))
+                        if (TryAddMarketPrice(symbol, hostId))
                         {
                             receivedCount++;
                         }
@@ -60,7 +60,7 @@ public class FakeLReceiver : IReceiver
                     catch (Exception ex)
                     {
                         failedCount++;
-                        _logger.LogError(ex, "Error adding market price [InstanceId: {InstanceId}, Symbol: {Symbol}]", instanceId, symbol);
+                        _logger.LogError(ex, "Error adding market price [HostId: {HostId}, Symbol: {Symbol}]", hostId, symbol);
                     }
                 }
                 await Task.Delay(1000, token);
@@ -69,43 +69,43 @@ public class FakeLReceiver : IReceiver
                 if ((_time.UtcNow - lastHealthLog).TotalSeconds >= 10)
                 {
                     _logger.LogInformation(
-                        "Health: [InstanceId: {InstanceId}] Received: {ReceivedCount}, Invalid: {InvalidCount}, Failed: {FailedCount}, Uptime: {ElapsedSeconds}s",
-                        instanceId, receivedCount, invalidCount, failedCount, stopwatch.Elapsed.TotalSeconds);
+                        "Health: [HostId: {HostId}] Received: {ReceivedCount}, Invalid: {InvalidCount}, Failed: {FailedCount}, Uptime: {ElapsedSeconds}s",
+                        hostId, receivedCount, invalidCount, failedCount, stopwatch.Elapsed.TotalSeconds);
                     lastHealthLog = _time.UtcNow;
                 }
             }
         }
         catch (OperationCanceledException)
         {
-            _logger.LogWarning("Receiving cancelled [InstanceId: {InstanceId}]", instanceId);
+            _logger.LogWarning("Receiving cancelled [HostId: {HostId}]", hostId);
         }
         finally
         {
             _buffer.StopAddItem();
             stopwatch.Stop();
             _logger.LogInformation(
-                "Stopped receiving live data [InstanceId: {InstanceId}], TotalReceived: {ReceivedCount}, Invalid: {InvalidCount}, Failed: {FailedCount}, Uptime: {ElapsedSeconds}s",
-                instanceId, receivedCount, invalidCount, failedCount, stopwatch.Elapsed.TotalSeconds);
+                "Stopped receiving live data [HostId: {HostId}], TotalReceived: {ReceivedCount}, Invalid: {InvalidCount}, Failed: {FailedCount}, Uptime: {ElapsedSeconds}s",
+                hostId, receivedCount, invalidCount, failedCount, stopwatch.Elapsed.TotalSeconds);
         }
     }
 
-    private bool TryAddMarketPrice(string symbol, string instanceId)
+    private bool TryAddMarketPrice(string symbol, string hostId)
     {
         if (string.IsNullOrWhiteSpace(symbol))
         {
-            _logger.LogWarning("Symbol is null or whitespace. [InstanceId: {InstanceId}]", instanceId);
+            _logger.LogWarning("Symbol is null or whitespace. [HostId: {HostId}]", hostId);
             return false;
         }
 
         var marketPrice = CreateMarketPrice(symbol);
         if (IsValidMarketPrice(marketPrice))
         {
-            _buffer.AddItem(marketPrice, instanceId);
+            _buffer.AddItem(marketPrice, hostId);
             return true;
         }
         else
         {
-            _logger.LogWarning("Invalid live data received. [InstanceId: {InstanceId}, Symbol: {Symbol}]", instanceId, symbol);
+            _logger.LogWarning("Invalid live data received. [HostId: {HostId}, Symbol: {Symbol}]", hostId, symbol);
             return false;
         }
     }
@@ -127,10 +127,10 @@ public class FakeLReceiver : IReceiver
         price.Ask is >= 0 and <= 1_000_000 &&
         price.Last is >= 0 and <= 1_000_000;
 
-    private static void ValidateArguments(IEnumerable<string> symbols, string instanceId)
+    private static void ValidateArguments(IEnumerable<string> symbols, string hostId)
     {
         if (symbols == null) throw new ArgumentNullException(nameof(symbols));
-        if (string.IsNullOrWhiteSpace(instanceId)) throw new ArgumentException("InstanceId cannot be null or whitespace.", nameof(instanceId));
+        if (string.IsNullOrWhiteSpace(hostId)) throw new ArgumentException("HostId cannot be null or whitespace.", nameof(hostId));
     }
 }
 

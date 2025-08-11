@@ -47,7 +47,7 @@ public class ChannelBuffer : IBuffer
         _logger.LogInformation("Buffer read completed. TotalRead: {TotalRead}", _totalRead);
     }
 
-    public void AddItem(MarketPrice liveData, string instanceId)
+    public void AddItem(MarketPrice liveData, string hostId)
     {
         if (_channel.Writer.TryWrite(liveData))
         {
@@ -56,15 +56,15 @@ public class ChannelBuffer : IBuffer
             if (currentSize > _maxSize)
             {
                 Interlocked.Exchange(ref _maxSize, currentSize);
-                _logger.LogWarning("Buffer max size is {MaxSize}. [InstanceId: {InstanceId}]", _maxSize, instanceId);
-                MonitorBuffer(instanceId);
+                _logger.LogWarning("Buffer max size is {MaxSize}. [HostId: {HostId}]", _maxSize, hostId);
+                MonitorBuffer(hostId);
             }
         }
         else
         {
             Interlocked.Increment(ref _overflowCounter);
-            _logger.LogWarning("Buffer overflow happened {OverflowCounter} times. [InstanceId: {InstanceId}]", _overflowCounter, instanceId);
-            MonitorBuffer(instanceId);
+            _logger.LogWarning("Buffer overflow happened {OverflowCounter} times. [HostId: {HostId}]", _overflowCounter, hostId);
+            MonitorBuffer(hostId);
         }
     }
 
@@ -74,10 +74,10 @@ public class ChannelBuffer : IBuffer
         _logger.LogInformation("Buffer stopped. TotalAdded: {TotalAdded}, TotalRead: {TotalRead}, Overflow: {OverflowCounter}", _totalAdded, _totalRead, _overflowCounter);
     }
 
-    private void MonitorBuffer(string instanceId)
+    private void MonitorBuffer(string hostId)
     {
-        _logger.LogDebug("BufferCurrentSize: {CurrentSize}; BufferCapacity: {Capacity}; BufferMaxSize: {MaxSize}; OverflowCount: {Overflow}. [InstanceId: {InstanceId}]",
-            _channel.Reader.Count, _options.BufferCapacity, _maxSize, _overflowCounter, instanceId);
+        _logger.LogDebug("BufferCurrentSize: {CurrentSize}; BufferCapacity: {Capacity}; BufferMaxSize: {MaxSize}; OverflowCount: {Overflow}. [HostId: {HostId}]",
+            _channel.Reader.Count, _options.BufferCapacity, _maxSize, _overflowCounter, hostId);
     }
 
     public IEnumerable<MarketPrice> GetItems(CancellationToken token)
