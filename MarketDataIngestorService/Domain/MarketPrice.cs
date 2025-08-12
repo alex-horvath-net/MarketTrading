@@ -1,6 +1,7 @@
 ﻿namespace MarketDataIngestionService.Domain;
 public class MarketPrice {
     public string Symbol { get; set; } = string.Empty;
+    public string NormalizedSymbol => Symbol.Replace(" ", "").ToUpperInvariant();
     public double Bid { get; set; }
     public double Ask { get; set; }
     public double Last { get; set; }

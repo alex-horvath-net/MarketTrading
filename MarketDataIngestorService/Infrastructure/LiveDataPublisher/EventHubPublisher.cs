@@ -18,6 +18,7 @@ public class EventHubPublisher : IPublisher {
     private readonly ILogger<EventHubPublisher> _logger;
     private long _publishedCount;
     private long _skippedCount;
+    long _droppedCount = 0;
 
     public EventHubPublisher(
         EventHubProducerClient eventHub,
@@ -34,33 +35,47 @@ public class EventHubPublisher : IPublisher {
         _resiliencePipeline = resiliencePipeline ?? BuildDefaultResiliencePipeline(_logger);
     }
 
-    public async Task PublishLiveData(string hostId, CancellationToken token) {
+    public async Task StartPublishingLiveData(string hostId, CancellationToken token) {
         var batch = new List<MarketPrice>();
 
         await foreach (var liveData in _buffer.GetItemsAsync(token)) {
             token.ThrowIfCancellationRequested();
-            if (_batch.Add(liveData, ref batch)) {
+           
+            if (!_batch.IsReadyToPublished(liveData, ref batch))
+                continue;
+
+            if (await PublishListBatch(batch, hostId, token))
+                continue;
+
+            if (_batch.Count > 0) {
                 await PublishListBatch(batch, hostId, token);
             }
-        }
 
-        if (_batch.Count > 0) {
-            await PublishListBatch(batch, hostId, token);
+            if (_droppedCount > 0) {
+                _logger.LogWarning("Total dropped items in session: {DroppedCount}, HostId: {HostId}", _droppedCount, hostId);
+                // If you have a metrics system, record droppedCount here
+            }
         }
     }
 
-    private async Task PublishListBatch(List<MarketPrice> listBatch, string hostId, CancellationToken token) {
-        var grouped = listBatch.GroupBy(p => p.Symbol.Replace(" ", "").ToUpperInvariant());
-        foreach (var group in grouped) {
-            var symbol = group.Key;
-            var events = group.ToList();
-            try {
-                await Publish(events, symbol, token);
-            } catch (Exception ex) {
-                _logger.LogError(ex, $"Failed to publish {events.Count} events to partition {symbol}");
+    private async Task<bool> PublishListBatch(List<MarketPrice> listBatch, string hostId, CancellationToken token) {
+        try {
+            var symbolGroups = listBatch.GroupBy(p => p.NormalizedSymbol);
+            foreach (var group in symbolGroups) {
+                try {
+                    await Publish(group.ToList(), group.Key, token);
+                } catch (Exception ex) {
+                    _logger.LogError(ex, $"Failed to publish {group.Count()} symbolLiveDataBatch to partition {group.Key}");
+                }
             }
+            listBatch.Clear();
+            return true;
+        } catch (Exception ex) {
+            foreach (var liveData in listBatch) {
+                SendToDeadLetterQueue(liveData, ex, hostId, ref _droppedCount);
+            }
+            return false;
         }
-        listBatch.Clear();
     }
 
     private async Task Publish(IEnumerable<MarketPrice> batch, string partitionKey, CancellationToken token) {
@@ -116,5 +131,17 @@ public class EventHubPublisher : IPublisher {
                 }
             })
             .Build();
+    }
+
+    // Improved dead-letter queue method
+    private void SendToDeadLetterQueue(MarketPrice item, Exception ex, string hostId, ref long droppedCount) {
+        // Log the dropped liveData with full context
+        _logger.LogError(ex, "Live data liveData dropped. Symbol: {Symbol}, CorrelationId: {CorrelationId}, HostId: {HostId}", item?.Symbol, item?.CorrelationId, hostId);
+
+        // Count the dropped liveData
+        Interlocked.Increment(ref droppedCount);
+
+        // Implement your dead-letter logic here (e.g., save to DB, send to queue, etc.)
+        // This is a stub for demonstration.
     }
 }

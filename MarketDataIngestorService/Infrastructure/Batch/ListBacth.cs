@@ -20,7 +20,7 @@ public class ListBacth : IListBacth {
 
     public int Count => listBatch.Count;
 
-    public bool Add(MarketPrice liveData, ref List<MarketPrice> batch) {
+    public bool IsReadyToPublished(MarketPrice liveData, ref List<MarketPrice> batch) {
         listBatch.Add(liveData);
 
         bool sizeTrigger = listBatch.Count >= _options.Size;

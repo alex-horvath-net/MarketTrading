@@ -43,7 +43,7 @@
 
 //            var subscriptions = new SubscriptionList();
 //            for (int i = 0; i < symbols.Length; i++) {
-//                subscriptions.Add(symbols[i], "BID,ASK,LAST_PRICE", new CorrelationID(i + 1));
+//                subscriptions.Collect(symbols[i], "BID,ASK,LAST_PRICE", new CorrelationID(i + 1));
 //            }
 
 //            _session.Subscribe(subscriptions);

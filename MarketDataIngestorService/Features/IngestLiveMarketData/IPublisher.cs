@@ -2,5 +2,5 @@
 
 namespace MarketDataIngestionService.Features.IngestLiveMarketData; 
 public interface IPublisher {
-    Task PublishLiveData(string hostId, CancellationToken token);
+    Task StartPublishingLiveData(string hostId, CancellationToken token);
 }

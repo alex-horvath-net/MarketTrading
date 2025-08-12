@@ -56,7 +56,7 @@ public class ChannelBuffer : IBuffer
             if (currentSize > _maxSize)
             {
                 Interlocked.Exchange(ref _maxSize, currentSize);
-                _logger.LogWarning("Buffer max size is {MaxSize}. [HostId: {HostId}]", _maxSize, hostId);
+                _logger.LogWarning("Buffer new max size is {MaxSize}. [HostId: {HostId}]", _maxSize, hostId);
                 MonitorBuffer(hostId);
             }
         }

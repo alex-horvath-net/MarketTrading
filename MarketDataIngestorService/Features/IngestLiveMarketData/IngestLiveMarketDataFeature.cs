@@ -9,7 +9,7 @@ public class IngestLiveMarketDataFeature : IIngestLiveMarketDataFeature {
         // Fire-and-forget is safe here because:
         // - Task is captured and awaited below, so exceptions and cancellation are not lost.
         // - Publisher uses the provided CancellationToken for graceful shutdown.
-        var publishTask = Task.Run(() => _publisher.PublishLiveData(hostId, token), token);
+        var publishTask = Task.Run(() => _publisher.StartPublishingLiveData(hostId, token), token);
 
         // Next, fire-and-forget receiver as a long-running main thread task.
         // Fire-and-forget is safe here because:
