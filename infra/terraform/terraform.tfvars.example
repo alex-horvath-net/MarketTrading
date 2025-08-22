@@ -1,0 +1,7 @@
+# Example variables file. Copy to terraform.tfvars and adjust values.
+project     = "markettrading"
+environment = "dev"
+location    = "westeurope"
+# Optional overrides
+# eventhub_name = "marketdata"
+# eh_partitions = 4

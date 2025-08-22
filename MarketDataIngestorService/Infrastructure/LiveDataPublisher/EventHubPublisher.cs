@@ -36,25 +36,118 @@ public class EventHubPublisher : IPublisher {
     }
 
     public async Task StartPublishingLiveData(string hostId, CancellationToken token) {
-        var batch = new List<MarketPrice>();
+        var listBatch = new List<MarketPrice>(200);
+        DateTime batchStartTime = default;
 
         await foreach (var liveData in _buffer.GetItemsAsync(token)) {
             token.ThrowIfCancellationRequested();
-           
-            if (!_batch.IsReadyToPublished(liveData, ref batch))
-                continue;
 
-            if (await PublishListBatch(batch, hostId, token))
-                continue;
-
-            if (_batch.Count > 0) {
-                await PublishListBatch(batch, hostId, token);
+            if (listBatch.Count == 0) {
+                batchStartTime = _time.UtcNow;
             }
 
-            if (_droppedCount > 0) {
-                _logger.LogWarning("Total dropped items in session: {DroppedCount}, HostId: {HostId}", _droppedCount, hostId);
-                // If you have a metrics system, record droppedCount here
+            listBatch.Add(liveData);
+
+            bool batchReady = listBatch.Count >= 200 || (_time.UtcNow - batchStartTime).TotalMilliseconds >= 100;
+            if (!batchReady) {
+                continue;
             }
+
+            var symbolGroups = listBatch.GroupBy(x => x.NormalizedSymbol);
+            foreach (var group in symbolGroups) {
+                var batchOptions = new CreateBatchOptions { PartitionKey = group.Key };
+                EventDataBatch eventBatch = await _eventHub.CreateBatchAsync(batchOptions, token);
+
+                foreach (var item in group) {
+                    var json = JsonSerializer.Serialize(item);
+                    var eventData = new EventData(json) { CorrelationId = item.CorrelationId };
+                    eventData.Properties[nameof(item.Symbol)] = item.NormalizedSymbol;
+                    eventData.Properties[nameof(item.Timestamp)] = item.Timestamp.ToString("O");
+
+                    if (!eventBatch.TryAdd(eventData)) {
+                        try {
+                            await _resiliencePipeline.ExecuteAsync(
+                                async t => await _eventHub.SendAsync(eventBatch, t),
+                                token
+                            );
+                            Interlocked.Add(ref _publishedCount, eventBatch.Count);
+                        } catch (Exception ex) {
+                            SendToDeadLetterQueue(item, ex, hostId, ref _droppedCount);
+                        }
+                        eventBatch = await _eventHub.CreateBatchAsync(batchOptions, token);
+
+                        if (!eventBatch.TryAdd(eventData)) {
+                            SendToDeadLetterQueue(item, new InvalidOperationException("Event too large for batch"), hostId, ref _droppedCount);
+                        }
+                    }
+                }
+
+                if (eventBatch.Count > 0) {
+                    try {
+                        await _resiliencePipeline.ExecuteAsync(
+                            async t => await _eventHub.SendAsync(eventBatch, t),
+                            token
+                        );
+                        Interlocked.Add(ref _publishedCount, eventBatch.Count);
+                    } catch (Exception ex) {
+                        foreach (var item in group) {
+                            SendToDeadLetterQueue(item, ex, hostId, ref _droppedCount);
+                        }
+                    }
+                }
+            }
+
+            listBatch.Clear();
+            batchStartTime = default;
+        }
+
+        if (listBatch.Count > 0) {
+            var symbolGroups = listBatch.GroupBy(x => x.NormalizedSymbol);
+            foreach (var group in symbolGroups) {
+                var batchOptions = new CreateBatchOptions { PartitionKey = group.Key };
+                EventDataBatch eventBatch = await _eventHub.CreateBatchAsync(batchOptions, token);
+
+                foreach (var item in group) {
+                    var json = JsonSerializer.Serialize(item);
+                    var eventData = new EventData(json) { CorrelationId = item.CorrelationId };
+                    eventData.Properties[nameof(item.Symbol)] = item.NormalizedSymbol;
+                    eventData.Properties[nameof(item.Timestamp)] = item.Timestamp.ToString("O");
+
+                    if (!eventBatch.TryAdd(eventData)) {
+                        try {
+                            await _resiliencePipeline.ExecuteAsync(
+                                async t => await _eventHub.SendAsync(eventBatch, t),
+                                token
+                            );
+                            Interlocked.Add(ref _publishedCount, eventBatch.Count);
+                        } catch (Exception ex) {
+                            SendToDeadLetterQueue(item, ex, hostId, ref _droppedCount);
+                        }
+                        eventBatch = await _eventHub.CreateBatchAsync(batchOptions, token);
+                        if (!eventBatch.TryAdd(eventData)) {
+                            SendToDeadLetterQueue(item, new InvalidOperationException("Event too large for batch"), hostId, ref _droppedCount);
+                        }
+                    }
+                }
+
+                if (eventBatch.Count > 0) {
+                    try {
+                        await _resiliencePipeline.ExecuteAsync(
+                            async t => await _eventHub.SendAsync(eventBatch, t),
+                            token
+                        );
+                        Interlocked.Add(ref _publishedCount, eventBatch.Count);
+                    } catch (Exception ex) {
+                        foreach (var item in group) {
+                            SendToDeadLetterQueue(item, ex, hostId, ref _droppedCount);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (_droppedCount > 0) {
+            _logger.LogWarning("Total dropped items in session: {DroppedCount}, HostId: {HostId}", _droppedCount, hostId);
         }
     }
 
@@ -133,15 +226,9 @@ public class EventHubPublisher : IPublisher {
             .Build();
     }
 
-    // Improved dead-letter queue method
     private void SendToDeadLetterQueue(MarketPrice item, Exception ex, string hostId, ref long droppedCount) {
-        // Log the dropped liveData with full context
         _logger.LogError(ex, "Live data liveData dropped. Symbol: {Symbol}, CorrelationId: {CorrelationId}, HostId: {HostId}", item?.Symbol, item?.CorrelationId, hostId);
-
-        // Count the dropped liveData
         Interlocked.Increment(ref droppedCount);
-
         // Implement your dead-letter logic here (e.g., save to DB, send to queue, etc.)
-        // This is a stub for demonstration.
     }
 }
