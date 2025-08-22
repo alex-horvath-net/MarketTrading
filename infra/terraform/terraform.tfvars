@@ -1,4 +1,3 @@
-# Example variables file. Copy to terraform.tfvars and adjust values.
 project     = "markettrading"
 environment = "dev"
 location    = "westeurope"
